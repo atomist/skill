@@ -22,9 +22,9 @@ This page details all runtime OSS dependencies of `@atomist/skill`.
 |[Custom: https://github.com/medikoo/clock](#custom-httpsgithubcommedikooclock)|1|
 |[GPL-2.0](#gpl-20)|1|
 |[GPL-3.0](#gpl-30)|3|
-|[ISC](#isc)|35|
+|[ISC](#isc)|34|
 |[MIT AND BSD-3-Clause](#mit-and-bsd-3-clause)|1|
-|[MIT](#mit)|632|
+|[MIT](#mit)|629|
 |[PSF](#psf)|2|
 |[UNKNOWN](#unknown)|1|
 |[WTFPL](#wtfpl)|1|
@@ -197,7 +197,6 @@ ISC License - [https://www.isc.org/downloads/software-support-policy/isc-license
 |`tinyqueue`|`2.0.0`||[https://github.com/mourner/tinyqueue](https://github.com/mourner/tinyqueue)|
 |`tty`|`1.0.1`||[https://github.com/npm/security-holder](https://github.com/npm/security-holder)|
 |`universal-user-agent`|`4.0.0`||[https://github.com/gr2m/universal-user-agent](https://github.com/gr2m/universal-user-agent)|
-|`unix-dgram`|`2.0.3`|Ben Noordhuis|[https://github.com/bnoordhuis/node-unix-dgram](https://github.com/bnoordhuis/node-unix-dgram)|
 |`which`|`1.3.1`|Isaac Z. Schlueter|[https://github.com/isaacs/node-which](https://github.com/isaacs/node-which)|
 |`wrappy`|`1.0.2`|Isaac Z. Schlueter|[https://github.com/npm/wrappy](https://github.com/npm/wrappy)|
 |`yallist`|`3.1.1`|Isaac Z. Schlueter|[https://github.com/isaacs/yallist](https://github.com/isaacs/yallist)|
@@ -376,7 +375,6 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`base64-js`|`1.3.1`|T. Jameson Little|[https://github.com/beatgammit/base64-js](https://github.com/beatgammit/base64-js)|
 |`bignumber.js`|`7.2.1`|Michael Mclaughlin|[https://github.com/MikeMcl/bignumber.js](https://github.com/MikeMcl/bignumber.js)|
 |`binary-extensions`|`2.0.0`|Sindre Sorhus|[https://github.com/sindresorhus/binary-extensions](https://github.com/sindresorhus/binary-extensions)|
-|`bindings`|`1.5.0`|Nathan Rajlich|[https://github.com/TooTallNate/node-bindings](https://github.com/TooTallNate/node-bindings)|
 |`body-parser`|`1.19.0`||[https://github.com/expressjs/body-parser](https://github.com/expressjs/body-parser)|
 |`bowser`|`2.8.1`|Dustin Diaz|[https://github.com/lancedikson/bowser](https://github.com/lancedikson/bowser)|
 |`brace-expansion`|`1.1.11`|Julian Gruber|[https://github.com/juliangruber/brace-expansion](https://github.com/juliangruber/brace-expansion)|
@@ -492,7 +490,6 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`fecha`|`2.3.3`|Taylor Hakes|[git+https://taylorhakes@github.com/taylorhakes/fecha](git+https://taylorhakes@github.com/taylorhakes/fecha)|
 |`figures`|`1.7.0`|Sindre Sorhus|[https://github.com/sindresorhus/figures](https://github.com/sindresorhus/figures)|
 |`figures`|`2.0.0`|Sindre Sorhus|[https://github.com/sindresorhus/figures](https://github.com/sindresorhus/figures)|
-|`file-uri-to-path`|`1.0.0`|Nathan Rajlich|[https://github.com/TooTallNate/file-uri-to-path](https://github.com/TooTallNate/file-uri-to-path)|
 |`fill-range`|`7.0.1`|Jon Schlinkert|[https://github.com/jonschlinkert/fill-range](https://github.com/jonschlinkert/fill-range)|
 |`finalhandler`|`1.1.2`|Douglas Christopher Wilson|[https://github.com/pillarjs/finalhandler](https://github.com/pillarjs/finalhandler)|
 |`find-up`|`4.1.0`|Sindre Sorhus|[https://github.com/sindresorhus/find-up](https://github.com/sindresorhus/find-up)|
@@ -648,7 +645,6 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`ms`|`2.1.1`||[https://github.com/zeit/ms](https://github.com/zeit/ms)|
 |`ms`|`2.1.2`||[https://github.com/zeit/ms](https://github.com/zeit/ms)|
 |`murmurhash3js`|`3.0.1`|Karan Lyons|[https://github.com/pid/murmurHash3js](https://github.com/pid/murmurHash3js)|
-|`nan`|`2.14.0`||[https://github.com/nodejs/nan](https://github.com/nodejs/nan)|
 |`natural-orderby`|`2.0.3`|Olaf Ennen|[https://github.com/yobacca/natural-orderby](https://github.com/yobacca/natural-orderby)|
 |`negotiator`|`0.6.2`||[https://github.com/jshttp/negotiator](https://github.com/jshttp/negotiator)|
 |`nice-try`|`1.0.5`||[https://github.com/electerious/nice-try](https://github.com/electerious/nice-try)|
