@@ -29,14 +29,16 @@
     "@google-cloud/pubsub": "1.1.5",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.16",
+    "yargs-parser": "^16.1.0"
   },
   "devDependencies": {
     "@google-cloud/functions-framework": "^1.3.2",
     "@types/lodash": "^4.14.149",
-    "@types/node-fetch": "^2.5.4",
     "@types/mocha": "^5.2.7",
+    "@types/node-fetch": "^2.5.4",
     "@types/power-assert": "^1.5.0",
+    "@types/yargs-parser": "^15.0.0",
     "espower-typescript": "^9.0.2",
     "mocha": "^6.2.2",
     "npm-run-all": "^4.1.5",

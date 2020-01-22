@@ -55,6 +55,7 @@ export interface CommandIncoming {
     source: Source;
     parameters: Arg[];
     secrets: Secret[];
+    raw_message: string;
 }
 
 export interface Source {
