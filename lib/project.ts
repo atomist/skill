@@ -1,0 +1,132 @@
+/*
+ * Copyright © 2020 Atomist, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { RemoteRepoRef } from "@atomist/automation-client/lib/operations/common/RepoId";
+import { GitProject } from "@atomist/automation-client/lib/project/git/GitProject";
+import {
+    GitHubAppCredential,
+    GitHubCredential,
+    isGitHubAppCredential,
+    isGitHubCredential,
+} from "./secrets";
+
+export interface CloneOptions {
+
+    /**
+     * If this is true, the implementation should keep the directory at least
+     * for the duration of the current process. If it's false, persistence can be treated
+     * in any way.
+     */
+    keep?: boolean;
+
+    /**
+     * If this is true, always make a full clone.
+     * If it's false, and we want the master branch, and we're cloning into a transient
+     * place, then clone with `--depth 1` to save time.
+     */
+    alwaysDeep?: boolean;
+
+    /**
+     * If we are not doing a deep clone (alwaysDeep is false),
+     * then the default is to clone only one branch.
+     * Set noSingleBranch to true to clone the tips of all branches instead.
+     * This passes `--no-single-branch` to `git clone`.
+     * If alwaysDeep is true, this option has no effect.
+     */
+    noSingleBranch?: boolean;
+
+    /**
+     * Set this to the number of commits that should be cloned into the transient
+     * place. This only applies when alwaysDeep is set to false.
+     */
+    depth?: number;
+
+    /**
+     * If you really want the SHA, not the tip of the branch that we've checked out,
+     * then request a detached HEAD at that SHA.
+     */
+    detachHead?: boolean;
+}
+
+export function gitHubComRepository(details: {
+    owner: string,
+    repo: string,
+    branch?: string,
+    sha?: string,
+    credential: GitHubCredential | GitHubAppCredential,
+}): AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential> {
+    return {
+        ...details,
+        type: RepositoryProviderType.GitHubCom,
+    };
+}
+
+export enum RepositoryProviderType {
+    GitHubCom,
+    GitHubEnterprise,
+}
+
+export interface RepositoryId {
+    owner: string;
+    repo: string;
+
+    branch?: string;
+    sha?: string;
+
+    type: RepositoryProviderType;
+    apiUrl?: string;
+}
+
+export interface AuthenticatedRepositoryId<T> extends RepositoryId {
+    credential: T;
+}
+
+export interface ProjectLoader {
+
+    clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<GitProject | undefined>;
+
+}
+
+export class DefaultProjectLoader implements ProjectLoader {
+
+    public async clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<GitProject> {
+        if (isGitHubCredential(id.credential) || isGitHubAppCredential(id.credential)) {
+            const gcgp = await import("@atomist/automation-client/lib/project/git/GitCommandGitProject");
+            return gcgp.GitCommandGitProject.cloned(
+                { token: id.credential.token },
+                await convertToRepoRef(id),
+                options);
+        }
+        return undefined;
+    }
+}
+
+async function convertToRepoRef(id: AuthenticatedRepositoryId<any>): Promise<RemoteRepoRef> {
+    switch (id.type) {
+        case RepositoryProviderType.GitHubCom:
+        case RepositoryProviderType.GitHubEnterprise:
+            const grr = await import("@atomist/automation-client/lib/operations/common/GitHubRepoRef");
+            return grr.GitHubRepoRef.from({
+                owner: id.owner,
+                repo: id.repo,
+                sha: id.sha,
+                branch: id.branch,
+                rawApiBase: id.apiUrl,
+            });
+        default:
+            throw new Error("Unsupported repository id");
+    }
+}
