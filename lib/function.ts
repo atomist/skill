@@ -44,13 +44,13 @@ export const entryPoint = async (pubSubEvent: PubSubMessage) => {
     } else if (isCommandIncoming(payload)) {
         await processCommand(payload);
     }
-    console.log(`Completed processing of incoming pub/sub message`);
 };
 
 async function processEvent(event: EventIncoming): Promise<void> {
     const context = createContext(event) as EventContext<any>;
     const path = requirePath(`events/${context.name}`);
     try {
+        console.log(`Invoking event handler '${context.name}'`);
         const handler = require(path).handler as EventHandler<any>;
         await handler(context);
         await (context.message as any as StatusPublisher).publish(0);
@@ -58,12 +58,14 @@ async function processEvent(event: EventIncoming): Promise<void> {
         console.error(e);
         await (context.message as any as StatusPublisher).publish(1, e);
     }
+    console.log(`Completed event handler '${context.name}'`);
 }
 
 async function processCommand(event: CommandIncoming): Promise<void> {
     const context = createContext(event) as CommandContext;
     const path = requirePath(`commands/${context.name}`);
     try {
+        console.log(`Invoking command handler '${context.name}'`);
         const handler = require(path).handler as CommandHandler;
         await handler(context);
         await (context.message as any as StatusPublisher).publish(0);
@@ -75,4 +77,5 @@ async function processCommand(event: CommandIncoming): Promise<void> {
             await (context.message as any as StatusPublisher).publish(1, e);
         }
     }
+    console.log(`Completed command handler '${context.name}'`);
 }

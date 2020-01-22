@@ -42,6 +42,7 @@ export function createContext(payload: CommandIncoming | EventIncoming): EventCo
     const graphql = new NodeFetchGraphQLClient(apiKey, `${process.env.GRAPHQL_ENDPOINT}/team/${wid}`);
     const credential = new DefaultCredentialProvider(graphql, payload);
     if (isCommandIncoming(payload)) {
+        // TODO cd does this have to be here?
         if (!!payload.raw_message) {
             const parameters = require("yargs-parser")(payload.raw_message);
             _.forEach(parameters, (v, k) => {
