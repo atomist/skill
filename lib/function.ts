@@ -55,6 +55,7 @@ async function processEvent(event: EventIncoming): Promise<void> {
         await handler(context);
         await (context.message as any as StatusPublisher).publish(0);
     }  catch (e) {
+        console.error(e);
         await (context.message as any as StatusPublisher).publish(1, e);
     }
 }
@@ -70,6 +71,7 @@ async function processCommand(event: CommandIncoming): Promise<void> {
         if (e instanceof CommandListenerExecutionInterruptError) {
             await (context.message as any as StatusPublisher).publish(0);
         } else {
+            console.error(e);
             await (context.message as any as StatusPublisher).publish(1, e);
         }
     }
