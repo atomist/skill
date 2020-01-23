@@ -120,7 +120,7 @@ export function commandRequestParameterPromptFactory<T>(messageClient: CommandMe
         // Set up the thread_ts for this response message
         let threadTs;
         if (options.thread === true && !!payload.source) {
-            threadTs = _.get(payload.source, "slack.message.ts");
+            threadTs = (payload?.source?.slack as any)?.message?.ts;
         } else if (typeof options.thread === "string") {
             threadTs = options.thread;
         }
@@ -151,8 +151,7 @@ export function commandRequestParameterPromptFactory<T>(messageClient: CommandMe
         } as any;
 
         await messageClient.respond(response);
-        throw new CommandListenerExecutionInterruptError(
-            `Prompting for new parameters: ${_.map(newParameters, (v, k) => k).join(", ")}`);
+        throw new CommandListenerExecutionInterruptError("Prompting for parameters");
     };
 }
 

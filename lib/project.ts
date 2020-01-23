@@ -17,6 +17,14 @@
 import { RemoteRepoRef } from "@atomist/automation-client/lib/operations/common/RepoId";
 import { GitProject } from "@atomist/automation-client/lib/project/git/GitProject";
 import {
+    execPromise,
+    ExecPromiseResult,
+    spawnPromise,
+    SpawnPromiseOptions,
+    SpawnPromiseReturns,
+} from "@atomist/automation-client/lib/util/child_process";
+import { SpawnSyncOptions } from "child_process";
+import {
     GitHubAppCredential,
     GitHubCredential,
     isGitHubAppCredential,
@@ -94,21 +102,31 @@ export interface AuthenticatedRepositoryId<T> extends RepositoryId {
     credential: T;
 }
 
+export type Spawn = (cmd: string, args?: string[], opts?: SpawnPromiseOptions) => Promise<SpawnPromiseReturns>;
+export type Exec = (cmd: string, args?: string[], opts?: SpawnSyncOptions) => Promise<ExecPromiseResult>;
+
+export type Project = GitProject & { spawn: Spawn, exec: Exec };
+
 export interface ProjectLoader {
 
-    clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<GitProject | undefined>;
+    clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project | undefined>;
 
 }
 
 export class DefaultProjectLoader implements ProjectLoader {
 
-    public async clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<GitProject> {
+    public async clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project> {
         if (isGitHubCredential(id.credential) || isGitHubAppCredential(id.credential)) {
             const gcgp = await import("@atomist/automation-client/lib/project/git/GitCommandGitProject");
-            return gcgp.GitCommandGitProject.cloned(
+            const project = await gcgp.GitCommandGitProject.cloned(
                 { token: id.credential.token },
                 await convertToRepoRef(id),
                 options);
+            return {
+                ...project as any,
+                spawn: (cmd, args, opts) => spawnPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) }),
+                exec: (cmd, args, opts) => execPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) }),
+            };
         }
         return undefined;
     }
