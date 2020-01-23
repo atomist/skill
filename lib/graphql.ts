@@ -28,19 +28,22 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
 
     public async query<T>(query: string, variables?: Record<string, any>): Promise<T> {
         const f = (await import("node-fetch")).default;
+        const body = JSON.stringify({
+            query,
+            variables,
+        });
+        console.log(`GraphQL query: ${body}`);
         const result = await (await f(
             this.url,
             {
                 method: "post",
-                body: JSON.stringify({
-                    query,
-                    variables,
-                }),
+                body,
                 headers: {
                     "authorization": `bearer ${this.apiKey}`,
                     "content-type": "application/json",
                 },
             })).json();
+        console.log(`GraphQL result: ${JSON.stringify(result)}`);
         if (!!result.errors) {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
         }
@@ -49,19 +52,22 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
 
     public async mutate<T>(mutation: string, variables?: Record<string, any>): Promise<T> {
         const f = (await import("node-fetch")).default;
+        const body = JSON.stringify({
+            mutation,
+            variables,
+        });
+        console.log(`GraphQL mutation: ${body}`);
         const result = await (await f(
             this.url,
             {
                 method: "post",
-                body: JSON.stringify({
-                    mutation,
-                    variables,
-                }),
+                body,
                 headers: {
                     "authorization": `bearer ${this.apiKey}`,
                     "content-type": "application/json",
                 },
             })).json();
+        console.log(`GraphQL result: ${JSON.stringify(result)}`);
         if (!!result.errors) {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
         }

@@ -35,6 +35,7 @@ import {
 } from "./payload";
 import { DefaultProjectLoader } from "./project";
 import { DefaultCredentialProvider } from "./secrets";
+import { extractParameters } from "./util";
 
 export function createContext(payload: CommandIncoming | EventIncoming): EventContext | CommandContext {
     const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")?.value;
@@ -42,14 +43,9 @@ export function createContext(payload: CommandIncoming | EventIncoming): EventCo
     const graphql = new NodeFetchGraphQLClient(apiKey, `${process.env.GRAPHQL_ENDPOINT}/team/${wid}`);
     const credential = new DefaultCredentialProvider(graphql, payload);
     if (isCommandIncoming(payload)) {
-        // TODO cd does this have to be here?
         if (!!payload.raw_message) {
-            const parameters = require("yargs-parser")(payload.raw_message);
-            _.forEach(parameters, (v, k) => {
-                if (k !== "_") {
-                    payload.parameters.push({ name: k, value: v});
-                }
-            });
+            const parameters = extractParameters(payload.raw_message);
+            payload.parameters.push(...parameters);
         }
         const message = new PubSubCommandMessageClient(payload, graphql);
         return {
