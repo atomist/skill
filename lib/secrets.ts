@@ -135,7 +135,25 @@ interface GitHubAppTokenResponse {
     }>;
 }
 
-export function gitHubAppToken(id: { owner: string, repo: string, apiUrl?: string }): CredentialResolver<GitHubAppCredential> {
+const ScmProviderQuery = `query ScmProvider($id: ID!) {
+  SCMProvider(id: $id) {
+    credential {
+      secret
+      scopes
+    }
+  }
+}`;
+
+interface ScmProviderResponse {
+    SCMProvider: Array<{
+        credential: {
+            secret: string,
+            scopes: string[],
+        },
+    }>;
+}
+
+export function gitHubAppToken(id: { owner: string, repo: string, apiUrl?: string }): CredentialResolver<GitHubAppCredential | GitHubCredential> {
     return async graph => {
         const provider = await graph.query<ProviderResponse>(
             ProviderQuery,
@@ -152,6 +170,15 @@ export function gitHubAppToken(id: { owner: string, repo: string, apiUrl?: strin
                 return {
                     token: token.secret,
                     permissions: JSON.parse(token.permissions || ""),
+                };
+            }
+            // Fallback to old SCMProvider for backwards compatibility
+            const scmProvider = await graph.query<ScmProviderResponse>(ScmProviderQuery, { id: providerId });
+            const credential = scmProvider?.SCMProvider[0]?.credential;
+            if (!!credential) {
+                return {
+                    token: credential.secret,
+                    scopes: credential.scopes,
                 };
             }
         }
