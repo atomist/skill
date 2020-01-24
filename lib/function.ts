@@ -39,6 +39,7 @@ export interface PubSubMessage {
 }
 
 export const entryPoint = async (pubSubEvent: PubSubMessage) => {
+    console.log(`Incoming raw message: ${JSON.stringify(pubSubEvent)}`);
     const payload: CommandIncoming | EventIncoming =
         JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
     console.log(`Incoming pub/sub message: ${JSON.stringify(payload)}`);
