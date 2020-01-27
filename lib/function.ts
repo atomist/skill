@@ -32,17 +32,19 @@ import {
     isCommandIncoming,
     isEventIncoming,
 } from "./payload";
-import { requirePath } from "./util";
+import {
+    replacer,
+    requirePath,
+} from "./util";
 
 export interface PubSubMessage {
     data: string;
 }
 
 export const entryPoint = async (pubSubEvent: PubSubMessage, context: any) => {
-    console.log(`Incoming raw message: ${JSON.stringify(context)}`);
     const payload: CommandIncoming | EventIncoming =
         JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
-    console.log(`Incoming pub/sub message: ${JSON.stringify(payload)}`);
+    console.log(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
     if (isEventIncoming(payload)) {
         await processEvent(payload);
     } else if (isCommandIncoming(payload)) {

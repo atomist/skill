@@ -55,3 +55,36 @@ export function extractParameters(intent: string): Arg[] {
         return p;
     }, []).reverse();
 }
+
+export function replacer(key: string, value: any) {
+    if (key === "secrets" && value) {
+        return value.map(v => ({ uri: v.uri, value: hideString(v.value) }));
+    } else if (/token|password|jwt|url|secret|authorization|key|cert|pass|user/i.test(key)) {
+        return hideString(value);
+    } else {
+        return value;
+    }
+}
+
+export function hideString(value) {
+    if (!value) {
+        return value;
+    }
+
+    if (typeof value === "string") {
+        let newValue = "";
+        for (let i = 0; i < value.length; i++) {
+            if (i === 0) {
+                newValue = value.charAt(0);
+            } else if (i < value.length - 1) {
+                newValue += "*";
+            } else {
+                newValue += value.slice(-1);
+            }
+        }
+        return newValue;
+    } else if (Array.isArray(value)) {
+        return value.map(hideString);
+    }
+    return value;
+}

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { replacer } from "./util";
+
 export interface GraphQLClient {
     query<T>(query: string, variables?: Record<string, any>): Promise<T>;
 
@@ -43,7 +45,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
                     "content-type": "application/json",
                 },
             })).json();
-        console.log(`GraphQL result: ${JSON.stringify(result)}`);
+        console.log(`GraphQL result: ${JSON.stringify(result, replacer)}`);
         if (!!result.errors) {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
         }
@@ -67,7 +69,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
                     "content-type": "application/json",
                 },
             })).json();
-        console.log(`GraphQL result: ${JSON.stringify(result)}`);
+        console.log(`GraphQL result: ${JSON.stringify(result, replacer)}`);
         if (!!result.errors) {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
         }

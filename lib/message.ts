@@ -29,7 +29,10 @@ import {
     isEventIncoming,
     Source,
 } from "./payload";
-import { toArray } from "./util";
+import {
+    replacer,
+    toArray,
+} from "./util";
 
 // tslint:disable:max-file-line-count
 
@@ -438,7 +441,7 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
     public async sendResponse(message: any): Promise<void> {
         const topicName = process.env.TOPIC;
         try {
-            const json = JSON.stringify(message);
+            const json = JSON.stringify(message, replacer);
             console.log(`Sending message '${json}'`);
             if (!!topicName) {
                 const topic = this.pubsub.topic(topicName);
