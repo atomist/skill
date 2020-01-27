@@ -122,11 +122,9 @@ export class DefaultProjectLoader implements ProjectLoader {
                 { token: id.credential.token },
                 await convertToRepoRef(id),
                 options);
-            return {
-                ...project as any,
-                spawn: (cmd, args, opts) => spawnPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) }),
-                exec: (cmd, args, opts) => execPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) }),
-            };
+            (project as any).spawn =  (cmd, args, opts) => spawnPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
+            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
+            return project as any;
         }
         return undefined;
     }
