@@ -39,7 +39,7 @@ import { extractParameters } from "./util";
 export function createContext(payload: CommandIncoming | EventIncoming): EventContext | CommandContext {
     const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")?.value;
     const wid = workspaceId(payload);
-    const graphql = new NodeFetchGraphQLClient(apiKey, `${process.env.GRAPHQL_ENDPOINT}/team/${wid}`);
+    const graphql = new NodeFetchGraphQLClient(apiKey, `${process.env.GRAPHQL_ENDPOINT || "https://automation.atomist.com/graphql"}/team/${wid}`);
     const credential = new DefaultCredentialProvider(graphql, payload);
     if (isCommandIncoming(payload)) {
         if (!!payload.raw_message) {
