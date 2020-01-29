@@ -124,6 +124,7 @@ export class DefaultProjectLoader implements ProjectLoader {
                 options);
             (project as any).spawn =  (cmd, args, opts) => spawnPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
             (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
+            await project.setUserConfig("Atomist Bot", "bot@atomist.com");
             return project as any;
         }
         return undefined;
