@@ -441,11 +441,10 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
     public async sendResponse(message: any): Promise<void> {
         const topicName = process.env.TOPIC;
         try {
-            const json = JSON.stringify(message, replacer);
-            console.log(`Sending message '${json}'`);
+            console.log(`Sending message '${JSON.stringify(message, replacer)}'`);
             if (!!topicName) {
                 const topic = this.pubsub.topic(topicName);
-                const messageBuffer = Buffer.from(json, "utf8");
+                const messageBuffer = Buffer.from(message, "utf8");
                 await topic.publish(messageBuffer);
             }
         } catch (err) {
