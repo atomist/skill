@@ -444,7 +444,7 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
             console.log(`Sending message '${JSON.stringify(message, replacer)}'`);
             if (!!topicName) {
                 const topic = this.pubsub.topic(topicName);
-                const messageBuffer = Buffer.from(message, "utf8");
+                const messageBuffer = Buffer.from(JSON.stringify(message), "utf8");
                 await topic.publish(messageBuffer);
             }
         } catch (err) {
