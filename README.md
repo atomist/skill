@@ -74,7 +74,7 @@ the 'Approve' button in the Atomist dashboard or Slack.
 
 [atomist-sdm]: https://github.com/atomist/atomist-sdm (Atomist Software Delivery Machine)
 
----
+--- 
 
 Created by [Atomist][atomist].
 Need Help?  [Join our Slack workspace][slack].
