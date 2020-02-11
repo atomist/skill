@@ -1,6 +1,6 @@
 # `@atomist/skill`
 
-Simplistic API to implement a JavaScript-based Atomist Skill.
+Simplistic API to implement a JavaScript-based Atomist Skill. 
 
 ## Contributing
 
