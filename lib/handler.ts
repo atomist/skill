@@ -31,6 +31,11 @@ import {
 import { ProjectLoader } from "./project";
 import { CredentialProvider } from "./secrets";
 
+export interface Configuration {
+    name: string;
+    parameters: Record<any, string>;
+}
+
 export interface Contextual<T> {
 
     name: string;
