@@ -31,12 +31,12 @@ import {
 import { ProjectLoader } from "./project";
 import { CredentialProvider } from "./secrets";
 
-export interface Configuration {
+export interface Configuration<C extends Record<string, any>> {
     name: string;
-    parameters: Record<any, string>;
+    parameters: C;
 }
 
-export interface Contextual<T> {
+export interface Contextual<T, C> {
 
     name: string;
     workspaceId: string;
@@ -49,13 +49,15 @@ export interface Contextual<T> {
     project: ProjectLoader;
 
     trigger: T;
+
+    configuration: Configuration<C>;
 }
 
-export interface EventContext<E = any> extends Contextual<EventIncoming> {
+export interface EventContext<E = any, C = any> extends Contextual<EventIncoming, C> {
     data: E;
 }
 
-export interface CommandContext extends Contextual<CommandIncoming> {
+export interface CommandContext<C = any> extends Contextual<CommandIncoming, C> {
 
     parameters: {
         prompt<PARAMS = any>(parameters: ParametersPromptObject<PARAMS>, options?: ParameterPromptOptions): Promise<PARAMS>;
@@ -67,6 +69,6 @@ export interface CommandContext extends Contextual<CommandIncoming> {
     message: CommandMessageClient;
 }
 
-export type CommandHandler = (context: CommandContext) => Promise<void>;
+export type CommandHandler<C = any> = (context: CommandContext<C>) => Promise<void>;
 
 export type EventHandler<E = any> = (context: EventContext<E>) => Promise<void>;

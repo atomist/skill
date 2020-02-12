@@ -36,6 +36,10 @@ export interface EventIncoming {
     data: any;
     extensions: Extensions;
     secrets: Secret[];
+    configuration: {
+        name: string;
+        parameters: Arg[];
+    };
 }
 
 export interface Extensions {
@@ -56,6 +60,10 @@ export interface CommandIncoming {
     parameters: Arg[];
     secrets: Secret[];
     raw_message: string;
+    configuration: {
+        name: string;
+        parameters: Arg[];
+    };
 }
 
 export interface Source {

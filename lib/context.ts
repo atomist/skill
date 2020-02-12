@@ -17,6 +17,7 @@
 import { NodeFetchGraphQLClient } from "./graphql";
 import {
     CommandContext,
+    Configuration,
     EventContext,
 } from "./handler";
 import { NodeFetchHttpClient } from "./http";
@@ -60,6 +61,7 @@ export function createContext(payload: CommandIncoming | EventIncoming): EventCo
             message,
             project: new DefaultProjectLoader(),
             trigger: payload,
+            configuration: extractConfiguration(payload),
         };
     } else if (isEventIncoming(payload)) {
         return {
@@ -73,7 +75,17 @@ export function createContext(payload: CommandIncoming | EventIncoming): EventCo
             message: new PubSubEventMessageClient(payload, graphql),
             project: new DefaultProjectLoader(),
             trigger: payload,
+            configuration: extractConfiguration(payload),
         };
     }
     return undefined;
+}
+
+function extractConfiguration(payload: CommandIncoming | EventIncoming): Configuration<any> {
+    const parameters = {};
+    payload.configuration?.parameters?.forEach(p => parameters[p.name] = p.value);
+    return {
+        name: payload.configuration?.name,
+        parameters,
+    };
 }
