@@ -16,7 +16,7 @@ Conduct](CODE_OF_CONDUCT.md). You are expected to act in accordance
 with this code by participating. Please report any unacceptable
 behavior to code-of-conduct@atomist.com.
 
-## Documentation
+## Documentation 
 
 Please see [docs.atomist.com][atomist-doc] for
 [developer][atomist-doc-sdm] documentation.
