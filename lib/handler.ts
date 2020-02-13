@@ -71,4 +71,4 @@ export interface CommandContext<C = any> extends Contextual<CommandIncoming, C> 
 
 export type CommandHandler<C = any> = (context: CommandContext<C>) => Promise<void>;
 
-export type EventHandler<E = any> = (context: EventContext<E>) => Promise<void>;
+export type EventHandler<E = any, C = any> = (context: EventContext<E, C>) => Promise<void>;
