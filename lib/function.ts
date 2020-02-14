@@ -23,6 +23,7 @@ import {
     CommandHandler,
     EventContext,
     EventHandler,
+    HandlerStatus,
 } from "./handler";
 import { StatusPublisher } from "./message";
 import { CommandListenerExecutionInterruptError } from "./parameterPrompt";
@@ -58,8 +59,8 @@ async function processEvent(event: EventIncoming): Promise<void> {
     try {
         console.log(`Invoking event handler '${context.name}'`);
         const handler = require(path).handler as EventHandler<any>;
-        await handler(context);
-        await (context.message as any as StatusPublisher).publish(0);
+        const result = await handler(context) as HandlerStatus;
+        await (context.message as any as StatusPublisher).publish(result?.code || 0, result?.reason);
     }  catch (e) {
         console.error(e);
         await (context.message as any as StatusPublisher).publish(1, e);
@@ -73,8 +74,8 @@ async function processCommand(event: CommandIncoming): Promise<void> {
     try {
         console.log(`Invoking command handler '${context.name}'`);
         const handler = require(path).handler as CommandHandler;
-        await handler(context);
-        await (context.message as any as StatusPublisher).publish(0);
+        const result = await handler(context) as HandlerStatus;
+        await (context.message as any as StatusPublisher).publish(result?.code || 0, result?.reason);
     }  catch (e) {
         if (e instanceof CommandListenerExecutionInterruptError) {
             await (context.message as any as StatusPublisher).publish(0);

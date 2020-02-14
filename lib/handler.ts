@@ -69,6 +69,8 @@ export interface CommandContext<C = any> extends Contextual<CommandIncoming, C> 
     message: CommandMessageClient;
 }
 
-export type CommandHandler<C = any> = (context: CommandContext<C>) => Promise<void>;
+export interface HandlerStatus { code: number, reason: string }
 
-export type EventHandler<E = any, C = any> = (context: EventContext<E, C>) => Promise<void>;
+export type CommandHandler<C = any> = (context: CommandContext<C>) => Promise<void | HandlerStatus>;
+
+export type EventHandler<E = any, C = any> = (context: EventContext<E, C>) => Promise<void | HandlerStatus>;

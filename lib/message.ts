@@ -262,7 +262,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
             return teamId;
         } else {
             const query = `query ChatTeam { ChatTeam { id } }`;
-            const result = await graphClient.query<{ ChatTeam: Array<{id: string }>}>(query);
+            const result = await graphClient.query<{ ChatTeam: Array<{ id: string }> }>(query);
             return result?.ChatTeam[0]?.id;
         }
     }
@@ -421,7 +421,7 @@ export function isFileMessage(object: any): object is SlackFileMessage {
 }
 
 export interface StatusPublisher {
-    publish(code: number, err?: Error): Promise<void>;
+    publish(code: number, detail?: Error | string): Promise<void>;
 }
 
 abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
@@ -466,10 +466,17 @@ export class PubSubCommandMessageClient extends AbstractPubSubMessageClient impl
         return super.doSend(msg, destinations, options);
     }
 
-    public async publish(code: number): Promise<void> {
+    public async publish(code: number, detail?: Error | string): Promise<void> {
         const source = _.cloneDeep(this.request.source);
         if (source && source.slack) {
             delete source.slack.user;
+        }
+
+        let reason = `${code === 0 ? "Successfully" : "Unsuccessfully"} invoked command ${this.request.command}`;
+        if (typeof detail === "string") {
+            reason = detail;
+        } else if (detail instanceof Error) {
+            reason = detail.message;
         }
 
         const response: HandlerResponse = {
@@ -481,7 +488,7 @@ export class PubSubCommandMessageClient extends AbstractPubSubMessageClient impl
             destinations: [source],
             status: {
                 code,
-                reason: `${code === 0 ? "Successfully" : "Unsuccessfully"} invoked command ${this.request.command}`,
+                reason,
             },
         };
         return this.sendResponse(response);
@@ -502,7 +509,13 @@ export class PubSubEventMessageClient extends AbstractPubSubMessageClient implem
         return super.doSend(msg, destinations, options);
     }
 
-    public async publish(code: number): Promise<void> {
+    public async publish(code: number, detail?: Error | string): Promise<void> {
+        let reason = `${code === 0 ? "Successfully" : "Unsuccessfully"} invoked event subscription ${this.request.extensions.operationName}`;
+        if (typeof detail === "string") {
+            reason = detail;
+        } else if (detail instanceof Error) {
+            reason = detail.message;
+        }
         const response: HandlerResponse = {
             api_version: "1",
             correlation_id: this.request.extensions.correlation_id,
@@ -513,7 +526,7 @@ export class PubSubEventMessageClient extends AbstractPubSubMessageClient implem
             event: this.request.extensions.operationName,
             status: {
                 code,
-                reason: `${code === 0 ? "Successfully" : "Unsuccessfully"} invoked event subscription ${this.request.extensions.operationName}`,
+                reason,
             },
         };
         return this.sendResponse(response);
