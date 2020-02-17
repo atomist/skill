@@ -61,7 +61,7 @@ export function createContext(payload: CommandIncoming | EventIncoming): EventCo
             message,
             project: new DefaultProjectLoader(),
             trigger: payload,
-            configuration: extractConfiguration(payload),
+            ...extractConfiguration(payload),
         };
     } else if (isEventIncoming(payload)) {
         return {
@@ -75,17 +75,28 @@ export function createContext(payload: CommandIncoming | EventIncoming): EventCo
             message: new PubSubEventMessageClient(payload, graphql),
             project: new DefaultProjectLoader(),
             trigger: payload,
-            configuration: extractConfiguration(payload),
+            ...extractConfiguration(payload),
         };
     }
     return undefined;
 }
 
-function extractConfiguration(payload: CommandIncoming | EventIncoming): Configuration<any> {
-    const parameters = {};
-    payload.configuration?.parameters?.forEach(p => parameters[p.name] = p.value);
+function extractConfiguration(payload: CommandIncoming | EventIncoming):
+    { configuration: Configuration<any>, configurations: Array<Configuration<any>> } {
     return {
-        name: payload.configuration?.name,
-        parameters,
+        configuration: {
+            name: payload.configuration?.name,
+            parameters: extractConfigurationParameters(payload.configuration?.parameters),
+        },
+        configurations: payload?.configurations?.map(c => ({
+            name: c.name,
+            parameters: extractConfigurationParameters(c.parameters),
+        })),
     };
+}
+
+function extractConfigurationParameters(params: Array<{ name: string, value: any }>): Record<string, any> {
+    const parameters = {};
+    params?.forEach(p => parameters[p.name] = p.value);
+    return parameters;
 }

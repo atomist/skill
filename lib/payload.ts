@@ -40,6 +40,10 @@ export interface EventIncoming {
         name: string;
         parameters: Arg[];
     };
+    configurations: Array<{
+        name: string;
+        parameters: Arg[];
+    }>;
 }
 
 export interface Extensions {
@@ -64,6 +68,10 @@ export interface CommandIncoming {
         name: string;
         parameters: Arg[];
     };
+    configurations: Array<{
+        name: string;
+        parameters: Arg[];
+    }>;
 }
 
 export interface Source {
