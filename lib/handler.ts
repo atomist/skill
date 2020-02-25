@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { Logger } from "@atomist/skill-logging/lib/logging";
 import { GraphQLClient } from "./graphql";
 import { HttpClient } from "./http";
 import {
@@ -48,6 +49,7 @@ export interface Contextual<T, C> {
     http: HttpClient;
     message: MessageClient;
     project: ProjectLoader;
+    audit: Logger;
 
     trigger: T;
 

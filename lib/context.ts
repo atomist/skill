@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { createLogger } from "@atomist/skill-logging/lib/logging";
 import { NodeFetchGraphQLClient } from "./graphql";
 import {
     CommandContext,
@@ -42,6 +43,7 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: any
     const wid = workspaceId(payload);
     const graphql = new NodeFetchGraphQLClient(apiKey, `${process.env.GRAPHQL_ENDPOINT || "https://automation.atomist.com/graphql"}/team/${wid}`);
     const credential = new DefaultCredentialProvider(graphql, payload);
+    const audit = createLogger(ctx);
     if (isCommandIncoming(payload)) {
         if (!!payload.raw_message) {
             const parameters = extractParameters(payload.raw_message);
@@ -59,6 +61,7 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: any
             credential,
             graphql,
             http: new NodeFetchHttpClient(),
+            audit,
             message,
             project: new DefaultProjectLoader(),
             trigger: payload,
@@ -74,6 +77,7 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: any
             credential,
             graphql,
             http: new NodeFetchHttpClient(),
+            audit,
             message: new PubSubEventMessageClient(payload, graphql),
             project: new DefaultProjectLoader(),
             trigger: payload,

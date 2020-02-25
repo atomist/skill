@@ -24,7 +24,8 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "dependencies": {
-    "@atomist/automation-client": "2.0.0-master.20200210222816",
+    "@atomist/automation-client": "2.0.0-master.20200223145329",
+    "@atomist/skill-logging": "^0.1.0-master.20200225155816",
     "@atomist/slack-messages": "^1.1.1",
     "@google-cloud/pubsub": "1.1.5",
     "lodash": "^4.17.15",
