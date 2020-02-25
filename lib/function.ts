@@ -46,15 +46,16 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: any) => {
     const payload: CommandIncoming | EventIncoming =
         JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
     console.log(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
+    console.log(`Incoming context: ${JSON.stringify(context, replacer)}`);
     if (isEventIncoming(payload)) {
-        await processEvent(payload);
+        await processEvent(payload, context);
     } else if (isCommandIncoming(payload)) {
-        await processCommand(payload);
+        await processCommand(payload, context);
     }
 };
 
-async function processEvent(event: EventIncoming): Promise<void> {
-    const context = createContext(event) as EventContext<any>;
+async function processEvent(event: EventIncoming, ctx: any): Promise<void> {
+    const context = createContext(event, ctx) as EventContext<any>;
     const path = requirePath(`events/${context.name}`);
     try {
         console.log(`Invoking event handler '${context.name}'`);
@@ -68,8 +69,8 @@ async function processEvent(event: EventIncoming): Promise<void> {
     console.log(`Completed event handler '${context.name}'`);
 }
 
-async function processCommand(event: CommandIncoming): Promise<void> {
-    const context = createContext(event) as CommandContext;
+async function processCommand(event: CommandIncoming, ctx: any): Promise<void> {
+    const context = createContext(event, ctx) as CommandContext;
     const path = requirePath(`commands/${context.name}`);
     try {
         console.log(`Invoking command handler '${context.name}'`);
