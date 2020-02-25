@@ -41,6 +41,7 @@ export interface Contextual<T, C> {
     name: string;
     workspaceId: string;
     correlationId: string;
+    executionId: string;
 
     credential: CredentialProvider;
     graphql: GraphQLClient;
