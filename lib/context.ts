@@ -38,12 +38,11 @@ import { DefaultProjectLoader } from "./project";
 import { DefaultCredentialProvider } from "./secrets";
 import { extractParameters } from "./util";
 
-export function createContext(payload: CommandIncoming | EventIncoming, ctx: any): EventContext | CommandContext {
+export function createContext(payload: CommandIncoming | EventIncoming, ctx: { eventId: string }): EventContext | CommandContext {
     const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")?.value;
     const wid = workspaceId(payload);
     const graphql = new NodeFetchGraphQLClient(apiKey, `${process.env.GRAPHQL_ENDPOINT || "https://automation.atomist.com/graphql"}/team/${wid}`);
     const credential = new DefaultCredentialProvider(graphql, payload);
-    const audit = createLogger(ctx);
     if (isCommandIncoming(payload)) {
         if (!!payload.raw_message) {
             const parameters = extractParameters(payload.raw_message);
@@ -61,7 +60,7 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: any
             credential,
             graphql,
             http: new NodeFetchHttpClient(),
-            audit,
+            audit: createLogger({ eventId: ctx.eventId, correlationId: payload.correlation_id }),
             message,
             project: new DefaultProjectLoader(),
             trigger: payload,
@@ -77,7 +76,7 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: any
             credential,
             graphql,
             http: new NodeFetchHttpClient(),
-            audit,
+            audit: createLogger({ eventId: ctx.eventId, correlationId: payload.extensions.correlation_id }),
             message: new PubSubEventMessageClient(payload, graphql),
             project: new DefaultProjectLoader(),
             trigger: payload,

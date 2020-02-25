@@ -42,7 +42,7 @@ export interface PubSubMessage {
     data: string;
 }
 
-export const entryPoint = async (pubSubEvent: PubSubMessage, context: any) => {
+export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId: string }) => {
     const payload: CommandIncoming | EventIncoming =
         JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
     console.log(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
@@ -53,7 +53,7 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: any) => {
     }
 };
 
-async function processEvent(event: EventIncoming, ctx: any): Promise<void> {
+async function processEvent(event: EventIncoming, ctx: { eventId: string }): Promise<void> {
     const context = createContext(event, ctx) as EventContext<any>;
     const path = requirePath(`events/${context.name}`);
     try {
@@ -68,7 +68,7 @@ async function processEvent(event: EventIncoming, ctx: any): Promise<void> {
     console.log(`Completed event handler '${context.name}'`);
 }
 
-async function processCommand(event: CommandIncoming, ctx: any): Promise<void> {
+async function processCommand(event: CommandIncoming, ctx: { eventId: string }): Promise<void> {
     const context = createContext(event, ctx) as CommandContext;
     const path = requirePath(`commands/${context.name}`);
     try {

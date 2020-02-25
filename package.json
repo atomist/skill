@@ -25,7 +25,7 @@
   "types": "./index.d.ts",
   "dependencies": {
     "@atomist/automation-client": "2.0.0-master.20200223145329",
-    "@atomist/skill-logging": "^0.1.0-master.20200225155816",
+    "@atomist/skill-logging": "^0.1.0-master.20200225172511",
     "@atomist/slack-messages": "^1.1.1",
     "@google-cloud/pubsub": "1.1.5",
     "lodash": "^4.17.15",
@@ -36,7 +36,7 @@
     "@google-cloud/functions-framework": "^1.4.0",
     "@types/lodash": "^4.14.149",
     "@types/mocha": "^7.0.1",
-    "@types/node-fetch": "^2.5.4",
+    "@types/node-fetch": "^2.5.5",
     "@types/power-assert": "^1.5.3",
     "@types/yargs-parser": "^15.0.0",
     "espower-typescript": "^9.0.2",
@@ -47,8 +47,8 @@
     "supervisor": "^0.12.0",
     "ts-node": "^8.6.2",
     "tslint": "^6.0.0",
-    "typedoc": "^0.16.9",
-    "typescript": "^3.7.5"
+    "typedoc": "^0.16.10",
+    "typescript": "^3.8.2"
   },
   "directories": {
     "test": "test"
