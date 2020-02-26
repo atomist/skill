@@ -60,7 +60,13 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: { e
             credential,
             graphql,
             http: new NodeFetchHttpClient(),
-            audit: createLogger({ eventId: ctx.eventId, correlationId: payload.correlation_id }),
+            audit: createLogger({
+                eventId: ctx.eventId,
+                correlationId: payload.correlation_id,
+            }, {
+                workspace_id: wid,
+                name: payload.command,
+            }),
             message,
             project: new DefaultProjectLoader(),
             trigger: payload,
@@ -76,7 +82,13 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: { e
             credential,
             graphql,
             http: new NodeFetchHttpClient(),
-            audit: createLogger({ eventId: ctx.eventId, correlationId: payload.extensions.correlation_id }),
+            audit: createLogger({
+                eventId: ctx.eventId,
+                correlationId: payload.extensions.correlation_id,
+            }, {
+                workspace_id: wid,
+                name: payload.extensions.operationName,
+            }),
             message: new PubSubEventMessageClient(payload, graphql),
             project: new DefaultProjectLoader(),
             trigger: payload,
