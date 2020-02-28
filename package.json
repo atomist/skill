@@ -28,6 +28,7 @@
     "@atomist/skill-logging": "^0.1.0-master.20200226115844",
     "@atomist/slack-messages": "^1.1.1",
     "@google-cloud/pubsub": "1.1.5",
+    "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
     "source-map-support": "^0.5.16"

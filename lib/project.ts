@@ -16,6 +16,7 @@
 
 import { RemoteRepoRef } from "@atomist/automation-client/lib/operations/common/RepoId";
 import { GitProject } from "@atomist/automation-client/lib/project/git/GitProject";
+import { DirectoryManager } from "@atomist/automation-client/lib/spi/clone/DirectoryManager";
 import {
     execPromise,
     ExecPromiseResult,
@@ -23,7 +24,9 @@ import {
     SpawnPromiseOptions,
     SpawnPromiseReturns,
 } from "@atomist/automation-client/lib/util/child_process";
+import { CloneDirectoryInfo } from "@atomist/automation-client/src/lib/spi/clone/DirectoryManager";
 import { SpawnSyncOptions } from "child_process";
+import * as fs from "fs-extra";
 import {
     GitHubAppCredential,
     GitHubCredential,
@@ -67,6 +70,11 @@ export interface CloneOptions {
      * then request a detached HEAD at that SHA.
      */
     detachHead?: boolean;
+
+    /**
+     * Path to clone into
+     */
+    path?: string;
 }
 
 export function gitHubComRepository(details: {
@@ -121,8 +129,10 @@ export class DefaultProjectLoader implements ProjectLoader {
             const project = await gcgp.GitCommandGitProject.cloned(
                 { token: id.credential.token },
                 await convertToRepoRef(id),
-                options);
-            (project as any).spawn =  (cmd, args, opts) => spawnPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
+                options,
+                options?.path ? new FixedPathDirectoryManager(options.path) : undefined,
+            );
+            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
             (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
             await project.setUserConfig("Atomist Bot", "bot@atomist.com");
             return project as any;
@@ -145,5 +155,25 @@ async function convertToRepoRef(id: AuthenticatedRepositoryId<any>): Promise<Rem
             });
         default:
             throw new Error("Unsupported repository id");
+    }
+}
+
+class FixedPathDirectoryManager implements DirectoryManager {
+
+    constructor(private readonly path: string) {
+    }
+
+    public async directoryFor(owner: string, repo: string, branch: string, opts: CloneOptions): Promise<CloneDirectoryInfo> {
+        await fs.ensureDir(this.path);
+        return {
+            path: this.path,
+            transient: false,
+            type: "empty-directory",
+            provenance: "skill-runner",
+            release: async () => {
+            },
+            invalidate: async () => {
+            },
+        };
     }
 }
