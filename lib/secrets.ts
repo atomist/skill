@@ -102,6 +102,17 @@ const ProviderQuery = `query Provider($owner: String, $repo: String, $apiUrl: St
 }
 `;
 
+const ProviderByRepoIdQuery = `query ProviderByRepoId($id: ID!) {
+  Repo(id: $id) {
+    org @required {
+      provider @required {
+        id
+      }
+    }
+  }
+}
+`;
+
 interface ProviderResponse {
     Repo: Array<{
         org: {
@@ -153,17 +164,33 @@ interface ScmProviderResponse {
     }>;
 }
 
-export function gitHubAppToken(id: { owner: string, repo: string, apiUrl?: string }): CredentialResolver<GitHubAppCredential | GitHubCredential> {
+export function gitHubAppToken(id: { owner: string, repo: string, apiUrl?: string } | string): CredentialResolver<GitHubAppCredential | GitHubCredential> {
     return async graph => {
-        const provider = await graph.query<ProviderResponse>(
-            ProviderQuery,
-            { apiUrl: "https://api.github.com/", ...id },
-        );
-        const providerId = provider?.Repo[0]?.org?.provider?.id;
+        let repo;
+        let owner;
+        let apiUrl;
+        let providerId;
+        if (typeof id === "string") {
+            const provider = await graph.query<ProviderResponse>(
+                ProviderByRepoIdQuery,
+                { id },
+            );
+            providerId = provider?.Repo[0]?.org?.provider?.id;
+        } else {
+            repo = id.repo;
+            owner = id.owner;
+            apiUrl = id.apiUrl;
+            const provider = await graph.query<ProviderResponse>(
+                ProviderQuery,
+                { apiUrl: apiUrl || "https://api.github.com/", owner, repo },
+            );
+            providerId = provider?.Repo[0]?.org?.provider?.id;
+        }
+
         if (!!providerId) {
             const installations = await graph.query<GitHubAppTokenResponse>(GitHubAppTokenQuery, {
                 id: providerId,
-                owner: id.owner,
+                owner,
             });
             const token = installations?.GitHubAppResourceProvider[0]?.gitHubAppInstallations[0].token;
             if (!!token) {
