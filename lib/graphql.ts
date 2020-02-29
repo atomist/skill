@@ -55,7 +55,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
     public async mutate<T>(mutation: string, variables?: Record<string, any>): Promise<T> {
         const f = (await import("node-fetch")).default;
         const body = JSON.stringify({
-            mutation,
+            query: mutation,
             variables,
         });
         console.log(`GraphQL mutation: ${body}`);
