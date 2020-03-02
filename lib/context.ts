@@ -63,8 +63,8 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: { e
             audit: createLogger({
                 eventId: ctx.eventId,
                 correlationId: payload.correlation_id,
+                workspaceId: wid,
             }, {
-                workspace_id: wid,
                 name: payload.command,
             }),
             message,
@@ -85,8 +85,8 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: { e
             audit: createLogger({
                 eventId: ctx.eventId,
                 correlationId: payload.extensions.correlation_id,
+                workspaceId: wid,
             }, {
-                workspace_id: wid,
                 name: payload.extensions.operationName,
             }),
             message: new PubSubEventMessageClient(payload, graphql),
