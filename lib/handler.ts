@@ -53,8 +53,13 @@ export interface Contextual<T, C> {
 
     trigger: T;
 
-    configuration: Configuration<C>;
-    configurations: Array<Configuration<C>>;
+    configuration: Array<Configuration<C>>;
+    skill: {
+        id: string;
+        name: string;
+        namespace: string;
+        version: string;
+    };
 }
 
 export interface EventContext<E = any, C = any> extends Contextual<EventIncoming, C> {
@@ -73,7 +78,11 @@ export interface CommandContext<C = any> extends Contextual<CommandIncoming, C> 
     message: CommandMessageClient;
 }
 
-export interface HandlerStatus { code: number; reason: string; }
+export interface HandlerStatus {
+    level?: "debug" | "info" | "warn" | "error";
+    code?: number;
+    reason?: string;
+}
 
 export type CommandHandler<C = any> = (context: CommandContext<C>) => Promise<void | HandlerStatus>;
 

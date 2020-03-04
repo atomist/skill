@@ -71,6 +71,7 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: { e
             project: new DefaultProjectLoader(),
             trigger: payload,
             ...extractConfiguration(payload),
+            skill: payload.skill,
         };
     } else if (isEventIncoming(payload)) {
         return {
@@ -93,19 +94,16 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: { e
             project: new DefaultProjectLoader(),
             trigger: payload,
             ...extractConfiguration(payload),
+            skill: payload.skill,
         };
     }
     return undefined;
 }
 
 function extractConfiguration(payload: CommandIncoming | EventIncoming):
-    { configuration: Configuration<any>, configurations: Array<Configuration<any>> } {
+    { configuration: Array<Configuration<any>> } {
     return {
-        configuration: {
-            name: payload.configuration?.name,
-            parameters: extractConfigurationParameters(payload.configuration?.parameters),
-        },
-        configurations: payload?.configurations?.map(c => ({
+        configuration: payload.skill?.configuration?.instances?.map(c => ({
             name: c.name,
             parameters: extractConfigurationParameters(c.parameters),
         })),

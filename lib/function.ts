@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { Severity } from "@atomist/skill-logging";
 // tslint:disable-next-line:no-import-side-effect
 import "source-map-support/register";
 
@@ -25,7 +26,11 @@ import {
     EventHandler,
     HandlerStatus,
 } from "./handler";
-import { StatusPublisher } from "./message";
+import { debug } from "./log";
+import {
+    prepareStatus,
+    StatusPublisher,
+} from "./message";
 import { CommandListenerExecutionInterruptError } from "./parameterPrompt";
 import {
     CommandIncoming,
@@ -45,7 +50,7 @@ export interface PubSubMessage {
 export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId: string }) => {
     const payload: CommandIncoming | EventIncoming =
         JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
-    console.log(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
+    debug(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
     if (isEventIncoming(payload)) {
         await processEvent(payload, context);
     } else if (isCommandIncoming(payload)) {
@@ -57,32 +62,32 @@ async function processEvent(event: EventIncoming, ctx: { eventId: string }): Pro
     const context = createContext(event, ctx) as EventContext<any>;
     const path = requirePath(`events/${context.name}`);
     try {
-        console.log(`Invoking event handler '${context.name}'`);
+        debug(`Invoking event handler '${context.name}'`);
         const handler = require(path).handler as EventHandler<any>;
         const result = await handler(context) as HandlerStatus;
-        await (context.message as any as StatusPublisher).publish(result?.code || 0, result?.reason);
+        await (context.message as any as StatusPublisher).publish(prepareStatus(result, context));
     }  catch (e) {
-        console.error(e);
-        await (context.message as any as StatusPublisher).publish(1, e);
+        await context.audit.log(`Error occurred: ${e.stack}`, Severity.ERROR);
+        await (context.message as any as StatusPublisher).publish(prepareStatus(e, context));
     }
-    console.log(`Completed event handler '${context.name}'`);
+    debug(`Completed event handler '${context.name}'`);
 }
 
 async function processCommand(event: CommandIncoming, ctx: { eventId: string }): Promise<void> {
     const context = createContext(event, ctx) as CommandContext;
     const path = requirePath(`commands/${context.name}`);
     try {
-        console.log(`Invoking command handler '${context.name}'`);
+        debug(`Invoking command handler '${context.name}'`);
         const handler = require(path).handler as CommandHandler;
         const result = await handler(context) as HandlerStatus;
-        await (context.message as any as StatusPublisher).publish(result?.code || 0, result?.reason);
+        await (context.message as any as StatusPublisher).publish(prepareStatus(result, context));
     }  catch (e) {
         if (e instanceof CommandListenerExecutionInterruptError) {
-            await (context.message as any as StatusPublisher).publish(0);
+            await (context.message as any as StatusPublisher).publish(prepareStatus({ code: 0 }, context));
         } else {
-            console.error(e);
-            await (context.message as any as StatusPublisher).publish(1, e);
+            await context.audit.log(`Error occurred: ${e.stack}`, Severity.ERROR);
+            await (context.message as any as StatusPublisher).publish(prepareStatus(e, context));
         }
     }
-    console.log(`Completed command handler '${context.name}'`);
+    debug(`Completed command handler '${context.name}'`);
 }

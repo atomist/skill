@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { debug } from "./log";
 import { replacer } from "./util";
 
 export interface GraphQLClient {
@@ -34,7 +35,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
             query,
             variables,
         });
-        console.log(`GraphQL query: ${body}`);
+        debug(`GraphQL query: ${body}`);
         const result = await (await f(
             this.url,
             {
@@ -45,7 +46,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
                     "content-type": "application/json",
                 },
             })).json();
-        console.log(`GraphQL result: ${JSON.stringify(result, replacer)}`);
+        debug(`GraphQL result: ${JSON.stringify(result, replacer)}`);
         if (!!result.errors) {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
         }
@@ -58,7 +59,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
             query: mutation,
             variables,
         });
-        console.log(`GraphQL mutation: ${body}`);
+        debug(`GraphQL mutation: ${body}`);
         const result = await (await f(
             this.url,
             {
@@ -69,7 +70,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
                     "content-type": "application/json",
                 },
             })).json();
-        console.log(`GraphQL result: ${JSON.stringify(result, replacer)}`);
+        debug(`GraphQL result: ${JSON.stringify(result, replacer)}`);
         if (!!result.errors) {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
         }

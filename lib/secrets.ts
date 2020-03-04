@@ -164,7 +164,8 @@ interface ScmProviderResponse {
     }>;
 }
 
-export function gitHubAppToken(id: { owner: string, repo: string, apiUrl?: string } | string): CredentialResolver<GitHubAppCredential | GitHubCredential> {
+export function gitHubAppToken(id: { owner: string, repo: string, apiUrl?: string } | string)
+    : CredentialResolver<GitHubAppCredential | GitHubCredential> {
     return async graph => {
         let repo;
         let owner;

@@ -31,19 +31,42 @@ export function workspaceId(event: CommandIncoming | EventIncoming): string | un
     return undefined;
 }
 
+/**
+ * Extension to EventIncoming and CommandIncoming capturing
+ * skill specific information
+ */
+export interface Skill {
+
+    id: string;
+    name: string;
+    namespace: string;
+    version: string;
+
+    artifacts: Array<{
+        name: string;
+        image: string;
+        command?: string[];
+        args?: string[];
+        env?: Array<{ name: string, value: string }>;
+        // secrets?: ContainerSecrets;
+        // input?: string[];
+        // output?: CacheEntry[];
+    }>;
+
+    configuration: {
+        instances: Array<{
+            name: string;
+            parameters: Array<{ name: string, value: any }>;
+        }>;
+    };
+}
+
 export interface EventIncoming {
 
     data: any;
     extensions: Extensions;
     secrets: Secret[];
-    configuration: {
-        name: string;
-        parameters: Arg[];
-    };
-    configurations: Array<{
-        name: string;
-        parameters: Arg[];
-    }>;
+    skill: Skill;
 }
 
 export interface Extensions {
@@ -64,14 +87,7 @@ export interface CommandIncoming {
     parameters: Arg[];
     secrets: Secret[];
     raw_message: string;
-    configuration: {
-        name: string;
-        parameters: Arg[];
-    };
-    configurations: Array<{
-        name: string;
-        parameters: Arg[];
-    }>;
+    skill: Skill;
 }
 
 export interface Source {

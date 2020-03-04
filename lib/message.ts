@@ -23,10 +23,20 @@ import { PubSub } from "@google-cloud/pubsub";
 import * as _ from "lodash";
 import { GraphQLClient } from "./graphql";
 import {
+    CommandContext,
+    EventContext,
+    HandlerStatus,
+} from "./handler";
+import {
+    debug,
+    error,
+} from "./log";
+import {
     CommandIncoming,
     EventIncoming,
     isCommandIncoming,
     isEventIncoming,
+    Skill,
     Source,
 } from "./payload";
 import {
@@ -215,6 +225,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
             timestamp: ts,
             ttl: ts && options.ttl ? options.ttl : undefined,
             post_mode: options.post === "update_only" ? "update_only" : (options.post === "always" ? "always" : "ttl"),
+            skill: this.request.skill,
         };
 
         if (isSlackMessage(msg)) {
@@ -366,7 +377,8 @@ export interface HandlerResponse {
     event?: string;
 
     status?: {
-        code: number;
+        level: "debug" | "info" | "warn" | "error";
+        code?: number;
         reason: string;
     };
 
@@ -385,6 +397,8 @@ export interface HandlerResponse {
     post_mode?: "ttl" | "always" | "update_only";
 
     actions?: Action[];
+
+    skill: Skill;
 }
 
 export interface Action {
@@ -421,7 +435,7 @@ export function isFileMessage(object: any): object is SlackFileMessage {
 }
 
 export interface StatusPublisher {
-    publish(code: number, detail?: Error | string): Promise<void>;
+    publish(status: HandlerResponse["status"]): Promise<void>;
 }
 
 abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
@@ -441,14 +455,14 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
     public async sendResponse(message: any): Promise<void> {
         const topicName = process.env.TOPIC;
         try {
-            console.log(`Sending message '${JSON.stringify(message, replacer)}'`);
+            debug(`Sending message: ${JSON.stringify(message, replacer)}`);
             if (!!topicName) {
                 const topic = this.pubsub.topic(topicName);
                 const messageBuffer = Buffer.from(JSON.stringify(message), "utf8");
                 await topic.publish(messageBuffer);
             }
         } catch (err) {
-            console.error(`Error occurred sending message: ${err.message}`);
+            error(`Error occurred sending message: ${err.message}`);
         }
     }
 }
@@ -466,19 +480,11 @@ export class PubSubCommandMessageClient extends AbstractPubSubMessageClient impl
         return super.doSend(msg, destinations, options);
     }
 
-    public async publish(code: number, detail?: Error | string): Promise<void> {
+    public async publish(status: HandlerResponse["status"]): Promise<void> {
         const source = _.cloneDeep(this.request.source);
         if (source && source.slack) {
             delete source.slack.user;
         }
-
-        let reason = `${code === 0 ? "Successfully" : "Unsuccessfully"} invoked command ${this.request.command}`;
-        if (typeof detail === "string") {
-            reason = detail;
-        } else if (detail instanceof Error) {
-            reason = detail.message;
-        }
-
         const response: HandlerResponse = {
             api_version: "1",
             correlation_id: this.request.correlation_id,
@@ -486,10 +492,8 @@ export class PubSubCommandMessageClient extends AbstractPubSubMessageClient impl
             command: this.request.command,
             source: this.request.source,
             destinations: [source],
-            status: {
-                code,
-                reason,
-            },
+            status,
+            skill: this.request.skill,
         };
         return this.sendResponse(response);
     }
@@ -509,13 +513,7 @@ export class PubSubEventMessageClient extends AbstractPubSubMessageClient implem
         return super.doSend(msg, destinations, options);
     }
 
-    public async publish(code: number, detail?: Error | string): Promise<void> {
-        let reason = `${code === 0 ? "Successfully" : "Unsuccessfully"} invoked event subscription ${this.request.extensions.operationName}`;
-        if (typeof detail === "string") {
-            reason = detail;
-        } else if (detail instanceof Error) {
-            reason = detail.message;
-        }
+    public async publish(status: HandlerResponse["status"]): Promise<void> {
         const response: HandlerResponse = {
             api_version: "1",
             correlation_id: this.request.extensions.correlation_id,
@@ -524,11 +522,26 @@ export class PubSubEventMessageClient extends AbstractPubSubMessageClient implem
                 name: this.request.extensions.team_name,
             },
             event: this.request.extensions.operationName,
-            status: {
-                code,
-                reason,
-            },
+            status,
+            skill: this.request.skill,
         };
         return this.sendResponse(response);
+    }
+}
+
+export function prepareStatus(status: HandlerStatus | Error, context: EventContext | CommandContext): HandlerResponse["status"] {
+    if (status instanceof Error) {
+        return {
+            level: "error",
+            code: 1,
+            reason: `Error invoking ${context.skill.namespace}/${context.skill.name}`,
+        };
+    } else {
+        const reason = `${status?.code === 0 ? "Successfully" : "Unsuccessfully"} invoked ${context.skill.namespace}/${context.skill.name}`;
+        return {
+            level: status?.level || "debug",
+            code: status?.code || 0,
+            reason: status?.reason || reason,
+        };
     }
 }
