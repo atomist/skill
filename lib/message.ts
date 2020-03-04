@@ -377,7 +377,7 @@ export interface HandlerResponse {
     event?: string;
 
     status?: {
-        level: "debug" | "info" | "warn" | "error";
+        visibility?: "hidden";
         code?: number;
         reason: string;
     };
@@ -532,14 +532,13 @@ export class PubSubEventMessageClient extends AbstractPubSubMessageClient implem
 export function prepareStatus(status: HandlerStatus | Error, context: EventContext | CommandContext): HandlerResponse["status"] {
     if (status instanceof Error) {
         return {
-            level: "error",
             code: 1,
             reason: `Error invoking ${context.skill.namespace}/${context.skill.name}`,
         };
     } else {
         const reason = `${status?.code === 0 ? "Successfully" : "Unsuccessfully"} invoked ${context.skill.namespace}/${context.skill.name}`;
         return {
-            level: status?.level || "debug",
+            visibility: status?.visibility,
             code: status?.code || 0,
             reason: status?.reason || reason,
         };

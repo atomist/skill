@@ -79,7 +79,7 @@ export interface CommandContext<C = any> extends Contextual<CommandIncoming, C> 
 }
 
 export interface HandlerStatus {
-    level?: "debug" | "info" | "warn" | "error";
+    visibility?: "hidden";
     code?: number;
     reason?: string;
 }
