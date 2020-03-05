@@ -14,13 +14,18 @@
  * limitations under the License.
  */
 
+import * as fs from "fs-extra";
+import * as path from "path";
 import { debug } from "./log";
 import { replacer } from "./util";
 
-export interface GraphQLClient {
-    query<T>(query: string, variables?: Record<string, any>): Promise<T>;
+const GraphQLCache = new Map<string, string>();
 
-    mutate<T>(mutation: string, variables?: Record<string, any>): Promise<T>;
+export interface GraphQLClient {
+
+    query<T = any, V = any>(query: string, variables?: V): Promise<T>;
+
+    mutate<T = any, V = any>(mutation: string, variables?: V): Promise<T>;
 }
 
 export class NodeFetchGraphQLClient implements GraphQLClient {
@@ -32,7 +37,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
     public async query<T>(query: string, variables?: Record<string, any>): Promise<T> {
         const f = (await import("node-fetch")).default;
         const body = JSON.stringify({
-            query,
+            query: await this.graphql(query, "query"),
             variables,
         });
         debug(`GraphQL query: ${body}`);
@@ -56,7 +61,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
     public async mutate<T>(mutation: string, variables?: Record<string, any>): Promise<T> {
         const f = (await import("node-fetch")).default;
         const body = JSON.stringify({
-            query: mutation,
+            query: await this.graphql(mutation, "mutation"),
             variables,
         });
         debug(`GraphQL mutation: ${body}`);
@@ -75,5 +80,18 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
         }
         return result.data;
+    }
+
+    private async graphql(query: string, prefix: string): Promise<string> {
+        let q = query?.trim();
+        if (GraphQLCache.has(query)) {
+            return GraphQLCache.get(query);
+        } else if (!q.startsWith("query ") && !q.startsWith("mutation ")) {
+            const p = path.join(__dirname, "..", "..", "..", "graphql", prefix);
+            q = (await fs.readFile(p)).toString();
+        }
+        q = q.replace(/\n/g, "");
+        GraphQLCache.set(query, q);
+        return q;
     }
 }
