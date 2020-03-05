@@ -87,7 +87,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
         if (GraphQLCache.has(query)) {
             return GraphQLCache.get(query);
         } else if (q.endsWith(".graphql")) {
-            const p = path.join(__dirname, "..", "..", "..", "graphql", prefix, q);
+            const p = path.join(__dirname, "..", "..", "..", "..", "graphql", prefix, q);
             q = (await fs.readFile(p)).toString();
         }
         q = q.replace(/\n/g, "");
