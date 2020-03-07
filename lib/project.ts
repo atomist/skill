@@ -117,11 +117,30 @@ export type Project = GitProject & { spawn: Spawn, exec: Exec };
 
 export interface ProjectLoader {
 
+    load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project | undefined>;
+
     clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project | undefined>;
 
 }
 
 export class DefaultProjectLoader implements ProjectLoader {
+
+    public async load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project | undefined> {
+        if (isGitHubCredential(id.credential) || isGitHubAppCredential(id.credential)) {
+            const gcgp = await import("@atomist/automation-client/lib/project/git/GitCommandGitProject");
+            const project = await gcgp.GitCommandGitProject.fromBaseDir(
+                await convertToRepoRef(id),
+                baseDir,
+                { token: id.credential.token },
+                async () => {
+                });
+            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
+            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
+            await project.setUserConfig("Atomist Bot", "bot@atomist.com");
+            return project as any;
+        }
+        return undefined;
+    }
 
     public async clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project> {
         if (isGitHubCredential(id.credential) || isGitHubAppCredential(id.credential)) {
