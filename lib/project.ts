@@ -27,6 +27,7 @@ import {
 import { CloneDirectoryInfo } from "@atomist/automation-client/src/lib/spi/clone/DirectoryManager";
 import { SpawnSyncOptions } from "child_process";
 import * as fs from "fs-extra";
+import { debug } from "./log";
 import {
     GitHubAppCredential,
     GitHubCredential,
@@ -134,8 +135,8 @@ export class DefaultProjectLoader implements ProjectLoader {
                 { token: id.credential.token },
                 async () => {
                 });
-            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
-            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
+            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { log: { write: debug }, cwd: project.baseDir, ...(opts || {}) });
+            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { log: { write: debug }, cwd: project.baseDir, ...(opts || {}) });
             await project.setUserConfig("Atomist Bot", "bot@atomist.com");
             return project as any;
         }
@@ -151,8 +152,8 @@ export class DefaultProjectLoader implements ProjectLoader {
                 options,
                 options?.path ? new FixedPathDirectoryManager(options.path) : undefined,
             );
-            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
-            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { cwd: project.baseDir, ...(opts || {}) });
+            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { log: { write: debug }, cwd: project.baseDir, ...(opts || {}) });
+            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { log: { write: debug }, cwd: project.baseDir, ...(opts || {}) });
             await project.setUserConfig("Atomist Bot", "bot@atomist.com");
             return project as any;
         }
