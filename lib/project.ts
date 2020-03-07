@@ -135,8 +135,8 @@ export class DefaultProjectLoader implements ProjectLoader {
                 { token: id.credential.token },
                 async () => {
                 });
-            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { log: { write: debug }, cwd: project.baseDir, ...(opts || {}) });
-            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { log: { write: debug }, cwd: project.baseDir, ...(opts || {}) });
+            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { log, cwd: project.baseDir, ...(opts || {}) });
+            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { log, cwd: project.baseDir, ...(opts || {}) });
             await project.setUserConfig("Atomist Bot", "bot@atomist.com");
             return project as any;
         }
@@ -152,14 +152,20 @@ export class DefaultProjectLoader implements ProjectLoader {
                 options,
                 options?.path ? new FixedPathDirectoryManager(options.path) : undefined,
             );
-            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { log: { write: debug }, cwd: project.baseDir, ...(opts || {}) });
-            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { log: { write: debug }, cwd: project.baseDir, ...(opts || {}) });
+            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { log, cwd: project.baseDir, ...(opts || {}) });
+            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { log, cwd: project.baseDir, ...(opts || {}) });
             await project.setUserConfig("Atomist Bot", "bot@atomist.com");
             return project as any;
         }
         return undefined;
     }
 }
+
+const log = {
+    write: msg => {
+        debug(msg.trim());
+    },
+};
 
 async function convertToRepoRef(id: AuthenticatedRepositoryId<any>): Promise<RemoteRepoRef> {
     switch (id.type) {
