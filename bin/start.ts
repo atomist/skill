@@ -26,9 +26,10 @@ yargs
         "run",
         "Start container skill",
         args => args.options({
+            skill: { type: "string", description: "Name of skill to load", demandOption: false},
         }),
         async argv => {
-            return (await import("../lib/run")).run();
+            return (await import("../lib/run")).run(argv.skill);
         },
     )
     .help()

@@ -24,11 +24,17 @@ import {
     isEventIncoming,
 } from "./payload";
 
-export async function run(): Promise<void> {
+export async function run(skill?: string): Promise<void> {
     const payload = await fs.readJson(process.env.ATOMIST_PAYLOAD || "/atm/payload.json");
     if (isEventIncoming(payload)) {
-        await processEvent(payload, { } as any);
+        if (!!skill) {
+            payload.extensions.operationName = skill;
+        }
+        await processEvent(payload, {} as any);
     } else if (isCommandIncoming(payload)) {
+        if (!!skill) {
+            payload.command = skill;
+        }
         await processCommand(payload, {} as any);
     }
 }
