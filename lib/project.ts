@@ -163,7 +163,7 @@ export class DefaultProjectLoader implements ProjectLoader {
 
 const log = {
     write: msg => {
-        debug(msg.trim());
+        debug(msg.trimRight());
     },
 };
 
