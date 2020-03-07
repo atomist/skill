@@ -28,10 +28,12 @@
     "@atomist/skill-logging": "0.1.0-master.20200306143401",
     "@atomist/slack-messages": "^1.1.1",
     "@google-cloud/pubsub": "1.1.5",
+    "@types/yargs": "^15.0.4",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
-    "source-map-support": "^0.5.16"
+    "source-map-support": "^0.5.16",
+    "yargs": "^15.1.0"
   },
   "devDependencies": {
     "@google-cloud/functions-framework": "^1.4.0",
@@ -82,5 +84,8 @@
   "engines": {
     "node": ">=8.2.0",
     "npm": ">=5.0.0"
+  },
+  "bin": {
+    "atm-skill": "./bin/start.js"
   }
 }

@@ -58,7 +58,7 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId:
     }
 };
 
-async function processEvent(event: EventIncoming, ctx: { eventId: string }): Promise<void> {
+export async function processEvent(event: EventIncoming, ctx: { eventId: string }): Promise<void> {
     const context = createContext(event, ctx) as EventContext<any>;
     const path = requirePath(`events/${context.name}`);
     try {
@@ -73,7 +73,7 @@ async function processEvent(event: EventIncoming, ctx: { eventId: string }): Pro
     debug(`Completed event handler '${context.name}'`);
 }
 
-async function processCommand(event: CommandIncoming, ctx: { eventId: string }): Promise<void> {
+export async function processCommand(event: CommandIncoming, ctx: { eventId: string }): Promise<void> {
     const context = createContext(event, ctx) as CommandContext;
     const path = requirePath(`commands/${context.name}`);
     try {
