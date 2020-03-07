@@ -163,7 +163,11 @@ export class DefaultProjectLoader implements ProjectLoader {
 
 const log = {
     write: msg => {
-        const lines = msg.split("\n");
+        let line = msg;
+        if (line.endsWith("\n")) {
+            line = line.slice(0, -2);
+        }
+        const lines = line.split("\n");
         lines.forEach(l => debug(l.trimRight()));
     },
 };
