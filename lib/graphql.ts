@@ -21,11 +21,18 @@ import { replacer } from "./util";
 
 const GraphQLCache = new Map<string, string>();
 
+export interface Location {
+    path: string;
+    root: string;
+}
+
+export type QueryOrLocation = string | Location;
+
 export interface GraphQLClient {
 
-    query<T = any, V = any>(query: string, variables?: V): Promise<T>;
+    query<T = any, V = any>(query: QueryOrLocation, variables?: V): Promise<T>;
 
-    mutate<T = any, V = any>(mutation: string, variables?: V): Promise<T>;
+    mutate<T = any, V = any>(mutation: QueryOrLocation, variables?: V): Promise<T>;
 }
 
 export class NodeFetchGraphQLClient implements GraphQLClient {
@@ -34,7 +41,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
                 private readonly url: string) {
     }
 
-    public async query<T>(query: string, variables?: Record<string, any>): Promise<T> {
+    public async query<T>(query: QueryOrLocation, variables?: Record<string, any>): Promise<T> {
         const f = (await import("node-fetch")).default;
         const body = JSON.stringify({
             query: await this.graphql(query, "query"),
@@ -58,7 +65,7 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
         return result.data;
     }
 
-    public async mutate<T>(mutation: string, variables?: Record<string, any>): Promise<T> {
+    public async mutate<T>(mutation: QueryOrLocation, variables?: Record<string, any>): Promise<T> {
         const f = (await import("node-fetch")).default;
         const body = JSON.stringify({
             query: await this.graphql(mutation, "mutation"),
@@ -82,16 +89,29 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
         return result.data;
     }
 
-    private async graphql(query: string, prefix: string): Promise<string> {
-        let q = query?.trim();
-        if (GraphQLCache.has(query)) {
-            return GraphQLCache.get(query);
-        } else if (q.endsWith(".graphql")) {
-            const p = path.join(__dirname, "..", "..", "..", "..", "graphql", prefix, q);
-            q = (await fs.readFile(p)).toString();
+    private async graphql(query: QueryOrLocation, prefix: string): Promise<string> {
+        if (typeof query === "string") {
+            let q = query?.trim();
+            if (GraphQLCache.has(query)) {
+                return GraphQLCache.get(query);
+            } else if (q.endsWith(".graphql")) {
+                const p = path.join(__dirname, "..", "..", "..", "..", "graphql", prefix, q);
+                q = (await fs.readFile(p)).toString();
+            }
+            q = q.replace(/\n/g, "");
+            GraphQLCache.set(query, q);
+            return q;
+        } else {
+            const l: Location = query;
+            const p = path.resolve(l.root, l.path);
+            if (GraphQLCache.has(p)) {
+                return GraphQLCache.get(p);
+            } else {
+                let q = (await fs.readFile(p)).toString();
+                q = q.replace(/\n/g, "");
+                GraphQLCache.set(p, q);
+                return q;
+            }
         }
-        q = q.replace(/\n/g, "");
-        GraphQLCache.set(query, q);
-        return q;
     }
 }
