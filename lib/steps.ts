@@ -50,7 +50,7 @@ export async function runSteps<C extends EventContext | CommandContext>(context:
                 if (!!result && result.code !== 0) {
                     await context.audit.log(`Step '${step.name}' errored with: ${result.reason}`, Severity.ERROR);
                     return result;
-                } else if (!!result) {
+                } else if (!!result && !!result.reason) {
                     await context.audit.log(`Completed step '${step.name}' with: ${result.reason}`);
                 } else {
                     await context.audit.log(`Completed step '${step.name}'`);
