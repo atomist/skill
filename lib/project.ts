@@ -129,7 +129,7 @@ export class DefaultProjectLoader implements ProjectLoader {
     public async load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project | undefined> {
         if (isGitHubCredential(id.credential) || isGitHubAppCredential(id.credential)) {
             const gcgp = await import("@atomist/automation-client/lib/project/git/GitCommandGitProject");
-            const project = await gcgp.GitCommandGitProject.fromBaseDir(
+            const project = gcgp.GitCommandGitProject.fromBaseDir(
                 await convertToRepoRef(id),
                 baseDir,
                 { token: id.credential.token },
