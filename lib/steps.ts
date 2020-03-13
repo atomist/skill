@@ -38,7 +38,7 @@ export interface Step<C extends EventContext | CommandContext, G extends Record<
  * Execute provided skill steps in the order they are provided or until one fails
  */
 export async function runSteps<C extends EventContext | CommandContext>(context: C,
-                                                                        ...steps: Array<Step<C>>): Promise<void | HandlerStatus> {
+                                                                        ...steps: Array<Step<C>>): Promise<undefined | HandlerStatus> {
     const parameters: Record<string, any> = {};
 
     for (const step of steps) {
@@ -68,4 +68,5 @@ export async function runSteps<C extends EventContext | CommandContext>(context:
             };
         }
     }
+    return undefined;
 }
