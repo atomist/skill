@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { Severity } from "@atomist/skill-logging";
 // tslint:disable-next-line:no-import-side-effect
 import "source-map-support/register";
 
+import { Severity } from "@atomist/skill-logging";
 import { createContext } from "./context";
 import {
     CommandContext,

@@ -31,6 +31,7 @@ import {
 } from "./payload";
 import { ProjectLoader } from "./project";
 import { CredentialProvider } from "./secrets";
+import { StorageProvider } from "./storage";
 
 export interface Configuration<C extends Record<string, any>> {
     name: string;
@@ -50,6 +51,7 @@ export interface Contextual<T, C> {
     message: MessageClient;
     project: ProjectLoader;
     audit: Logger;
+    storage: StorageProvider;
 
     trigger: T;
 

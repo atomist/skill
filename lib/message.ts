@@ -453,7 +453,7 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
     }
 
     public async sendResponse(message: any): Promise<void> {
-        const topicName = process.env.TOPIC;
+        const topicName = process.env.ATOMIST_TOPIC || process.env.TOPIC;
         try {
             debug(`Sending message: ${JSON.stringify(message, replacer)}`);
             if (!!topicName) {

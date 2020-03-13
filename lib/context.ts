@@ -15,7 +15,9 @@
  */
 
 import { createLogger } from "@atomist/skill-logging/lib/logging";
-import { NodeFetchGraphQLClient } from "./graphql";
+import {
+    createGraphQLClient,
+} from "./graphql";
 import {
     CommandContext,
     Configuration,
@@ -36,12 +38,15 @@ import {
 } from "./payload";
 import { DefaultProjectLoader } from "./project";
 import { DefaultCredentialProvider } from "./secrets";
+import { createStorageProvider } from "./storage";
 import { extractParameters } from "./util";
 
-export function createContext(payload: CommandIncoming | EventIncoming, ctx: { eventId: string }): EventContext | CommandContext {
+export function createContext(payload: CommandIncoming | EventIncoming,
+                              ctx: { eventId: string }): EventContext | CommandContext {
     const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")?.value;
     const wid = workspaceId(payload);
-    const graphql = new NodeFetchGraphQLClient(apiKey, `${process.env.GRAPHQL_ENDPOINT || "https://automation.atomist.com/graphql"}/team/${wid}`);
+    const graphql = createGraphQLClient(apiKey, wid);
+    const storage = createStorageProvider();
     const credential = new DefaultCredentialProvider(graphql, payload);
     if (isCommandIncoming(payload)) {
         if (!!payload.raw_message) {
@@ -67,6 +72,7 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: { e
             }, {
                 name: payload.command,
             }),
+            storage,
             message,
             project: new DefaultProjectLoader(),
             trigger: payload,
@@ -90,6 +96,7 @@ export function createContext(payload: CommandIncoming | EventIncoming, ctx: { e
             }, {
                 name: payload.extensions.operationName,
             }),
+            storage,
             message: new PubSubEventMessageClient(payload, graphql),
             project: new DefaultProjectLoader(),
             trigger: payload,

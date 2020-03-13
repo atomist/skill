@@ -35,7 +35,7 @@ export interface GraphQLClient {
     mutate<T = any, V = any>(mutation: QueryOrLocation, variables?: V): Promise<T>;
 }
 
-export class NodeFetchGraphQLClient implements GraphQLClient {
+class NodeFetchGraphQLClient implements GraphQLClient {
 
     constructor(private readonly apiKey: string,
                 private readonly url: string) {
@@ -114,4 +114,11 @@ export class NodeFetchGraphQLClient implements GraphQLClient {
             }
         }
     }
+}
+
+export function createGraphQLClient(apiKey: string, wid: string): GraphQLClient {
+    const url = `${process.env.ATOMIST_GRAPHQL_ENDPOINT
+    || process.env.GRAPHQL_ENDPOINT
+    || "https://automation.atomist.com/graphql"}/team/${wid}`;
+    return new NodeFetchGraphQLClient(apiKey, url);
 }
