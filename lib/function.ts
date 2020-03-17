@@ -65,7 +65,7 @@ export async function processEvent(event: EventIncoming, ctx: { eventId: string 
         debug(`Invoking event handler '${context.name}'`);
         const handler = require(path).handler as EventHandler<any>;
         const result = await handler(context) as HandlerStatus;
-        await (context.message as any as StatusPublisher).publish(prepareStatus(result, context));
+        await (context.message as any as StatusPublisher).publish(prepareStatus(result || { code: 0 }, context));
     }  catch (e) {
         await context.audit.log(`Error occurred: ${e.stack}`, Severity.ERROR);
         await (context.message as any as StatusPublisher).publish(prepareStatus(e, context));
@@ -80,7 +80,7 @@ export async function processCommand(event: CommandIncoming, ctx: { eventId: str
         debug(`Invoking command handler '${context.name}'`);
         const handler = require(path).handler as CommandHandler;
         const result = await handler(context) as HandlerStatus;
-        await (context.message as any as StatusPublisher).publish(prepareStatus(result, context));
+        await (context.message as any as StatusPublisher).publish(prepareStatus(result || { code: 0 }, context));
     }  catch (e) {
         if (e instanceof CommandListenerExecutionInterruptError) {
             await (context.message as any as StatusPublisher).publish(prepareStatus({ code: 0 }, context));
