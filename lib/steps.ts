@@ -66,14 +66,17 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
                 await context.audit.log(`Running '${step.name}'`);
                 await invokeListeners(listeners.filter(l => !!l.starting), async l => l.starting(step, parameters));
 
-                result = await step.run(context, parameters);
-                await invokeListeners(listeners.filter(l => !!l.completed), async l => l.completed(step, parameters, result));
+                const sr = await step.run(context, parameters);
+                if (!!sr) {
+                    result = sr;
+                }
+                await invokeListeners(listeners.filter(l => !!l.completed), async l => l.completed(step, parameters, sr));
 
-                if (!!result && result.code !== 0) {
-                    await context.audit.log(`'${step.name}' errored with: ${result.reason}`, Severity.ERROR);
-                    return result;
-                } else if (!!result && !!result.reason) {
-                    await context.audit.log(`Completed '${step.name}' with: ${result.reason}`);
+                if (!!sr && sr.code !== 0) {
+                    await context.audit.log(`'${step.name}' errored with: ${sr.reason}`, Severity.ERROR);
+                    return sr;
+                } else if (!!sr && !!sr.reason) {
+                    await context.audit.log(`Completed '${step.name}' with: ${sr.reason}`);
                 } else {
                     await context.audit.log(`Completed '${step.name}'`);
                 }
