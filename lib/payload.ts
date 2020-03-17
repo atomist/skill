@@ -48,6 +48,7 @@ export interface Skill {
         command?: string[];
         args?: string[];
         env?: Array<{ name: string, value: string }>;
+        workingDir?: string;
         // secrets?: ContainerSecrets;
         // input?: string[];
         // output?: CacheEntry[];
