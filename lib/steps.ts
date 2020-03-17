@@ -35,14 +35,16 @@ export interface Step<C extends EventContext | CommandContext, G extends Record<
     runWhen?: (context: C, parameters: G) => Promise<boolean>;
 }
 
-export interface StepListener<C extends EventContext | CommandContext> {
-    starting(step: Step<C>): Promise<void>;
+export interface StepListener<C extends EventContext | CommandContext, G extends Record<string, any> = any> {
+    starting?(step: Step<C>, parameters: G): Promise<void>;
 
-    skipped(step: Step<C>): Promise<void>;
+    skipped?(step: Step<C>, parameters: G): Promise<void>;
 
-    completed(step: Step<C>, result: undefined | HandlerStatus): Promise<void>;
+    completed?(step: Step<C>, parameters: G, result: undefined | HandlerStatus): Promise<void>;
 
-    failed(step: Step<C>, error: Error): Promise<void>;
+    failed?(step: Step<C>, parameters: G, error: Error): Promise<void>;
+
+    done?(parameters: G, result: undefined | HandlerStatus): Promise<undefined | HandlerStatus>;
 }
 
 /**
@@ -56,15 +58,16 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
     const parameters: Record<string, any> = {};
     const context = options.context;
     const listeners = toArray(options.listeners);
+    let result;
 
     for (const step of toArray(options.steps)) {
         try {
             if (!step.runWhen || !!(await step.runWhen(context, parameters))) {
                 await context.audit.log(`Running '${step.name}'`);
-                await invokeListeners(listeners, async l => l.starting(step));
+                await invokeListeners(listeners.filter(l => !!l.starting), async l => l.starting(step, parameters));
 
-                const result = await step.run(context, parameters);
-                await invokeListeners(listeners, async l => l.completed(step, result));
+                result = await step.run(context, parameters);
+                await invokeListeners(listeners.filter(l => !!l.completed), async l => l.completed(step, parameters, result));
 
                 if (!!result && result.code !== 0) {
                     await context.audit.log(`'${step.name}' errored with: ${result.reason}`, Severity.ERROR);
@@ -76,11 +79,11 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
                 }
             } else {
                 await context.audit.log(`Skipping '${step.name}'`);
-                await invokeListeners(listeners, async l => l.skipped(step));
+                await invokeListeners(listeners.filter(l => !!l.skipped), async l => l.skipped(step, parameters));
             }
         } catch (e) {
             await context.audit.log(`'${step.name}' errored with: ${e.message}`, Severity.ERROR);
-            await invokeListeners(listeners, async l => l.failed(step, e));
+            await invokeListeners(listeners.filter(l => !!l.failed), async l => l.failed(step, parameters, e));
             warn(`'${step.name}' errored with:`);
             warn(e);
             return {
@@ -89,10 +92,11 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
             };
         }
     }
-    return undefined;
+    return invokeDone(listeners.filter(l => !!l.done), parameters, result);
 }
 
-async function invokeListeners(listeners: Array<StepListener<any>>, cb: (l: StepListener<any>) => Promise<void>): Promise<void> {
+async function invokeListeners(listeners: Array<StepListener<any>>,
+                               cb: (l: StepListener<any>) => Promise<void>): Promise<void> {
     for (const listener of listeners) {
         try {
             await cb(listener);
@@ -101,3 +105,18 @@ async function invokeListeners(listeners: Array<StepListener<any>>, cb: (l: Step
         }
     }
 }
+
+async function invokeDone(listeners: Array<StepListener<any>>,
+                          parameters: any,
+                          inputResult: undefined | HandlerStatus): Promise<undefined | HandlerStatus> {
+    let result = inputResult;
+    for (const listener of listeners) {
+        try {
+            result = await listener.done(parameters, result);
+        } catch (e) {
+            warn("Listener failed with: %s", JSON.stringify(e));
+        }
+    }
+    return result;
+}
+
