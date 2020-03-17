@@ -101,7 +101,8 @@ async function invokeListeners(listeners: Array<StepListener<any>>,
         try {
             await cb(listener);
         } catch (e) {
-            warn("Listener failed with: %s", JSON.stringify(e));
+            warn("Listener failed with");
+            warn(e);
         }
     }
 }
@@ -114,7 +115,8 @@ async function invokeDone(listeners: Array<StepListener<any>>,
         try {
             result = await listener.done(parameters, result);
         } catch (e) {
-            warn("Listener failed with: %s", JSON.stringify(e));
+            warn("Listener failed with:");
+            warn(e);
         }
     }
     return result;
