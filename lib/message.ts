@@ -414,7 +414,7 @@ export interface Parameter {
 }
 
 export function isSlackMessage(object: any): object is SlackMessage {
-    return !!object && (object.text || object.attachments) && !object.content;
+    return !!object && (object.text || object.attachments || object.blocks) && !object.content;
 }
 
 /**
