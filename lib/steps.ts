@@ -57,7 +57,7 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
 }): Promise<undefined | HandlerStatus> {
     const parameters: Record<string, any> = {};
     const context = options.context;
-    const listeners = toArray(options.listeners);
+    const listeners = toArray(options.listeners) || [];
     let result;
 
     for (const step of toArray(options.steps)) {
@@ -124,4 +124,3 @@ async function invokeDone(listeners: Array<StepListener<any>>,
     }
     return result;
 }
-
