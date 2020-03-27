@@ -86,6 +86,7 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
             }
         } catch (e) {
             await context.audit.log(`'${step.name}' errored with: ${e.message}`, Severity.ERROR);
+            await context.audit.log(e.stack, Severity.ERROR);
             await invokeListeners(listeners.filter(l => !!l.failed), async l => l.failed(step, parameters, e));
             warn(`'${step.name}' errored with:`);
             warn(e.stack);
