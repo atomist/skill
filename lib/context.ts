@@ -15,15 +15,13 @@
  */
 
 import { createLogger } from "@atomist/skill-logging/lib/logging";
-import {
-    createGraphQLClient,
-} from "./graphql";
+import { createGraphQLClient } from "./graphql";
 import {
     CommandContext,
     Configuration,
     EventContext,
 } from "./handler";
-import { NodeFetchHttpClient } from "./http";
+import { createHttpClient } from "./http";
 import {
     PubSubCommandMessageClient,
     PubSubEventMessageClient,
@@ -36,7 +34,7 @@ import {
     isEventIncoming,
     workspaceId,
 } from "./payload";
-import { DefaultProjectLoader } from "./project";
+import { createProjectLoader } from "./project";
 import { DefaultCredentialProvider } from "./secrets";
 import { createStorageProvider } from "./storage";
 import { extractParameters } from "./util";
@@ -64,7 +62,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
             workspaceId: wid,
             credential,
             graphql,
-            http: new NodeFetchHttpClient(),
+            http: createHttpClient(),
             audit: createLogger({
                 eventId: ctx.eventId,
                 correlationId: payload.correlation_id,
@@ -74,7 +72,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
             }),
             storage,
             message,
-            project: new DefaultProjectLoader(),
+            project: createProjectLoader(),
             trigger: payload,
             ...extractConfiguration(payload),
             skill: payload.skill,
@@ -88,7 +86,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
             workspaceId: wid,
             credential,
             graphql,
-            http: new NodeFetchHttpClient(),
+            http: createHttpClient(),
             audit: createLogger({
                 eventId: ctx.eventId,
                 correlationId: payload.extensions.correlation_id,
@@ -98,7 +96,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
             }),
             storage,
             message: new PubSubEventMessageClient(payload, graphql),
-            project: new DefaultProjectLoader(),
+            project: createProjectLoader(),
             trigger: payload,
             ...extractConfiguration(payload),
             skill: payload.skill,

@@ -23,6 +23,10 @@ export interface HttpClient {
     request<T>(url: string, options: RequestInit): Promise<Response & { json(): Promise<T> }>;
 }
 
+export function createHttpClient(): HttpClient {
+    return new NodeFetchHttpClient();
+}
+
 export class NodeFetchHttpClient implements HttpClient {
 
     public async request<T>(url: string, options: RequestInit)

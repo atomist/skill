@@ -124,6 +124,10 @@ export interface ProjectLoader {
 
 }
 
+export function createProjectLoader(): ProjectLoader {
+    return new DefaultProjectLoader();
+}
+
 export class DefaultProjectLoader implements ProjectLoader {
 
     public async load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project | undefined> {
