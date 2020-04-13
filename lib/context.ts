@@ -111,6 +111,7 @@ function extractConfiguration(payload: CommandIncoming | EventIncoming):
         configuration: payload.skill?.configuration?.instances?.map(c => ({
             name: c.name,
             parameters: extractConfigurationParameters(c.parameters),
+            integrations: c.integrations,
         })),
     };
 }

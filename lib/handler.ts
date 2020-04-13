@@ -36,6 +36,7 @@ import { StorageProvider } from "./storage";
 export interface Configuration<C extends Record<string, any>> {
     name: string;
     parameters: C;
+    integrations: Array<{ name: string, typeName: string, integrations: Array<{ id: string }> }>;
 }
 
 export interface Contextual<T, C> {
