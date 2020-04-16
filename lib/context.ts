@@ -111,7 +111,7 @@ function extractConfiguration(payload: CommandIncoming | EventIncoming):
         configuration: payload.skill?.configuration?.instances?.map(c => ({
             name: c.name,
             parameters: extractConfigurationParameters(c.parameters),
-            integrations: extractConfigurationIntegrations(c.integrations),
+            resourceProviders: extractConfigurationResourceProviders(c.resourceProviders),
         })),
     };
 }
@@ -122,9 +122,9 @@ function extractConfigurationParameters(params: Array<{ name: string, value: any
     return parameters;
 }
 
-function extractConfigurationIntegrations(params: Array<{ name: string, typeName: string, integrations: Array<{ id: string }> }>)
-    : Configuration<any>["integrations"] {
-    const integrations = {};
-    params?.forEach(p => integrations[p.name] = { typeName: p.typeName, integrations: p.integrations });
-    return integrations;
+function extractConfigurationResourceProviders(params: Array<{ name: string, typeName: string, selectedResourceProviders: Array<{ id: string }> }>)
+    : Configuration<any>["resourceProviders"] {
+    const resourceProviders = {};
+    params?.forEach(p => resourceProviders[p.name] = { typeName: p.typeName, selectedResourceProviders: p.selectedResourceProviders });
+    return resourceProviders;
 }

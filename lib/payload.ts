@@ -58,7 +58,7 @@ export interface Skill {
         instances: Array<{
             name: string;
             parameters: Array<{ name: string, value: any }>;
-            integrations: Array<{ name: string, typeName: string, integrations: Array<{ id: string }> }>;
+            resourceProviders: Array<{ name: string, typeName: string, selectedResourceProviders: Array<{ id: string }> }>;
         }>;
     };
 }
