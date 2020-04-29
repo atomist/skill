@@ -24,7 +24,7 @@ This page details all runtime OSS dependencies of `@atomist/skill`.
 |[GPL-3.0](#gpl-30)|3|
 |[ISC](#isc)|43|
 |[MIT AND BSD-3-Clause](#mit-and-bsd-3-clause)|1|
-|[MIT](#mit)|680|
+|[MIT](#mit)|678|
 |[PSF](#psf)|2|
 |[UNKNOWN](#unknown)|1|
 |[WTFPL](#wtfpl)|1|
@@ -64,7 +64,7 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 |`google-gax`|`1.14.2`|Google API Authors|[https://github.com/googleapis/gax-nodejs](https://github.com/googleapis/gax-nodejs)|
 |`hex2dec`|`1.1.2`||[https://github.com/donmccurdy/hex2dec](https://github.com/donmccurdy/hex2dec)|
 |`long`|`4.0.0`|Daniel Wirtz|[https://github.com/dcodeIO/long.js](https://github.com/dcodeIO/long.js)|
-|`rxjs`|`6.5.4`|Ben Lesh|[https://github.com/reactivex/rxjs](https://github.com/reactivex/rxjs)|
+|`rxjs`|`6.5.5`|Ben Lesh|[https://github.com/reactivex/rxjs](https://github.com/reactivex/rxjs)|
 |`teeny-request`|`6.0.3`|fhinkel|[https://github.com/googleapis/teeny-request](https://github.com/googleapis/teeny-request)|
 |`tslib`|`1.10.0`|Microsoft Corp.|[https://github.com/Microsoft/tslib](https://github.com/Microsoft/tslib)|
 |`tunnel-agent`|`0.6.0`|Mikeal Rogers|[https://github.com/mikeal/tunnel-agent](https://github.com/mikeal/tunnel-agent)|
@@ -90,7 +90,7 @@ BSD 2-Clause "Simplified" License - [https://opensource.org/licenses/BSD-2-Claus
 |`esprima`|`4.0.1`|Ariya Hidayat|[https://github.com/jquery/esprima](https://github.com/jquery/esprima)|
 |`estraverse`|`4.3.0`||[https://github.com/estools/estraverse](https://github.com/estools/estraverse)|
 |`esutils`|`2.0.3`||[https://github.com/estools/esutils](https://github.com/estools/esutils)|
-|`git-parse`|`1.0.3`||[https://github.com/wayfair/git-parse](https://github.com/wayfair/git-parse)|
+|`git-parse`|`1.0.4`||[https://github.com/wayfair/git-parse](https://github.com/wayfair/git-parse)|
 |`shimmer`|`1.2.1`|Forrest L Norvell|[https://github.com/othiym23/shimmer](https://github.com/othiym23/shimmer)|
 |`uri-js`|`4.2.2`|Gary Court|[https://github.com/garycourt/uri-js](https://github.com/garycourt/uri-js)|
 |`yarn`|`1.22.4`||[https://github.com/yarnpkg/yarn](https://github.com/yarnpkg/yarn)|
@@ -173,7 +173,7 @@ GNU General Public License v3.0 only - [https://www.gnu.org/licenses/gpl-3.0-sta
 
 | Name | Version | Publisher | Repository |
 |------|---------|-----------|------------|
-|`@atomist/automation-client`|`2.0.0-master.20200311165330`|Atomist|[https://github.com/atomist/automation-client](https://github.com/atomist/automation-client)|
+|`@atomist/automation-client`|`2.0.0-master.20200429110358`|Atomist|[https://github.com/atomist/automation-client](https://github.com/atomist/automation-client)|
 |`@atomist/microgrammar`|`1.2.1`|Atomist|[https://github.com/atomist/microgrammar](https://github.com/atomist/microgrammar)|
 |`@atomist/tree-path`|`1.0.3`|Atomist|[https://github.com/atomist/tree-path](https://github.com/atomist/tree-path)|
 
@@ -186,7 +186,7 @@ ISC License - [https://www.isc.org/downloads/software-support-policy/isc-license
 |`anymatch`|`3.1.1`|Elan Shanker|[https://github.com/micromatch/anymatch](https://github.com/micromatch/anymatch)|
 |`cliui`|`6.0.0`|Ben Coe|[https://github.com/yargs/cliui](https://github.com/yargs/cliui)|
 |`deprecation`|`2.3.1`||[https://github.com/gr2m/deprecation](https://github.com/gr2m/deprecation)|
-|`fastq`|`1.6.1`|Matteo Collina|[https://github.com/mcollina/fastq](https://github.com/mcollina/fastq)|
+|`fastq`|`1.7.0`|Matteo Collina|[https://github.com/mcollina/fastq](https://github.com/mcollina/fastq)|
 |`fs.realpath`|`1.0.0`|Isaac Z. Schlueter|[https://github.com/isaacs/fs.realpath](https://github.com/isaacs/fs.realpath)|
 |`get-caller-file`|`2.0.5`|Stefan Penner|[https://github.com/stefanpenner/get-caller-file](https://github.com/stefanpenner/get-caller-file)|
 |`glob-parent`|`5.1.0`|Gulp Team|[https://github.com/gulpjs/glob-parent](https://github.com/gulpjs/glob-parent)|
@@ -217,7 +217,7 @@ ISC License - [https://www.isc.org/downloads/software-support-policy/isc-license
 |`tty`|`1.0.1`||[https://github.com/npm/security-holder](https://github.com/npm/security-holder)|
 |`universal-user-agent`|`4.0.1`||[https://github.com/gr2m/universal-user-agent](https://github.com/gr2m/universal-user-agent)|
 |`universal-user-agent`|`5.0.0`||[https://github.com/gr2m/universal-user-agent](https://github.com/gr2m/universal-user-agent)|
-|`unix-dgram`|`2.0.3`|Ben Noordhuis|[https://github.com/bnoordhuis/node-unix-dgram](https://github.com/bnoordhuis/node-unix-dgram)|
+|`unix-dgram`|`2.0.4`|Ben Noordhuis|[https://github.com/bnoordhuis/node-unix-dgram](https://github.com/bnoordhuis/node-unix-dgram)|
 |`which-module`|`2.0.0`|nexdrew|[https://github.com/nexdrew/which-module](https://github.com/nexdrew/which-module)|
 |`which`|`1.3.1`|Isaac Z. Schlueter|[https://github.com/isaacs/node-which](https://github.com/isaacs/node-which)|
 |`wrappy`|`1.0.2`|Isaac Z. Schlueter|[https://github.com/npm/wrappy](https://github.com/npm/wrappy)|
@@ -231,18 +231,19 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 
 | Name | Version | Publisher | Repository |
 |------|---------|-----------|------------|
-|`@apollo/federation`|`0.13.2`|Apollo||
-|`@apollographql/apollo-tools`|`0.4.4`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
+|`@apollo/federation`|`0.14.1`|Apollo||
+|`@apollographql/apollo-tools`|`0.4.7`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
 |`@babel/code-frame`|`7.8.3`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-code-frame](https://github.com/babel/babel/tree/master/packages/babel-code-frame)|
-|`@babel/generator`|`7.8.6`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-generator](https://github.com/babel/babel/tree/master/packages/babel-generator)|
-|`@babel/helper-function-name`|`7.8.3`||[https://github.com/babel/babel/tree/master/packages/babel-helper-function-name](https://github.com/babel/babel/tree/master/packages/babel-helper-function-name)|
+|`@babel/generator`|`7.9.5`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-generator](https://github.com/babel/babel/tree/master/packages/babel-generator)|
+|`@babel/helper-function-name`|`7.9.5`||[https://github.com/babel/babel/tree/master/packages/babel-helper-function-name](https://github.com/babel/babel/tree/master/packages/babel-helper-function-name)|
 |`@babel/helper-get-function-arity`|`7.8.3`||[https://github.com/babel/babel/tree/master/packages/babel-helper-get-function-arity](https://github.com/babel/babel/tree/master/packages/babel-helper-get-function-arity)|
 |`@babel/helper-split-export-declaration`|`7.8.3`||[https://github.com/babel/babel/tree/master/packages/babel-helper-split-export-declaration](https://github.com/babel/babel/tree/master/packages/babel-helper-split-export-declaration)|
+|`@babel/helper-validator-identifier`|`7.9.5`||[https://github.com/babel/babel/tree/master/packages/babel-helper-validator-identifier](https://github.com/babel/babel/tree/master/packages/babel-helper-validator-identifier)|
 |`@babel/highlight`|`7.8.3`|suchipi|[https://github.com/babel/babel/tree/master/packages/babel-highlight](https://github.com/babel/babel/tree/master/packages/babel-highlight)|
-|`@babel/parser`|`7.8.7`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-parser](https://github.com/babel/babel/tree/master/packages/babel-parser)|
+|`@babel/parser`|`7.9.4`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-parser](https://github.com/babel/babel/tree/master/packages/babel-parser)|
 |`@babel/template`|`7.8.6`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-template](https://github.com/babel/babel/tree/master/packages/babel-template)|
-|`@babel/traverse`|`7.8.6`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-traverse](https://github.com/babel/babel/tree/master/packages/babel-traverse)|
-|`@babel/types`|`7.8.6`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-types](https://github.com/babel/babel/tree/master/packages/babel-types)|
+|`@babel/traverse`|`7.9.5`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-traverse](https://github.com/babel/babel/tree/master/packages/babel-traverse)|
+|`@babel/types`|`7.9.5`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-types](https://github.com/babel/babel/tree/master/packages/babel-types)|
 |`@endemolshinegroup/cosmiconfig-typescript-loader`|`1.0.1`|Endemol Shine Group Technology|[https://github.com/EndemolShineGroup/cosmiconfig-typescript-loader](https://github.com/EndemolShineGroup/cosmiconfig-typescript-loader)|
 |`@graphql-codegen/core`|`1.7.0`|Dotan Simha|[https://github.com/dotansimha/graphql-code-generator](https://github.com/dotansimha/graphql-code-generator)|
 |`@graphql-codegen/plugin-helpers`|`1.7.0`||[https://github.com/dotansimha/graphql-code-generator](https://github.com/dotansimha/graphql-code-generator)|
@@ -256,7 +257,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`@nodelib/fs.walk`|`1.2.4`||[https://github.com/nodelib/nodelib/tree/master/packages/fs/fs.walk](https://github.com/nodelib/nodelib/tree/master/packages/fs/fs.walk)|
 |`@oclif/color`|`0.0.0`|Jeff Dickey @jdxcode|[https://github.com/oclif/color](https://github.com/oclif/color)|
 |`@oclif/command`|`1.5.19`|Jeff Dickey @jdxcode|[https://github.com/oclif/command](https://github.com/oclif/command)|
-|`@oclif/config`|`1.14.0`|Jeff Dickey @jdxcode|[https://github.com/oclif/config](https://github.com/oclif/config)|
+|`@oclif/config`|`1.15.1`|Jeff Dickey @jdxcode|[https://github.com/oclif/config](https://github.com/oclif/config)|
 |`@oclif/errors`|`1.2.2`|Jeff Dickey @jdxcode|[https://github.com/oclif/errors](https://github.com/oclif/errors)|
 |`@oclif/parser`|`3.8.4`|Jeff Dickey @jdxcode|[https://github.com/oclif/parser](https://github.com/oclif/parser)|
 |`@oclif/plugin-autocomplete`|`0.1.5`|Philipe Navarro @RasPhilCo|[https://github.com/oclif/plugin-autocomplete](https://github.com/oclif/plugin-autocomplete)|
@@ -266,14 +267,15 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`@oclif/plugin-warn-if-update-available`|`1.7.0`|Jeff Dickey @jdxcode|[https://github.com/oclif/plugin-warn-if-update-available](https://github.com/oclif/plugin-warn-if-update-available)|
 |`@oclif/screen`|`1.0.4`|Jeff Dickey @jdxcode|[https://github.com/oclif/screen](https://github.com/oclif/screen)|
 |`@octokit/auth-token`|`2.4.0`||[https://github.com/octokit/auth-token.js](https://github.com/octokit/auth-token.js)|
-|`@octokit/endpoint`|`5.5.3`||[https://github.com/octokit/endpoint.js](https://github.com/octokit/endpoint.js)|
+|`@octokit/endpoint`|`6.0.1`||[https://github.com/octokit/endpoint.js](https://github.com/octokit/endpoint.js)|
 |`@octokit/plugin-paginate-rest`|`1.1.2`||[https://github.com/octokit/plugin-paginate-rest.js](https://github.com/octokit/plugin-paginate-rest.js)|
 |`@octokit/plugin-request-log`|`1.0.0`||[https://github.com/octokit/plugin-request-log.js](https://github.com/octokit/plugin-request-log.js)|
 |`@octokit/plugin-rest-endpoint-methods`|`2.4.0`||[https://github.com/octokit/plugin-rest-endpoint-methods.js](https://github.com/octokit/plugin-rest-endpoint-methods.js)|
 |`@octokit/request-error`|`1.2.1`||[https://github.com/octokit/request-error.js](https://github.com/octokit/request-error.js)|
-|`@octokit/request`|`5.3.2`||[https://github.com/octokit/request.js](https://github.com/octokit/request.js)|
+|`@octokit/request-error`|`2.0.0`||[https://github.com/octokit/request-error.js](https://github.com/octokit/request-error.js)|
+|`@octokit/request`|`5.4.2`||[https://github.com/octokit/request.js](https://github.com/octokit/request.js)|
 |`@octokit/rest`|`16.43.1`|Gregor Martynus|[https://github.com/octokit/rest.js](https://github.com/octokit/rest.js)|
-|`@octokit/types`|`2.5.0`|Gregor Martynus|[https://github.com/octokit/types.ts](https://github.com/octokit/types.ts)|
+|`@octokit/types`|`2.12.2`|Gregor Martynus|[https://github.com/octokit/types.ts](https://github.com/octokit/types.ts)|
 |`@samverschueren/stream-to-observable`|`0.3.0`||[https://github.com/SamVerschueren/stream-to-observable](https://github.com/SamVerschueren/stream-to-observable)|
 |`@sindresorhus/is`|`1.2.0`|Sindre Sorhus|[https://github.com/sindresorhus/is](https://github.com/sindresorhus/is)|
 |`@tootallnate/once`|`1.0.0`|Nathan Rajlich|[https://github.com/TooTallNate/once](https://github.com/TooTallNate/once)|
@@ -289,8 +291,8 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`@types/duplexify`|`3.6.0`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/empower`|`1.2.30`|vvakame|[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/events`|`3.0.0`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
-|`@types/express-serve-static-core`|`4.17.2`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
-|`@types/express`|`4.17.3`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
+|`@types/express-serve-static-core`|`4.17.5`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
+|`@types/express`|`4.17.6`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/fs-extra`|`8.1.0`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/glob`|`7.1.1`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/helmet`|`0.0.43`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
@@ -302,16 +304,17 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`@types/micromatch`|`3.1.1`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/mime`|`2.0.1`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/minimatch`|`3.0.3`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
-|`@types/node-fetch`|`2.5.5`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
+|`@types/node-fetch`|`2.5.6`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/node-statsd`|`0.1.2`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/node`|`10.17.17`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/node`|`12.12.29`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
-|`@types/passport-http-bearer`|`1.0.34`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
+|`@types/passport-http-bearer`|`1.0.35`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/passport-http`|`0.3.8`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/passport`|`1.0.3`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/power-assert-formatter`|`1.4.28`|vvakame|[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/power-assert`|`1.5.3`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/promise-retry`|`1.1.3`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
+|`@types/qs`|`6.9.1`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/range-parser`|`1.2.3`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/retry`|`0.10.2`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/rx-core-binding`|`4.0.4`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
@@ -329,17 +332,17 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`@types/rx`|`4.1.1`|Carl de Billy|[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/semver`|`6.2.1`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/serve-static`|`1.13.3`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
-|`@types/shelljs`|`0.8.6`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
+|`@types/shelljs`|`0.8.7`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/through`|`0.0.30`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/tmp`|`0.1.0`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/utf8`|`2.1.6`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
-|`@types/uuid`|`3.4.8`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
+|`@types/uuid`|`3.4.9`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/ws`|`6.0.4`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/yargs-parser`|`15.0.0`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/yargs`|`15.0.4`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@types/zen-observable`|`0.8.0`||[https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)|
 |`@wry/context`|`0.4.4`|Ben Newman|[https://github.com/benjamn/wryware](https://github.com/benjamn/wryware)|
-|`@wry/equality`|`0.1.9`|Ben Newman|[https://github.com/benjamn/wryware](https://github.com/benjamn/wryware)|
+|`@wry/equality`|`0.1.11`|Ben Newman|[https://github.com/benjamn/wryware](https://github.com/benjamn/wryware)|
 |`abort-controller`|`3.0.0`|Toru Nagashima|[https://github.com/mysticatea/abort-controller](https://github.com/mysticatea/abort-controller)|
 |`accepts`|`1.3.7`||[https://github.com/jshttp/accepts](https://github.com/jshttp/accepts)|
 |`acorn-es7-plugin`|`1.1.7`|matatbread|[https://github.com/MatAtBread/acorn-es7-plugin](https://github.com/MatAtBread/acorn-es7-plugin)|
@@ -348,7 +351,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`agent-base`|`6.0.0`|Nathan Rajlich|[https://github.com/TooTallNate/node-agent-base](https://github.com/TooTallNate/node-agent-base)|
 |`aggregate-error`|`3.0.0`|Sindre Sorhus|[https://github.com/sindresorhus/aggregate-error](https://github.com/sindresorhus/aggregate-error)|
 |`aggregate-error`|`3.0.1`|Sindre Sorhus|[https://github.com/sindresorhus/aggregate-error](https://github.com/sindresorhus/aggregate-error)|
-|`ajv`|`6.12.0`|Evgeny Poberezkin|[https://github.com/epoberezkin/ajv](https://github.com/epoberezkin/ajv)|
+|`ajv`|`6.12.2`|Evgeny Poberezkin|[https://github.com/epoberezkin/ajv](https://github.com/epoberezkin/ajv)|
 |`ansi-escapes`|`3.2.0`|Sindre Sorhus|[https://github.com/sindresorhus/ansi-escapes](https://github.com/sindresorhus/ansi-escapes)|
 |`ansi-regex`|`2.1.1`|Sindre Sorhus|[https://github.com/chalk/ansi-regex](https://github.com/chalk/ansi-regex)|
 |`ansi-regex`|`3.0.0`|Sindre Sorhus|[https://github.com/chalk/ansi-regex](https://github.com/chalk/ansi-regex)|
@@ -363,25 +366,25 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`apollo-cache-inmemory`|`1.6.5`|James Baxley|[https://github.com/apollographql/apollo-client](https://github.com/apollographql/apollo-client)|
 |`apollo-cache`|`1.3.4`|James Baxley|[https://github.com/apollographql/apollo-client](https://github.com/apollographql/apollo-client)|
 |`apollo-client`|`2.6.8`|Sashko Stubailo|[https://github.com/apollographql/apollo-client](https://github.com/apollographql/apollo-client)|
-|`apollo-codegen-core`|`0.36.4`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
-|`apollo-codegen-flow`|`0.34.4`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
-|`apollo-codegen-scala`|`0.35.4`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
-|`apollo-codegen-swift`|`0.36.4`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
-|`apollo-codegen-typescript`|`0.36.4`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
+|`apollo-codegen-core`|`0.36.8`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
+|`apollo-codegen-flow`|`0.34.8`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
+|`apollo-codegen-scala`|`0.35.8`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
+|`apollo-codegen-swift`|`0.36.8`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
+|`apollo-codegen-typescript`|`0.36.8`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
 |`apollo-datasource`|`0.7.0`|opensource@apollographql.com|[https://github.com/apollographql/apollo-server/tree/master/packages/apollo-datasource](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-datasource)|
-|`apollo-env`|`0.6.2`|opensource@apollographql.com|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
-|`apollo-graphql`|`0.4.1`|Apollo||
-|`apollo-language-server`|`1.20.1`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
-|`apollo-link-context`|`1.0.19`|James Baxley|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
-|`apollo-link-error`|`1.1.12`|James Baxley|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
-|`apollo-link-http-common`|`0.2.15`|Evans Hauser|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
-|`apollo-link-http`|`1.5.16`|Evans Hauser|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
-|`apollo-link`|`1.2.13`|Evans Hauser|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
+|`apollo-env`|`0.6.4`|opensource@apollographql.com|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
+|`apollo-graphql`|`0.4.3`|Apollo||
+|`apollo-language-server`|`1.21.3`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
+|`apollo-link-context`|`1.0.20`|James Baxley|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
+|`apollo-link-error`|`1.1.13`|James Baxley|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
+|`apollo-link-http-common`|`0.2.16`|Evans Hauser|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
+|`apollo-link-http`|`1.5.17`|Evans Hauser|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
+|`apollo-link`|`1.2.14`|Evans Hauser|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
 |`apollo-server-caching`|`0.5.1`|opensource@apollographql.com|[https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-caching](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-caching)|
 |`apollo-server-env`|`2.4.3`|opensource@apollographql.com|[https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-env](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-env)|
-|`apollo-server-errors`|`2.4.0`|opensource@apollographql.com|[https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-errors](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-errors)|
+|`apollo-server-errors`|`2.4.1`|opensource@apollographql.com|[https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-errors](https://github.com/apollographql/apollo-server/tree/master/packages/apollo-server-errors)|
 |`apollo-utilities`|`1.3.3`|James Baxley|[https://github.com/apollographql/apollo-client](https://github.com/apollographql/apollo-client)|
-|`apollo`|`2.25.0`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
+|`apollo`|`2.27.3`|Apollo GraphQL|[https://github.com/apollographql/apollo-tooling](https://github.com/apollographql/apollo-tooling)|
 |`app-root-path`|`2.2.1`|Chris Morrell|[https://github.com/inxilpro/node-app-root-path](https://github.com/inxilpro/node-app-root-path)|
 |`arg`|`4.1.3`|Josh Junon|[https://github.com/zeit/arg](https://github.com/zeit/arg)|
 |`argparse`|`1.0.10`||[https://github.com/nodeca/argparse](https://github.com/nodeca/argparse)|
@@ -389,7 +392,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`array-flatten`|`1.1.1`|Blake Embrey|[https://github.com/blakeembrey/array-flatten](https://github.com/blakeembrey/array-flatten)|
 |`array-union`|`2.1.0`|Sindre Sorhus|[https://github.com/sindresorhus/array-union](https://github.com/sindresorhus/array-union)|
 |`arrify`|`2.0.1`|Sindre Sorhus|[https://github.com/sindresorhus/arrify](https://github.com/sindresorhus/arrify)|
-|`ast-types`|`0.13.2`|Ben Newman|[https://github.com/benjamn/ast-types](https://github.com/benjamn/ast-types)|
+|`ast-types`|`0.13.3`|Ben Newman|[https://github.com/benjamn/ast-types](https://github.com/benjamn/ast-types)|
 |`astral-regex`|`1.0.0`|Kevin Mårtensson|[https://github.com/kevva/astral-regex](https://github.com/kevva/astral-regex)|
 |`async-each`|`1.0.3`|Paul Miller|[https://github.com/paulmillr/async-each](https://github.com/paulmillr/async-each)|
 |`async-exit-hook`|`2.0.1`|Tapani Moilanen|[https://github.com/tapppi/async-exit-hook](https://github.com/tapppi/async-exit-hook)|
@@ -401,8 +404,6 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`await-to-js`|`2.1.1`|Dima Grossman|[https://github.com/scopsy/await-to-js](https://github.com/scopsy/await-to-js)|
 |`axios-fetch`|`1.1.0`|Matt Lavin||
 |`axios`|`0.19.2`|Matt Zabriskie|[https://github.com/axios/axios](https://github.com/axios/axios)|
-|`babel-polyfill`|`6.26.0`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-polyfill](https://github.com/babel/babel/tree/master/packages/babel-polyfill)|
-|`babel-runtime`|`6.26.0`|Sebastian McKenzie|[https://github.com/babel/babel/tree/master/packages/babel-runtime](https://github.com/babel/babel/tree/master/packages/babel-runtime)|
 |`balanced-match`|`1.0.0`|Julian Gruber|[https://github.com/juliangruber/balanced-match](https://github.com/juliangruber/balanced-match)|
 |`base-64`|`0.1.0`|Mathias Bynens|[https://github.com/mathiasbynens/base64](https://github.com/mathiasbynens/base64)|
 |`base64-js`|`1.3.1`|T. Jameson Little|[https://github.com/beatgammit/base64-js](https://github.com/beatgammit/base64-js)|
@@ -429,13 +430,14 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`chalk`|`1.1.3`||[https://github.com/chalk/chalk](https://github.com/chalk/chalk)|
 |`chalk`|`2.4.2`||[https://github.com/chalk/chalk](https://github.com/chalk/chalk)|
 |`change-case`|`3.1.0`|Blake Embrey|[https://github.com/blakeembrey/change-case](https://github.com/blakeembrey/change-case)|
-|`chokidar`|`3.3.1`|Paul Miller|[https://github.com/paulmillr/chokidar](https://github.com/paulmillr/chokidar)|
+|`chokidar`|`3.4.0`|Paul Miller|[https://github.com/paulmillr/chokidar](https://github.com/paulmillr/chokidar)|
 |`clean-stack`|`1.3.0`|Sindre Sorhus|[https://github.com/sindresorhus/clean-stack](https://github.com/sindresorhus/clean-stack)|
 |`clean-stack`|`2.2.0`|Sindre Sorhus|[https://github.com/sindresorhus/clean-stack](https://github.com/sindresorhus/clean-stack)|
 |`cli-cursor`|`2.1.0`|Sindre Sorhus|[https://github.com/sindresorhus/cli-cursor](https://github.com/sindresorhus/cli-cursor)|
+|`cli-progress`|`3.8.0`|Andi Dittrich|[https://github.com/AndiDittrich/Node.CLI-Progress](https://github.com/AndiDittrich/Node.CLI-Progress)|
 |`cli-truncate`|`0.2.1`|Sindre Sorhus|[https://github.com/sindresorhus/cli-truncate](https://github.com/sindresorhus/cli-truncate)|
 |`cli-ux`|`4.9.3`|Jeff Dickey @jdxcode|[https://github.com/oclif/cli-ux](https://github.com/oclif/cli-ux)|
-|`cli-ux`|`5.2.1`|Jeff Dickey @jdxcode|[https://github.com/oclif/cli-ux](https://github.com/oclif/cli-ux)|
+|`cli-ux`|`5.4.5`|Jeff Dickey @jdxcode|[https://github.com/oclif/cli-ux](https://github.com/oclif/cli-ux)|
 |`clone`|`2.1.2`|Paul Vorbach|[https://github.com/pvorb/node-clone](https://github.com/pvorb/node-clone)|
 |`code-point-at`|`1.1.0`|Sindre Sorhus|[https://github.com/sindresorhus/code-point-at](https://github.com/sindresorhus/code-point-at)|
 |`color-convert`|`1.9.3`|Heather Arthur|[https://github.com/Qix-/color-convert](https://github.com/Qix-/color-convert)|
@@ -459,7 +461,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`cookie-signature`|`1.0.6`|TJ Holowaychuk|[https://github.com/visionmedia/node-cookie-signature](https://github.com/visionmedia/node-cookie-signature)|
 |`cookie`|`0.4.0`|Roman Shtylman|[https://github.com/jshttp/cookie](https://github.com/jshttp/cookie)|
 |`core-js`|`2.6.11`||[https://github.com/zloirock/core-js](https://github.com/zloirock/core-js)|
-|`core-js`|`3.6.4`||[https://github.com/zloirock/core-js](https://github.com/zloirock/core-js)|
+|`core-js`|`3.6.5`||[https://github.com/zloirock/core-js](https://github.com/zloirock/core-js)|
 |`core-util-is`|`1.0.2`|Isaac Z. Schlueter|[https://github.com/isaacs/core-util-is](https://github.com/isaacs/core-util-is)|
 |`cors`|`2.8.5`|Troy Goode|[https://github.com/expressjs/cors](https://github.com/expressjs/cors)|
 |`cosmiconfig`|`5.2.1`|David Clark|[https://github.com/davidtheclark/cosmiconfig](https://github.com/davidtheclark/cosmiconfig)|
@@ -521,7 +523,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`events`|`2.1.0`|Irakli Gozalishvili|[https://github.com/Gozala/events](https://github.com/Gozala/events)|
 |`execa`|`1.0.0`|Sindre Sorhus|[https://github.com/sindresorhus/execa](https://github.com/sindresorhus/execa)|
 |`expect-ct`|`0.2.0`|Evan Hahn|[https://github.com/helmetjs/expect-ct](https://github.com/helmetjs/expect-ct)|
-|`express-session`|`1.17.0`|TJ Holowaychuk|[https://github.com/expressjs/session](https://github.com/expressjs/session)|
+|`express-session`|`1.17.1`|TJ Holowaychuk|[https://github.com/expressjs/session](https://github.com/expressjs/session)|
 |`express`|`4.17.1`|TJ Holowaychuk|[https://github.com/expressjs/express](https://github.com/expressjs/express)|
 |`extend`|`3.0.2`|Stefan Thomas|[https://github.com/justmoon/node-extend](https://github.com/justmoon/node-extend)|
 |`extract-stack`|`1.0.0`|Sindre Sorhus|[https://github.com/sindresorhus/extract-stack](https://github.com/sindresorhus/extract-stack)|
@@ -564,7 +566,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`graphql-tag`|`2.10.3`||[https://github.com/apollographql/graphql-tag](https://github.com/apollographql/graphql-tag)|
 |`graphql-toolkit`|`0.5.11`|Dotan Simha|[https://github.com/dotansimha/graphql-toolkit](https://github.com/dotansimha/graphql-toolkit)|
 |`graphql-toolkit`|`0.5.18`|Dotan Simha|[https://github.com/dotansimha/graphql-toolkit](https://github.com/dotansimha/graphql-toolkit)|
-|`graphql-tools`|`4.0.7`|Jonas Helfer|[https://github.com/apollographql/graphql-tools](https://github.com/apollographql/graphql-tools)|
+|`graphql-tools`|`4.0.8`|Jonas Helfer|[https://github.com/apollographql/graphql-tools](https://github.com/apollographql/graphql-tools)|
 |`graphql`|`14.6.0`||[https://github.com/graphql/graphql-js](https://github.com/graphql/graphql-js)|
 |`gtoken`|`4.1.4`|Google, LLC|[https://github.com/google/node-gtoken](https://github.com/google/node-gtoken)|
 |`has-ansi`|`2.0.0`|Sindre Sorhus|[https://github.com/sindresorhus/has-ansi](https://github.com/sindresorhus/has-ansi)|
@@ -576,8 +578,8 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`hash-stream-validation`|`0.2.2`|Stephen Sawchuk|[https://github.com/stephenplusplus/hash-stream-validation](https://github.com/stephenplusplus/hash-stream-validation)|
 |`header-case`|`1.0.1`|Blake Embrey|[https://github.com/blakeembrey/header-case](https://github.com/blakeembrey/header-case)|
 |`helmet-crossdomain`|`0.4.0`|Evan Hahn|[https://github.com/helmetjs/crossdomain](https://github.com/helmetjs/crossdomain)|
-|`helmet-csp`|`2.9.5`|Adam Baldwin|[https://github.com/helmetjs/csp](https://github.com/helmetjs/csp)|
-|`helmet`|`3.21.3`|Adam Baldwin|[https://github.com/helmetjs/helmet](https://github.com/helmetjs/helmet)|
+|`helmet-csp`|`2.10.0`|Adam Baldwin|[https://github.com/helmetjs/csp](https://github.com/helmetjs/csp)|
+|`helmet`|`3.22.0`|Adam Baldwin|[https://github.com/helmetjs/helmet](https://github.com/helmetjs/helmet)|
 |`hide-powered-by`|`1.1.0`|Adam Baldwin|[https://github.com/helmetjs/hide-powered-by](https://github.com/helmetjs/hide-powered-by)|
 |`hot-shots`|`6.8.7`|Steve Ivy|[https://github.com/brightcove/hot-shots](https://github.com/brightcove/hot-shots)|
 |`hpkp`|`2.0.0`|Adam Baldwin|[https://github.com/helmetjs/hpkp](https://github.com/helmetjs/hpkp)|
@@ -619,7 +621,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`is-obj`|`2.0.0`|Sindre Sorhus|[https://github.com/sindresorhus/is-obj](https://github.com/sindresorhus/is-obj)|
 |`is-observable`|`1.1.0`|Sindre Sorhus|[https://github.com/sindresorhus/is-observable](https://github.com/sindresorhus/is-observable)|
 |`is-plain-object`|`3.0.0`|Jon Schlinkert|[https://github.com/jonschlinkert/is-plain-object](https://github.com/jonschlinkert/is-plain-object)|
-|`is-promise`|`2.1.0`|ForbesLindesay|[https://github.com/then/is-promise](https://github.com/then/is-promise)|
+|`is-promise`|`2.2.2`|ForbesLindesay|[https://github.com/then/is-promise](https://github.com/then/is-promise)|
 |`is-regex`|`1.0.5`|Jordan Harband|[https://github.com/ljharb/is-regex](https://github.com/ljharb/is-regex)|
 |`is-retry-allowed`|`1.2.0`|Vsevolod Strukchinsky|[https://github.com/floatdrop/is-retry-allowed](https://github.com/floatdrop/is-retry-allowed)|
 |`is-ssh`|`1.3.1`|Ionică Bizău|[https://github.com/IonicaBizau/node-is-ssh](https://github.com/IonicaBizau/node-is-ssh)|
@@ -633,7 +635,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`is-wsl`|`1.1.0`|Sindre Sorhus|[https://github.com/sindresorhus/is-wsl](https://github.com/sindresorhus/is-wsl)|
 |`is`|`3.3.0`|Enrico Marino|[https://github.com/enricomarino/is](https://github.com/enricomarino/is)|
 |`isarray`|`1.0.0`|Julian Gruber|[https://github.com/juliangruber/isarray](https://github.com/juliangruber/isarray)|
-|`isbinaryfile`|`4.0.4`||[https://github.com/gjtorikian/isBinaryFile](https://github.com/gjtorikian/isBinaryFile)|
+|`isbinaryfile`|`4.0.6`||[https://github.com/gjtorikian/isBinaryFile](https://github.com/gjtorikian/isBinaryFile)|
 |`isobject`|`4.0.0`|Jon Schlinkert|[https://github.com/jonschlinkert/isobject](https://github.com/jonschlinkert/isobject)|
 |`iterall`|`1.3.0`|Lee Byron|[https://github.com/leebyron/iterall](https://github.com/leebyron/iterall)|
 |`java-properties`|`1.0.2`||[https://github.com/mattdsteele/java-properties](https://github.com/mattdsteele/java-properties)|
@@ -694,15 +696,14 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`mimic-fn`|`1.2.0`|Sindre Sorhus|[https://github.com/sindresorhus/mimic-fn](https://github.com/sindresorhus/mimic-fn)|
 |`mimic-fn`|`2.1.0`|Sindre Sorhus|[https://github.com/sindresorhus/mimic-fn](https://github.com/sindresorhus/mimic-fn)|
 |`minimist`|`0.0.10`|James Halliday|[https://github.com/substack/minimist](https://github.com/substack/minimist)|
-|`minimist`|`0.0.8`|James Halliday|[https://github.com/substack/minimist](https://github.com/substack/minimist)|
-|`mkdirp`|`0.5.1`|James Halliday|[https://github.com/substack/node-mkdirp](https://github.com/substack/node-mkdirp)|
-|`mkdirp`|`1.0.3`||[https://github.com/isaacs/node-mkdirp](https://github.com/isaacs/node-mkdirp)|
+|`minimist`|`1.2.5`|James Halliday|[https://github.com/substack/minimist](https://github.com/substack/minimist)|
+|`mkdirp`|`0.5.5`|James Halliday|[https://github.com/substack/node-mkdirp](https://github.com/substack/node-mkdirp)|
 |`moment`|`2.24.0`|Iskren Ivov Chernev|[https://github.com/moment/moment](https://github.com/moment/moment)|
 |`ms`|`2.0.0`||[https://github.com/zeit/ms](https://github.com/zeit/ms)|
 |`ms`|`2.1.1`||[https://github.com/zeit/ms](https://github.com/zeit/ms)|
 |`ms`|`2.1.2`||[https://github.com/zeit/ms](https://github.com/zeit/ms)|
 |`murmurhash3js`|`3.0.1`|Karan Lyons|[https://github.com/pid/murmurHash3js](https://github.com/pid/murmurHash3js)|
-|`nan`|`2.14.0`||[https://github.com/nodejs/nan](https://github.com/nodejs/nan)|
+|`nan`|`2.14.1`||[https://github.com/nodejs/nan](https://github.com/nodejs/nan)|
 |`natural-orderby`|`2.0.3`|Olaf Ennen|[https://github.com/yobacca/natural-orderby](https://github.com/yobacca/natural-orderby)|
 |`negotiator`|`0.6.2`||[https://github.com/jshttp/negotiator](https://github.com/jshttp/negotiator)|
 |`nice-try`|`1.0.5`||[https://github.com/electerious/nice-try](https://github.com/electerious/nice-try)|
@@ -758,7 +759,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`pause`|`0.0.1`|TJ Holowaychuk||
 |`picomatch`|`2.2.1`|Jon Schlinkert|[https://github.com/micromatch/picomatch](https://github.com/micromatch/picomatch)|
 |`pify`|`4.0.1`|Sindre Sorhus|[https://github.com/sindresorhus/pify](https://github.com/sindresorhus/pify)|
-|`portfinder`|`1.0.25`|Charlie Robbins|[https://github.com/indexzero/node-portfinder](https://github.com/indexzero/node-portfinder)|
+|`portfinder`|`1.0.26`|Charlie Robbins|[https://github.com/http-party/node-portfinder](https://github.com/http-party/node-portfinder)|
 |`power-assert-context-formatter`|`1.2.0`|Takuto Wada|[https://github.com/twada/power-assert-runtime](https://github.com/twada/power-assert-runtime)|
 |`power-assert-context-reducer-ast`|`1.2.0`|Takuto Wada|[https://github.com/twada/power-assert-runtime](https://github.com/twada/power-assert-runtime)|
 |`power-assert-context-traversal`|`1.2.0`|Takuto Wada|[https://github.com/twada/power-assert-runtime](https://github.com/twada/power-assert-runtime)|
@@ -785,13 +786,11 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`readable-stream`|`2.2.11`||[https://github.com/nodejs/readable-stream](https://github.com/nodejs/readable-stream)|
 |`readable-stream`|`2.3.7`||[https://github.com/nodejs/readable-stream](https://github.com/nodejs/readable-stream)|
 |`readable-stream`|`3.6.0`||[https://github.com/nodejs/readable-stream](https://github.com/nodejs/readable-stream)|
-|`readdirp`|`3.3.0`|Thorsten Lorenz|[https://github.com/paulmillr/readdirp](https://github.com/paulmillr/readdirp)|
-|`recast`|`0.18.7`|Ben Newman|[https://github.com/benjamn/recast](https://github.com/benjamn/recast)|
+|`readdirp`|`3.4.0`|Thorsten Lorenz|[https://github.com/paulmillr/readdirp](https://github.com/paulmillr/readdirp)|
+|`recast`|`0.19.0`|Ben Newman|[https://github.com/benjamn/recast](https://github.com/benjamn/recast)|
 |`rechoir`|`0.6.2`|Tyler Kellen|[https://github.com/tkellen/node-rechoir](https://github.com/tkellen/node-rechoir)|
 |`redeyed`|`2.1.1`|Thorsten Lorenz|[https://github.com/thlorenz/redeyed](https://github.com/thlorenz/redeyed)|
 |`referrer-policy`|`1.2.0`|Evan Hahn|[https://github.com/helmetjs/referrer-policy](https://github.com/helmetjs/referrer-policy)|
-|`regenerator-runtime`|`0.10.5`|Ben Newman|[https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime](https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime)|
-|`regenerator-runtime`|`0.11.1`|Ben Newman|[https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime](https://github.com/facebook/regenerator/tree/master/packages/regenerator-runtime)|
 |`require-directory`|`2.1.1`|Troy Goode|[https://github.com/troygoode/node-require-directory](https://github.com/troygoode/node-require-directory)|
 |`resolve-from`|`3.0.0`|Sindre Sorhus|[https://github.com/sindresorhus/resolve-from](https://github.com/sindresorhus/resolve-from)|
 |`resolve-from`|`4.0.0`|Sindre Sorhus|[https://github.com/sindresorhus/resolve-from](https://github.com/sindresorhus/resolve-from)|
@@ -881,7 +880,6 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`upper-case`|`1.1.3`|Blake Embrey|[https://github.com/blakeembrey/upper-case](https://github.com/blakeembrey/upper-case)|
 |`utf8`|`3.0.0`|Mathias Bynens|[https://github.com/mathiasbynens/utf8.js](https://github.com/mathiasbynens/utf8.js)|
 |`util-deprecate`|`1.0.2`|Nathan Rajlich|[https://github.com/TooTallNate/util-deprecate](https://github.com/TooTallNate/util-deprecate)|
-|`util.promisify`|`1.0.0`|Jordan Harband|[https://github.com/ljharb/util.promisify](https://github.com/ljharb/util.promisify)|
 |`util.promisify`|`1.0.1`|Jordan Harband|[https://github.com/ljharb/util.promisify](https://github.com/ljharb/util.promisify)|
 |`utils-merge`|`1.0.1`|Jared Hanson|[https://github.com/jaredhanson/utils-merge](https://github.com/jaredhanson/utils-merge)|
 |`uuid`|`3.4.0`||[https://github.com/uuidjs/uuid](https://github.com/uuidjs/uuid)|
@@ -896,20 +894,20 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 |`walkdir`|`0.4.1`|Ryan Day|[https://github.com/soldair/node-walkdir](https://github.com/soldair/node-walkdir)|
 |`whatwg-fetch`|`3.0.0`||[https://github.com/github/fetch](https://github.com/github/fetch)|
 |`widest-line`|`2.0.1`|Sindre Sorhus|[https://github.com/sindresorhus/widest-line](https://github.com/sindresorhus/widest-line)|
-|`windows-release`|`3.2.0`|Sindre Sorhus|[https://github.com/sindresorhus/windows-release](https://github.com/sindresorhus/windows-release)|
+|`windows-release`|`3.3.0`|Sindre Sorhus|[https://github.com/sindresorhus/windows-release](https://github.com/sindresorhus/windows-release)|
 |`winston-transport`|`4.3.0`|Charlie Robbins|[https://github.com/winstonjs/winston-transport](https://github.com/winstonjs/winston-transport)|
 |`winston`|`3.2.1`|Charlie Robbins|[https://github.com/winstonjs/winston](https://github.com/winstonjs/winston)|
 |`wordwrap`|`0.0.3`|James Halliday|[https://github.com/substack/node-wordwrap](https://github.com/substack/node-wordwrap)|
 |`wrap-ansi`|`3.0.1`|Sindre Sorhus|[https://github.com/chalk/wrap-ansi](https://github.com/chalk/wrap-ansi)|
 |`wrap-ansi`|`4.0.0`|Sindre Sorhus|[https://github.com/chalk/wrap-ansi](https://github.com/chalk/wrap-ansi)|
 |`wrap-ansi`|`6.2.0`|Sindre Sorhus|[https://github.com/chalk/wrap-ansi](https://github.com/chalk/wrap-ansi)|
-|`ws`|`7.2.3`|Einar Otto Stangvik|[https://github.com/websockets/ws](https://github.com/websockets/ws)|
+|`ws`|`7.2.5`|Einar Otto Stangvik|[https://github.com/websockets/ws](https://github.com/websockets/ws)|
 |`x-xss-protection`|`1.3.0`|Adam Baldwin|[https://github.com/helmetjs/x-xss-protection](https://github.com/helmetjs/x-xss-protection)|
 |`xdg-basedir`|`4.0.0`|Sindre Sorhus|[https://github.com/sindresorhus/xdg-basedir](https://github.com/sindresorhus/xdg-basedir)|
 |`xtend`|`4.0.2`|Raynos|[https://github.com/Raynos/xtend](https://github.com/Raynos/xtend)|
 |`yargs`|`15.3.0`||[https://github.com/yargs/yargs](https://github.com/yargs/yargs)|
 |`yn`|`3.1.1`|Sindre Sorhus|[https://github.com/sindresorhus/yn](https://github.com/sindresorhus/yn)|
-|`zen-observable-ts`|`0.8.20`|Evans Hauser|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
+|`zen-observable-ts`|`0.8.21`|Evans Hauser|[https://github.com/apollographql/apollo-link](https://github.com/apollographql/apollo-link)|
 |`zen-observable`|`0.8.15`||[https://github.com/zenparsing/zen-observable](https://github.com/zenparsing/zen-observable)|
 
 #### MIT AND BSD-3-Clause
