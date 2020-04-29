@@ -26,7 +26,10 @@ import {
     EventHandler,
     HandlerStatus,
 } from "./handler";
-import { debug } from "./log";
+import {
+    debug,
+    info,
+} from "./log";
 import {
     prepareStatus,
     StatusPublisher,
@@ -57,9 +60,10 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId:
 
     const payload: CommandIncoming | EventIncoming =
         JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
-    debug(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
-    debug(`Incoming message context: ${JSON.stringify(context, replacer)}`);
-    debug(`Incoming message: ${JSON.stringify(pubSubEvent, replacer)}`);
+    info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
+    // debug(`Incoming message context: ${JSON.stringify(context, replacer)}`);
+    // debug(`Incoming message: ${JSON.stringify(pubSubEvent, replacer)}`);
+
     if (isEventIncoming(payload)) {
         await processEvent(payload, context);
     } else if (isCommandIncoming(payload)) {
