@@ -51,6 +51,7 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId:
     const payload: CommandIncoming | EventIncoming =
         JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
     debug(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
+    debug(`Incoming message context: ${JSON.stringify(context, replacer)}`);
     if (isEventIncoming(payload)) {
         await processEvent(payload, context);
     } else if (isCommandIncoming(payload)) {
