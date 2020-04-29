@@ -49,7 +49,12 @@ export interface PubSubMessage {
 }
 
 export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId: string }) => {
-    debug(`atm:attributes ${JSON.stringify(pubSubEvent.attributes || {})}`);
+    const attributes = {
+        ...(pubSubEvent.attributes || {}),
+        eventId: context.eventId,
+    };
+    debug(`atm:attributes ${JSON.stringify(attributes)}`);
+
     const payload: CommandIncoming | EventIncoming =
         JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
     debug(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
