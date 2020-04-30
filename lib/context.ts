@@ -26,7 +26,7 @@ import {
     PubSubCommandMessageClient,
     PubSubEventMessageClient,
 } from "./message";
-import { commandRequestParameterPromptFactory } from "./parameterPrompt";
+import { commandRequestParameterPromptFactory } from "./parameter_prompt";
 import {
     CommandIncoming,
     EventIncoming,

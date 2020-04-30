@@ -24,7 +24,7 @@ import {
 import {
     ParameterPromptOptions,
     ParametersPromptObject,
-} from "./parameterPrompt";
+} from "./parameter_prompt";
 import {
     CommandIncoming,
     EventIncoming,

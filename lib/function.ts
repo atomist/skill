@@ -34,7 +34,7 @@ import {
     prepareStatus,
     StatusPublisher,
 } from "./message";
-import { CommandListenerExecutionInterruptError } from "./parameterPrompt";
+import { CommandListenerExecutionInterruptError } from "./parameter_prompt";
 import {
     CommandIncoming,
     EventIncoming,
