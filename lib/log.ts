@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { redact } from "./redact";
+
 /**
  * Print the debug level message to stdout
  *
@@ -22,7 +24,7 @@
  */
 export function debug(message: string, ...optionalParams: any[]): void {
     // tslint:disable-next-line:no-console
-    console.debug(`[debug] ${message}`, ...optionalParams);
+    console.debug(`[debug] ${redact(message)}`, ...optionalParams);
 }
 
 /**
@@ -33,7 +35,7 @@ export function debug(message: string, ...optionalParams: any[]): void {
  */
 export function info(message: string, ...optionalParams: any[]): void {
     // tslint:disable-next-line:no-console
-    console.info(`[info]  ${message}`, ...optionalParams);
+    console.info(`[info]  ${redact(message)}`, ...optionalParams);
 }
 
 /**
@@ -44,7 +46,7 @@ export function info(message: string, ...optionalParams: any[]): void {
  */
 export function warn(message: string, ...optionalParams: any[]): void {
     // tslint:disable-next-line:no-console
-    console.warn(`[warn]  ${message}`, ...optionalParams);
+    console.warn(`[warn]  ${redact(message)}`, ...optionalParams);
 }
 
 /**
@@ -55,5 +57,5 @@ export function warn(message: string, ...optionalParams: any[]): void {
  */
 export function error(message: string, ...optionalParams: any[]): void {
     // tslint:disable-next-line:no-console
-    console.error(`[error] ${message}`, ...optionalParams);
+    console.error(`[error] ${redact(message)}`, ...optionalParams);
 }
