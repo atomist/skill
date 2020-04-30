@@ -28,7 +28,7 @@ describe("project", () => {
         const baseDir = p.path();
         const readmePath = p.path("README.md");
         assert(baseDir);
-        assert.equal(await fs.pathExists(readmePath), true);
+        assert.strictEqual(await fs.pathExists(readmePath), true);
     });
 
 });
