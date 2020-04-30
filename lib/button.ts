@@ -17,9 +17,13 @@
 import { Action } from "@atomist/slack-messages";
 import { flatten } from "flat";
 import { CommandReferencingAction } from "./message";
-import { ParameterType } from "./parameters";
 import merge = require("lodash.merge");
 import forOwn = require("lodash.forown");
+
+export type ParameterIndexType = string;
+export type ParameterType = {
+    [key in ParameterIndexType]?: number | boolean | string | ParameterType;
+};
 
 /**
  * Create a slack button that invokes a command handler.
