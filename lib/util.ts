@@ -35,12 +35,12 @@ export async function requirePath(folderOrFile: string): Promise<string> {
     const p = __dirname.split("/node_modules/");
     const rp = path.join(p[0], folderOrFile);
     const lp = path.join(p[0], "lib", folderOrFile);
-    if (await fs.pathExists(rp)) {
+    if (await fs.pathExists(rp + ".js")) {
         return rp;
-    } else if (await fs.pathExists(lp)) {
+    } else if (await fs.pathExists(lp + ".js")) {
         return lp;
     }
-    throw new Error(`'${folderOrFile}' not found . or lib`);
+    throw new Error(`'${folderOrFile}' not found in '${p[0]}' or '${p[0]}/lib'`);
 }
 
 export function extractParameters(intent: string): Arg[] {
