@@ -21,8 +21,6 @@
   "bugs": {
     "url": "https://github.com/atomist/skill/issues"
   },
-  "main": "./index.js",
-  "types": "./index.d.ts",
   "dependencies": {
     "@atomist/skill-logging": "0.1.0-master.20200316180914",
     "@atomist/slack-messages": "^1.1.1",
