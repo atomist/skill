@@ -14,25 +14,14 @@
  * limitations under the License.
  */
 
-import { RemoteRepoRef } from "@atomist/automation-client/lib/operations/common/RepoId";
-import { GitProject } from "@atomist/automation-client/lib/project/git/GitProject";
-import { DirectoryManager } from "@atomist/automation-client/lib/spi/clone/DirectoryManager";
 import {
-    execPromise,
-    ExecPromiseResult,
-    spawnPromise,
-    SpawnPromiseOptions,
-    SpawnPromiseReturns,
-} from "@atomist/automation-client/lib/util/child_process";
-import { CloneDirectoryInfo } from "@atomist/automation-client/src/lib/spi/clone/DirectoryManager";
-import { SpawnSyncOptions } from "child_process";
-import * as fs from "fs-extra";
-import { debug } from "./log";
+    clone,
+    load,
+    Project,
+} from "./project/project";
 import {
     GitHubAppCredential,
     GitHubCredential,
-    isGitHubAppCredential,
-    isGitHubCredential,
 } from "./secrets";
 
 export interface CloneOptions {
@@ -88,6 +77,18 @@ export function gitHubComRepository(details: {
     return {
         ...details,
         type: RepositoryProviderType.GitHubCom,
+        cloneUrl: () => {
+            if (!!details.credential) {
+                // GitHub App tokens start with v1. and are expected in the password field
+                if (details.credential.token.startsWith("v1.")) {
+                    return `https://atomist:${details.credential.token}@github.com/${details.owner}/${details.repo}.git`;
+                } else {
+                    return `https://${details.credential.token}:x-oauth-basic@github.com/${details.owner}/${details.repo}.git`;
+                }
+            } else {
+                return `https://github.com/${details.owner}/${details.repo}.git`;
+            }
+        },
     };
 }
 
@@ -105,22 +106,20 @@ export interface RepositoryId {
 
     type: RepositoryProviderType;
     apiUrl?: string;
+    gitUrl?: string;
 }
 
 export interface AuthenticatedRepositoryId<T> extends RepositoryId {
     credential: T;
+
+    cloneUrl(): string;
 }
-
-export type Spawn = (cmd: string, args?: string[], opts?: SpawnPromiseOptions) => Promise<SpawnPromiseReturns>;
-export type Exec = (cmd: string, args?: string[], opts?: SpawnSyncOptions) => Promise<ExecPromiseResult>;
-
-export type Project = GitProject & { spawn: Spawn, exec: Exec };
 
 export interface ProjectLoader {
 
-    load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project | undefined>;
+    load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project>;
 
-    clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project | undefined>;
+    clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project>;
 
 }
 
@@ -130,85 +129,11 @@ export function createProjectLoader(): ProjectLoader {
 
 export class DefaultProjectLoader implements ProjectLoader {
 
-    public async load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project | undefined> {
-        if (isGitHubCredential(id.credential) || isGitHubAppCredential(id.credential)) {
-            const gcgp = await import("@atomist/automation-client/lib/project/git/GitCommandGitProject");
-            const project = gcgp.GitCommandGitProject.fromBaseDir(
-                await convertToRepoRef(id),
-                baseDir,
-                { token: id.credential.token },
-                async () => {
-                });
-            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { log, cwd: project.baseDir, ...(opts || {}) });
-            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { log, cwd: project.baseDir, ...(opts || {}) });
-            await project.setUserConfig("Atomist Bot", "bot@atomist.com");
-            return project as any;
-        }
-        return undefined;
+    public async load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project> {
+        return load(id, baseDir);
     }
 
     public async clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project> {
-        if (isGitHubCredential(id.credential) || isGitHubAppCredential(id.credential)) {
-            const gcgp = await import("@atomist/automation-client/lib/project/git/GitCommandGitProject");
-            const project = await gcgp.GitCommandGitProject.cloned(
-                { token: id.credential.token },
-                await convertToRepoRef(id),
-                options,
-                options?.path ? new FixedPathDirectoryManager(options.path) : undefined,
-            );
-            (project as any).spawn = (cmd, args, opts) => spawnPromise(cmd, args, { log, cwd: project.baseDir, ...(opts || {}) });
-            (project as any).exec = (cmd, args, opts) => execPromise(cmd, args, { log, cwd: project.baseDir, ...(opts || {}) });
-            await project.setUserConfig("Atomist Bot", "bot@atomist.com");
-            return project as any;
-        }
-        return undefined;
-    }
-}
-
-const log = {
-    write: msg => {
-        let line = msg;
-        if (line.endsWith("\n")) {
-            line = line.slice(0, -2);
-        }
-        const lines = line.split("\n");
-        lines.forEach(l => debug(l.trimRight()));
-    },
-};
-
-async function convertToRepoRef(id: AuthenticatedRepositoryId<any>): Promise<RemoteRepoRef> {
-    switch (id.type) {
-        case RepositoryProviderType.GitHubCom:
-        case RepositoryProviderType.GitHubEnterprise:
-            const grr = await import("@atomist/automation-client/lib/operations/common/GitHubRepoRef");
-            return grr.GitHubRepoRef.from({
-                owner: id.owner,
-                repo: id.repo,
-                sha: id.sha,
-                branch: id.branch,
-                rawApiBase: id.apiUrl,
-            });
-        default:
-            throw new Error("Unsupported repository id");
-    }
-}
-
-class FixedPathDirectoryManager implements DirectoryManager {
-
-    constructor(private readonly path: string) {
-    }
-
-    public async directoryFor(owner: string, repo: string, branch: string, opts: CloneOptions): Promise<CloneDirectoryInfo> {
-        await fs.ensureDir(this.path);
-        return {
-            path: this.path,
-            transient: false,
-            type: "empty-directory",
-            provenance: "skill-runner",
-            release: async () => {
-            },
-            invalidate: async () => {
-            },
-        };
+        return clone(id, options);
     }
 }

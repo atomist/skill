@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { guid } from "@atomist/automation-client/lib/internal/util/string";
 import {
     Attachment,
     SlackMessage,
     url,
 } from "@atomist/slack-messages";
 import { Contextual } from "./handler";
+import { guid } from "./util";
 
 export function slackSuccessMessage(title: string, text: string, ctx: Contextual<any, any>, options: Partial<Attachment> = {}): SlackMessage {
     const msg: SlackMessage = {

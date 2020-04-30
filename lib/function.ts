@@ -73,8 +73,8 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId:
 
 export async function processEvent(event: EventIncoming, ctx: { eventId: string }): Promise<void> {
     const context = createContext(event, ctx) as EventContext<any>;
-    const path = requirePath(`events/${context.name}`);
     try {
+        const path = await requirePath(`events/${context.name}`);
         debug(`Invoking event handler '${context.name}'`);
         const handler = require(path).handler as EventHandler<any>;
         const result = await handler(context) as HandlerStatus;
@@ -88,8 +88,8 @@ export async function processEvent(event: EventIncoming, ctx: { eventId: string 
 
 export async function processCommand(event: CommandIncoming, ctx: { eventId: string }): Promise<void> {
     const context = createContext(event, ctx) as CommandContext;
-    const path = requirePath(`commands/${context.name}`);
     try {
+        const path = await requirePath(`commands/${context.name}`);
         debug(`Invoking command handler '${context.name}'`);
         const handler = require(path).handler as CommandHandler;
         const result = await handler(context) as HandlerStatus;

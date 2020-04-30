@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+import * as fs from "fs-extra";
 import * as path from "path";
+import * as uuid from "uuid/v4";
 import { Arg } from "./payload";
 
 export function toArray<T>(value: T | T[]): T[] {
@@ -29,9 +31,16 @@ export function toArray<T>(value: T | T[]): T[] {
     }
 }
 
-export function requirePath(folderOrFile: string): string {
+export async function requirePath(folderOrFile: string): Promise<string> {
     const p = __dirname.split("/node_modules/");
-    return path.join(p[0], folderOrFile);
+    const rp = path.join(p[0], folderOrFile);
+    const lp = path.join(p[0], "lib", folderOrFile);
+    if (await fs.pathExists(rp)) {
+        return rp;
+    } else if (await fs.pathExists(lp)) {
+        return lp;
+    }
+    throw new Error(`'${folderOrFile}' not found . or lib`);
 }
 
 export function extractParameters(intent: string): Arg[] {
@@ -87,4 +96,8 @@ export function hideString(value: any): any {
         return value.map(hideString);
     }
     return value;
+}
+
+export function guid() {
+    return uuid();
 }
