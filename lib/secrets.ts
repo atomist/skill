@@ -69,17 +69,15 @@ interface ResourceUserResponse {
     }>;
 }
 
-export function gitHubUserToken(...scopes: string[]): CredentialResolver<GitHubCredential> {
-    return async (graph, payload) => {
+export function gitHubUserToken(): CredentialResolver<GitHubCredential> {
+    return async (graph, payload): Promise<GitHubCredential> => {
         if (isCommandIncoming(payload)) {
             const chatId = payload.source?.slack?.user?.id;
-            if (!!chatId) {
+            if (chatId) {
                 const response = await graph.query<ResourceUserResponse>(ResourceUserQuery, { id: chatId });
                 const credential = response?.ChatId[0]?.person?.gitHubId?.credential;
 
-                // TODO cd check scopes
-
-                if (!!credential) {
+                if (credential) {
                     return {
                         scopes: credential.scopes,
                         token: credential.secret,
@@ -117,9 +115,9 @@ interface ProviderResponse {
     Repo: Array<{
         org: {
             provider: {
-                id: string,
-            },
-        },
+                id: string;
+            };
+        };
     }>;
 }
 
@@ -139,10 +137,10 @@ interface GitHubAppTokenResponse {
     GitHubAppResourceProvider: Array<{
         gitHubAppInstallations: Array<{
             token: {
-                permissions: string,
-                secret: string,
-            },
-        }>,
+                permissions: string;
+                secret: string;
+            };
+        }>;
     }>;
 }
 
@@ -158,15 +156,14 @@ const ScmProviderQuery = `query ScmProvider($id: ID!) {
 interface ScmProviderResponse {
     SCMProvider: Array<{
         credential: {
-            secret: string,
-            scopes: string[],
-        },
+            secret: string;
+            scopes: string[];
+        };
     }>;
 }
 
-export function gitHubAppToken(id: { owner: string, repo: string, apiUrl?: string } | string)
-    : CredentialResolver<GitHubAppCredential | GitHubCredential> {
-    return async graph => {
+export function gitHubAppToken(id: { owner: string; repo: string; apiUrl?: string } | string): CredentialResolver<GitHubAppCredential | GitHubCredential> {
+    return async (graph): Promise<GitHubAppCredential | GitHubCredential> => {
         let repo;
         let owner;
         let apiUrl;
@@ -188,13 +185,13 @@ export function gitHubAppToken(id: { owner: string, repo: string, apiUrl?: strin
             providerId = provider?.Repo[0]?.org?.provider?.id;
         }
 
-        if (!!providerId) {
+        if (providerId) {
             const installations = await graph.query<GitHubAppTokenResponse>(GitHubAppTokenQuery, {
                 id: providerId,
                 owner,
             });
             const token = installations?.GitHubAppResourceProvider[0]?.gitHubAppInstallations[0].token;
-            if (!!token) {
+            if (token) {
                 return {
                     token: token.secret,
                     permissions: JSON.parse(token.permissions || ""),
@@ -203,7 +200,7 @@ export function gitHubAppToken(id: { owner: string, repo: string, apiUrl?: strin
             // Fallback to old SCMProvider for backwards compatibility
             const scmProvider = await graph.query<ScmProviderResponse>(ScmProviderQuery, { id: providerId });
             const credential = scmProvider?.SCMProvider[0]?.credential;
-            if (!!credential) {
+            if (credential) {
                 return {
                     token: credential.secret,
                     scopes: credential.scopes,

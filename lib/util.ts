@@ -20,7 +20,7 @@ import * as uuid from "uuid/v4";
 import { Arg } from "./payload";
 
 export function toArray<T>(value: T | T[]): T[] {
-    if (!!value) {
+    if (value) {
         if (Array.isArray(value)) {
             return value;
         } else {
@@ -98,6 +98,6 @@ export function hideString(value: any): any {
     return value;
 }
 
-export function guid() {
+export function guid(): string {
     return uuid();
 }

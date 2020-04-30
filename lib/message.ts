@@ -44,7 +44,7 @@ import {
 } from "./util";
 import cloneDeep = require("lodash.clonedeep");
 
-// tslint:disable:max-file-line-count
+/* eslint-disable @typescript-eslint/camelcase */
 
 export interface Destinations {
     users: string | string[];
@@ -141,7 +141,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 
     constructor(protected readonly request: CommandIncoming | EventIncoming,
                 protected readonly correlationId: string,
-                protected readonly team: { id: string, name?: string },
+                protected readonly team: { id: string; name?: string },
                 protected readonly source: Source,
                 protected readonly graphClient: GraphQLClient) {
         super();
@@ -206,7 +206,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
             const responseDestination = cloneDeep(this.source);
             if (responseDestination.slack) {
                 delete responseDestination.slack.user;
-                if (!!threadTs) {
+                if (threadTs) {
                     responseDestination.slack.thread_ts = threadTs;
                 }
             }
@@ -246,7 +246,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
         } else if (typeof msg === "string") {
             response.content_type = MessageMimeTypes.PLAIN_TEXT;
             response.body = msg;
-        } else if (!!options.delete) {
+        } else if (options.delete) {
             response.content_type = "application/x-atomist-delete";
             response.body = undefined;
         }
@@ -269,7 +269,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 
     private async getTeamId(teamId: string,
                             graphClient: GraphQLClient): Promise<string> {
-        if (!!teamId) {
+        if (teamId) {
             return teamId;
         } else {
             const query = `query ChatTeam { ChatTeam { id } }`;
@@ -348,16 +348,14 @@ export function mapActions(msg: SlackMessage): Action[] {
 function mapParameters(data: {}): Parameter[] {
     const parameters: Parameter[] = [];
     for (const key in data) {
-        if (data.hasOwnProperty(key)) {
-            const value = data[key];
-            if (value) {
-                parameters.push({
-                    name: key,
-                    value: value.toString(),
-                });
-            } else {
-                // logger.debug(`Parameter value for '${key}' is null`);
-            }
+        const value = data[key];
+        if (value) {
+            parameters.push({
+                name: key,
+                value: value.toString(),
+            });
+        } else {
+            // logger.debug(`Parameter value for '${key}' is null`);
         }
     }
     return parameters;
@@ -444,7 +442,7 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
 
     constructor(protected readonly request: CommandIncoming | EventIncoming,
                 protected readonly correlationId: string,
-                protected readonly team: { id: string, name?: string },
+                protected readonly team: { id: string; name?: string },
                 protected readonly source: Source,
                 protected readonly graphClient: GraphQLClient) {
         super(request, correlationId, team, source, graphClient);
@@ -456,7 +454,7 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
         const topicName = process.env.ATOMIST_TOPIC || process.env.TOPIC;
         try {
             debug(`Sending message: ${JSON.stringify(message, replacer)}`);
-            if (!!topicName) {
+            if (topicName) {
                 const topic = this.pubsub.topic(topicName);
                 const messageBuffer = Buffer.from(JSON.stringify(message), "utf8");
                 await topic.publish(messageBuffer);

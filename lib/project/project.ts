@@ -43,9 +43,9 @@ export interface Project {
 
 export async function load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project> {
     const project = {
-        path: (...elements: string[]) => path.join(baseDir, ...(elements || [])),
-        spawn: (cmd, args, opts) => spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
-        exec: (cmd, args, opts) => execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
+        path: (...elements: string[]): string => path.join(baseDir, ...(elements || [])),
+        spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> => spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
+        exec: (cmd, args, opts): Promise<ExecPromiseResult> => execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
     };
     await setUserConfig(project);
     return project;
@@ -54,9 +54,9 @@ export async function load(id: AuthenticatedRepositoryId<any>, baseDir: string):
 export async function clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project> {
     const baseDir = await doClone(id, options);
     const project = {
-        path: (...elements: string[]) => path.join(baseDir, ...(elements || [])),
-        spawn: (cmd, args, opts) => spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
-        exec: (cmd, args, opts) => execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
+        path: (...elements: string[]): string => path.join(baseDir, ...(elements || [])),
+        spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> => spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
+        exec: (cmd, args, opts): Promise<ExecPromiseResult> => execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
     };
     await setUserConfig(project);
     return project;
@@ -68,7 +68,7 @@ async function setUserConfig(project: Project): Promise<void> {
 }
 
 const log = {
-    write: msg => {
+    write: (msg): void => {
         let line = msg;
         if (line.endsWith("\n")) {
             line = line.slice(0, -2);

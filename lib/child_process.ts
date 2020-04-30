@@ -50,7 +50,7 @@ export function killProcess(pid: number, signal?: string | number): void {
     const sig = (signal) ? `signal ${signal}` : "default signal";
     debug(`Calling tree-kill on child process ${pid} with ${sig}`);
     // Lazy import
-    require("tree-kill")(pid, signal);
+    require("tree-kill")(pid, signal); // eslint-disable-line @typescript-eslint/no-var-requires
 }
 
 /**
@@ -133,7 +133,7 @@ export interface SpawnPromiseReturns extends SpawnSyncReturns<string> {
 export async function spawnPromise(cmd: string, args: string[] = [], opts: SpawnPromiseOptions = {}): Promise<SpawnPromiseReturns> {
     // Lazy import
     const spawn = await import("cross-spawn");
-    return new Promise<SpawnPromiseReturns>((resolve, reject) => {
+    return new Promise<SpawnPromiseReturns>(resolve => {
         const optsToUse: SpawnPromiseOptions = {
             logCommand: true,
             ...opts,
@@ -152,7 +152,7 @@ export async function spawnPromise(cmd: string, args: string[] = [], opts: Spawn
         }
 
         function pLog(data: string): void {
-            const formatted = (optsToUse.log && optsToUse.log.stripAnsi) ? require("strip-ansi")(data) : data;
+            const formatted = (optsToUse.log && optsToUse.log.stripAnsi) ? require("strip-ansi")(data) : data;  // eslint-disable-line @typescript-eslint/no-var-requires
             optsToUse.log.write(formatted);
         }
 
@@ -176,12 +176,12 @@ export async function spawnPromise(cmd: string, args: string[] = [], opts: Spawn
                 killProcess(childProcess.pid, optsToUse.killSignal);
             }, optsToUse.timeout);
         }
-        let stderr: string = "";
-        let stdout: string = "";
+        let stderr = "";
+        let stdout = "";
         if (optsToUse.log) {
-            function logData(data: Buffer): void {
+            const logData = (data: Buffer): void => {
                 pLog(data.toString(logEncoding));
-            }
+            };
             childProcess.stderr.on("data", logData);
             childProcess.stdout.on("data", logData);
             stderr = stdout = "See log\n";

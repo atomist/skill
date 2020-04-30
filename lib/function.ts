@@ -51,7 +51,7 @@ export interface PubSubMessage {
     attributes: any;
 }
 
-export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId: string }) => {
+export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId: string }): Promise<void> => {
     const attributes = {
         ...(pubSubEvent.attributes || {}),
         eventId: context.eventId,

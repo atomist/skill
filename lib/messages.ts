@@ -22,6 +22,8 @@ import {
 import { Contextual } from "./handler";
 import { guid } from "./util";
 
+/* eslint-disable @typescript-eslint/camelcase */
+
 export function slackSuccessMessage(title: string, text: string, ctx: Contextual<any, any>, options: Partial<Attachment> = {}): SlackMessage {
     const msg: SlackMessage = {
         attachments: [{

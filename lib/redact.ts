@@ -93,7 +93,7 @@ export const DEFAULT_REDACTION_PATTERNS = [
     {
         // https://perishablepress.com/stop-using-unsafe-characters-in-urls/
         // https://www.ietf.org/rfc/rfc3986.txt
-        regexp: /\b((?:ht|f|sm)tps?:\/\/)[^:/?#\[\]@""<>{}|\\^``\s]+:[^:/?#\[\]@""<>{}|\\^``\s]+@/g,
+        regexp: /\b((?:ht|f|sm)tps?:\/\/)[^:/?#\[\]@""<>{}|\\^``\s]+:[^:/?#\[\]@""<>{}|\\^``\s]+@/g, // eslint-disable-line no-useless-escape
         replacement: "$1[USER]:[PASSWORD]@",
     },
 ];

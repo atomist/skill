@@ -47,7 +47,7 @@ export interface Skill {
         image: string;
         command?: string[];
         args?: string[];
-        env?: Array<{ name: string, value: string }>;
+        env?: Array<{ name: string; value: string }>;
         workingDir?: string;
         // secrets?: ContainerSecrets;
         // input?: string[];
@@ -57,8 +57,8 @@ export interface Skill {
     configuration: {
         instances: Array<{
             name: string;
-            parameters: Array<{ name: string, value: any }>;
-            resourceProviders: Array<{ name: string, typeName: string, selectedResourceProviders: Array<{ id: string }> }>;
+            parameters: Array<{ name: string; value: any }>;
+            resourceProviders: Array<{ name: string; typeName: string; selectedResourceProviders: Array<{ id: string }> }>;
         }>;
     };
 }
@@ -113,7 +113,7 @@ export interface Source {
         identity: {
             sub: string;
             pid: string;
-        },
+        };
     };
     identity?: any;
 }

@@ -68,17 +68,17 @@ export interface CloneOptions {
 }
 
 export function gitHubComRepository(details: {
-    owner: string,
-    repo: string,
-    branch?: string,
-    sha?: string,
-    credential: GitHubCredential | GitHubAppCredential,
+    owner: string;
+    repo: string;
+    branch?: string;
+    sha?: string;
+    credential: GitHubCredential | GitHubAppCredential;
 }): AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential> {
     return {
         ...details,
         type: RepositoryProviderType.GitHubCom,
-        cloneUrl: () => {
-            if (!!details.credential) {
+        cloneUrl: (): string => {
+            if (details.credential) {
                 // GitHub App tokens start with v1. and are expected in the password field
                 if (details.credential.token.startsWith("v1.")) {
                     return `https://atomist:${details.credential.token}@github.com/${details.owner}/${details.repo}.git`;

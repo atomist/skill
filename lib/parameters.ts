@@ -78,7 +78,7 @@ export type Parameters<PARAMS = any> = ParametersListing | ParametersObject<PARA
  * When the class-style decorated approach is used, this is unnecessary as any field
  * value will be used as a default.
  */
-export interface HasDefaultValue { defaultValue?: any; }
+export interface HasDefaultValue { defaultValue?: any }
 
 export type ParametersObjectValue = (BaseParameter & HasDefaultValue);
 

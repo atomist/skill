@@ -28,6 +28,8 @@ import cloneDeep = require("lodash.clonedeep");
 import map = require("lodash.map");
 import set = require("lodash.set");
 
+/* eslint-disable @typescript-eslint/camelcase */
+
 /**
  * Object with properties defining parameters. Useful for combination via spreads.
  */
@@ -81,7 +83,7 @@ export interface ParameterPromptOptions {
 /**
  * ParameterPrompts let the caller prompt for the provided parameters
  */
-export type Parameter_prompt<PARAMS> = (parameters: ParametersPromptObject<PARAMS>, options?: ParameterPromptOptions) => Promise<PARAMS>;
+export type ParameterPrompt<PARAMS> = (parameters: ParametersPromptObject<PARAMS>, options?: ParameterPromptOptions) => Promise<PARAMS>;
 
 export const AtomistContinuationMimeType = "application/x-atomist-continuation+json";
 
@@ -90,8 +92,8 @@ export const AtomistContinuationMimeType = "application/x-atomist-continuation+j
  * @param ctx
  */
 export function commandRequestParameterPromptFactory<T>(messageClient: CommandMessageClient,
-                                                        payload: CommandIncoming): Parameter_prompt<T> {
-    return async (parameters, options = {}) => {
+                                                        payload: CommandIncoming): ParameterPrompt<T> {
+    return async (parameters, options = {}): Promise<T> => {
 
         const existingParameters = payload.parameters;
         const newParameters = cloneDeep(parameters);
@@ -100,17 +102,15 @@ export function commandRequestParameterPromptFactory<T>(messageClient: CommandMe
         let requiredMissing = false;
         const params: any = {};
         for (const parameter in parameters) {
-            if (parameters.hasOwnProperty(parameter)) {
-                const existingParameter = existingParameters.find(p => p.name === parameter);
-                if (!existingParameter) {
-                    // If required isn't defined it means the parameter is required
-                    if (newParameters[parameter].required || newParameters[parameter].required === undefined) {
-                        requiredMissing = true;
-                    }
-                } else {
-                    params[parameter] = existingParameter.value;
-                    delete newParameters[parameter];
+            const existingParameter = existingParameters.find(p => p.name === parameter);
+            if (!existingParameter) {
+                // If required isn't defined it means the parameter is required
+                if (newParameters[parameter].required || newParameters[parameter].required === undefined) {
+                    requiredMissing = true;
                 }
+            } else {
+                params[parameter] = existingParameter.value;
+                delete newParameters[parameter];
             }
         }
 
@@ -133,7 +133,7 @@ export function commandRequestParameterPromptFactory<T>(messageClient: CommandMe
         // Create a continuation message using the existing HandlerResponse and mixing in parameters
         // and parameter_specs
         const response: HandlerResponse
-            & { parameters: Arg[], parameter_specs: Parameter[], question: any, auto_submit: boolean } = {
+            & { parameters: Arg[]; parameter_specs: Parameter[]; question: any; auto_submit: boolean } = {
             api_version: "1",
             correlation_id: payload.correlation_id,
             team: payload.team,
@@ -141,8 +141,8 @@ export function commandRequestParameterPromptFactory<T>(messageClient: CommandMe
             source: payload.source,
             destinations: [destination],
             parameters: payload.parameters,
-            auto_submit: !!options.autoSubmit ? options.autoSubmit : undefined,
-            question: !!options.parameterStyle ? options.parameterStyle.toString() : undefined,
+            auto_submit: options.autoSubmit ? options.autoSubmit : undefined,
+            question: options.parameterStyle ? options.parameterStyle.toString() : undefined,
             parameter_specs: map(newParameters, (v, k) => ({
                 ...v,
                 name: k,

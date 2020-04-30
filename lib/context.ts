@@ -47,7 +47,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
     const storage = createStorageProvider();
     const credential = new DefaultCredentialProvider(graphql, payload);
     if (isCommandIncoming(payload)) {
-        if (!!payload.raw_message) {
+        if (payload.raw_message) {
             const parameters = extractParameters(payload.raw_message);
             payload.parameters.push(...parameters);
         }
@@ -116,14 +116,17 @@ function extractConfiguration(payload: CommandIncoming | EventIncoming):
     };
 }
 
-function extractConfigurationParameters(params: Array<{ name: string, value: any }>): Record<string, any> {
+function extractConfigurationParameters(params: Array<{ name: string; value: any }>): Record<string, any> {
     const parameters = {};
     params?.forEach(p => parameters[p.name] = p.value);
     return parameters;
 }
 
-function extractConfigurationResourceProviders(params: Array<{ name: string, typeName: string, selectedResourceProviders: Array<{ id: string }> }>)
-    : Configuration<any>["resourceProviders"] {
+function extractConfigurationResourceProviders(params: Array<{
+    name: string;
+    typeName: string;
+    selectedResourceProviders: Array<{ id: string }>;
+}>): Configuration<any>["resourceProviders"] {
     const resourceProviders = {};
     params?.forEach(p => resourceProviders[p.name] = { typeName: p.typeName, selectedResourceProviders: p.selectedResourceProviders });
     return resourceProviders;

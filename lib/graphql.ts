@@ -59,7 +59,7 @@ class NodeFetchGraphQLClient implements GraphQLClient {
                 },
             })).json();
         debug(`GraphQL result: ${JSON.stringify(result, replacer)}`);
-        if (!!result.errors) {
+        if (result.errors) {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
         }
         return result.data;
@@ -83,7 +83,7 @@ class NodeFetchGraphQLClient implements GraphQLClient {
                 },
             })).json();
         debug(`GraphQL result: ${JSON.stringify(result, replacer)}`);
-        if (!!result.errors) {
+        if (result.errors) {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
         }
         return result.data;
