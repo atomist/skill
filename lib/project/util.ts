@@ -15,13 +15,14 @@
  */
 
 import { Options } from "fast-glob";
+import * as path from "path";
 import { Project } from "./project";
 
 /**
  * Utility to find files in a project via provided glob patterns
  */
 export async function globFiles(project: Project, patterns: string | string[], options: Options = {}): Promise<string[]> {
-    return (await import("fast-glob"))(
+    const files = await (await import("fast-glob"))(
         patterns,
         {
             cwd: project.path(),
@@ -29,4 +30,5 @@ export async function globFiles(project: Project, patterns: string | string[], o
             dot: true,
             ...options,
         });
+    return files.map(f => path.relative(project.path(), f));
 }
