@@ -20,7 +20,7 @@ import { Project } from "./project";
 /**
  * Utility to find files in a project via provided glob patterns
  */
-export async function globFiles(project: Project, patterns: string[], options: Options = {}): Promise<string[]> {
+export async function globFiles(project: Project, patterns: string | string[], options: Options = {}): Promise<string[]> {
     return (await import("fast-glob"))(
         patterns,
         {
