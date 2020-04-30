@@ -30,6 +30,7 @@
     "@google-cloud/storage": "^4.5.0",
     "@types/yargs": "^15.0.4",
     "cross-spawn": "^7.0.2",
+    "fast-glob": "^3.2.2",
     "fs-extra": "^8.1.0",
     "lodash": "^4.17.15",
     "node-fetch": "^2.6.0",
