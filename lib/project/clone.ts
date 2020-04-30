@@ -15,6 +15,7 @@
  */
 
 import * as os from "os";
+import * as pRetry from "p-retry";
 import * as path from "path";
 import { execPromise } from "../child_process";
 import { debug } from "../log";
@@ -23,7 +24,6 @@ import {
     CloneOptions,
 } from "../project";
 import { guid } from "../util";
-import promiseRetry = require("promise-retry");
 
 export async function doClone(id: AuthenticatedRepositoryId<any>,
                               options: CloneOptions = {}): Promise<string> {
@@ -60,13 +60,8 @@ export async function doClone(id: AuthenticatedRepositoryId<any>,
         maxTimeout: 500,
         randomize: false,
     };
-    await promiseRetry(retryOptions, (retry, count) => {
-        return execPromise("git", cloneArgs)
-            .catch(err => {
-                debug(`Cloning repository '${id.owner}/${id.repo}' attempt ${count} failed: ` + err.message);
-                retry(err);
-            });
-    });
+    await pRetry( () => execPromise("git", cloneArgs), retryOptions);
+    
     try {
         await execPromise("git", ["checkout", checkoutRef, "--"], { cwd: repoDir });
     } catch (err) {

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as _ from "lodash";
 import {
     CommandMessageClient,
     HandlerResponse,
@@ -25,6 +24,9 @@ import {
     Arg,
     CommandIncoming,
 } from "./payload";
+import cloneDeep = require("lodash.clonedeep");
+import map = require("lodash.map");
+import set = require("lodash.set");
 
 /**
  * Object with properties defining parameters. Useful for combination via spreads.
@@ -79,7 +81,7 @@ export interface ParameterPromptOptions {
 /**
  * ParameterPrompts let the caller prompt for the provided parameters
  */
-export type ParameterPrompt<PARAMS> = (parameters: ParametersPromptObject<PARAMS>, options?: ParameterPromptOptions) => Promise<PARAMS>;
+export type Parameter_prompt<PARAMS> = (parameters: ParametersPromptObject<PARAMS>, options?: ParameterPromptOptions) => Promise<PARAMS>;
 
 export const AtomistContinuationMimeType = "application/x-atomist-continuation+json";
 
@@ -88,11 +90,11 @@ export const AtomistContinuationMimeType = "application/x-atomist-continuation+j
  * @param ctx
  */
 export function commandRequestParameterPromptFactory<T>(messageClient: CommandMessageClient,
-                                                        payload: CommandIncoming): ParameterPrompt<T> {
+                                                        payload: CommandIncoming): Parameter_prompt<T> {
     return async (parameters, options = {}) => {
 
         const existingParameters = payload.parameters;
-        const newParameters = _.cloneDeep(parameters);
+        const newParameters = cloneDeep(parameters);
 
         // Find out if - and if - which parameters are actually missing
         let requiredMissing = false;
@@ -125,8 +127,8 @@ export function commandRequestParameterPromptFactory<T>(messageClient: CommandMe
             threadTs = options.thread;
         }
 
-        const destination = _.cloneDeep(payload.source);
-        _.set(destination, "slack.thread_ts", threadTs);
+        const destination = cloneDeep(payload.source);
+        set(destination, "slack.thread_ts", threadTs);
 
         // Create a continuation message using the existing HandlerResponse and mixing in parameters
         // and parameter_specs
@@ -141,7 +143,7 @@ export function commandRequestParameterPromptFactory<T>(messageClient: CommandMe
             parameters: payload.parameters,
             auto_submit: !!options.autoSubmit ? options.autoSubmit : undefined,
             question: !!options.parameterStyle ? options.parameterStyle.toString() : undefined,
-            parameter_specs: _.map(newParameters, (v, k) => ({
+            parameter_specs: map(newParameters, (v, k) => ({
                 ...v,
                 name: k,
                 required: v.required !== undefined ? v.required : true,

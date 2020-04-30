@@ -19,17 +19,12 @@ import {
     SpawnSyncOptions,
     SpawnSyncReturns,
 } from "child_process";
-import * as spawn from "cross-spawn";
 import * as process from "process";
-import * as treeKill from "tree-kill";
 import {
     debug,
     error,
     warn,
 } from "./log";
-import stripAnsi = require("strip-ansi");
-
-export { spawn };
 
 /**
  * Convert child process into an informative string.
@@ -54,7 +49,8 @@ export function childProcessString(cmd: string, args: string[] = [], opts: Spawn
 export function killProcess(pid: number, signal?: string | number): void {
     const sig = (signal) ? `signal ${signal}` : "default signal";
     debug(`Calling tree-kill on child process ${pid} with ${sig}`);
-    treeKill(pid, signal);
+    // Lazy import
+    require("tree-kill")(pid, signal);
 }
 
 /**
@@ -135,6 +131,8 @@ export interface SpawnPromiseReturns extends SpawnSyncReturns<string> {
  *         of [[SpawnPromiseReturns]] will be populated.
  */
 export async function spawnPromise(cmd: string, args: string[] = [], opts: SpawnPromiseOptions = {}): Promise<SpawnPromiseReturns> {
+    // Lazy import
+    const spawn = await import("cross-spawn");
     return new Promise<SpawnPromiseReturns>((resolve, reject) => {
         const optsToUse: SpawnPromiseOptions = {
             logCommand: true,
@@ -154,7 +152,7 @@ export async function spawnPromise(cmd: string, args: string[] = [], opts: Spawn
         }
 
         function pLog(data: string): void {
-            const formatted = (optsToUse.log && optsToUse.log.stripAnsi) ? stripAnsi(data) : data;
+            const formatted = (optsToUse.log && optsToUse.log.stripAnsi) ? require("strip-ansi")(data) : data;
             optsToUse.log.write(formatted);
         }
 

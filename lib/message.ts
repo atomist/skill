@@ -20,7 +20,6 @@ import {
 } from "@atomist/slack-messages";
 import { Action as SlackAction } from "@atomist/slack-messages/lib/SlackMessages";
 import { PubSub } from "@google-cloud/pubsub";
-import * as _ from "lodash";
 import { GraphQLClient } from "./graphql";
 import {
     CommandContext,
@@ -43,6 +42,7 @@ import {
     replacer,
     toArray,
 } from "./util";
+import cloneDeep = require("lodash.clonedeep");
 
 // tslint:disable:max-file-line-count
 
@@ -203,7 +203,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
         });
 
         if (responseDestinations.length === 0 && this.source) {
-            const responseDestination = _.cloneDeep(this.source);
+            const responseDestination = cloneDeep(this.source);
             if (responseDestination.slack) {
                 delete responseDestination.slack.user;
                 if (!!threadTs) {
@@ -229,7 +229,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
         };
 
         if (isSlackMessage(msg)) {
-            const msgClone = _.cloneDeep(msg);
+            const msgClone = cloneDeep(msg);
             const actions = mapActions(msgClone);
             response.content_type = MessageMimeTypes.SLACK_JSON;
             response.body = render(msgClone, false);
@@ -481,7 +481,7 @@ export class PubSubCommandMessageClient extends AbstractPubSubMessageClient impl
     }
 
     public async publish(status: HandlerResponse["status"]): Promise<void> {
-        const source = _.cloneDeep(this.request.source);
+        const source = cloneDeep(this.request.source);
         if (source && source.slack) {
             delete source.slack.user;
         }
