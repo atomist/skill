@@ -56,7 +56,7 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId:
         ...(pubSubEvent.attributes || {}),
         eventId: context.eventId,
     };
-    debug(`atm:attributes ${JSON.stringify(attributes)}`);
+    debug(`atm:attributes=${JSON.stringify(attributes)}`);
 
     const payload: CommandIncoming | EventIncoming =
         JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
