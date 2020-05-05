@@ -38,7 +38,7 @@ import { replacer } from "./util";
 const HandlerRegistry = {
     events: {},
     commands: {},
-}
+};
 
 export function registerCommand(name: string, loader: () => Promise<CommandHandler>): void {
     HandlerRegistry.commands[name] = loader;
@@ -60,8 +60,22 @@ export const bundle = async (pubSubEvent: PubSubMessage, context: { eventId: str
     info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
 
     if (isEventIncoming(payload)) {
-        return processEvent(payload, context, async () => HandlerRegistry.events[payload.extensions.operationName]());
+        return processEvent(payload, context, async () => {
+            const loader = HandlerRegistry.events[payload.extensions.operationName];
+            if (!!loader) {
+                return loader();
+            } else {
+                throw new Error(`Event handler with name '${payload.extensions.operationName}' not registered`);
+            }
+        });
     } else if (isCommandIncoming(payload)) {
-        return processCommand(payload, context, async () => HandlerRegistry.commands[payload.command]());
+        return processCommand(payload, context, async () => {
+            const loader = HandlerRegistry.commands[payload.command];
+            if (!!loader) {
+                return loader();
+            } else {
+                throw new Error(`Command handler with name '${payload.command}' not registered`);
+            }
+        });
     }
-}
+};
