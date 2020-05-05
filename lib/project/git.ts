@@ -1,0 +1,108 @@
+/*
+ * Copyright © 2020 Atomist, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { execPromise } from "../child_process";
+import {
+    GitStatus,
+    runStatusIn,
+} from "./gitStatus";
+import { Project } from "./project";
+import { cwd } from "./util";
+import forOwn = require("lodash.forown");
+
+/**
+ * Git push options.  See git-push(1) for more information.
+ */
+export interface GitPushOptions {
+    follow_tags?: boolean;
+    force?: boolean;
+    force_with_lease?: boolean | string;
+    quiet?: boolean;
+    verbose?: boolean;
+}
+
+/**
+ * Init a new Git repository
+ */
+export async function init(projectOrCwd: Project | string): Promise<void> {
+    await execPromise("git", ["init"], { cwd: cwd(projectOrCwd) });
+}
+
+/**
+ * Return status information about a Git repository
+ */
+export async function status(projectOrCwd: Project | string): Promise<GitStatus> {
+    return runStatusIn(cwd(projectOrCwd));
+}
+
+/**
+ * `git add .` and `git commit -m MESSAGE`
+ */
+export async function commit(projectOrCwd: Project | string, message: string): Promise<void> {
+    await execPromise("git", ["add", "."], { cwd: cwd(projectOrCwd) });
+    await execPromise("git", ["commit", "-m", message], { cwd: cwd(projectOrCwd) });
+}
+
+/**
+ * Check out a particular commit. We'll end in detached head state
+ */
+export async function checkout(projectOrCwd: Project | string, ref: string): Promise<void> {
+    await execPromise("git", ["checkout", ref, "--"], { cwd: cwd(projectOrCwd) });
+}
+
+/**
+ * Revert all changes since last commit
+ */
+export async function revert(projectOrCwd: Project | string): Promise<void> {
+    await execPromise("git", ["clean", "-dfx"], { cwd: cwd(projectOrCwd) });
+    await execPromise("git", ["checkout", "--", "."], { cwd: cwd(projectOrCwd) });
+}
+
+/**
+ * Push all changes to the remote
+ */
+export async function push(projectOrCwd: Project | string, options?: GitPushOptions): Promise<void> {
+    const gitPushArgs = ["push"];
+    forOwn(options, (v, k) => {
+        const opt = k.replace(/_/g, "-");
+        if (typeof v === "boolean") {
+            if (v === false) {
+                gitPushArgs.push(`--no-${opt}`);
+            } else {
+                gitPushArgs.push(`--${opt}`);
+            }
+        } else if (typeof v === "string") {
+            gitPushArgs.push(`--${opt}=${v}`);
+        }
+    });
+    await execPromise("git", [...gitPushArgs, "origin"], { cwd: cwd(projectOrCwd) });
+}
+
+/**
+ * Create branch from current HEAD
+ */
+export async function createBranch(projectOrCwd: Project | string, name: string): Promise<void> {
+    await execPromise("git", ["branch", name], { cwd: cwd(projectOrCwd) });
+    await execPromise("git", ["checkout", name, "--"], { cwd: cwd(projectOrCwd) });
+}
+
+/**
+ * Check if a branch exists
+ */
+export async function hasBranch(projectOrCwd: Project | string, name: string): Promise<boolean> {
+    const result = await execPromise("git", ["branch", "--list", name]);
+    return result.stdout.includes(name);
+}

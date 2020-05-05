@@ -20,6 +20,11 @@ import {
     createProjectLoader,
     gitHubComRepository,
 } from "../lib/project";
+import {
+    commit,
+    createBranch,
+    status,
+} from "../lib/project/git";
 
 describe("project", () => {
 
@@ -29,6 +34,14 @@ describe("project", () => {
         const readmePath = p.path("README.md");
         assert(baseDir);
         assert.strictEqual(await fs.pathExists(readmePath), true);
+
+        await fs.remove(readmePath);
+        const gs = await status(p);
+        assert(!!gs);
+        await createBranch(p, "test-" + Date.now());
+        const gs1 = await status(p);
+        assert(!!gs1);
+        await commit(p, "Test commit");
     });
 
 });

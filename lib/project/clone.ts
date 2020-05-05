@@ -50,7 +50,7 @@ export async function doClone(id: AuthenticatedRepositoryId<any>,
     }
     // Note: branch takes preference for checkout because we might be about to commit to it.
     // If you want to be sure to land on your SHA, set opts.detachHead to true.
-    // Or don't, but then call gitStatus() on the returned project to check whether the branch is still at the SHA you wanted.
+    // Or don't, but then call status() on the returned project to check whether the branch is still at the SHA you wanted.
     const checkoutRef = options.detachHead ? sha : id.branch || sha;
 
     const retryOptions = {
