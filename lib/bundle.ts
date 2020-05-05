@@ -40,10 +40,16 @@ const HandlerRegistry = {
     commands: {},
 };
 
+/**
+ * Register a command handler with a certain name
+ */
 export function registerCommand(name: string, loader: () => Promise<CommandHandler>): void {
     HandlerRegistry.commands[name] = loader;
 }
 
+/**
+ * Register a event handler with a certain name
+ */
 export function registerEvent(name: string, loader: () => Promise<EventHandler>): void {
     HandlerRegistry.events[name] = loader;
 }
