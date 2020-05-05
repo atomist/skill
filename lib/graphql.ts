@@ -18,7 +18,6 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import { debug } from "./log";
 import { replacer } from "./util";
-import * as appRoot from "app-root-path";
 
 const GraphQLCache = new Map<string, string>();
 
@@ -96,7 +95,7 @@ class NodeFetchGraphQLClient implements GraphQLClient {
             if (GraphQLCache.has(query)) {
                 return GraphQLCache.get(query);
             } else if (q.endsWith(".graphql")) {
-                const p = path.join(appRoot.path, "graphql", prefix, q);
+                const p = path.join(process.cwd(), "graphql", prefix, q);
                 q = (await fs.readFile(p)).toString();
             }
             q = q.replace(/\n/g, "");
