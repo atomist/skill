@@ -95,8 +95,15 @@ class NodeFetchGraphQLClient implements GraphQLClient {
             if (GraphQLCache.has(query)) {
                 return GraphQLCache.get(query);
             } else if (q.endsWith(".graphql")) {
-                const p = path.join(process.cwd(), "graphql", prefix, q);
-                q = (await fs.readFile(p)).toString();
+                // Case for being installed into node_modules
+                let p = path.join(__dirname, "..", "..", "..", "..", "graphql", prefix, q);
+                if (await fs.pathExists(p)) {
+                    q = (await fs.readFile(p)).toString();
+                } else {
+                    // Case for being bundled into one js file
+                    let p = path.join(__dirname, "..", "graphql", prefix, q);
+                    q = (await fs.readFile(p)).toString();
+                }
             }
             q = q.replace(/\n/g, "");
             GraphQLCache.set(query, q);
