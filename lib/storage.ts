@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
+import * as os from "os";
+import * as path from "path";
+import { guid } from "./util";
+
 export interface StorageProvider {
 
     store(key: string, sourceFilePath: string): Promise<void>;
 
-    retrieve(key: string, targetFilePath: string): Promise<void>;
+    retrieve(key: string, targetFilePath?: string): Promise<string>;
 }
 
 export function createStorageProvider(): StorageProvider {
@@ -27,9 +31,11 @@ export function createStorageProvider(): StorageProvider {
 
 class GoogleCloudStorageProvider implements StorageProvider {
 
-    public async retrieve(key: string, filePath: string): Promise<void> {
+    public async retrieve(key: string, filePath?: string): Promise<string> {
+        const targetFilePath = filePath || path.join(os.tmpdir() || "/tmp", guid());;
         const storage = new (await import("@google-cloud/storage")).Storage();
-        await storage.bucket(bucketName()).file(key).download({ destination: filePath });
+        await storage.bucket(bucketName()).file(key).download({ destination: targetFilePath });
+        return targetFilePath;
     }
 
     public async store(key: string, filePath: string): Promise<void> {
