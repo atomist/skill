@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Support RegExp Intents and retrieving parameters from them. [#794](https://github.com/atomist/sdm/issues/794)
 -   Add support for configurations. [1263f3d](https://github.com/atomist/skill/commit/1263f3d061cc75d0317a687a9709e6c406684c25)
 -   Add Git helpers. [db250d3](https://github.com/atomist/skill/commit/db250d3cd7691eb823c8f8547c81a6045f65bbec)
+-   Add bundle entrypoint. [c8f9241](https://github.com/atomist/skill/commit/c8f924136f841b2e2eb3691c55f98d8db69a0214)
 
 ### Changed
 
