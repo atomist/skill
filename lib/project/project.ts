@@ -71,7 +71,7 @@ const log = {
     write: (msg): void => {
         let line = msg;
         if (line.endsWith("\n")) {
-            line = line.slice(0, -2);
+            line = line.slice(0, -1);
         }
         const lines = line.split("\n");
         lines.forEach(l => debug(l.trimRight()));
