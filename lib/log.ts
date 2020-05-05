@@ -35,7 +35,7 @@ export function debug(message: string, ...optionalParams: any[]): void {
  */
 export function info(message: string, ...optionalParams: any[]): void {
     // tslint:disable-next-line:no-console
-    console.info(`[info]  ${redact(message)}`, ...optionalParams);
+    console.info(` [info] ${redact(message)}`, ...optionalParams);
 }
 
 /**
@@ -46,7 +46,7 @@ export function info(message: string, ...optionalParams: any[]): void {
  */
 export function warn(message: string, ...optionalParams: any[]): void {
     // tslint:disable-next-line:no-console
-    console.warn(`[warn]  ${redact(message)}`, ...optionalParams);
+    console.warn(` [warn] ${redact(message)}`, ...optionalParams);
 }
 
 /**
