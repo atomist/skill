@@ -20,6 +20,10 @@ import {
     PubSubMessage,
 } from "./function";
 import {
+    CommandHandler,
+    EventHandler,
+} from "./handler";
+import {
     debug,
     info,
 } from "./log";
@@ -31,9 +35,18 @@ import {
 } from "./payload";
 import { replacer } from "./util";
 
-const Events = {}
+const HandlerRegistry = {
+    events: {},
+    commands: {},
+}
 
-const Commands = {}
+export function registerCommand(name: string, loader: () => Promise<CommandHandler>): void {
+    HandlerRegistry.commands[name] = loader;
+}
+
+export function registerEvent(name: string, loader: () => Promise<EventHandler>): void {
+    HandlerRegistry.events[name] = loader;
+}
 
 export const bundle = async (pubSubEvent: PubSubMessage, context: { eventId: string }): Promise<void> => {
     const attributes = {
@@ -47,8 +60,8 @@ export const bundle = async (pubSubEvent: PubSubMessage, context: { eventId: str
     info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
 
     if (isEventIncoming(payload)) {
-        return processEvent(payload, context, async () => Events[payload.extensions.operationName]());
+        return processEvent(payload, context, async () => HandlerRegistry.events[payload.extensions.operationName]());
     } else if (isCommandIncoming(payload)) {
-        return processCommand(payload, context, async () => Commands[payload.command]());
+        return processCommand(payload, context, async () => HandlerRegistry.commands[payload.command]());
     }
 }
