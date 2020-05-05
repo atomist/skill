@@ -42,8 +42,8 @@ import {
     isEventIncoming,
 } from "./payload";
 import {
+    handlerLoader,
     replacer,
-    requirePath,
 } from "./util";
 
 export interface PubSubMessage {
@@ -62,7 +62,7 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId:
         JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
     info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
     // debug(`Incoming message context: ${JSON.stringify(context, replacer)}`);
-    // debug(`Incoming message: ${JSON.stringify(pubSubEvent, replacer)}`);
+    // debug(`Incoming mskill.tsessage: ${JSON.stringify(pubSubEvent, replacer)}`);
 
     if (isEventIncoming(payload)) {
         await processEvent(payload, context);
@@ -71,13 +71,13 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId:
     }
 };
 
-export async function processEvent(event: EventIncoming, ctx: { eventId: string }): Promise<void> {
+export async function processEvent(event: EventIncoming,
+                                   ctx: { eventId: string },
+                                   loader: (name: string) => Promise<EventHandler> = handlerLoader): Promise<void> {
     const context = createContext(event, ctx) as EventContext<any>;
     try {
-        const path = await requirePath(`events/${context.name}`);
         debug(`Invoking event handler '${context.name}'`);
-        const handler = require(path).handler as EventHandler<any>;
-        const result = await handler(context) as HandlerStatus;
+        const result = await (await loader(`events/${context.name}`))(context) as HandlerStatus;
         await (context.message as any as StatusPublisher).publish(prepareStatus(result || { code: 0 }, context));
     }  catch (e) {
         await context.audit.log(`Error occurred: ${e.stack}`, Severity.ERROR);
@@ -86,13 +86,13 @@ export async function processEvent(event: EventIncoming, ctx: { eventId: string 
     debug(`Completed event handler '${context.name}'`);
 }
 
-export async function processCommand(event: CommandIncoming, ctx: { eventId: string }): Promise<void> {
+export async function processCommand(event: CommandIncoming,
+                                     ctx: { eventId: string },
+                                     loader: (name: string) => Promise<CommandHandler> = handlerLoader): Promise<void> {
     const context = createContext(event, ctx) as CommandContext;
     try {
-        const path = await requirePath(`commands/${context.name}`);
         debug(`Invoking command handler '${context.name}'`);
-        const handler = require(path).handler as CommandHandler;
-        const result = await handler(context) as HandlerStatus;
+        const result = await (await loader(`commands/${context.name}`))(context) as HandlerStatus;
         await (context.message as any as StatusPublisher).publish(prepareStatus(result || { code: 0 }, context));
     }  catch (e) {
         if (e instanceof CommandListenerExecutionInterruptError) {

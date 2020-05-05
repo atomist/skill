@@ -31,6 +31,11 @@ export function toArray<T>(value: T | T[]): T[] {
     }
 }
 
+export async function handlerLoader<T>(name: string): Promise<T> {
+    const path = await requirePath(name);
+    return require(path).handler as T;
+}
+
 export async function requirePath(folderOrFile: string): Promise<string> {
     const p = __dirname.split("/node_modules/");
     const rp = path.join(p[0], folderOrFile);
