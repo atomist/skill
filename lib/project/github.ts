@@ -15,17 +15,15 @@
  */
 
 import { Octokit } from "@octokit/rest";
-import { RepositoryId } from "../project";
+import { AuthenticatedRepositoryId } from "../project";
 import {
     GitHubAppCredential,
     GitHubCredential,
 } from "../secrets";
 
-
 const DefaultGitHubApiUrl = "https://api.github.com/";
 
-export function gitHub(credential: GitHubCredential | GitHubAppCredential,
-                       id: RepositoryId): Octokit {
+export function gitHub(id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>): Octokit {
     const url = id.apiUrl || DefaultGitHubApiUrl;
 
     const github = require("@octokit/rest");
@@ -34,7 +32,7 @@ export function gitHub(credential: GitHubCredential | GitHubAppCredential,
     const ConfiguredOctokit = github.Octokit.plugin(throttling, retry);
 
     return new ConfiguredOctokit({
-        auth: `token ${credential.token}`,
+        auth: `token ${id.credential.token}`,
         baseUrl: url.endsWith("/") ? url.slice(0, -1) : url,
         throttle: {
             onRateLimit: (retryAfter: any, options: any): boolean => {
