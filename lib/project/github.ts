@@ -26,10 +26,10 @@ const DefaultGitHubApiUrl = "https://api.github.com/";
 export function gitHub(id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>): Octokit {
     const url = id.apiUrl || DefaultGitHubApiUrl;
 
-    const github = require("@octokit/rest");
-    const throttling = require("@octokit/plugin-throttling");
-    const retry = require("@octokit/plugin-retry");
-    const ConfiguredOctokit = github.Octokit.plugin(throttling, retry);
+    const { Octokit } = require("@octokit/rest");
+    const { throttling }= require("@octokit/plugin-throttling");
+    const { retry } = require("@octokit/plugin-retry");
+    const ConfiguredOctokit = Octokit.plugin(throttling, retry);
 
     return new ConfiguredOctokit({
         auth: `token ${id.credential.token}`,
