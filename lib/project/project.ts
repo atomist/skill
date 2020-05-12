@@ -27,13 +27,17 @@ import { debug } from "../log";
 import {
     AuthenticatedRepositoryId,
     CloneOptions,
+    RepositoryId,
 } from "../project";
 import { doClone } from "./clone";
+import { setUserConfig } from "./git";
 
 export type Spawn = (cmd: string, args?: string[], opts?: SpawnPromiseOptions) => Promise<SpawnPromiseReturns>;
 export type Exec = (cmd: string, args?: string[], opts?: SpawnSyncOptions) => Promise<ExecPromiseResult>;
 
 export interface Project {
+
+    id: RepositoryId;
 
     path(...elements: string[]): string;
 
@@ -43,6 +47,7 @@ export interface Project {
 
 export async function load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project> {
     const project = {
+        id,
         path: (...elements: string[]): string => path.join(baseDir, ...(elements || [])),
         spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> => spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
         exec: (cmd, args, opts): Promise<ExecPromiseResult> => execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
@@ -54,17 +59,13 @@ export async function load(id: AuthenticatedRepositoryId<any>, baseDir: string):
 export async function clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project> {
     const baseDir = await doClone(id, options);
     const project = {
+        id,
         path: (...elements: string[]): string => path.join(baseDir, ...(elements || [])),
         spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> => spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
         exec: (cmd, args, opts): Promise<ExecPromiseResult> => execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
     };
     await setUserConfig(project);
     return project;
-}
-
-async function setUserConfig(project: Project): Promise<void> {
-    await project.exec("git", ["config", "user.name", "Atomist Bot"]);
-    await project.exec("git", ["config", "user.email", "bot@atomist.com"]);
 }
 
 const log = {

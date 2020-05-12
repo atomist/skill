@@ -106,3 +106,8 @@ export async function hasBranch(projectOrCwd: Project | string, name: string): P
     const result = await execPromise("git", ["branch", "--list", name]);
     return result.stdout.includes(name);
 }
+
+export async function setUserConfig(project: Project, name: string = "Atomist Bot", email: string = "bot@atomist.com"): Promise<void> {
+    await project.exec("git", ["config", "user.name", name]);
+    await project.exec("git", ["config", "user.email", email]);
+}
