@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add bundle entrypoint. [c8f9241](https://github.com/atomist/skill/commit/c8f924136f841b2e2eb3691c55f98d8db69a0214)
 -   Add github helper. [60bd5d6](https://github.com/atomist/skill/commit/60bd5d6cb77e60caccd025d8eb0d1eb8a606f603)
 -   Add id to Project. [dcdfad1](https://github.com/atomist/skill/commit/dcdfad1797c11fef81e89e02855fa5e46d2d1e66)
+-   Cleanup projects and prevent symlink cloning by default. [ab8d884](https://github.com/atomist/skill/commit/ab8d884032453ff0c502af425bbcfed22dc9381c)
 
 ### Changed
 
