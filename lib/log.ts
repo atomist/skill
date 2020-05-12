@@ -14,7 +14,36 @@
  * limitations under the License.
  */
 
+import {
+    createLogger,
+    Logger,
+    Severity,
+} from "@atomist/skill-logging";
 import { redact } from "./redact";
+import { toArray } from "./util";
+
+export function wrapAuditLogger(context: { eventId?: string, correlationId: string, workspaceId: string },
+                                labels: Record<string, any> = {}): Logger {
+    const logger = createLogger(context, labels);
+    return {
+        log: async (msg: string | string[],
+                    severity: Severity = Severity.INFO,
+                    labels?: Record<string, any>): Promise<void> => {
+            const msgs = toArray(msg);
+            switch (severity) {
+                case Severity.WARNING:
+                    msgs.forEach(m => warn(m));
+                    break;
+                case Severity.ERROR:
+                    msgs.forEach(m => error(m));
+                default: 
+                    msgs.forEach(m => info(m));
+                    break;
+            }
+            return logger.log(msg, severity, labels);
+        }
+    }
+}
 
 /**
  * Print the debug level message to stdout

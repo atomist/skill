@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { createLogger } from "@atomist/skill-logging/lib/logging";
 import { createGraphQLClient } from "./graphql";
 import {
     CommandContext,
@@ -22,6 +21,7 @@ import {
     EventContext,
 } from "./handler";
 import { createHttpClient } from "./http";
+import { wrapAuditLogger } from "./log";
 import {
     PubSubCommandMessageClient,
     PubSubEventMessageClient,
@@ -63,7 +63,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
             credential,
             graphql,
             http: createHttpClient(),
-            audit: createLogger({
+            audit: wrapAuditLogger({
                 eventId: ctx.eventId,
                 correlationId: payload.correlation_id,
                 workspaceId: wid,
@@ -87,7 +87,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
             credential,
             graphql,
             http: createHttpClient(),
-            audit: createLogger({
+            audit: wrapAuditLogger({
                 eventId: ctx.eventId,
                 correlationId: payload.extensions.correlation_id,
                 workspaceId: wid,
