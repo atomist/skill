@@ -82,6 +82,8 @@ export async function processEvent(event: EventIncoming,
     }  catch (e) {
         await context.audit.log(`Error occurred: ${e.stack}`, Severity.ERROR);
         await (context.message as any as StatusPublisher).publish(prepareStatus(e, context));
+    } finally {
+        await context.close();
     }
     debug(`Completed event handler '${context.name}'`);
 }
@@ -101,6 +103,9 @@ export async function processCommand(event: CommandIncoming,
             await context.audit.log(`Error occurred: ${e.stack}`, Severity.ERROR);
             await (context.message as any as StatusPublisher).publish(prepareStatus(e, context));
         }
+    } finally {
+        await context.close();
     }
     debug(`Completed command handler '${context.name}'`);
 }
+

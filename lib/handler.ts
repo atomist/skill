@@ -63,6 +63,8 @@ export interface Contextual<T, C> {
         namespace: string;
         version: string;
     };
+
+    close: () => Promise<void>;
 }
 
 export interface EventContext<E = any, C = any> extends Contextual<EventIncoming, C> {

@@ -65,6 +65,12 @@ export interface CloneOptions {
      * Path to clone into
      */
     path?: string;
+
+    /**
+     * If set to true symlinks will be cloned as links; if set to false (default)
+     * symlinks are cloned as small files instead.
+     */
+    symLinks?: boolean;
 }
 
 export function gitHubComRepository(details: {

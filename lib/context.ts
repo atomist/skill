@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as fs from "fs-extra";
 import { createGraphQLClient } from "./graphql";
 import {
     CommandContext,
@@ -35,6 +36,7 @@ import {
     workspaceId,
 } from "./payload";
 import { createProjectLoader } from "./project";
+import { ClonePath } from "./project/clone";
 import { DefaultCredentialProvider } from "./secrets";
 import { createStorageProvider } from "./storage";
 import { extractParameters } from "./util";
@@ -76,6 +78,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
             trigger: payload,
             ...extractConfiguration(payload),
             skill: payload.skill,
+            close,
         };
     } else if (isEventIncoming(payload)) {
         return {
@@ -100,6 +103,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
             trigger: payload,
             ...extractConfiguration(payload),
             skill: payload.skill,
+            close,
         };
     }
     return undefined;
@@ -130,4 +134,9 @@ function extractConfigurationResourceProviders(params: Array<{
     const resourceProviders = {};
     params?.forEach(p => resourceProviders[p.name] = { typeName: p.typeName, selectedResourceProviders: p.selectedResourceProviders });
     return resourceProviders;
+}
+
+async function close(): Promise<void> {
+    // Remove our project clone directory
+    await fs.remove(ClonePath);
 }

@@ -25,15 +25,20 @@ import {
 } from "../project";
 import { guid } from "../util";
 
+export const ClonePath = path.join(os.tmpdir(), "atm-clone");
+
 export async function doClone(id: AuthenticatedRepositoryId<any>,
                               options: CloneOptions = {}): Promise<string> {
     debug(
         `Cloning repository '${id.owner}/${id.repo}', branch '${id.branch}', sha '${id.sha}' and options '${JSON.stringify(options)}'`);
     const sha = id.sha || "HEAD";
-    const repoDir = options.path || path.join(os.tmpdir(), guid());
+    const repoDir = options.path || path.join(ClonePath, guid());
     const url = id.cloneUrl();
     const cloneBranch = id.branch;
     const cloneArgs = ["clone", url, repoDir];
+
+    // Set the global symlink flag on git according to our options; this defaults to false to err on  the safe side
+    await execPromise("git", ["config", "--global", "core.symlinks", options.symLinks !== undefined ? `${options.symLinks}` : "false"])
 
     // If we wanted a deep clone, just clone it
     if (!options.alwaysDeep) {
