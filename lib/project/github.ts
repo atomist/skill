@@ -23,7 +23,7 @@ import {
 
 const DefaultGitHubApiUrl = "https://api.github.com/";
 
-export function gitHub(id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>): Octokit {
+export function gitHub(id: Pick<AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>, "credential" | "apiUrl">): Octokit {
     const url = id.apiUrl || DefaultGitHubApiUrl;
 
     const { Octokit } = require("@octokit/rest");
