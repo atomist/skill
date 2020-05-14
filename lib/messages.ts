@@ -123,6 +123,6 @@ export function slackTs(): number {
     return Math.floor(Date.now() / 1000);
 }
 
-export function separator(): string {
+export function slackSeparator(): string {
     return "\u00B7";
 }
