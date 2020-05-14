@@ -116,6 +116,8 @@ function extractConfiguration(payload: CommandIncoming | EventIncoming):
             name: c.name,
             parameters: extractConfigurationParameters(c.parameters),
             resourceProviders: extractConfigurationResourceProviders(c.resourceProviders),
+            url: `https://go.atomist.${(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
+                ? "services" : "com"}/manage/${workspaceId(payload)}/skills/configure/${payload.skill.id}/${encodeURIComponent(c.name)}`,
         })),
     };
 }
