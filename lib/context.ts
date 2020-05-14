@@ -82,7 +82,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
         };
     } else if (isEventIncoming(payload)) {
         return {
-            data: payload.data,
+            event: payload.data,
             name: payload.extensions.operationName,
             correlationId: payload.extensions.correlation_id,
             executionId: ctx.eventId,
