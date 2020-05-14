@@ -122,3 +122,7 @@ export function slackFooter(ctx: Contextual<any, any>): string {
 export function slackTs(): number {
     return Math.floor(Date.now() / 1000);
 }
+
+export function separator(): string {
+    return "\u00B7";
+}
