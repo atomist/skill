@@ -42,7 +42,8 @@ export function wrapAuditLogger(context: { eventId?: string, correlationId: stri
             }
             return logger.log(msg, severity, labels);
         },
-        url: `https://go.atomist.${process.env.ATOMIST_GRAPHQL_ENDPOINT.includes("staging") ? "services" : "com"}/log/${context.workspaceId}/${context.correlationId}`, // eslint-disable-line @typescript-eslint/camelcase
+        url: `https://go.atomist.${(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging") 
+            ? "services" : "com"}/log/${context.workspaceId}/${context.correlationId}`,
     };
 }
 
