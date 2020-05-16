@@ -17,6 +17,7 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 import * as uuid from "uuid/v4";
+import { error } from "./log";
 import { Arg } from "./payload";
 
 export function toArray<T>(value: T | T[]): T[] {
@@ -106,3 +107,29 @@ export function hideString(value: any): any {
 export function guid(): string {
     return uuid();
 }
+
+export async function handleError<T>(f: () => Promise<T>,
+                                     cb: (err: Error) => T | undefined = DefaultErrorHandler): Promise<T | undefined> {
+    try {
+        return f();
+    } catch (e) {
+        return cb(e);
+    }
+}
+
+export function handleErrorSync<T>(f: () => T,
+                                   cb: (err: Error) => T | undefined = DefaultErrorHandler): T | undefined {
+    try {
+        return f();
+    } catch (e) {
+        return cb(e);
+    }
+}
+
+export const DefaultErrorHandler: (err: Error) => undefined = err => {
+    error(`Error occurred: %s`, err.message);
+    if (!!err.stack) {
+        error(err.stack);
+    }
+    return undefined;
+};
