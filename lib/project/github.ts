@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Octokit } from "@octokit/rest";
+import { Octokit } from "@octokit/rest"; // eslint-disable-line @typescript-eslint/no-unused-vars
 import { AuthenticatedRepositoryId } from "../project";
 import {
     GitHubAppCredential,
@@ -26,9 +26,9 @@ const DefaultGitHubApiUrl = "https://api.github.com/";
 export function gitHub(id: Pick<AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>, "credential" | "apiUrl">): Octokit {
     const url = id.apiUrl || DefaultGitHubApiUrl;
 
-    const { Octokit } = require("@octokit/rest");
-    const { throttling }= require("@octokit/plugin-throttling");
-    const { retry } = require("@octokit/plugin-retry");
+    const { Octokit } = require("@octokit/rest"); // eslint-disable-line @typescript-eslint/no-var-requires
+    const { throttling }= require("@octokit/plugin-throttling"); // eslint-disable-line @typescript-eslint/no-var-requires
+    const { retry } = require("@octokit/plugin-retry"); // eslint-disable-line @typescript-eslint/no-var-requires
     const ConfiguredOctokit = Octokit.plugin(throttling, retry);
 
     return new ConfiguredOctokit({

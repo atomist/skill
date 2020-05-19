@@ -128,7 +128,7 @@ export function handleErrorSync<T>(f: () => T,
 
 export const DefaultErrorHandler: (err: Error) => undefined = err => {
     error(`Error occurred: %s`, err.message);
-    if (!!err.stack) {
+    if (err.stack) {
         error(err.stack);
     }
     return undefined;

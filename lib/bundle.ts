@@ -68,7 +68,7 @@ export const bundle = async (pubSubEvent: PubSubMessage, context: { eventId: str
     if (isEventIncoming(payload)) {
         return processEvent(payload, context, async () => {
             const loader = HandlerRegistry.events[payload.extensions.operationName];
-            if (!!loader) {
+            if (loader) {
                 return loader();
             } else {
                 throw new Error(`Event handler with name '${payload.extensions.operationName}' not registered`);
@@ -77,7 +77,7 @@ export const bundle = async (pubSubEvent: PubSubMessage, context: { eventId: str
     } else if (isCommandIncoming(payload)) {
         return processCommand(payload, context, async () => {
             const loader = HandlerRegistry.commands[payload.command];
-            if (!!loader) {
+            if (loader) {
                 return loader();
             } else {
                 throw new Error(`Command handler with name '${payload.command}' not registered`);

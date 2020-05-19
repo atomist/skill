@@ -43,7 +43,7 @@ export async function withGlobMatches<T>(projectOrCwd: Project | string,
     const results = [];
     for (const file of files) {
         const result = await cb(file);
-        if (!!result) {
+        if (result) {
             results.push(result);
         }
     }

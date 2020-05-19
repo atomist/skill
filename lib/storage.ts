@@ -32,7 +32,7 @@ export function createStorageProvider(): StorageProvider {
 class GoogleCloudStorageProvider implements StorageProvider {
 
     public async retrieve(key: string, filePath?: string): Promise<string> {
-        const targetFilePath = filePath || path.join(os.tmpdir() || "/tmp", guid());;
+        const targetFilePath = filePath || path.join(os.tmpdir() || "/tmp", guid());
         const storage = new (await import("@google-cloud/storage")).Storage();
         await storage.bucket(bucketName()).file(key).download({ destination: targetFilePath });
         return targetFilePath;

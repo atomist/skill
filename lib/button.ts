@@ -106,7 +106,7 @@ function chatMenuFrom(action: MenuSpecification, command: any): Action {
     };
 
     if (typeof action.options === "string") {
-        select.data_source = action.options;
+        select.data_source = action.options; // eslint-disable-line @typescript-eslint/camelcase
     } else if (action.options.length > 0) {
         const first = action.options[0] as any;
         if (first.value) {
@@ -114,7 +114,7 @@ function chatMenuFrom(action: MenuSpecification, command: any): Action {
             select.options = action.options as SelectOption[];
         } else {
             // then it's option groups
-            select.option_groups = action.options as OptionGroup[];
+            select.option_groups = action.options as OptionGroup[]; // eslint-disable-line @typescript-eslint/camelcase
         }
     }
 

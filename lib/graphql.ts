@@ -96,12 +96,12 @@ class NodeFetchGraphQLClient implements GraphQLClient {
                 return GraphQLCache.get(query);
             } else if (q.endsWith(".graphql")) {
                 // Case for being installed into node_modules
-                let p = path.join(__dirname, "..", "..", "..", "..", "graphql", prefix, q);
+                const p = path.join(__dirname, "..", "..", "..", "..", "graphql", prefix, q);
                 if (await fs.pathExists(p)) {
                     q = (await fs.readFile(p)).toString();
                 } else {
                     // Case for being bundled into one js file
-                    let p = path.join(__dirname, "..", "graphql", prefix, q);
+                    const p = path.join(__dirname, "..", "graphql", prefix, q);
                     q = (await fs.readFile(p)).toString();
                 }
             }

@@ -22,7 +22,7 @@ import {
 import { redact } from "./redact";
 import { toArray } from "./util";
 
-export function wrapAuditLogger(context: { eventId?: string, correlationId: string, workspaceId: string },
+export function wrapAuditLogger(context: { eventId?: string; correlationId: string; workspaceId: string },
                                 labels: Record<string, any> = {}): Logger & { url: string } {
     const logger = createLogger(context, labels);
     return {
@@ -36,6 +36,7 @@ export function wrapAuditLogger(context: { eventId?: string, correlationId: stri
                     break;
                 case Severity.ERROR:
                     msgs.forEach(m => error(m));
+                    break;
                 default:
                     msgs.forEach(m => info(m));
                     break;
