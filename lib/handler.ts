@@ -95,16 +95,4 @@ export interface HandlerStatus {
 
 export type CommandHandler<C = any> = (context: CommandContext<C>) => Promise<void | HandlerStatus>;
 
-export interface CommandHandlerRegistration<C = any> {
-    name: string;
-    description: string;
-    pattern: RegExp;
-    handler: CommandHandler<C>;
-}
-
 export type EventHandler<E = any, C = any> = (context: EventContext<E, C>) => Promise<void | HandlerStatus>;
-
-export interface EventHandlerRegistration<E = any, C = any> {
-    subscription: string;
-    handler: EventHandler<E, C>;
-}
