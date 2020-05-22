@@ -17,8 +17,8 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 import {
-  error,
-  info,
+    error,
+    info,
 } from "./log";
 import { withGlobMatches } from "./project/util";
 import { Skill } from "./skill";
