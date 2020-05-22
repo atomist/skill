@@ -13,9 +13,7 @@
     "url": "https://github.com/atomist/skill.git"
   },
   "keywords": [
-    "atomist",
-    "automation",
-    "skill"
+    "DEV_EX"
   ],
   "homepage": "https://github.com/atomist/skill#readme",
   "bugs": {
@@ -31,6 +29,7 @@
     "@octokit/rest": "^17.8.0",
     "@types/cross-spawn": "^6.0.1",
     "@types/flat": "^5.0.0",
+    "@types/js-yaml": "^3.12.4",
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/lodash.forown": "^4.4.6",
     "@types/lodash.map": "^4.6.13",
@@ -42,6 +41,7 @@
     "fast-glob": "^3.2.2",
     "flat": "^5.0.0",
     "fs-extra": "^8.1.0",
+    "js-yaml": "^3.13.1",
     "lodash.clonedeep": "^4.5.0",
     "lodash.forown": "^4.4.0",
     "lodash.map": "^4.6.0",

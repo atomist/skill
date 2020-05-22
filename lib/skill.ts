@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-export enum SkillCategory {
+import * as path from "path";
+
+export enum Category {
     Build = "BUILD",
     CodeReview = "CODE_REVIEW",
     DevEx = "DEV_EX",
@@ -29,7 +31,7 @@ export enum SkillCategory {
     Chat = "CHAT",
 }
 
-export enum SkillTechnology {
+export enum Technology {
     Java = "JAVA",
     Maven = "MAVEN",
     Docker = "DOCKER",
@@ -40,81 +42,67 @@ export enum SkillTechnology {
     Kubernetes = "KUBERNETES",
 }
 
-export enum SkillDispatchStyle {
+export enum DispatchStyle {
     Single = "single",
     Multiple = "multiple",
 }
 
-export enum SkillRuntime {
+export enum Platform {
     NodeJs10 = "nodejs10",
     Python37 = "python37",
     Go113 = "go113",
 }
 
-export interface SkillArtifact {
-    docker?: Array<{
-        args?: string[]
-        command?: string[]
-        env?: Array<{
-            name: string;
-            value: string;
-        }>
-        image: string
-        workingDir?: string
-    }>;
-    gcf?: {
-        entryPoint: string;
-        runtime: SkillRuntime;
-        url?: string;
-        memory?: number
-        timeout?: number;
-    };
+export interface SkillRuntime {
+    entryPoint: string;
+    platform: Platform;
+    url?: string;
+    memory?: number;
+    timeout?: number;
 }
 
-export interface SkillResourceProvider {
+export interface ResourceProvider {
     description?: string;
     maxAllowed?: number;
     minRequired?: number;
-    name: string;
     typeName: string;
 }
 
-export enum SkillParameterVisibility {
+export enum ParameterVisibility {
     Hidden = "hidden",
     Advanced = "advanced",
     Normal = "normal",
 }
 
-export enum SkillSpringParameterLineStyle {
+export enum LineStyle {
     Single = "single",
     Multiple = "multiple",
 }
 
-export interface SkillParameter<T, D> {
-    type: T,
-    defaultValue?: D
+export interface Parameter<T, D> {
+    type: T;
+    defaultValue?: D;
     description: string;
     displayName?: string;
     required: boolean;
-    visibility?: SkillParameterVisibility;
+    visibility?: ParameterVisibility;
 }
 
-export interface SkillBooleanParameter extends SkillParameter<"boolean", boolean> {
-}
+export type BooleanParameter = Parameter<ParameterType.Boolean, boolean>;
 
-export interface SkillFloatParameter extends SkillParameter<"float", number> {
+export interface FloatParameter extends Parameter<ParameterType.Float, number> {
     maximum?: number;
     minimum?: number;
     placeHolder?: string;
 }
 
-export interface SkillIntParameter extends SkillParameter<"int", number> {
+export interface IntParameter extends Parameter<ParameterType.Int, number> {
     maximum?: number;
     minimum?: number;
     placeHolder?: string;
 }
 
-export interface SkillMultiChoiceParameter extends Omit<SkillParameter<"multiChoice", string>, "defaultValue"> {
+export interface MultiChoiceParameter extends Omit<Parameter<ParameterType.MultiChoice, string>, "defaultValue"> {
     defaultValues?: string[];
     maxAllowed?: number;
     minRequired?: number;
@@ -125,43 +113,41 @@ export interface SkillMultiChoiceParameter extends Omit<SkillParameter<"multiCho
     }>;
 }
 
-export interface SkillSingleChoiceParameter extends SkillParameter<"singleChoice", string> {
+export interface SingleChoiceParameter extends Parameter<ParameterType.SingleChoice, string> {
     maxAllowed?: number;
     minRequired?: number;
     options: Array<{
         description?: string;
         text: string;
         value: string;
-    }>
+    }>;
 }
 
-export interface SkillRepoFilterParameter extends Omit<SkillParameter<"repoFilter", any>, "defaultValue" | "displayName" | "visibility"> {
-}
+export type RepoFilterParameter = Omit<Parameter<ParameterType.RepoFilter, any>, "defaultValue" | "displayName" | "visibility">;
 
-export interface SkillScheduleParameter extends SkillParameter<"schedule", string> {
-}
+export type ScheduleParameter = Parameter<ParameterType.Schedule, string>;
 
-export interface SkillStringParameter extends SkillParameter<"string", string> {
-    lineStyle?: SkillSpringParameterLineStyle;
+export interface StringParameter extends Parameter<ParameterType.String, string> {
+    lineStyle?: LineStyle;
     pattern?: string;
     placeHolder?: string;
 }
 
-export interface SkillMetadata {
+export interface Metadata {
 
     name: string;
     namespace: string;
     version: string;
 
     author: string;
-    displayName?: string;
+    displayName: string;
     description: string;
     longDescription: string;
     readme?: string;
     license: string;
 
-    categories?: SkillCategory[];
-    technologies?: SkillTechnology[];
+    categories?: Category[];
+    technologies?: Technology[];
 
     homepageUrl: string;
     repositoryUrl: string;
@@ -169,64 +155,80 @@ export interface SkillMetadata {
     videoUrl?: string;
 }
 
-export interface SkillConfiguration {
+export enum ParameterType {
+    Boolean = "boolean",
+    Float = "float",
+    Int = "int",
+    MultiChoice = "multiChoice",
+    SingleChoice = "singleChoice",
+    RepoFilter = "repoFilter",
+    "Schedule" = "schedule",
+    "String" = "string",
+}
 
-    dispatchStyle?: SkillDispatchStyle;
+export interface Configuration {
+
+    dispatchStyle?: DispatchStyle;
 
     maxConfigurations?: number;
 
-    artifacts?: SkillArtifact;
+    runtime?: SkillRuntime;
 
-    parameters?: Record<string, SkillBooleanParameter |
-        SkillFloatParameter |
-        SkillIntParameter |
-        SkillMultiChoiceParameter |
-        SkillSingleChoiceParameter |
-        SkillRepoFilterParameter |
-        SkillScheduleParameter |
-        SkillStringParameter>;
+    parameters?: Record<string, BooleanParameter |
+        FloatParameter |
+        IntParameter |
+        MultiChoiceParameter |
+        SingleChoiceParameter |
+        RepoFilterParameter |
+        ScheduleParameter |
+        StringParameter>;
 
-    resourceProviders?: SkillResourceProvider[];
+    resourceProviders?: Record<string, ResourceProvider>;
 }
 
-export interface SkillCommand {
+export interface Command {
     name: string;
     displayName?: string;
     description: string;
     pattern: RegExp;
 }
 
-export interface SkillOperations {
+export interface Operations {
 
-    commands?: SkillCommand[];
+    commands?: Command[];
 
     subscriptions?: string[];
 }
 
-export type Skill = SkillMetadata & SkillConfiguration & SkillOperations;
+export type Skill = Metadata & Configuration & Operations;
 
-export function packageJson(path: string = "package.json"): SkillMetadata {
+export function packageJson(path = "package.json"): Metadata {
     const pj = require(path);
     const name = pj.name.split("/");
     return {
         name: name.length === 2 ? name[1] : name[0],
         namespace: name.length === 2 ? name[0].replace(/@/g, "") : undefined,
+        displayName: pj.description,
         version: pj.version,
         author: typeof pj.author === "string" ? pj.author : pj.author?.name,
-        description: pj.description,
-        longDescription: pj.longDescription,
+        description: "file://docs/description.md",
+        longDescription: "file://docs/long_description.md",
+        readme: "file://README.md",
         license: pj.license,
         categories: pj.keywords,
         technologies: pj.technologies,
         homepageUrl: pj.homepage,
         repositoryUrl: typeof pj.repository === "string" ? pj.repository : pj.repository?.url,
-        iconUrl: pj.icon,
+        iconUrl: pj.icon ? pj.icon : "file://docs/images/icon.svg",
     };
 }
 
-export function skill(skill: Partial<SkillMetadata> & SkillConfiguration & SkillOperations, path: string = "package.json"): Skill {
+export function skill(skill: Partial<Metadata> & Configuration & Operations,
+                      p: string = path.join(process.cwd(), "package.json")): Skill {
     return {
-        ...packageJson(path),
+        ...packageJson(p),
         ...skill,
-    }
+    };
 }
+
+
