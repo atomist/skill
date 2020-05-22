@@ -111,7 +111,8 @@ export function guid(): string {
 export async function handleError<T>(f: () => Promise<T>,
                                      cb: (err: Error) => T | undefined = DefaultErrorHandler): Promise<T | undefined> {
     try {
-        return f();
+        const result = await f();
+        return result;
     } catch (e) {
         return cb(e);
     }
@@ -128,7 +129,7 @@ export function handleErrorSync<T>(f: () => T,
 
 export const DefaultErrorHandler: (err: Error) => undefined = err => {
     error(`Error occurred: %s`, err.message);
-    if (!!err.stack) {
+    if (err.stack) {
         error(err.stack);
     }
     return undefined;

@@ -19,6 +19,7 @@
 import "source-map-support/register";
 
 import * as yargs from "yargs";
+import { error } from "../lib/log";
 
 // tslint:disable-next-line:no-unused-expression
 yargs
@@ -26,10 +27,26 @@ yargs
         "run",
         "Start container skill",
         args => args.options({
-            skill: { type: "string", description: "Name of skill to load", demandOption: false},
+            skill: { type: "string", description: "Name of skill to load", demandOption: false },
         }),
         async argv => {
             return (await import("../lib/run")).run(argv.skill);
+        },
+    )
+    .command(
+        "generate",
+        "Generate the atomist.yaml skill metadata",
+        args => args.option({
+            cwd: { type: "string", description: "Working directory", default: process.cwd(), demandOption: false },
+        }),
+        async argv => {
+            try {
+                await (await import("../lib/skill_input")).generate(argv.cwd);
+                return 0;
+            } catch (e) {
+                error(e.message);
+                process.exit(1);
+            }
         },
     )
     .help()
