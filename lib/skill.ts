@@ -204,7 +204,7 @@ export type Skill = Metadata & Configuration & Operations;
 
 export function packageJson(path = "package.json"): Metadata {
     const pj = require(path);
-    const name = pj.name.split("/");
+    const name = pj.name?.split("/");
     return {
         name: name.length === 2 ? name[1] : name[0],
         namespace: name.length === 2 ? name[0].replace(/@/g, "") : undefined,
