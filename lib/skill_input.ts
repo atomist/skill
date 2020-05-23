@@ -28,394 +28,403 @@ import map = require("lodash.map");
 export type Maybe<T> = T | null;
 
 export type Scalars = {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
+    ID: string;
+    String: string;
+    Boolean: boolean;
+    Int: number;
+    Float: number;
 };
 
 /** Start: registration inputs */
 export type AtomistSkillInput = {
-  artifacts: AtomistSkillArtifactsInput;
-  author: Scalars['String'];
-  branchId: Scalars['String'];
-  categories?: Maybe<Array<AtomistSkillCategoryKey>>;
-  commands?: Maybe<Array<AtomistChatCommandInput>>;
-  commitSha: Scalars['String'];
-  description: Scalars['String'];
-  dispatchStyle?: Maybe<AtomistSkillEventDispatchStyle>;
-  displayName?: Maybe<Scalars['String']>;
-  homepageUrl: Scalars['String'];
-  iconUrl: Scalars['String'];
-  ingesters?: Maybe<Array<Scalars['String']>>;
-  license: Scalars['String'];
-  longDescription: Scalars['String'];
-  maxConfigurations?: Maybe<Scalars['Int']>;
-  name: Scalars['String'];
-  namespace: Scalars['String'];
-  parameters?: Maybe<Array<AtomistSkillParameterSpecInput>>;
-  readme?: Maybe<Scalars['String']>;
-  repoId: Scalars['String'];
-  resourceProviders?: Maybe<Array<AtomistSkillResourceProviderSpecInput>>;
-  subscriptions?: Maybe<Array<Scalars['String']>>;
-  technologies?: Maybe<Array<AtomistSkillTechnology>>;
-  version: Scalars['String'];
-  videoUrl?: Maybe<Scalars['String']>;
+    artifacts: AtomistSkillArtifactsInput;
+    author: Scalars['String'];
+    branchId: Scalars['String'];
+    categories?: Maybe<Array<AtomistSkillCategoryKey>>;
+    commands?: Maybe<Array<AtomistChatCommandInput>>;
+    commitSha: Scalars['String'];
+    description: Scalars['String'];
+    dispatchStyle?: Maybe<AtomistSkillEventDispatchStyle>;
+    displayName?: Maybe<Scalars['String']>;
+    homepageUrl: Scalars['String'];
+    iconUrl: Scalars['String'];
+    ingesters?: Maybe<Array<Scalars['String']>>;
+    license: Scalars['String'];
+    longDescription: Scalars['String'];
+    maxConfigurations?: Maybe<Scalars['Int']>;
+    name: Scalars['String'];
+    namespace: Scalars['String'];
+    parameters?: Maybe<Array<AtomistSkillParameterSpecInput>>;
+    readme?: Maybe<Scalars['String']>;
+    repoId: Scalars['String'];
+    resourceProviders?: Maybe<Array<AtomistSkillResourceProviderSpecInput>>;
+    subscriptions?: Maybe<Array<Scalars['String']>>;
+    technologies?: Maybe<Array<AtomistSkillTechnology>>;
+    version: Scalars['String'];
+    videoUrl?: Maybe<Scalars['String']>;
 };
 
 export type AtomistSkillArtifactsInput = {
-  docker?: Maybe<Array<AtomistDockerSkillArtifactInput>>;
-  gcf?: Maybe<Array<AtomistGcfSkillArtifactInput>>;
+    docker?: Maybe<Array<AtomistDockerSkillArtifactInput>>;
+    gcf?: Maybe<Array<AtomistGcfSkillArtifactInput>>;
 };
 
 export type AtomistDockerSkillArtifactInput = {
-  args?: Maybe<Array<Scalars['String']>>;
-  command?: Maybe<Array<Scalars['String']>>;
-  env?: Maybe<Array<AtomistSkillEnvVariableInput>>;
-  image: Scalars['String'];
-  name: Scalars['ID'];
-  workingDir?: Maybe<Scalars['String']>;
+    args?: Maybe<Array<Scalars['String']>>;
+    command?: Maybe<Array<Scalars['String']>>;
+    env?: Maybe<Array<AtomistSkillEnvVariableInput>>;
+    image: Scalars['String'];
+    name: Scalars['ID'];
+    workingDir?: Maybe<Scalars['String']>;
 };
 
 export type AtomistSkillEnvVariableInput = {
-  name: Scalars['String'];
-  value: Scalars['String'];
+    name: Scalars['String'];
+    value: Scalars['String'];
 };
 
 export type AtomistGcfSkillArtifactInput = {
-  entryPoint: Scalars['String'];
-  memory?: Maybe<Scalars['Int']>;
-  name: Scalars['ID'];
-  runtime: AtomistSkillRuntime;
-  timeout?: Maybe<Scalars['Int']>;
-  url: Scalars['String'];
+    entryPoint: Scalars['String'];
+    memory?: Maybe<Scalars['Int']>;
+    name: Scalars['ID'];
+    runtime: AtomistSkillRuntime;
+    timeout?: Maybe<Scalars['Int']>;
+    url: Scalars['String'];
 };
 
 export enum AtomistSkillRuntime {
-  Nodejs10 = 'nodejs10',
-  Python37 = 'python37',
-  Go113 = 'go113'
+    Nodejs10 = 'nodejs10',
+    Python37 = 'python37',
+    Go113 = 'go113'
 }
 
 export enum AtomistSkillCategoryKey {
-  Build = 'BUILD',
-  CodeReview = 'CODE_REVIEW',
-  DevEx = 'DEV_EX',
-  Deploy = 'DEPLOY',
-  Security = 'SECURITY',
-  Dependencies = 'DEPENDENCIES',
-  Notifications = 'NOTIFICATIONS',
-  Ci = 'CI',
-  Cd = 'CD',
-  Productivity = 'PRODUCTIVITY',
-  CodeQuality = 'CODE_QUALITY',
-  Chat = 'CHAT'
+    Build = 'BUILD',
+    CodeReview = 'CODE_REVIEW',
+    DevEx = 'DEV_EX',
+    Deploy = 'DEPLOY',
+    Security = 'SECURITY',
+    Dependencies = 'DEPENDENCIES',
+    Notifications = 'NOTIFICATIONS',
+    Ci = 'CI',
+    Cd = 'CD',
+    Productivity = 'PRODUCTIVITY',
+    CodeQuality = 'CODE_QUALITY',
+    Chat = 'CHAT'
 }
 
 export type AtomistChatCommandInput = {
-  description: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  pattern: Scalars['String'];
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    name: Scalars['String'];
+    pattern: Scalars['String'];
 };
 
 export enum AtomistSkillEventDispatchStyle {
-  Single = 'single',
-  Multiple = 'multiple'
+    Single = 'single',
+    Multiple = 'multiple'
 }
 
 export type AtomistSkillParameterSpecInput = {
-  boolean?: Maybe<AtomistSkillBooleanParameterSpecInput>;
-  float?: Maybe<AtomistSkillFloatParameterSpecInput>;
-  int?: Maybe<AtomistSkillIntParameterSpecInput>;
-  multiChoice?: Maybe<AtomistSkillMultiChoiceParameterSpecInput>;
-  repoFilter?: Maybe<AtomistSkillRepoFilterParameterSpecInput>;
-  schedule?: Maybe<AtomistSkillScheduleParameterSpecInput>;
-  singleChoice?: Maybe<AtomistSkillSingleChoiceParameterSpecInput>;
-  string?: Maybe<AtomistSkillStringParameterSpecInput>;
-  stringArray?: Maybe<AtomistSkillStringArrayParameterSpecInput>;
+    boolean?: Maybe<AtomistSkillBooleanParameterSpecInput>;
+    float?: Maybe<AtomistSkillFloatParameterSpecInput>;
+    int?: Maybe<AtomistSkillIntParameterSpecInput>;
+    multiChoice?: Maybe<AtomistSkillMultiChoiceParameterSpecInput>;
+    repoFilter?: Maybe<AtomistSkillRepoFilterParameterSpecInput>;
+    schedule?: Maybe<AtomistSkillScheduleParameterSpecInput>;
+    singleChoice?: Maybe<AtomistSkillSingleChoiceParameterSpecInput>;
+    string?: Maybe<AtomistSkillStringParameterSpecInput>;
+    stringArray?: Maybe<AtomistSkillStringArrayParameterSpecInput>;
 };
 
 export type AtomistSkillBooleanParameterSpecInput = {
-  defaultValue?: Maybe<Scalars['Boolean']>;
-  description: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  required: Scalars['Boolean'];
+    defaultValue?: Maybe<Scalars['Boolean']>;
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    name: Scalars['String'];
+    required: Scalars['Boolean'];
 };
 
 export type AtomistSkillFloatParameterSpecInput = {
-  defaultValue?: Maybe<Scalars['Float']>;
-  description: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  maximum?: Maybe<Scalars['Float']>;
-  minimum?: Maybe<Scalars['Float']>;
-  name: Scalars['String'];
-  placeHolder?: Maybe<Scalars['String']>;
-  required: Scalars['Boolean'];
+    defaultValue?: Maybe<Scalars['Float']>;
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    maximum?: Maybe<Scalars['Float']>;
+    minimum?: Maybe<Scalars['Float']>;
+    name: Scalars['String'];
+    placeHolder?: Maybe<Scalars['String']>;
+    required: Scalars['Boolean'];
 };
 
 export type AtomistSkillIntParameterSpecInput = {
-  defaultValue?: Maybe<Scalars['Int']>;
-  description: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  maximum?: Maybe<Scalars['Int']>;
-  minimum?: Maybe<Scalars['Int']>;
-  name: Scalars['String'];
-  placeHolder?: Maybe<Scalars['String']>;
-  required: Scalars['Boolean'];
+    defaultValue?: Maybe<Scalars['Int']>;
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    maximum?: Maybe<Scalars['Int']>;
+    minimum?: Maybe<Scalars['Int']>;
+    name: Scalars['String'];
+    placeHolder?: Maybe<Scalars['String']>;
+    required: Scalars['Boolean'];
 };
 
 export type AtomistSkillMultiChoiceParameterSpecInput = {
-  defaultValues?: Maybe<Array<Scalars['String']>>;
-  description: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  maxAllowed?: Maybe<Scalars['Int']>;
-  minRequired?: Maybe<Scalars['Int']>;
-  name: Scalars['String'];
-  options?: Maybe<Array<AtomistSkillChoiceInput>>;
-  required: Scalars['Boolean'];
+    defaultValues?: Maybe<Array<Scalars['String']>>;
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    maxAllowed?: Maybe<Scalars['Int']>;
+    minRequired?: Maybe<Scalars['Int']>;
+    name: Scalars['String'];
+    options?: Maybe<Array<AtomistSkillChoiceInput>>;
+    required: Scalars['Boolean'];
 };
 
 export type AtomistSkillChoiceInput = {
-  description?: Maybe<Scalars['String']>;
-  text: Scalars['String'];
-  value: Scalars['String'];
+    description?: Maybe<Scalars['String']>;
+    text: Scalars['String'];
+    value: Scalars['String'];
 };
 
 export type AtomistSkillRepoFilterParameterSpecInput = {
-  description: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  required: Scalars['Boolean'];
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    name: Scalars['String'];
+    required: Scalars['Boolean'];
 };
 
 export type AtomistSkillScheduleParameterSpecInput = {
-  defaultValue?: Maybe<Scalars['String']>;
-  description: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  required: Scalars['Boolean'];
+    defaultValue?: Maybe<Scalars['String']>;
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    name: Scalars['String'];
+    required: Scalars['Boolean'];
 };
 
 export type AtomistSkillSingleChoiceParameterSpecInput = {
-  defaultValue?: Maybe<Scalars['String']>;
-  description: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  options?: Maybe<Array<AtomistSkillChoiceInput>>;
-  required: Scalars['Boolean'];
+    defaultValue?: Maybe<Scalars['String']>;
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    name: Scalars['String'];
+    options?: Maybe<Array<AtomistSkillChoiceInput>>;
+    required: Scalars['Boolean'];
 };
 
 export type AtomistSkillStringParameterSpecInput = {
-  defaultValue?: Maybe<Scalars['String']>;
-  description: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  lineStyle?: Maybe<AtomistSkillStringParameterLineStyle>;
-  name: Scalars['String'];
-  pattern?: Maybe<Scalars['String']>;
-  placeHolder?: Maybe<Scalars['String']>;
-  required: Scalars['Boolean'];
+    defaultValue?: Maybe<Scalars['String']>;
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    lineStyle?: Maybe<AtomistSkillStringParameterLineStyle>;
+    name: Scalars['String'];
+    pattern?: Maybe<Scalars['String']>;
+    placeHolder?: Maybe<Scalars['String']>;
+    required: Scalars['Boolean'];
 };
 
 export enum AtomistSkillStringParameterLineStyle {
-  Single = 'single',
-  Multiple = 'multiple'
+    Single = 'single',
+    Multiple = 'multiple'
 }
 
 export type AtomistSkillStringArrayParameterSpecInput = {
-  defaultValue?: Maybe<Array<Maybe<Scalars['String']>>>;
-  description: Scalars['String'];
-  displayName?: Maybe<Scalars['String']>;
-  maxAllowed?: Maybe<Scalars['Int']>;
-  minRequired?: Maybe<Scalars['Int']>;
-  name: Scalars['String'];
-  pattern?: Maybe<Scalars['String']>;
-  required: Scalars['Boolean'];
+    defaultValue?: Maybe<Array<Maybe<Scalars['String']>>>;
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    maxAllowed?: Maybe<Scalars['Int']>;
+    minRequired?: Maybe<Scalars['Int']>;
+    name: Scalars['String'];
+    pattern?: Maybe<Scalars['String']>;
+    required: Scalars['Boolean'];
 };
 
 export type AtomistSkillResourceProviderSpecInput = {
-  description?: Maybe<Scalars['String']>;
-  maxAllowed?: Maybe<Scalars['Int']>;
-  minRequired?: Maybe<Scalars['Int']>;
-  name: Scalars['String'];
-  typeName: Scalars['String'];
+    description?: Maybe<Scalars['String']>;
+    maxAllowed?: Maybe<Scalars['Int']>;
+    minRequired?: Maybe<Scalars['Int']>;
+    name: Scalars['String'];
+    typeName: Scalars['String'];
 };
 
 export enum AtomistSkillTechnology {
-  Java = 'JAVA',
-  Maven = 'MAVEN',
-  Docker = 'DOCKER',
-  Javascript = 'JAVASCRIPT',
-  Npm = 'NPM',
-  Lein = 'LEIN',
-  Clojure = 'CLOJURE',
-  Kubernetes = 'KUBERNETES'
+    Java = 'JAVA',
+    Maven = 'MAVEN',
+    Docker = 'DOCKER',
+    Javascript = 'JAVASCRIPT',
+    Npm = 'NPM',
+    Lein = 'LEIN',
+    Clojure = 'CLOJURE',
+    Kubernetes = 'KUBERNETES'
 }
 
 export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> {
-  const p = path.join(cwd, "index.js");
-  info(`Generating skill metadata from '${p}'`);
-  const is: Skill = await handleError<Skill>(
-      async () => (await import(p)).Skill,
-      err => {
-        error(`Error loading '${p}'`);
-        return undefined;
-      });
+    const p = path.join(cwd, "index.js");
+    info(`Generating skill metadata from '${p}'`);
+    const is: Skill = await handleError<Skill>(
+        async () => (await import(p)).Skill,
+        err => {
+            error(`Error loading '${p}'`);
+            return undefined;
+        });
 
-  if (!is) {
-    throw new Error(`Failed to load exported Skill constant from '${p}'`);
-  }
+    if (!is) {
+        throw new Error(`Failed to load exported Skill constant from '${p}'`);
+    }
 
-  const rc = content(cwd);
+    const rc = content(cwd);
 
-  const subscriptions = [];
-  for (const subscription of (is.subscriptions || [])) {
-    subscriptions.push(...(await rc(subscription)));
-  }
+    const subscriptions = [];
+    for (const subscription of (is.subscriptions || [])) {
+        subscriptions.push(...(await rc(subscription)));
+    }
 
-  const readme = (await rc(is.readme))[0];
+    const readme = (await rc(is.readme))[0];
 
-  const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> = {
-    name: is.name,
-    namespace: is.namespace,
-    displayName: is.displayName,
-    version: is.version,
-    author: is.author,
-    description: (await rc(is.description))[0],
-    longDescription: (await rc(is.longDescription))[0],
-    license: is.license,
-    categories: is.categories as any,
-    technologies: is.technologies as any,
-    homepageUrl: is.homepageUrl,
-    iconUrl: await icon(cwd, is.iconUrl),
-    videoUrl: is.videoUrl,
+    const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> & { package: { use: string, parameters: any } } = {
+        name: is.name,
+        namespace: is.namespace,
+        displayName: is.displayName,
+        version: is.version,
+        author: is.author,
+        description: (await rc(is.description))[0],
+        longDescription: (await rc(is.longDescription))[0],
+        license: is.license,
+        categories: is.categories as any,
+        technologies: is.technologies as any,
+        homepageUrl: is.homepageUrl,
+        iconUrl: await icon(cwd, is.iconUrl),
+        videoUrl: is.videoUrl,
 
-    readme: readme ? Buffer.from(readme).toString("base64") : undefined,
+        readme: readme ? Buffer.from(readme).toString("base64") : undefined,
 
-    maxConfigurations: is.maxConfigurations,
-    dispatchStyle: is.dispatchStyle as any,
+        maxConfigurations: is.maxConfigurations,
+        dispatchStyle: is.dispatchStyle as any,
 
-    artifacts: {
-      gcf: [{
-        entryPoint: is.runtime?.entryPoint || "entryPoint",
-        memory: is.runtime?.memory || 256,
-        timeout: is.runtime?.timeout || 60,
-        runtime: is.runtime?.platform as any || AtomistSkillRuntime.Nodejs10,
-        name: "gcf",
-        url: undefined,
-      }],
-    },
-
-    resourceProviders: map(is.resourceProviders || {}, (v, k) => ({
-      name: k,
-      typeName: v.typeName,
-      description: v.description,
-      minRequired: v.minRequired,
-      maxAllowed: v.maxAllowed,
-    })),
-
-    parameters: map(is.parameters || {}, (v, k) => {
-      const type = v.type;
-      delete v.type;
-      return {
-        [type]: {
-          name: k,
-          ...v,
+        package: {
+            use: "atomist/package-npm-skill",
+            parameters: {
+                bundle: is.package?.bundle,
+                minify: is.package?.minify,
+                sourceMaps: is.package?.sourceMaps,
+            },
         },
-      };
-    }),
 
-    commands: (is.commands || []).map(c => ({
-      name: c.name,
-      displayName: c.displayName,
-      description: c.name,
-      pattern: c.pattern.source,
-    })),
+        artifacts: {
+            gcf: [{
+                entryPoint: is.runtime?.entryPoint || "entryPoint",
+                memory: is.runtime?.memory || 256,
+                timeout: is.runtime?.timeout || 60,
+                runtime: is.runtime?.platform as any || AtomistSkillRuntime.Nodejs10,
+                name: "gcf",
+                url: undefined,
+            }],
+        },
 
-    subscriptions,
-  };
+        resourceProviders: map(is.resourceProviders || {}, (v, k) => ({
+            name: k,
+            typeName: v.typeName,
+            description: v.description,
+            minRequired: v.minRequired,
+            maxAllowed: v.maxAllowed,
+        })),
 
-  return y as any;
+        parameters: map(is.parameters || {}, (v, k) => {
+            const type = v.type;
+            delete v.type;
+            return {
+                [type]: {
+                    name: k,
+                    ...v,
+                },
+            };
+        }),
+
+        commands: (is.commands || []).map(c => ({
+            name: c.name,
+            displayName: c.displayName,
+            description: c.name,
+            pattern: c.pattern.source,
+        })),
+
+        subscriptions,
+    };
+
+    return y as any;
 }
 
 export function validateSkillInput(s: AtomistSkillInput): void {
-  const errors = [];
+    const errors = [];
 
-  // Check required fields
-  const requiredFields = ["name", "namespace", "version", "description", "longDescription", "author", "homepageUrl", "iconUrl", "license"];
-  for (const requiredField of requiredFields) {
-    if (!s[requiredField]) {
-      errors.push(`Required field '${requiredField}' missing`);
+    // Check required fields
+    const requiredFields = ["name", "namespace", "version", "description", "longDescription", "author", "homepageUrl", "iconUrl", "license"];
+    for (const requiredField of requiredFields) {
+        if (!s[requiredField]) {
+            errors.push(`Required field '${requiredField}' missing`);
+        }
     }
-  }
 
-  // Check categories against schema
-  for (const category of (s.categories || [])) {
-    if (!Object.values(AtomistSkillCategoryKey).includes(category as any)) {
-      errors.push(`Category '${category}' invalid`);
+    // Check categories against schema
+    for (const category of (s.categories || [])) {
+        if (!Object.values(AtomistSkillCategoryKey).includes(category as any)) {
+            errors.push(`Category '${category}' invalid`);
+        }
     }
-  }
 
-  // Check technologies against schema
-  for (const technology of (s.technologies || [])) {
-    if (!Object.values(AtomistSkillTechnology).includes(technology as any)) {
-      errors.push(`Technology '${technology}' invalid`);
+    // Check technologies against schema
+    for (const technology of (s.technologies || [])) {
+        if (!Object.values(AtomistSkillTechnology).includes(technology as any)) {
+            errors.push(`Technology '${technology}' invalid`);
+        }
     }
-  }
 
-  if (errors.length > 0) {
-    error(`Skill metadata contains errors:
+    if (errors.length > 0) {
+        error(`Skill metadata contains errors:
 ${errors.map(e => `        - ${e}`).join("\n")}`);
-    throw new Error(`Failed to generate skill metadata`);
-  }
+        throw new Error(`Failed to generate skill metadata`);
+    }
 }
 
 export async function writeAtomistYaml(cwd: string,
                                        skill: AtomistSkillInput): Promise<void> {
-  const p = path.join(cwd, "atomist.yaml");
-  info(`Writing skill metadata to '${p}'`);
-  const yaml = await import("js-yaml");
-  const content = yaml.safeDump({ version: "1.0", skill }, { skipInvalid: true });
-  await fs.writeFile(p, content);
+    const p = path.join(cwd, "atomist.yaml");
+    info(`Writing skill metadata to '${p}'`);
+    const yaml = await import("js-yaml");
+    const content = yaml.safeDump({ version: "1.0", skill }, { skipInvalid: true });
+    await fs.writeFile(p, content);
 }
 
 export async function generate(cwd: string): Promise<void> {
-  const s = await createSkillInput(cwd);
-  validateSkillInput(s);
-  await writeAtomistYaml(cwd, s);
+    const s = await createSkillInput(cwd);
+    validateSkillInput(s);
+    await writeAtomistYaml(cwd, s);
 }
 
 function content(cwd: string): (key: string) => Promise<string[]> {
-  return async key => {
-    if (!key) {
-      return [];
-    }
-    if (key.startsWith("file://")) {
-      const pattern = key.slice(7);
-      return withGlobMatches<string>(cwd, pattern, async file => {
-        return (await fs.readFile(path.join(cwd, file))).toString();
-      });
-    } else {
-      return [key];
-    }
-  };
+    return async key => {
+        if (!key) {
+            return [];
+        }
+        if (key.startsWith("file://")) {
+            const pattern = key.slice(7);
+            return withGlobMatches<string>(cwd, pattern, async file => {
+                return (await fs.readFile(path.join(cwd, file))).toString();
+            });
+        } else {
+            return [key];
+        }
+    };
 }
 
 async function icon(cwd: string, key: string): Promise<string> {
-  if (!key) {
-    return undefined;
-  }
-
-  if (key.startsWith("file://")) {
-    const data = await content(cwd)(key);
-    if (data?.length > 0) {
-      return `data:image/svg+xml;base64,${Buffer.from(data[0]).toString("base64")}`;
-    } else {
-      return undefined;
+    if (!key) {
+        return undefined;
     }
-  } else {
-    return key;
-  }
+
+    if (key.startsWith("file://")) {
+        const data = await content(cwd)(key);
+        if (data?.length > 0) {
+            return `data:image/svg+xml;base64,${Buffer.from(data[0]).toString("base64")}`;
+        } else {
+            return undefined;
+        }
+    } else {
+        return key;
+    }
 }
