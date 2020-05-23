@@ -300,9 +300,9 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
         package: {
             use: "atomist/package-npm-skill",
             parameters: {
-                bundle: is.package?.bundle,
-                minify: is.package?.minify,
-                sourceMaps: is.package?.sourceMaps,
+                bundle: is.package?.bundle || true,
+                minify: is.package?.minify || true,
+                sourceMaps: is.package?.sourceMaps || true,
             },
         },
 
