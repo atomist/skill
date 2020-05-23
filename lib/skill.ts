@@ -54,8 +54,8 @@ export enum Platform {
 }
 
 export interface SkillRuntime {
-    entryPoint: string;
-    platform: Platform;
+    entryPoint?: string;
+    platform?: Platform;
     url?: string;
     memory?: number;
     timeout?: number;
@@ -123,7 +123,7 @@ export interface SingleChoiceParameter extends Parameter<ParameterType.SingleCho
     }>;
 }
 
-export type RepoFilterParameter = Omit<Parameter<ParameterType.RepoFilter, any>, "defaultValue" | "displayName" | "visibility">;
+export type RepoFilterParameter = Omit<Parameter<ParameterType.RepoFilter, any>, "defaultValue" | "description" | "visibility">;
 
 export type ScheduleParameter = Parameter<ParameterType.Schedule, string>;
 
