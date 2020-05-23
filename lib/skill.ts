@@ -61,6 +61,12 @@ export interface SkillRuntime {
     timeout?: number;
 }
 
+export interface SkillPackage {
+    bundle?: boolean;
+    minify?: boolean;
+    sourceMaps?: boolean;
+}
+
 export interface ResourceProvider {
     description?: string;
     maxAllowed?: number;
@@ -162,8 +168,8 @@ export enum ParameterType {
     MultiChoice = "multiChoice",
     SingleChoice = "singleChoice",
     RepoFilter = "repoFilter",
-    "Schedule" = "schedule",
-    "String" = "string",
+    Schedule = "schedule",
+    String = "string",
 }
 
 export interface Configuration {
@@ -173,6 +179,8 @@ export interface Configuration {
     maxConfigurations?: number;
 
     runtime?: SkillRuntime;
+
+    package?: SkillPackage;
 
     parameters?: Record<string, BooleanParameter |
         FloatParameter |
