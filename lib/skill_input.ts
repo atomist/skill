@@ -22,7 +22,10 @@ import {
 } from "./log";
 import { withGlobMatches } from "./project/util";
 import { Skill } from "./skill";
-import { handleError } from "./util";
+import {
+    handleError,
+    handlerLoader,
+} from "./util";
 import map = require("lodash.map");
 
 export type Maybe<T> = T | null;
@@ -346,10 +349,15 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
         subscriptions,
     };
 
+    if (!is.longDescription) {
+        is.longDescription = is.description;
+    }
+
     return y as any;
 }
 
-export function validateSkillInput(s: AtomistSkillInput): void {
+export async function validateSkillInput(cwd: string,
+                                         s: AtomistSkillInput): Promise<void> {
     const errors = [];
 
     // Check required fields
@@ -374,6 +382,34 @@ export function validateSkillInput(s: AtomistSkillInput): void {
         }
     }
 
+    // Validate commands
+    for (const command of (s.commands || [])) {
+        await handleError(async () => {
+            const p = await handlerLoader(`commands/${command.name}`);
+            if (!p) {
+                errors.push(`Registered command '${command.name}' can't be found`);
+            }
+        }, () => {
+            errors.push(`Registered command '${command.name}' can't be found`);
+        });
+    }
+
+    // Validate subscriptions
+    for (const subscription of (s.subscriptions || [])) {
+        const match = subscription.match(/subscription\s([a-zA-Z]+)[\s({]/);
+        if (!!match) {
+            const operationName = match[1];
+            await handleError(async () => {
+                const p = await handlerLoader(`events/${operationName}`);
+                if (!p) {
+                    errors.push(`Registered event handler '${operationName}' can't be found`);
+                }
+            }, () => {
+                errors.push(`Registered event handler '${operationName}' can't be found`);
+            });
+        }
+    }
+
     if (errors.length > 0) {
         error(`Skill metadata contains errors:
 ${errors.map(e => `        - ${e}`).join("\n")}`);
@@ -392,7 +428,7 @@ export async function writeAtomistYaml(cwd: string,
 
 export async function generate(cwd: string): Promise<void> {
     const s = await createSkillInput(cwd);
-    validateSkillInput(s);
+    await validateSkillInput(cwd, s);
     await writeAtomistYaml(cwd, s);
 }
 
