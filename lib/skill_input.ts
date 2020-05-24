@@ -396,7 +396,7 @@ export async function validateSkillInput(cwd: string,
 
     // Validate subscriptions
     for (const subscription of (s.subscriptions || [])) {
-        const match = subscription.match(/subscription\s([a-zA-Z]+)[\s({]/);
+        const match = subscription.match(/subscription\s([^\s({]+)[\s({]/);
         if (!!match) {
             const operationName = match[1];
             await handleError(async () => {
