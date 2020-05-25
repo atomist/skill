@@ -77,6 +77,7 @@ ${commands.join("\n")}`);
     pj["#devDependencies"] = pj.devDependencies;
     delete pj.dependencies;
     delete pj.devDependencies;
+    pj["#main"] = pj.main;
     pj.main = "dist/index.js";
     await fs.writeJson(path.join(cwd, "package.json"), pj, { spaces: "  " });
     await fs.remove(path.join(cwd, "package-lock.json"));
