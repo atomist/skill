@@ -73,6 +73,8 @@ ${commands.join("\n")}`);
     // - rewrite main
     // - remove dependencies
     const pj = await fs.readJson(path.join(cwd, "package.json"));
+    pj["#dependencies"] = pj.dependencies;
+    pj["#devDependencies"] = pj.devDependencies;
     delete pj.dependencies;
     delete pj.devDependencies;
     pj.main = "dist/index.js";
