@@ -34,10 +34,10 @@ yargs
         },
     )
     .command(
-        "generate",
-        "Generate the atomist.yaml skill metadata",
+        [ "generate", "gen" ],
+        "Generate skill metadata",
         args => args.option({
-            cwd: { type: "string", description: "Working directory", default: process.cwd(), demandOption: false },
+            cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
         }),
         async argv => {
             try {
@@ -49,5 +49,24 @@ yargs
             }
         },
     )
+    .command(
+        [ "bundle" ],
+        "Bundle skill and dependencies",
+        args => args.option({
+            cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
+            minify: { type: "boolean", description: "Minify bundled sources", default: true, demandOption: false },
+            sourceMap: { type: "boolean", description: "Create source map", default: true, demandOption: false },
+        }),
+        async argv => {
+            try {
+                await (await import("../lib/skill_bundle")).bundle(argv.cwd, argv.minify, argv.sourceMap);
+                return 0;
+            } catch (e) {
+                error(e.message);
+                process.exit(1);
+            }
+        },
+    )
+    .strict()
     .help()
     .argv;

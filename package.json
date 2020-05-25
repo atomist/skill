@@ -37,6 +37,7 @@
     "@types/lodash.set": "^4.3.6",
     "@types/node-fetch": "^2.5.7",
     "@types/yargs": "^15.0.4",
+    "@zeit/ncc": "^0.22.3",
     "cross-spawn": "^7.0.2",
     "fast-glob": "^3.2.2",
     "flat": "^5.0.0",
