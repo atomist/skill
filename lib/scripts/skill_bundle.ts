@@ -87,6 +87,6 @@ ${commands.join("\n")}`);
 
     await fs.remove(path.join(cwd, "package-lock.json"));
     await fs.remove(path.join(cwd, "skill.ts"));
-    info(`Skill bundle created at  '${path.join(cwd, "bundle")}'`);
+    info(`Skill bundle created at '${path.join(cwd, "bundle")}'`);
 
 }
