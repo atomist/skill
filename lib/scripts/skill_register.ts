@@ -52,9 +52,8 @@ export async function registerSkill(cwd: string,
     }
 
     const storage = new GoogleCloudStorageProvider(`gs://${w.toLowerCase()}-workspace-storage`);
-    const key = `skills/${w}/${giturl.owner}/${giturl.name}/${status.sha}_local.zip`;
-    const url = `gs://${w.toLowerCase()}-workspace-storage/${key}`;
-    await storage.store(key, path.join(cwd, ".atomist", "skill.zip"));
+    const key = `skills/${w}/${giturl.owner}/${giturl.name}`;
+    const url = `gs://${w.toLowerCase()}-workspace-storage/${key}/${status.sha}.zip`;
 
     const ids = await loadRepoAndBranch(client, { owner: giturl.owner, name: giturl.name, branch: branchName.stdout.trim() });
 
@@ -68,12 +67,17 @@ export async function registerSkill(cwd: string,
         const q = await qualifier(client, { owner: giturl.owner, name: giturl.name });
         atomistYaml.skill.version = `${atomistYaml.skill.version}-${q}`;
     }
-
     atomistYaml.skill.branchId = ids.branchId;
     atomistYaml.skill.repoId = ids.repoId;
     atomistYaml.skill.commitSha = status.sha;
 
+    await fs.writeFile(path.join(cwd, ".atomist", "skill.yaml"), yaml.safeDump(atomistYaml, { skipInvalid: true }));
+
+    await storage.store(`${key}/${status.sha}.zip`, path.join(cwd, ".atomist", "skill.zip"));
+    await storage.store(`${key}/${status.sha}.yaml`, path.join(cwd, ".atomist", "skill.yaml"));
+
     await register(client, atomistYaml.skill);
+
     await spawnPromise("git", ["tag", "-a", atomistYaml.skill.version, "-m", `Registered skill with version ${atomistYaml.skill.version}`], { cwd });
 
     info(`Registered skill '${atomistYaml.skill.namespace}/${atomistYaml.skill.name}' with version '${atomistYaml.skill.version}'`);
