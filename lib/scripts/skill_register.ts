@@ -23,7 +23,10 @@ import {
     createGraphQLClient,
     GraphQLClient,
 } from "../graphql";
-import { error } from "../log";
+import {
+    error,
+    info,
+} from "../log";
 import * as git from "../project/git";
 import { GoogleCloudStorageProvider } from "../storage";
 import { AtomistSkillInput } from "./skill_input";
@@ -31,6 +34,9 @@ import { AtomistSkillInput } from "./skill_input";
 export async function registerSkill(cwd: string,
                                     workspaceId: string,
                                     version?: string): Promise<void> {
+    process.env.ATOMIST_LOG_LEVEL = "info";
+    info("Registering skill...");
+
     const client = createGraphQLClient(await apiKey(), workspaceId);
     const originUrl = await spawnPromise("git", ["config", "--get", "remote.origin.url"], { cwd });
     const branchName = await spawnPromise("git", ["rev-parse", "--abbrev-ref", "HEAD"], { cwd });
@@ -38,7 +44,7 @@ export async function registerSkill(cwd: string,
 
     const status = await git.status(cwd);
     if (!status.isClean) {
-        throw new Error(`Repository contains uncommitted changes. Please commit before registering.`);
+        throw new Error(`Repository contains uncommitted changes. Please commit before running this command.`);
     }
 
     const storage = new GoogleCloudStorageProvider(`gs://${workspaceId.toLowerCase()}-workspace-storage`);
@@ -63,6 +69,7 @@ export async function registerSkill(cwd: string,
     atomistYaml.skill.commitSha = status.sha;
 
     await register(client, atomistYaml.skill);
+    info(`Registered skill '${atomistYaml.skill.namespace}/${atomistYaml.skill.name}' with version '${atomistYaml.skill.version}'`);
 }
 
 const BranchQuery = `query BranchForName($name: String!, $owner: String!, $branch: String!) {

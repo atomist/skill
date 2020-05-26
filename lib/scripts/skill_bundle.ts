@@ -17,13 +17,18 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 import { spawnPromise } from "../child_process";
-import { debug } from "../log";
+import {
+    debug,
+    info,
+} from "../log";
 import { withGlobMatches } from "../project/util";
 
 export async function bundleSkill(cwd: string,
                                   minify: boolean,
                                   sourceMap: boolean): Promise<void> {
-
+    process.env.ATOMIST_LOG_LEVEL = "info";
+    info(`Creating skill bundle...`);
+    
     const events = await withGlobMatches<string>(cwd, ["events/*.js", "lib/events/*.js"], async file => {
         const content = (await fs.readFile(path.join(cwd, file))).toString();
         if (/exports\.handler\s*=/.test(content)) {
@@ -82,5 +87,6 @@ ${commands.join("\n")}`);
 
     await fs.remove(path.join(cwd, "package-lock.json"));
     await fs.remove(path.join(cwd, "skill.ts"));
+    info(`Skill bundle created at  '${path.join(cwd, "bundle")}'`);
 
 }
