@@ -24,7 +24,7 @@ import {
     isEventIncoming,
 } from "./payload";
 
-export async function run(skill?: string): Promise<void> {
+export async function runSkill(skill?: string): Promise<void> {
     const payload = await fs.readJson(process.env.ATOMIST_PAYLOAD || "/atm/payload.json");
     if (isEventIncoming(payload)) {
         if (skill) {

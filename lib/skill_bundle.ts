@@ -20,9 +20,9 @@ import { spawnPromise } from "./child_process";
 import { debug } from "./log";
 import { withGlobMatches } from "./project/util";
 
-export async function bundle(cwd: string,
-                             minify: boolean,
-                             sourceMap: boolean): Promise<void> {
+export async function bundleSkill(cwd: string,
+                                  minify: boolean,
+                                  sourceMap: boolean): Promise<void> {
 
     const events = await withGlobMatches<string>(cwd, ["events/*.js", "lib/events/*.js"], async file => {
         const content = (await fs.readFile(path.join(cwd, file))).toString();
@@ -58,7 +58,7 @@ export async function bundle(cwd: string,
 ${events.join("\n")}
 ${commands.join("\n")}`);
 
-    const nccArgs = ["build", "atomist.skill.ts", "-o", "dist"];
+    const nccArgs = ["build", "atomist.skill.ts", "-o", "bundleSkill"];
     if (minify) {
         nccArgs.push("-m");
     }
@@ -79,6 +79,7 @@ ${commands.join("\n")}`);
     const pj = JSON.parse(pjContent);
     pj.main = "dist/index.js";
     await fs.writeJson(path.join(cwd, "package.json"), pj, { spaces: "  " });
+
     await fs.remove(path.join(cwd, "package-lock.json"));
     await fs.remove(path.join(cwd, "atomist.skill.ts"));
 
