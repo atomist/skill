@@ -259,7 +259,7 @@ export enum AtomistSkillTechnology {
 
 export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> {
     const p = path.join(cwd, "index.js");
-    info(`Generating skill metadata from '${p}'`);
+    info(`Generating skill metadata...`);
     const is: Skill = await handleError<Skill>(
         async () => (await import(p)).Skill,
         err => {
@@ -419,7 +419,6 @@ export async function writeAtomistYaml(cwd: string,
                                        skill: AtomistSkillInput): Promise<void> {
     const p = path.join(cwd, "skill", "atomist.yaml");
     await fs.ensureDir(path.dirname(p));
-    info(`Writing skill metadata to '${p}'`);
     const yaml = await import("js-yaml");
     const content = yaml.safeDump(
         {
@@ -428,6 +427,7 @@ export async function writeAtomistYaml(cwd: string,
         },
         { skipInvalid: true });
     await fs.writeFile(p, content);
+    info(`Written skill metadata to '${p}'`);
 }
 
 export async function generateSkill(cwd: string): Promise<void> {
