@@ -25,8 +25,11 @@ import { withGlobMatches } from "../project/util";
 
 export async function bundleSkill(cwd: string,
                                   minify: boolean,
-                                  sourceMap: boolean): Promise<void> {
-    process.env.ATOMIST_LOG_LEVEL = "info";
+                                  sourceMap: boolean,
+                                  verbose: boolean): Promise<void> {
+    if (!verbose) {
+        process.env.ATOMIST_LOG_LEVEL = "info";
+    }
     info(`Creating skill bundle...`);
     
     const events = await withGlobMatches<string>(cwd, ["events/*.js", "lib/events/*.js"], async file => {

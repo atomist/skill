@@ -417,12 +417,12 @@ ${errors.map(e => `        - ${e}`).join("\n")}`);
 
 export async function writeAtomistYaml(cwd: string,
                                        skill: AtomistSkillInput): Promise<void> {
-    const p = path.join(cwd, "skill", "atomist.yaml");
+    const p = path.join(cwd, ".atomist", "skill.yaml");
     await fs.ensureDir(path.dirname(p));
     const yaml = await import("js-yaml");
     const content = yaml.safeDump(
         {
-            version: "1.0",
+            apiVersion: 1,
             skill,
         },
         { skipInvalid: true });
@@ -430,7 +430,8 @@ export async function writeAtomistYaml(cwd: string,
     info(`Written skill metadata to '${p}'`);
 }
 
-export async function generateSkill(cwd: string): Promise<void> {
+export async function generateSkill(cwd: string,
+                                    verbose: boolean): Promise<void> {
     const s = await createSkillInput(cwd);
     await validateSkillInput(cwd, s);
     await writeAtomistYaml(cwd, s);
