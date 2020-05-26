@@ -38,10 +38,11 @@ yargs
         "Generate skill metadata",
         args => args.option({
             cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
+            verbose: { type: "boolean", description: "Enable verbose logging", default: false, demandOption: false },
         }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_input")).generateSkill(argv.cwd);
+                await (await import("../lib/scripts/skill_input")).generateSkill(argv.cwd, argv.verbose);
                 return 0;
             } catch (e) {
                 error(e.message);
@@ -56,10 +57,11 @@ yargs
             cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
             minify: { type: "boolean", description: "Minify bundled sources", default: true, demandOption: false },
             sourceMap: { type: "boolean", description: "Create source map", default: true, demandOption: false },
+            verbose: { type: "boolean", description: "Enable verbose logging", default: false, demandOption: false },
         }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_bundle")).bundleSkill(argv.cwd, argv.minify, argv.sourceMap);
+                await (await import("../lib/scripts/skill_bundle")).bundleSkill(argv.cwd, argv.minify, argv.sourceMap, argv.verbose);
                 return 0;
             } catch (e) {
                 error(e.message);
@@ -72,10 +74,11 @@ yargs
         "Package skill archive",
         args => args.option({
             cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
+            verbose: { type: "boolean", description: "Enable verbose logging", default: false, demandOption: false },
         }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_package")).packageSkill(argv.cwd);
+                await (await import("../lib/scripts/skill_package")).packageSkill(argv.cwd, argv.verbose);
                 return 0;
             } catch (e) {
                 error(e.message);
@@ -87,13 +90,14 @@ yargs
         [ "register", "reg" ],
         "Register skill",
         args => args.option({
-            workspace: { type: "string", description: "Id of workspace to register", demandOption: true },
             cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
+            workspace: { type: "string", description: "Id of workspace to register", demandOption: false },
             version: { type: "string", description: "Version of skill", demandOption: false },
+            verbose: { type: "boolean", description: "Enable verbose logging", default: false, demandOption: false },
         }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_register")).registerSkill(argv.cwd, argv.workspace);
+                await (await import("../lib/scripts/skill_register")).registerSkill(argv.cwd, argv.workspace, argv.version, argv.verbose);
                 return 0;
             } catch (e) {
                 error(e.message);

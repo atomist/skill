@@ -32,12 +32,16 @@ import { GoogleCloudStorageProvider } from "../storage";
 import { AtomistSkillInput } from "./skill_input";
 
 export async function registerSkill(cwd: string,
-                                    workspaceId: string,
-                                    version?: string): Promise<void> {
-    process.env.ATOMIST_LOG_LEVEL = "info";
+                                    workspaceId?: string,
+                                    version?: string,
+                                    verbose?: boolean): Promise<void> {
+    if (!verbose) {
+        process.env.ATOMIST_LOG_LEVEL = "info";
+    }
     info("Registering skill...");
 
-    const client = createGraphQLClient(await apiKey(), workspaceId);
+    const w = await wid(workspaceId);
+    const client = createGraphQLClient(await apiKey(), w);
     const originUrl = await spawnPromise("git", ["config", "--get", "remote.origin.url"], { cwd });
     const branchName = await spawnPromise("git", ["rev-parse", "--abbrev-ref", "HEAD"], { cwd });
     const giturl = (await import("git-url-parse"))(originUrl.stdout.trim());
@@ -47,14 +51,14 @@ export async function registerSkill(cwd: string,
         throw new Error(`Repository contains uncommitted changes. Please commit before running this command.`);
     }
 
-    const storage = new GoogleCloudStorageProvider(`gs://${workspaceId.toLowerCase()}-workspace-storage`);
-    const key = `skills/${workspaceId}/${giturl.owner}/${giturl.name}/${status.sha}_local.zip`;
-    const url = `gs://${workspaceId.toLowerCase()}-workspace-storage/${key}`;
-    await storage.store(key, path.join(cwd, "skill", "archive.zip"));
+    const storage = new GoogleCloudStorageProvider(`gs://${w.toLowerCase()}-workspace-storage`);
+    const key = `skills/${w}/${giturl.owner}/${giturl.name}/${status.sha}_local.zip`;
+    const url = `gs://${w.toLowerCase()}-workspace-storage/${key}`;
+    await storage.store(key, path.join(cwd, ".atomist", "skill.zip"));
 
     const ids = await loadRepoAndBranch(client, { owner: giturl.owner, name: giturl.name, branch: branchName.stdout.trim() });
 
-    const content = (await fs.readFile(path.join(cwd, "skill", "atomist.yaml"))).toString();
+    const content = (await fs.readFile(path.join(cwd, ".atomist", "skill.yaml"))).toString();
     const atomistYaml: { skill: AtomistSkillInput } = yaml.safeLoad(content);
 
     atomistYaml.skill.artifacts.gcf[0].url = url;
@@ -144,6 +148,21 @@ async function register(client: GraphQLClient, skill: AtomistSkillInput): Promis
             skill,
         },
     );
+}
+
+async function wid(workspaceId: string): Promise<string> {
+    let w = workspaceId || process.env.ATOMIST_WORKSPACE_ID;
+    if (!w) {
+        const cfgPath = path.join(os.homedir(), ".atomist", "client.config.json");
+        if (await fs.pathExists(cfgPath)) {
+            const cfg = await fs.readJson(cfgPath);
+            w = cfg.workspaceIds[0];
+        }
+    }
+    if (!w) {
+        error(`No workspace id provided. Please pass --workspace or set 'ATOMIST_WORKSPACE_ID'.`);
+    }
+    return w;
 }
 
 async function apiKey(): Promise<string> {

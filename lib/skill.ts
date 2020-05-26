@@ -219,15 +219,15 @@ export function packageJson(path = "package.json"): Metadata {
         displayName: pj.description,
         version: pj.version,
         author: typeof pj.author === "string" ? pj.author : pj.author?.name,
-        description: "file://docs/description.md",
-        longDescription: "file://docs/long_description.md",
+        description: "file://skill/description.md",
+        longDescription: "file://skill/long_description.md",
         readme: "file://README.md",
         license: pj.license,
         categories: pj.keywords,
         technologies: pj.technologies,
         homepageUrl: pj.homepage,
         repositoryUrl: typeof pj.repository === "string" ? pj.repository : pj.repository?.url,
-        iconUrl: pj.icon ? pj.icon : "file://docs/images/icon.svg",
+        iconUrl: pj.icon ? pj.icon : "file://skill/icon.svg",
     };
 }
 
