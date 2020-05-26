@@ -54,11 +54,11 @@ export async function bundleSkill(cwd: string,
         `export const entryPoint = require("@atomist/skill/lib/bundle").bundle;`,
     ];
 
-    await fs.writeFile(path.join(cwd, "atomist.skill.ts"), `${skillTs.join("\n")}
+    await fs.writeFile(path.join(cwd, "skill.ts"), `${skillTs.join("\n")}
 ${events.join("\n")}
 ${commands.join("\n")}`);
 
-    const nccArgs = ["build", "atomist.skill.ts", "-o", "bundleSkill"];
+    const nccArgs = ["build", "skill.ts", "-o", "bundle"];
     if (minify) {
         nccArgs.push("-m");
     }
@@ -77,10 +77,10 @@ ${commands.join("\n")}`);
         .replace(/"devDependencies"(\s*:)/, `"_devDependencies_"$1`)
         .replace(/"main"(\s*:)/, `"_main_"$1`);
     const pj = JSON.parse(pjContent);
-    pj.main = "dist/index.js";
+    pj.main = "bundle/index.js";
     await fs.writeJson(path.join(cwd, "package.json"), pj, { spaces: "  " });
 
     await fs.remove(path.join(cwd, "package-lock.json"));
-    await fs.remove(path.join(cwd, "atomist.skill.ts"));
+    await fs.remove(path.join(cwd, "skill.ts"));
 
 }
