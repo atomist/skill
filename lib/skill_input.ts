@@ -280,7 +280,7 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
 
     const readme = (await rc(is.readme))[0];
 
-    const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> & { package: { use: string, parameters: any } } = {
+    const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> = {
         name: is.name,
         namespace: is.namespace,
         displayName: is.displayName,
@@ -299,15 +299,6 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
 
         maxConfigurations: is.maxConfigurations,
         dispatchStyle: is.dispatchStyle as any,
-
-        package: {
-            use: "atomist/package-npm-skill",
-            parameters: {
-                bundle: is.package?.bundle || true,
-                minify: is.package?.minify || true,
-                sourceMaps: is.package?.sourceMaps || true,
-            },
-        },
 
         artifacts: {
             gcf: [{
@@ -422,7 +413,15 @@ export async function writeAtomistYaml(cwd: string,
     const p = path.join(cwd, "atomist.yaml");
     info(`Writing skill metadata to '${p}'`);
     const yaml = await import("js-yaml");
-    const content = yaml.safeDump({ version: "1.0", skill }, { skipInvalid: true });
+    const content = yaml.safeDump(
+        {
+            version: "1.0",
+            package: {
+                use: "@atomist/package-npm-skill",
+            },
+            skill,
+        },
+        { skipInvalid: true });
     await fs.writeFile(p, content);
 }
 
