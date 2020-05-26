@@ -26,21 +26,24 @@ export interface StorageProvider {
 }
 
 export function createStorageProvider(): StorageProvider {
-    return new GoogleCloudStorageProvider();
+    return new GoogleCloudStorageProvider(bucketName());
 }
 
-class GoogleCloudStorageProvider implements StorageProvider {
+export class GoogleCloudStorageProvider implements StorageProvider {
+
+    constructor(private readonly bucket: string) {
+    }
 
     public async retrieve(key: string, filePath?: string): Promise<string> {
         const targetFilePath = filePath || path.join(os.tmpdir() || "/tmp", guid());;
         const storage = new (await import("@google-cloud/storage")).Storage();
-        await storage.bucket(bucketName()).file(key).download({ destination: targetFilePath });
+        await storage.bucket(this.bucket).file(key).download({ destination: targetFilePath });
         return targetFilePath;
     }
 
     public async store(key: string, filePath: string): Promise<void> {
         const storage = new (await import("@google-cloud/storage")).Storage();
-        await storage.bucket(bucketName()).upload(filePath, {
+        await storage.bucket(this.bucket).upload(filePath, {
             destination: key,
             resumable: false,
         });

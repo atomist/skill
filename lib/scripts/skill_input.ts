@@ -19,13 +19,13 @@ import * as path from "path";
 import {
     error,
     info,
-} from "./log";
-import { withGlobMatches } from "./project/util";
-import { Skill } from "./skill";
+} from "../log";
+import { withGlobMatches } from "../project/util";
+import { Skill } from "../skill";
 import {
     handleError,
     handlerLoader,
-} from "./util";
+} from "../util";
 import map = require("lodash.map");
 
 export type Maybe<T> = T | null;

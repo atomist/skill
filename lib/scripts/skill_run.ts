@@ -18,11 +18,11 @@ import * as fs from "fs-extra";
 import {
     processCommand,
     processEvent,
-} from "./function";
+} from "../function";
 import {
     isCommandIncoming,
     isEventIncoming,
-} from "./payload";
+} from "../payload";
 
 export async function runSkill(skill?: string): Promise<void> {
     const payload = await fs.readJson(process.env.ATOMIST_PAYLOAD || "/atm/payload.json");

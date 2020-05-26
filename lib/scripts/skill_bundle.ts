@@ -16,9 +16,9 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
-import { spawnPromise } from "./child_process";
-import { debug } from "./log";
-import { withGlobMatches } from "./project/util";
+import { spawnPromise } from "../child_process";
+import { debug } from "../log";
+import { withGlobMatches } from "../project/util";
 
 export async function bundleSkill(cwd: string,
                                   minify: boolean,
