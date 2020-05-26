@@ -19,8 +19,10 @@ import * as fs from "fs-extra";
 import { info } from "../log";
 
 export async function packageSkill(cwd: string): Promise<void> {
+    process.env.ATOMIST_LOG_LEVEL = "info";
+    info(`Packaging skill archive...`);
+
     const fileName = path.join(cwd, "skill", "archive.zip");
-    info(`Packaging skill archive`);
     await fs.ensureDir(path.dirname(fileName));
 
     const ignores = [".git", "node_modules", "atomist.yaml"];

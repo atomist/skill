@@ -42,7 +42,7 @@ export function wrapAuditLogger(context: { eventId?: string, correlationId: stri
             }
             return logger.log(msg, severity, labels);
         },
-        url: `https://go.atomist.${(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging") 
+        url: `https://go.atomist.${(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
             ? "services" : "com"}/log/${context.workspaceId}/${context.correlationId}`,
     };
 }
@@ -54,8 +54,10 @@ export function wrapAuditLogger(context: { eventId?: string, correlationId: stri
  * @param optionalParams Optional params to pass to the logger
  */
 export function debug(message: string, ...optionalParams: any[]): void {
-    // tslint:disable-next-line:no-console
-    console.debug(`[debug] ${redact(message)}`, ...optionalParams);
+    if (enabled("debug")) {
+        // tslint:disable-next-line:no-console
+        console.debug(`[debug] ${redact(message)}`, ...optionalParams);
+    }
 }
 
 /**
@@ -65,8 +67,10 @@ export function debug(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function info(message: string, ...optionalParams: any[]): void {
-    // tslint:disable-next-line:no-console
-    console.info(` [info] ${redact(message)}`, ...optionalParams);
+    if (enabled("info")) {
+        // tslint:disable-next-line:no-console
+        console.info(` [info] ${redact(message)}`, ...optionalParams);
+    }
 }
 
 /**
@@ -76,8 +80,10 @@ export function info(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function warn(message: string, ...optionalParams: any[]): void {
-    // tslint:disable-next-line:no-console
-    console.warn(` [warn] ${redact(message)}`, ...optionalParams);
+    if (enabled("warn")) {
+        // tslint:disable-next-line:no-console
+        console.warn(` [warn] ${redact(message)}`, ...optionalParams);
+    }
 }
 
 /**
@@ -87,6 +93,20 @@ export function warn(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function error(message: string, ...optionalParams: any[]): void {
-    // tslint:disable-next-line:no-console
-    console.error(`[error] ${redact(message)}`, ...optionalParams);
+    if (enabled("error")) {
+        // tslint:disable-next-line:no-console
+        console.error(`[error] ${redact(message)}`, ...optionalParams);
+    }
+}
+
+enum Level {
+    error = 0,
+    warn = 1,
+    info = 2,
+    debug = 3,
+}
+
+function enabled(level: string): boolean {
+    const configuredLevel = Level[process.env.ATOMIST_LOG_LEVEL || "debug"];
+    return configuredLevel >= Level[level];
 }
