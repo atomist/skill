@@ -64,11 +64,14 @@ export async function registerSkill(cwd: string,
         const q = await qualifier(client, { owner: giturl.owner, name: giturl.name });
         atomistYaml.skill.version = `${atomistYaml.skill.version}-${q}`;
     }
+
     atomistYaml.skill.branchId = ids.branchId;
     atomistYaml.skill.repoId = ids.repoId;
     atomistYaml.skill.commitSha = status.sha;
 
     await register(client, atomistYaml.skill);
+    await spawnPromise("git", ["tag", "-a", atomistYaml.skill.version, "-m", `Registered skill with version ${atomistYaml.skill.version}`], { cwd });
+
     info(`Registered skill '${atomistYaml.skill.namespace}/${atomistYaml.skill.name}' with version '${atomistYaml.skill.version}'`);
 }
 
