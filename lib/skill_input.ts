@@ -278,7 +278,14 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
         subscriptions.push(...(await rc(subscription)));
     }
 
-    const readme = (await rc(is.readme))[0];
+    let readme = (await rc(is.readme))[0];
+    if (readme) {
+        const regexp = /<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
+        const match = regexp.exec(readme);
+        if (match) {
+            readme = match[1].trim();
+        }
+    }
 
     const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> = {
         name: is.name,
