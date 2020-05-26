@@ -72,12 +72,11 @@ ${commands.join("\n")}`);
     // Update package.json
     // - rewrite main
     // - remove dependencies
-    const pj = await fs.readJson(path.join(cwd, "package.json"));
-    pj["#dependencies"] = pj.dependencies;
-    pj["#devDependencies"] = pj.devDependencies;
-    delete pj.dependencies;
-    delete pj.devDependencies;
-    pj["#main"] = pj.main;
+    const pjContent = (await fs.readFile(path.join(cwd, "package.json"))).toString()
+        .replace(/"dependencies"(\s*:)/, `"_dependencies_"$1`)
+        .replace(/"devDependencies"(\s*:)/, `"_devDependencies_"$1`)
+        .replace(/"main"(\s*:)/, `"_main_"$1`);
+    const pj = JSON.parse(pjContent);
     pj.main = "dist/index.js";
     await fs.writeJson(path.join(cwd, "package.json"), pj, { spaces: "  " });
     await fs.remove(path.join(cwd, "package-lock.json"));
