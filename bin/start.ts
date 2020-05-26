@@ -30,7 +30,7 @@ yargs
             skill: { type: "string", description: "Name of skill to load", demandOption: false },
         }),
         async argv => {
-            return (await import("../lib/skill_run")).runSkill(argv.skill);
+            return (await import("../lib/scripts/skill_run")).runSkill(argv.skill);
         },
     )
     .command(
@@ -41,7 +41,7 @@ yargs
         }),
         async argv => {
             try {
-                await (await import("../lib/skill_input")).generateSkill(argv.cwd);
+                await (await import("../lib/scripts/skill_input")).generateSkill(argv.cwd);
                 return 0;
             } catch (e) {
                 error(e.message);
@@ -59,7 +59,7 @@ yargs
         }),
         async argv => {
             try {
-                await (await import("../lib/skill_bundle")).bundleSkill(argv.cwd, argv.minify, argv.sourceMap);
+                await (await import("../lib/scripts/skill_bundle")).bundleSkill(argv.cwd, argv.minify, argv.sourceMap);
                 return 0;
             } catch (e) {
                 error(e.message);
@@ -75,7 +75,25 @@ yargs
         }),
         async argv => {
             try {
-                await (await import("../lib/skill_package")).packageSkill(argv.cwd);
+                await (await import("../lib/scripts/skill_package")).packageSkill(argv.cwd);
+                return 0;
+            } catch (e) {
+                error(e.message);
+                process.exit(1);
+            }
+        },
+    )
+    .command(
+        [ "register", "reg" ],
+        "Register skill",
+        args => args.option({
+            workspace: { type: "string", description: "Id of workspace to register", demandOption: true },
+            cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
+            version: { type: "string", description: "Version of skill", demandOption: false },
+        }),
+        async argv => {
+            try {
+                await (await import("../lib/scripts/skill_register")).registerSkill(argv.cwd, argv.workspace);
                 return 0;
             } catch (e) {
                 error(e.message);

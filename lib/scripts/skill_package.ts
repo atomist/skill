@@ -16,11 +16,11 @@
 
 import * as path from "path";
 import * as fs from "fs-extra";
-import { info } from "./log";
+import { info } from "../log";
 
 export async function packageSkill(cwd: string): Promise<void> {
     const fileName = path.join(cwd, "skill", "archive.zip");
-    info(`Packaging skill archive'`);
+    info(`Packaging skill archive`);
     await fs.ensureDir(path.dirname(fileName));
 
     const ignores = [".git", "node_modules", "atomist.yaml"];
