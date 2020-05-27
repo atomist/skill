@@ -279,11 +279,19 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
     }
 
     let readme = (await rc(is.readme))[0];
+    let description = (await rc(is.description))[0];
     if (readme) {
-        const regexp = /<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
-        const match = regexp.exec(readme);
-        if (match) {
-            readme = match[1].trim();
+        const readmeRegexp = /<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
+        const readmeMatch = readmeRegexp.exec(readme);
+        if (readmeMatch) {
+            readme = readmeMatch[1].trim();
+        }
+        if (!description) {
+            const descriptionRegexp = /<!---atomist-skill-description:start--->([\s\S]*)<!---atomist-skill-description:end--->/gm;
+            const descriptionMatch = descriptionRegexp.exec(readme);
+            if (descriptionMatch) {
+                description = descriptionMatch[1].trim();
+            }
         }
     }
 
@@ -293,7 +301,7 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
         displayName: is.displayName,
         version: is.version,
         author: is.author,
-        description: (await rc(is.description))[0],
+        description,
         longDescription: (await rc(is.longDescription))[0],
         license: is.license,
         categories: is.categories as any,
