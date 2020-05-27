@@ -359,7 +359,7 @@ export async function validateSkillInput(cwd: string,
     const errors = [];
 
     // Check required fields
-    const requiredFields = ["name", "namespace", "version", "description", "longDescription", "author", "homepageUrl", "iconUrl", "license"];
+    const requiredFields = ["name", "namespace", "description", "longDescription", "author", "homepageUrl", "iconUrl", "license"];
     for (const requiredField of requiredFields) {
         if (!s[requiredField]) {
             errors.push(`Required field '${requiredField}' missing`);
