@@ -139,6 +139,12 @@ export interface StringParameter extends Parameter<ParameterType.String, string>
     placeHolder?: string;
 }
 
+export interface StringArrayParameter extends Parameter<ParameterType.StringArray, string[]> {
+    maxAllowed?: number;
+    minRequired?: number;
+    pattern?: string;
+}
+
 export interface Metadata {
 
     name: string;
@@ -170,6 +176,7 @@ export enum ParameterType {
     RepoFilter = "repoFilter",
     Schedule = "schedule",
     String = "string",
+    StringArray = "stringArray",
 }
 
 export interface Configuration {
@@ -189,7 +196,8 @@ export interface Configuration {
         SingleChoiceParameter |
         RepoFilterParameter |
         ScheduleParameter |
-        StringParameter>;
+        StringParameter |
+        StringArrayParameter>;
 
     resourceProviders?: Record<string, ResourceProvider>;
 }
