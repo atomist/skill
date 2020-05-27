@@ -30,6 +30,7 @@ import {
 import * as git from "../project/git";
 import { GoogleCloudStorageProvider } from "../storage";
 import { AtomistSkillInput } from "./skill_input";
+import * as semver from "semver";
 
 export async function registerSkill(cwd: string,
                                     workspaceId?: string,
@@ -65,7 +66,12 @@ export async function registerSkill(cwd: string,
         atomistYaml.skill.version = version;
     } else {
         const q = await qualifier(client, { owner: giturl.owner, name: giturl.name });
-        atomistYaml.skill.version = `${atomistYaml.skill.version}-${q}`;
+        const latestTagOutput = await spawnPromise("git", ["describe", "--tags"], { cwd });
+        let latestTag = "0.1.0";
+        if (latestTagOutput.status === 0) {
+            latestTag = latestTagOutput.stdout.trim();
+        }
+        atomistYaml.skill.version = `${semver.major(latestTag)}.${semver.minor(latestTag)}.${semver.patch(latestTag)}-${q}`;
     }
     atomistYaml.skill.branchId = ids.branchId;
     atomistYaml.skill.repoId = ids.repoId;
