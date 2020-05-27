@@ -66,7 +66,7 @@ export async function registerSkill(cwd: string,
         atomistYaml.skill.version = version;
     } else {
         const q = await qualifier(client, { owner: giturl.owner, name: giturl.name });
-        const latestTagOutput = await spawnPromise("git", ["describe", "--tags"], { cwd });
+        const latestTagOutput = await spawnPromise("git", ["describe", "--tags", "--abbrev=0"], { cwd });
         let latestTag = "0.1.0";
         if (latestTagOutput.status === 0) {
             latestTag = latestTagOutput.stdout.trim();
