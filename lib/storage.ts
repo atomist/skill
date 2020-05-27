@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as  fs from "fs-extra";
 import * as os from "os";
 import * as path from "path";
 import { guid } from "./util";
@@ -35,7 +36,8 @@ export class GoogleCloudStorageProvider implements StorageProvider {
     }
 
     public async retrieve(key: string, filePath?: string): Promise<string> {
-        const targetFilePath = filePath || path.join(os.tmpdir() || "/tmp", guid());;
+        const targetFilePath = filePath || path.join(os.tmpdir() || "/tmp", guid());
+        await fs.ensureDir(path.dirname(targetFilePath));
         const storage = new (await import("@google-cloud/storage")).Storage();
         await storage.bucket(this.bucket).file(key).download({ destination: targetFilePath });
         return targetFilePath;
