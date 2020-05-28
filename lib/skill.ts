@@ -67,6 +67,15 @@ export interface SkillPackage {
     sourceMaps?: boolean;
 }
 
+export interface SkillContainer {
+    image: string;
+    name: string;
+    args?: string[];
+    command?: string[];
+    env?: Array<{ name: string; value: string }>;
+    workingDir?: string;
+}
+
 export interface ResourceProvider {
     description?: string;
     maxAllowed?: number;
@@ -186,6 +195,8 @@ export interface Configuration {
     maxConfigurations?: number;
 
     runtime?: SkillRuntime;
+
+    containers?: SkillContainer[];
 
     package?: SkillPackage;
 
