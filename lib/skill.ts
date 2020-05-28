@@ -69,7 +69,6 @@ export interface SkillPackage {
 
 export interface SkillContainer {
     image: string;
-    name: string;
     args?: string[];
     command?: string[];
     env?: Array<{ name: string; value: string }>;
@@ -196,7 +195,7 @@ export interface Configuration {
 
     runtime?: SkillRuntime;
 
-    containers?: SkillContainer[];
+    containers?: Record<string, SkillContainer>;
 
     package?: SkillPackage;
 
