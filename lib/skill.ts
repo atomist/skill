@@ -246,6 +246,15 @@ export function gitHubResourceProvider(minRequired = 1, maxAllowed = 1): Resourc
     };
 }
 
+export function repoFilter(required = false): RepoFilterParameter {
+    return {
+        type: ParameterType.RepoFilter,
+        displayName: "Which repositories",
+        description: "",
+        required,
+    };
+}
+
 export function packageJson(path = "package.json"): Metadata {
     const pj = require(path);
     const name = pj.name?.split("/");
