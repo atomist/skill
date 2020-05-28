@@ -295,6 +295,20 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
         }
     }
 
+    const artifacts: any = {};
+    if (!is.containers) {
+        artifacts.gcf = [{
+            entryPoint: is.runtime?.entryPoint || "entryPoint",
+            memory: is.runtime?.memory || 256,
+            timeout: is.runtime?.timeout || 60,
+            runtime: is.runtime?.platform as any || AtomistSkillRuntime.Nodejs10,
+            name: "gcf",
+            url: undefined,
+        }];
+    } else {
+        artifacts.docker = is.containers;
+    }
+
     const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> = {
         name: is.name,
         namespace: is.namespace,
@@ -315,16 +329,7 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
         maxConfigurations: is.maxConfigurations,
         dispatchStyle: is.dispatchStyle as any,
 
-        artifacts: {
-            gcf: [{
-                entryPoint: is.runtime?.entryPoint || "entryPoint",
-                memory: is.runtime?.memory || 256,
-                timeout: is.runtime?.timeout || 60,
-                runtime: is.runtime?.platform as any || AtomistSkillRuntime.Nodejs10,
-                name: "gcf",
-                url: undefined,
-            }],
-        },
+        artifacts,
 
         resourceProviders: map(is.resourceProviders || {}, (v, k) => ({
             name: k,
