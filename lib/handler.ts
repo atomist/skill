@@ -71,7 +71,7 @@ export interface Contextual<T, C> {
 
 export interface EventContext<E = any, C = any> extends Contextual<EventIncoming, C> {
 
-    event: E;
+    data: E;
     
 }
 
