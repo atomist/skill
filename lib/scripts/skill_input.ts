@@ -306,7 +306,10 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
             url: undefined,
         }];
     } else {
-        artifacts.docker = is.containers;
+        artifacts.docker = map(is.containers, (v, k) => ({
+            name: k,
+            ...v,
+        }));
     }
 
     const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> = {
