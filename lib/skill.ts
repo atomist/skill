@@ -218,6 +218,24 @@ export interface Operations {
 
 export type Skill = Metadata & Configuration & Operations;
 
+export function slackResourceProvider(minRequired = 0, maxAllowed = 1): ResourceProvider {
+    return {
+        typeName: "SlackResourceProvider",
+        description: "Slack",
+        minRequired,
+        maxAllowed,
+    };
+}
+
+export function gitHubResourceProvider(minRequired = 1, maxAllowed = 1): ResourceProvider {
+    return {
+        typeName: "GitHubAppResourceProvider",
+        description: "GitHub",
+        minRequired,
+        maxAllowed,
+    };
+}
+
 export function packageJson(path = "package.json"): Metadata {
     const pj = require(path);
     const name = pj.name?.split("/");
