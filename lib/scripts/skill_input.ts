@@ -363,8 +363,8 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
         subscriptions,
     };
 
-    if (!is.longDescription) {
-        is.longDescription = is.description;
+    if (!y.longDescription) {
+        y.longDescription = y.description;
     }
 
     return y as any;
