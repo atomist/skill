@@ -34,7 +34,7 @@ yargs
         },
     )
     .command(
-        [ "generate", "gen" ],
+        ["generate", "gen"],
         "Generate skill metadata",
         args => args.option({
             cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
@@ -51,7 +51,7 @@ yargs
         },
     )
     .command(
-        [ "bundle" ],
+        ["bundle"],
         "Bundle skill and dependencies",
         args => args.option({
             cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
@@ -70,7 +70,7 @@ yargs
         },
     )
     .command(
-        [ "package", "pkg" ],
+        ["package", "pkg"],
         "Package skill archive",
         args => args.option({
             cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
@@ -87,7 +87,7 @@ yargs
         },
     )
     .command(
-        [ "register", "reg" ],
+        ["register", "reg"],
         "Register skill",
         args => args.option({
             cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
