@@ -26,6 +26,7 @@ import {
     handleError,
     handlerLoader,
 } from "../util";
+import { createYamlSkillInput } from "./skill_container";
 import map = require("lodash.map");
 
 export type Maybe<T> = T | null;
@@ -257,7 +258,7 @@ export enum AtomistSkillTechnology {
     Kubernetes = 'KUBERNETES'
 }
 
-export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> {
+export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSkillInput> {
     const p = path.join(cwd, "index.js");
     info(`Generating skill metadata...`);
     const is: Skill = await handleError<Skill>(
@@ -371,7 +372,8 @@ export async function createSkillInput(cwd: string): Promise<AtomistSkillInput> 
 }
 
 export async function validateSkillInput(cwd: string,
-                                         s: AtomistSkillInput): Promise<void> {
+                                         s: AtomistSkillInput,
+                                         options: { validateHandlers: boolean } = { validateHandlers: true }): Promise<void> {
     const errors = [];
 
     // Check required fields
@@ -396,31 +398,33 @@ export async function validateSkillInput(cwd: string,
         }
     }
 
-    // Validate commands
-    for (const command of (s.commands || [])) {
-        await handleError(async () => {
-            const p = await handlerLoader(`commands/${command.name}`);
-            if (!p) {
-                errors.push(`Registered command '${command.name}' can't be found`);
-            }
-        }, () => {
-            errors.push(`Registered command '${command.name}' can't be found`);
-        });
-    }
-
-    // Validate subscriptions
-    for (const subscription of (s.subscriptions || [])) {
-        const match = subscription.match(/subscription\s([^\s({]+)[\s({]/);
-        if (!!match) {
-            const operationName = match[1];
+    if (options.validateHandlers) {
+        // Validate commands
+        for (const command of (s.commands || [])) {
             await handleError(async () => {
-                const p = await handlerLoader(`events/${operationName}`);
+                const p = await handlerLoader(`commands/${command.name}`);
                 if (!p) {
-                    errors.push(`Registered event handler '${operationName}' can't be found`);
+                    errors.push(`Registered command '${command.name}' can't be found`);
                 }
             }, () => {
-                errors.push(`Registered event handler '${operationName}' can't be found`);
+                errors.push(`Registered command '${command.name}' can't be found`);
             });
+        }
+
+        // Validate subscriptions
+        for (const subscription of (s.subscriptions || [])) {
+            const match = subscription.match(/subscription\s([^\s({]+)[\s({]/);
+            if (!!match) {
+                const operationName = match[1];
+                await handleError(async () => {
+                    const p = await handlerLoader(`events/${operationName}`);
+                    if (!p) {
+                        errors.push(`Registered event handler '${operationName}' can't be found`);
+                    }
+                }, () => {
+                    errors.push(`Registered event handler '${operationName}' can't be found`);
+                });
+            }
         }
     }
 
@@ -448,12 +452,20 @@ export async function writeAtomistYaml(cwd: string,
 
 export async function generateSkill(cwd: string,
                                     verbose: boolean): Promise<void> {
-    const s = await createSkillInput(cwd);
-    await validateSkillInput(cwd, s);
+    let s;
+    if (await fs.pathExists(path.join(cwd, "index.js"))) {
+        s = await createJavaScriptSkillInput(cwd);
+        await validateSkillInput(cwd, s);
+    } else if (await fs.pathExists(path.join(cwd, "skill.yaml"))) {
+        s = await createYamlSkillInput(cwd);
+        await validateSkillInput(cwd, s, { validateHandlers: false });
+    } else {
+        throw new Error(`No suitable skill input detected in '${cwd}'`);
+    }
     await writeAtomistYaml(cwd, s);
 }
 
-function content(cwd: string): (key: string) => Promise<string[]> {
+export function content(cwd: string): (key: string) => Promise<string[]> {
     return async key => {
         if (!key) {
             return [];
@@ -469,7 +481,7 @@ function content(cwd: string): (key: string) => Promise<string[]> {
     };
 }
 
-async function icon(cwd: string, key: string): Promise<string> {
+export async function icon(cwd: string, key: string): Promise<string> {
     if (!key) {
         return undefined;
     }
