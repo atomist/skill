@@ -61,7 +61,10 @@ export async function registerSkill(cwd: string,
     const content = (await fs.readFile(path.join(cwd, ".atomist", "skill.yaml"))).toString();
     const atomistYaml: { skill: AtomistSkillInput } = yaml.safeLoad(content);
 
-    atomistYaml.skill.artifacts.gcf[0].url = url;
+    if (atomistYaml?.skill?.artifacts?.gcf[0]) {
+        atomistYaml.skill.artifacts.gcf[0].url = url;
+    }
+
     if (version) {
         atomistYaml.skill.version = version;
     } else {
@@ -79,7 +82,9 @@ export async function registerSkill(cwd: string,
 
     await fs.writeFile(path.join(cwd, ".atomist", "skill.yaml"), yaml.safeDump(atomistYaml, { skipInvalid: true }));
 
-    await storage.store(`${key}/${status.sha}.zip`, path.join(cwd, ".atomist", "skill.zip"));
+    if (await fs.pathExists(path.join(cwd, ".atomist", "skill.zip"))) {
+        await storage.store(`${key}/${status.sha}.zip`, path.join(cwd, ".atomist", "skill.zip"));
+    }
     await storage.store(`${key}/${status.sha}.yaml`, path.join(cwd, ".atomist", "skill.yaml"));
 
     await register(client, atomistYaml.skill);
