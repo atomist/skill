@@ -27,7 +27,6 @@ import { debug } from "../log";
 import {
     AuthenticatedRepositoryId,
     CloneOptions,
-    RepositoryId,
 } from "../project";
 import { doClone } from "./clone";
 import { setUserConfig } from "./git";
@@ -35,9 +34,9 @@ import { setUserConfig } from "./git";
 export type Spawn = (cmd: string, args?: string[], opts?: SpawnPromiseOptions) => Promise<SpawnPromiseReturns>;
 export type Exec = (cmd: string, args?: string[], opts?: SpawnSyncOptions) => Promise<ExecPromiseResult>;
 
-export interface Project {
+export interface Project<C = any> {
 
-    id: RepositoryId;
+    id: AuthenticatedRepositoryId<C>;
 
     path(...elements: string[]): string;
 
@@ -45,7 +44,7 @@ export interface Project {
     exec: Exec;
 }
 
-export async function load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project> {
+export async function load<C>(id: AuthenticatedRepositoryId<C>, baseDir: string): Promise<Project<C>> {
     const project = {
         id,
         path: (...elements: string[]): string => path.join(baseDir, ...(elements || [])),
@@ -56,7 +55,7 @@ export async function load(id: AuthenticatedRepositoryId<any>, baseDir: string):
     return project;
 }
 
-export async function clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project> {
+export async function clone<C>(id: AuthenticatedRepositoryId<C>, options?: CloneOptions): Promise<Project<C>> {
     const baseDir = await doClone(id, options);
     const project = {
         id,
