@@ -187,7 +187,12 @@ export enum ParameterType {
     StringArray = "stringArray",
 }
 
-export interface Configuration {
+export type ParametersIndexType = string;
+export type ParametersType = {
+    [key in ParametersIndexType]?: number | boolean | string | number | string[];
+};
+
+export interface Configuration<PARAMS extends ParametersType = any> {
 
     dispatchStyle?: DispatchStyle;
 
@@ -199,7 +204,7 @@ export interface Configuration {
 
     package?: SkillPackage;
 
-    parameters?: Record<string, BooleanParameter |
+    parameters?: Record<keyof PARAMS, BooleanParameter |
         FloatParameter |
         IntParameter |
         MultiChoiceParameter |
@@ -226,7 +231,7 @@ export interface Operations {
     subscriptions?: string[];
 }
 
-export type Skill = Metadata & Configuration & Operations;
+export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
 
 export function slackResourceProvider(minRequired = 0, maxAllowed = 1): ResourceProvider {
     return {
@@ -276,8 +281,8 @@ export function packageJson(path = "package.json"): Metadata {
     };
 }
 
-export function skill(skill: Partial<Metadata> & Configuration & Operations,
-                      p: string = path.join(process.cwd(), "package.json")): Skill {
+export function skill<PARAMS = any>(skill: Partial<Metadata> & Configuration<PARAMS> & Operations,
+                                    p: string = path.join(process.cwd(), "package.json")): Skill<PARAMS> {
     return {
         ...packageJson(p),
         ...skill,
