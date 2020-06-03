@@ -77,6 +77,7 @@ export interface SkillContainer {
 
 export interface ResourceProvider {
     description?: string;
+    displayName?: string;
     maxAllowed?: number;
     minRequired?: number;
     typeName: string;
@@ -233,24 +234,6 @@ export interface Operations {
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
 
-export function slackResourceProvider(options: { minRequired: number; maxAllowed: number } = { minRequired: 0, maxAllowed: 1 }): ResourceProvider {
-    return {
-        typeName: "SlackResourceProvider",
-        description: "Slack",
-        minRequired: options?.minRequired !== undefined ? options.minRequired : 0,
-        maxAllowed: options?.maxAllowed !== undefined ? options.maxAllowed : 1,
-    };
-}
-
-export function gitHubResourceProvider(options: { minRequired: number; maxAllowed: number } = { minRequired: 1, maxAllowed: 1 }): ResourceProvider {
-    return {
-        typeName: "GitHubAppResourceProvider",
-        description: "GitHub",
-        minRequired: options?.minRequired !== undefined ? options.minRequired : 1,
-        maxAllowed: options?.maxAllowed !== undefined ? options.maxAllowed : 1,
-    };
-}
-
 export function repoFilter(required = false): RepoFilterParameter {
     return {
         type: ParameterType.RepoFilter,
@@ -261,7 +244,7 @@ export function repoFilter(required = false): RepoFilterParameter {
 }
 
 export function packageJson(path = "package.json"): Metadata {
-    const pj = require(path);
+    const pj = require(path); // eslint-disable-line @typescript-eslint/no-var-requires
     const name = pj.name?.split("/");
     return {
         name: name.length === 2 ? name[1] : name[0],
