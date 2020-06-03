@@ -123,9 +123,9 @@ export interface AuthenticatedRepositoryId<T> extends RepositoryId {
 
 export interface ProjectLoader {
 
-    load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project>;
+    load<C>(id: AuthenticatedRepositoryId<C>, baseDir: string): Promise<Project<C>>;
 
-    clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project>;
+    clone<C>(id: AuthenticatedRepositoryId<C>, options?: CloneOptions): Promise<Project<C>>;
 
 }
 

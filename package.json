@@ -13,9 +13,7 @@
     "url": "https://github.com/atomist/skill.git"
   },
   "keywords": [
-    "atomist",
-    "automation",
-    "skill"
+    "DEV_EX"
   ],
   "homepage": "https://github.com/atomist/skill#readme",
   "bugs": {
@@ -31,17 +29,25 @@
     "@octokit/rest": "^17.8.0",
     "@types/cross-spawn": "^6.0.1",
     "@types/flat": "^5.0.0",
+    "@types/git-url-parse": "^9.0.0",
+    "@types/js-yaml": "^3.12.4",
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/lodash.forown": "^4.4.6",
     "@types/lodash.map": "^4.6.13",
     "@types/lodash.merge": "^4.6.6",
     "@types/lodash.set": "^4.3.6",
     "@types/node-fetch": "^2.5.7",
+    "@types/semver": "^7.2.0",
     "@types/yargs": "^15.0.4",
+    "@zeit/ncc": "^0.22.3",
     "cross-spawn": "^7.0.2",
     "fast-glob": "^3.2.2",
     "flat": "^5.0.0",
     "fs-extra": "^8.1.0",
+    "git-url-parse": "^11.1.2",
+    "glob-gitignore": "^1.0.14",
+    "js-yaml": "^3.13.1",
+    "jszip": "^3.4.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.forown": "^4.4.0",
     "lodash.map": "^4.6.0",
@@ -49,6 +55,7 @@
     "lodash.set": "^4.3.2",
     "node-fetch": "^2.6.0",
     "p-retry": "^4.2.0",
+    "semver": "^7.3.2",
     "source-map-support": "^0.5.16",
     "strip-ansi": "^6.0.0",
     "tree-kill": "^1.2.2",
@@ -56,7 +63,7 @@
     "yargs": "^15.1.0"
   },
   "devDependencies": {
-    "@google-cloud/functions-framework": "^1.4.0",
+    "@google-cloud/functions-framework": "^1.5.1",
     "@types/mocha": "^7.0.1",
     "@types/power-assert": "^1.5.3",
     "@types/yargs-parser": "^15.0.0",
@@ -91,7 +98,6 @@
     "doc": "typedoc --mode modules --excludeExternals --ignoreCompilerErrors --exclude \"**/*.d.ts\" --out doc index.ts lib",
     "fmt": "run-s fmt:gql",
     "fmt:gql": "prettier --write \"lib/graphql/**/*.graphql\"",
-    "gql:gen": "atm-gql-gen",
     "lint": "eslint --ext .ts .",
     "lint:fix": "npm run lint -- --fix",
     "test": "mocha --require espower-typescript/guess \"test/**/*.test.ts\"",

@@ -15,12 +15,14 @@
  */
 
 import { execPromise } from "../child_process";
+import { debug } from "../log";
 import {
     GitStatus,
     runStatusIn,
 } from "./gitStatus";
 import { Project } from "./project";
 import { cwd } from "./util";
+import * as pRetry from "p-retry";
 import forOwn = require("lodash.forown");
 
 /**
@@ -88,7 +90,23 @@ export async function push(projectOrCwd: Project | string, options?: GitPushOpti
             gitPushArgs.push(`--${opt}=${v}`);
         }
     });
-    await execPromise("git", [...gitPushArgs, "origin"], { cwd: cwd(projectOrCwd) });
+    const retryOptions = {
+        retries: 4,
+        factor: 2,
+        minTimeout: 250,
+        maxTimeout: 1000,
+        randomize: false,
+    };
+    await pRetry(async () => {
+        try {
+            await execPromise("git", [...gitPushArgs, "origin"], { cwd: cwd(projectOrCwd) });
+        } catch (e) {
+            debug("Push failed. Attempting rebase");
+            await execPromise("git", ["pull", "--rebase"],{ cwd: cwd(projectOrCwd) });
+            await execPromise("git", [...gitPushArgs, "origin"], { cwd: cwd(projectOrCwd) });
+        }
+    }, retryOptions);
+
 }
 
 /**

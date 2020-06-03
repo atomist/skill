@@ -31,7 +31,7 @@ export interface Step<C extends EventContext | CommandContext, G extends Record<
     name: string;
     /** Function that gets called when the step should execute */
     run: (context: C, parameters: G) => Promise<undefined | HandlerStatus>;
-    /** Optional function to indicate if the step should run */
+    /** Optional function to indicate if the step should runSkill */
     runWhen?: (context: C, parameters: G) => Promise<boolean>;
 }
 
