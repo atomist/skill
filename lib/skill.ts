@@ -234,12 +234,12 @@ export interface Operations {
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
 
-export function repoFilter(required = false): RepoFilterParameter {
+export function repoFilter(options: { required?: boolean } = { required: true }): RepoFilterParameter {
     return {
         type: ParameterType.RepoFilter,
         displayName: "Which repositories",
         description: "",
-        required,
+        required: options.required !== undefined ? options.required : true,
     };
 }
 
