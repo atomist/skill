@@ -233,21 +233,19 @@ export interface Operations {
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
 
-export function slackResourceProvider(minRequired = 0, maxAllowed = 1): ResourceProvider {
+export function slackResourceProvider(options: { minRequired: number; maxAllowed: number } = { minRequired: 0, maxAllowed: 1 }): ResourceProvider {
     return {
         typeName: "SlackResourceProvider",
         description: "Slack",
-        minRequired,
-        maxAllowed,
+        ...options,
     };
 }
 
-export function gitHubResourceProvider(minRequired = 1, maxAllowed = 1): ResourceProvider {
+export function gitHubResourceProvider(options: { minRequired: number; maxAllowed: number } = { minRequired: 1, maxAllowed: 1 }): ResourceProvider {
     return {
         typeName: "GitHubAppResourceProvider",
         description: "GitHub",
-        minRequired,
-        maxAllowed,
+        ...options,
     };
 }
 
