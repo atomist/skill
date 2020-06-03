@@ -237,7 +237,8 @@ export function slackResourceProvider(options: { minRequired: number; maxAllowed
     return {
         typeName: "SlackResourceProvider",
         description: "Slack",
-        ...options,
+        minRequired: options?.minRequired !== undefined ? options.minRequired : 0,
+        maxAllowed: options?.maxAllowed !== undefined ? options.maxAllowed : 1,
     };
 }
 
@@ -245,7 +246,8 @@ export function gitHubResourceProvider(options: { minRequired: number; maxAllowe
     return {
         typeName: "GitHubAppResourceProvider",
         description: "GitHub",
-        ...options,
+        minRequired: options?.minRequired !== undefined ? options.minRequired : 1,
+        maxAllowed: options?.maxAllowed !== undefined ? options.maxAllowed : 1,
     };
 }
 
