@@ -105,7 +105,14 @@ export interface Parameter<T, D = any> {
 
 export type BooleanParameter = Parameter<ParameterType.Boolean, boolean>;
 
-export interface ChatChannelsParameter extends Omit<Parameter<ParameterType.ChatChannels>, "defaultValue"> {
+export interface ChatChannelParameter {
+    channelName: string;
+    channelId: string;
+    chatTeamId: string;
+    resourceProviderId: string;
+}
+
+export interface ChatChannelsParameter extends Omit<Parameter<ParameterType.ChatChannels, ChatChannelParameter[]>, "defaultValue"> {
     maxAllowed?: number;
     minRequired?: number;
 }
