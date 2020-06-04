@@ -382,7 +382,7 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
         commands: (is.commands || []).map(c => ({
             name: c.name,
             displayName: c.displayName,
-            description: c.name,
+            description: c.description,
             pattern: c.pattern.source,
         })),
 
