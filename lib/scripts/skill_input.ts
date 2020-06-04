@@ -129,8 +129,15 @@ export enum AtomistSkillEventDispatchStyle {
     Multiple = 'multiple'
 }
 
+export enum AtomistSkillParameterVisiblity {
+    Hidden = 'hidden',
+    Advanced = 'advanced',
+    Normal = 'normal'
+}
+
 export type AtomistSkillParameterSpecInput = {
     boolean?: Maybe<AtomistSkillBooleanParameterSpecInput>;
+    chatChannels?: Maybe<AtomistSkillChatChannelsParameterSpecInput>;
     float?: Maybe<AtomistSkillFloatParameterSpecInput>;
     int?: Maybe<AtomistSkillIntParameterSpecInput>;
     multiChoice?: Maybe<AtomistSkillMultiChoiceParameterSpecInput>;
@@ -149,6 +156,16 @@ export type AtomistSkillBooleanParameterSpecInput = {
     required: Scalars['Boolean'];
 };
 
+export type AtomistSkillChatChannelsParameterSpecInput = {
+    description: Scalars['String'];
+    displayName?: Maybe<Scalars['String']>;
+    maxAllowed?: Maybe<Scalars['Int']>;
+    minRequired?: Maybe<Scalars['Int']>;
+    name: Scalars['String'];
+    required: Scalars['Boolean'];
+    visibility?: Maybe<AtomistSkillParameterVisiblity>;
+};
+
 export type AtomistSkillFloatParameterSpecInput = {
     defaultValue?: Maybe<Scalars['Float']>;
     description: Scalars['String'];
@@ -158,6 +175,7 @@ export type AtomistSkillFloatParameterSpecInput = {
     name: Scalars['String'];
     placeHolder?: Maybe<Scalars['String']>;
     required: Scalars['Boolean'];
+    visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillIntParameterSpecInput = {
@@ -169,6 +187,7 @@ export type AtomistSkillIntParameterSpecInput = {
     name: Scalars['String'];
     placeHolder?: Maybe<Scalars['String']>;
     required: Scalars['Boolean'];
+    visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillMultiChoiceParameterSpecInput = {
@@ -180,6 +199,7 @@ export type AtomistSkillMultiChoiceParameterSpecInput = {
     name: Scalars['String'];
     options?: Maybe<Array<AtomistSkillChoiceInput>>;
     required: Scalars['Boolean'];
+    visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillChoiceInput = {
@@ -193,6 +213,7 @@ export type AtomistSkillRepoFilterParameterSpecInput = {
     displayName?: Maybe<Scalars['String']>;
     name: Scalars['String'];
     required: Scalars['Boolean'];
+    visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillScheduleParameterSpecInput = {
@@ -201,6 +222,7 @@ export type AtomistSkillScheduleParameterSpecInput = {
     displayName?: Maybe<Scalars['String']>;
     name: Scalars['String'];
     required: Scalars['Boolean'];
+    visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillSingleChoiceParameterSpecInput = {
@@ -210,6 +232,7 @@ export type AtomistSkillSingleChoiceParameterSpecInput = {
     name: Scalars['String'];
     options?: Maybe<Array<AtomistSkillChoiceInput>>;
     required: Scalars['Boolean'];
+    visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillStringParameterSpecInput = {
@@ -221,6 +244,7 @@ export type AtomistSkillStringParameterSpecInput = {
     pattern?: Maybe<Scalars['String']>;
     placeHolder?: Maybe<Scalars['String']>;
     required: Scalars['Boolean'];
+    visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export enum AtomistSkillStringParameterLineStyle {
@@ -237,6 +261,7 @@ export type AtomistSkillStringArrayParameterSpecInput = {
     name: Scalars['String'];
     pattern?: Maybe<Scalars['String']>;
     required: Scalars['Boolean'];
+    visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillResourceProviderSpecInput = {
@@ -263,7 +288,7 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
     info(`Generating skill metadata...`);
     const is: Skill = await handleError<Skill>(
         async () => (await import(p)).Skill,
-        err => {
+        () => {
             error(`Error loading '${p}'`);
             return undefined;
         });
@@ -414,7 +439,7 @@ export async function validateSkillInput(cwd: string,
         // Validate subscriptions
         for (const subscription of (s.subscriptions || [])) {
             const match = subscription.match(/subscription\s([^\s({]+)[\s({]/);
-            if (!!match) {
+            if (match) {
                 const operationName = match[1];
                 await handleError(async () => {
                     const p = await handlerLoader(`events/${operationName}`);
@@ -450,8 +475,7 @@ export async function writeAtomistYaml(cwd: string,
     info(`Written skill metadata to '${p}'`);
 }
 
-export async function generateSkill(cwd: string,
-                                    verbose: boolean): Promise<void> {
+export async function generateSkill(cwd: string): Promise<void> {
     let s;
     if (await fs.pathExists(path.join(cwd, "index.js"))) {
         s = await createJavaScriptSkillInput(cwd);
@@ -466,7 +490,7 @@ export async function generateSkill(cwd: string,
 }
 
 export function content(cwd: string): (key: string) => Promise<string[]> {
-    return async key => {
+    return async (key: string): Promise<string[]> => {
         if (!key) {
             return [];
         }

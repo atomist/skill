@@ -94,7 +94,7 @@ export enum LineStyle {
     Multiple = "multiple",
 }
 
-export interface Parameter<T, D> {
+export interface Parameter<T, D = any> {
     type: T;
     defaultValue?: D;
     description: string;
@@ -104,6 +104,11 @@ export interface Parameter<T, D> {
 }
 
 export type BooleanParameter = Parameter<ParameterType.Boolean, boolean>;
+
+export interface ChatChannelsParameter extends Omit<Parameter<ParameterType.ChatChannels>, "defaultValue"> {
+    maxAllowed?: number;
+    minRequired?: number;
+}
 
 export interface FloatParameter extends Parameter<ParameterType.Float, number> {
     maximum?: number;
@@ -117,7 +122,7 @@ export interface IntParameter extends Parameter<ParameterType.Int, number> {
     placeHolder?: string;
 }
 
-export interface MultiChoiceParameter extends Omit<Parameter<ParameterType.MultiChoice, string>, "defaultValue"> {
+export interface MultiChoiceParameter extends Omit<Parameter<ParameterType.MultiChoice>, "defaultValue"> {
     defaultValues?: string[];
     maxAllowed?: number;
     minRequired?: number;
@@ -138,7 +143,7 @@ export interface SingleChoiceParameter extends Parameter<ParameterType.SingleCho
     }>;
 }
 
-export type RepoFilterParameter = Omit<Parameter<ParameterType.RepoFilter, any>, "defaultValue" | "visibility">;
+export type RepoFilterParameter = Omit<Parameter<ParameterType.RepoFilter>, "defaultValue" | "visibility">;
 
 export type ScheduleParameter = Parameter<ParameterType.Schedule, string>;
 
@@ -178,6 +183,7 @@ export interface Metadata {
 
 export enum ParameterType {
     Boolean = "boolean",
+    ChatChannels = "chatChannels",
     Float = "float",
     Int = "int",
     MultiChoice = "multiChoice",
@@ -213,7 +219,8 @@ export interface Configuration<PARAMS extends ParametersType = any> {
         RepoFilterParameter |
         ScheduleParameter |
         StringParameter |
-        StringArrayParameter>;
+        StringArrayParameter |
+        ChatChannelsParameter>;
 
     resourceProviders?: Record<string, ResourceProvider>;
 }
