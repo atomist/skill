@@ -46,7 +46,7 @@ export function createContext(payload: CommandIncoming | EventIncoming,
     const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")?.value;
     const wid = workspaceId(payload);
     const graphql = createGraphQLClient(apiKey, wid);
-    const storage = createStorageProvider();
+    const storage = createStorageProvider(wid);
     const credential = new DefaultCredentialProvider(graphql, payload);
     if (isCommandIncoming(payload)) {
         if (payload.raw_message) {

@@ -26,8 +26,8 @@ export interface StorageProvider {
     retrieve(key: string, targetFilePath?: string): Promise<string>;
 }
 
-export function createStorageProvider(): StorageProvider {
-    return new GoogleCloudStorageProvider(bucketName());
+export function createStorageProvider(workspaceId: string): StorageProvider {
+    return new GoogleCloudStorageProvider(bucketName(workspaceId));
 }
 
 export class GoogleCloudStorageProvider implements StorageProvider {
@@ -52,7 +52,7 @@ export class GoogleCloudStorageProvider implements StorageProvider {
     }
 }
 
-function bucketName(): string {
-    const bucket = process.env.ATOMIST_STORAGE || process.env.STORAGE;
+function bucketName(workspaceId: string): string {
+    const bucket = process.env.ATOMIST_STORAGE || `gs://${workspaceId.toLowerCase()}-workspace-storage`;
     return bucket.replace(/gs:\/\//, "");
 }

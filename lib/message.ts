@@ -444,6 +444,7 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
                 protected readonly correlationId: string,
                 protected readonly team: { id: string; name?: string },
                 protected readonly source: Source,
+                protected readonly workspaceId: string,
                 protected readonly graphClient: GraphQLClient) {
         super(request, correlationId, team, source, graphClient);
         this.pubsub = new PubSub();
@@ -451,7 +452,7 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
     }
 
     public async sendResponse(message: any): Promise<void> {
-        const topicName = process.env.ATOMIST_TOPIC || process.env.TOPIC;
+        const topicName = process.env.ATOMIST_TOPIC || `${this.workspaceId}-${this.request.skill.id}-response`;
         try {
             debug(`Sending message: ${JSON.stringify(message, replacer)}`);
             if (topicName) {
@@ -469,7 +470,7 @@ export class PubSubCommandMessageClient extends AbstractPubSubMessageClient impl
 
     constructor(protected readonly request: CommandIncoming,
                 protected readonly graphClient: GraphQLClient) {
-        super(request, request.correlation_id, request.team, request.source, graphClient);
+        super(request, request.correlation_id, request.team, request.source, request.team.id, graphClient);
     }
 
     protected async doSend(msg: string | SlackMessage,
@@ -502,7 +503,7 @@ export class PubSubEventMessageClient extends AbstractPubSubMessageClient implem
     constructor(protected readonly request: EventIncoming,
                 protected readonly graphClient: GraphQLClient) {
         super(request, request.extensions.correlation_id,
-            { id: request.extensions.team_id, name: request.extensions.team_name }, undefined, graphClient);
+            { id: request.extensions.team_id, name: request.extensions.team_name }, undefined, request.extensions.team_id, graphClient);
     }
 
     protected async doSend(msg: string | SlackMessage,
