@@ -25,6 +25,7 @@ const LinkedRepositoriesQuery = `query LinkedRepositories($id: ID!) {
     repos {
       name
       owner
+      defaultBranch
       org {
         provider {
           apiUrl
@@ -45,7 +46,7 @@ export async function linkedRepositories(ctx: CommandContext): Promise<Repositor
         return [];
     }
 
-    const channel = await ctx.graphql.query<{ ChatChannel: Array<{ repos: Array<{ name: string; owner: string; org: { provider: { apiUrl: string } } }> }> }>(
+    const channel = await ctx.graphql.query<{ ChatChannel: Array<{ repos: Array<{ name: string; owner: string; defaultBranch: string; org: { provider: { apiUrl: string } } }> }> }>(
         LinkedRepositoriesQuery,
         {
             id: channelId,
@@ -57,6 +58,7 @@ export async function linkedRepositories(ctx: CommandContext): Promise<Repositor
             owner: r.owner,
             repo: r.name,
             apiUrl: r.org?.provider?.apiUrl,
+            branch: r.defaultBranch,
             type: RepositoryProviderType.GitHubCom,
         }));
     }
