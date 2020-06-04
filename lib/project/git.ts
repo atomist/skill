@@ -102,7 +102,7 @@ export async function push(projectOrCwd: Project | string, options?: GitPushOpti
             await execPromise("git", [...gitPushArgs, "origin"], { cwd: cwd(projectOrCwd) });
         } catch (e) {
             debug("Push failed. Attempting rebase");
-            await execPromise("git", ["pull", "--rebase"],{ cwd: cwd(projectOrCwd) });
+            await execPromise("git", ["pull", "--rebase"], { cwd: cwd(projectOrCwd) });
             await execPromise("git", [...gitPushArgs, "origin"], { cwd: cwd(projectOrCwd) });
         }
     }, retryOptions);

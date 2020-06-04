@@ -38,11 +38,10 @@ yargs
         "Generate skill metadata",
         args => args.option({
             cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
-            verbose: { type: "boolean", description: "Enable verbose logging", default: false, demandOption: false },
         }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_input")).generateSkill(argv.cwd, argv.verbose);
+                await (await import("../lib/scripts/skill_input")).generateSkill(argv.cwd);
                 return 0;
             } catch (e) {
                 error(e.message);

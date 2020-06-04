@@ -75,7 +75,7 @@ ${commands.join("\n")}`);
     }
 
     // Run ncc
-    await spawnPromise(path.join(cwd, "node_modules", ".bin", "ncc"), nccArgs, { cwd, log: { write: msg => debug(msg.trim()) } });
+    await spawnPromise(path.join(cwd, "node_modules", ".bin", "ncc"), nccArgs, { cwd, log: { write: (msg: string): void => debug(msg.trim()) } });
 
     // Update package.json
     // - rewrite main
