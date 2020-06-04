@@ -20,8 +20,8 @@ import {
     RepositoryProviderType,
 } from "./project";
 
-const LinkedRepositoriesQuery = `query LinkedRepositories($id: ID!) {
-  ChatChannel(id: $id) {
+const LinkedRepositoriesQuery = `query LinkedRepositories($id: String!) {
+  ChatChannel(channelId: $id) {
     repos {
       name
       owner
