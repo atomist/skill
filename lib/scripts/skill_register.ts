@@ -18,6 +18,7 @@ import * as fs from "fs-extra";
 import * as yaml from "js-yaml";
 import * as os from "os";
 import * as path from "path";
+import * as semver from "semver";
 import { spawnPromise } from "../child_process";
 import {
     createGraphQLClient,
@@ -30,7 +31,6 @@ import {
 import * as git from "../project/git";
 import { GoogleCloudStorageProvider } from "../storage";
 import { AtomistSkillInput } from "./skill_input";
-import * as semver from "semver";
 
 export async function registerSkill(cwd: string,
                                     workspaceId?: string,
@@ -165,7 +165,7 @@ async function register(client: GraphQLClient, skill: AtomistSkillInput): Promis
     );
 }
 
-async function wid(workspaceId: string): Promise<string> {
+export async function wid(workspaceId: string): Promise<string> {
     let w = workspaceId || process.env.ATOMIST_WORKSPACE_ID;
     if (!w) {
         const cfgPath = path.join(os.homedir(), ".atomist", "client.config.json");
@@ -180,7 +180,7 @@ async function wid(workspaceId: string): Promise<string> {
     return w;
 }
 
-async function apiKey(): Promise<string> {
+export async function apiKey(): Promise<string> {
     let apiKey = process.env.ATOMIST_API_KEY;
     if (!apiKey) {
         const cfgPath = path.join(os.homedir(), ".atomist", "client.config.json");

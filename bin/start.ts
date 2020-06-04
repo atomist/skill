@@ -104,6 +104,23 @@ yargs
             }
         },
     )
+    .command(
+        ["gql-fetch"],
+        "Fetch GraphQL schema",
+        args => args.option({
+            cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
+            workspace: { type: "string", description: "Id of workspace to fetch schema for", demandOption: false },
+        }),
+        async argv => {
+            try {
+                await (await import("../lib/scripts/gql_fetch")).fetchGql(argv.cwd, argv.workspace);
+                return 0;
+            } catch (e) {
+                error(e.message);
+                process.exit(1);
+            }
+        },
+    )
     .strict()
     .help()
     .argv;
