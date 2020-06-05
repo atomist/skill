@@ -305,12 +305,20 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
 
     let readme = (await rc(is.readme))[0];
     let description = (await rc(is.description))[0];
+    let longDescription = (await rc(is.longDescription))[0];
     if (readme) {
         if (!description) {
             const descriptionRegexp = /<!---atomist-skill-description:start--->([\s\S]*)<!---atomist-skill-description:end--->/gm;
             const descriptionMatch = descriptionRegexp.exec(readme);
             if (descriptionMatch) {
                 description = descriptionMatch[1].trim();
+            }
+        }
+        if (!longDescription) {
+            const longDescriptionRegexp = /<!---atomist-skill-long_description:start--->([\s\S]*)<!---atomist-skill-long_description:end--->/gm;
+            const longDescriptionMatch = longDescriptionRegexp.exec(readme);
+            if (longDescriptionMatch) {
+                longDescription = longDescriptionMatch[1].trim();
             }
         }
         const readmeRegexp = /<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
@@ -344,7 +352,7 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
         version: is.version,
         author: is.author,
         description,
-        longDescription: (await rc(is.longDescription))[0],
+        longDescription,
         license: is.license,
         categories: is.categories as any,
         technologies: is.technologies as any,
