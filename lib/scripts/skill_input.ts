@@ -286,7 +286,7 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
     const p = path.join(cwd, "index.js");
     info(`Generating skill metadata...`);
     const is: Skill = await handleError<Skill>(
-        async () => (await import(p)).Skill,
+        async () => await (await import(p)).Skill,
         () => {
             error(`Error loading '${p}'`);
             return undefined;

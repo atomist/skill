@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import * as path from "path";
 import * as fs from "fs-extra";
 import * as yaml from "js-yaml";
+import * as path from "path";
 import { debug } from "./log";
 
 export enum Category {
@@ -284,8 +284,10 @@ export function packageJson(path = "package.json"): Metadata {
     }
 }
 
-export function skill<PARAMS = any>(skill: Partial<Metadata> & Configuration<PARAMS> & Operations,
-                                    p: string = path.join(process.cwd(), "package.json")): Skill<PARAMS> {
+export type SkillInput<PARAMS = any> = Partial<Metadata> & Configuration<PARAMS> & Operations;
+
+export async function skill<PARAMS = any>(skill: SkillInput<PARAMS> | Promise<SkillInput<PARAMS>>,
+                                          p: string = path.join(process.cwd(), "package.json")): Promise<Skill<PARAMS>> {
     // Join an existing skill.yaml file from the root of the project
     const skillYamlPath = path.join(path.dirname(p), "skill.yaml");
     let skillYaml: any = {};
@@ -299,7 +301,7 @@ export function skill<PARAMS = any>(skill: Partial<Metadata> & Configuration<PAR
     return {
         ...packageJson(p),
         ...(skillYaml || {}),
-        ...skill,
+        ...(await skill),
     };
 }
 
