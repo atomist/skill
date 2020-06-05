@@ -103,18 +103,17 @@ export enum AtomistSkillRuntime {
 }
 
 export enum AtomistSkillCategoryKey {
-    Build = 'BUILD',
-    CodeReview = 'CODE_REVIEW',
-    DevEx = 'DEV_EX',
-    Deploy = 'DEPLOY',
-    Security = 'SECURITY',
-    Dependencies = 'DEPENDENCIES',
-    Notifications = 'NOTIFICATIONS',
-    Ci = 'CI',
-    Cd = 'CD',
-    Productivity = 'PRODUCTIVITY',
-    CodeQuality = 'CODE_QUALITY',
-    Chat = 'CHAT'
+    Build = "BUILD",
+    Chat = "CHAT",
+    CodeReview = "CODE_REVIEW",
+    Dependencies = "DEPENDENCIES",
+    Deploy = "DEPLOY",
+    DevEx = "DEV_EX",
+    DevOps = "DEV_OPS",
+    Issues = "Issues",
+    Monitor = "MONITOR",
+    Notifications = "NOTIFICATIONS",
+    Security = "SECURITY",
 }
 
 export type AtomistChatCommandInput = {
