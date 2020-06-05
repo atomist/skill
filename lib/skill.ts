@@ -15,6 +15,7 @@
  */
 
 import * as path from "path";
+import * as fs from "fs-extra";
 
 export enum Category {
     Build = "BUILD",
@@ -170,7 +171,7 @@ export interface Metadata {
 
     name: string;
     namespace: string;
-    version: string;
+    version?: string;
 
     author: string;
     displayName: string;
@@ -263,14 +264,13 @@ export function packageJson(path = "package.json"): Metadata {
     return {
         name: name.length === 2 ? name[1] : name[0],
         namespace: name.length === 2 ? name[0].replace(/@/g, "") : undefined,
-        displayName: pj.description,
-        version: pj.version,
+        displayName: pj.displayName || pj.description,
         author: typeof pj.author === "string" ? pj.author : pj.author?.name,
         description: "file://skill/description.md",
         longDescription: "file://skill/long_description.md",
         readme: "file://README.md",
         license: pj.license,
-        categories: pj.keywords,
+        categories: pj.categories || pj.keywords,
         technologies: pj.technologies,
         homepageUrl: pj.homepage,
         repositoryUrl: typeof pj.repository === "string" ? pj.repository : pj.repository?.url,
@@ -280,8 +280,19 @@ export function packageJson(path = "package.json"): Metadata {
 
 export function skill<PARAMS = any>(skill: Partial<Metadata> & Configuration<PARAMS> & Operations,
                                     p: string = path.join(process.cwd(), "package.json")): Skill<PARAMS> {
+    // Join an existing skill.yaml file from the root of the project
+    const skillYamlPath = path.join(path.dirname(p), "skill.yaml");
+    let skillYaml: any = {};
+    if (fs.pathExistsSync(skillYamlPath)) {
+        skillYaml = fs.readJsonSync(skillYamlPath);
+        if (skillYaml.skill) {
+            skillYaml = skillYaml.skill;
+        }
+    }
+
     return {
         ...packageJson(p),
+        ...(skillYaml || {}),
         ...skill,
     };
 }
