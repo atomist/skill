@@ -16,6 +16,7 @@
 
 import * as path from "path";
 import * as fs from "fs-extra";
+import * as yaml from "js-yaml";
 import { debug } from "./log";
 
 export enum Category {
@@ -289,7 +290,7 @@ export function skill<PARAMS = any>(skill: Partial<Metadata> & Configuration<PAR
     const skillYamlPath = path.join(path.dirname(p), "skill.yaml");
     let skillYaml: any = {};
     if (fs.pathExistsSync(skillYamlPath)) {
-        skillYaml = fs.readJsonSync(skillYamlPath);
+        skillYaml = yaml.safeLoad(fs.readFileSync(skillYamlPath).toString());
         if (skillYaml.skill) {
             skillYaml = skillYaml.skill;
         }
