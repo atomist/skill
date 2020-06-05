@@ -20,17 +20,16 @@ import { debug } from "./log";
 
 export enum Category {
     Build = "BUILD",
-    CodeReview = "CODE_REVIEW",
-    DevEx = "DEV_EX",
-    Deploy = "DEPLOY",
-    Security = "SECURITY",
-    Dependencies = "DEPENDENCIES",
-    Notifications = "NOTIFICATIONS",
-    CI = "CI",
-    CD = "CD",
-    Productivity = "PRODUCTIVITY",
-    CodeQuality = "CODE_QUALITY",
     Chat = "CHAT",
+    CodeReview = "CODE_REVIEW",
+    Dependencies = "DEPENDENCIES",
+    Deploy = "DEPLOY",
+    DevEx = "DEV_EX",
+    DevOps = "DEV_OPS",
+    Issues = "Issues",
+    Monitor = "MONITOR",
+    Notifications = "NOTIFICATIONS",
+    Security = "SECURITY",
 }
 
 export enum Technology {
