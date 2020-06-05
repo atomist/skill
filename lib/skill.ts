@@ -264,8 +264,8 @@ export function packageJson(path = "package.json"): Metadata {
         const pj = require(path); // eslint-disable-line @typescript-eslint/no-var-requires
         const name = pj.name?.split("/");
         return {
-            name: name?.length === 2 ? name[1] : name[0],
-            namespace: name?.length === 2 ? name[0].replace(/@/g, "") : undefined,
+            name: name ? (name?.length === 2 ? name[1] : name[0]) : undefined,
+            namespace: name ? (name?.length === 2 ? name[0].replace(/@/g, "") : undefined) : undefined,
             displayName: pj.displayName || pj.description,
             author: typeof pj.author === "string" ? pj.author : pj.author?.name,
             description: "file://skill/description.md",
