@@ -16,6 +16,7 @@
 
 import * as path from "path";
 import * as fs from "fs-extra";
+import { debug } from "./log";
 
 export enum Category {
     Build = "BUILD",
@@ -259,23 +260,28 @@ export function repoFilter(options: { required?: boolean } = { required: true })
 }
 
 export function packageJson(path = "package.json"): Metadata {
-    const pj = require(path); // eslint-disable-line @typescript-eslint/no-var-requires
-    const name = pj.name?.split("/");
-    return {
-        name: name.length === 2 ? name[1] : name[0],
-        namespace: name.length === 2 ? name[0].replace(/@/g, "") : undefined,
-        displayName: pj.displayName || pj.description,
-        author: typeof pj.author === "string" ? pj.author : pj.author?.name,
-        description: "file://skill/description.md",
-        longDescription: "file://skill/long_description.md",
-        readme: "file://README.md",
-        license: pj.license,
-        categories: pj.categories || pj.keywords,
-        technologies: pj.technologies,
-        homepageUrl: pj.homepage,
-        repositoryUrl: typeof pj.repository === "string" ? pj.repository : pj.repository?.url,
-        iconUrl: pj.icon ? pj.icon : "file://skill/icon.svg",
-    };
+    try {
+        const pj = require(path); // eslint-disable-line @typescript-eslint/no-var-requires
+        const name = pj.name?.split("/");
+        return {
+            name: name?.length === 2 ? name[1] : name[0],
+            namespace: name?.length === 2 ? name[0].replace(/@/g, "") : undefined,
+            displayName: pj.displayName || pj.description,
+            author: typeof pj.author === "string" ? pj.author : pj.author?.name,
+            description: "file://skill/description.md",
+            longDescription: "file://skill/long_description.md",
+            readme: "file://README.md",
+            license: pj.license,
+            categories: pj.categories || pj.keywords,
+            technologies: pj.technologies,
+            homepageUrl: pj.homepage,
+            repositoryUrl: typeof pj.repository === "string" ? pj.repository : pj.repository?.url,
+            iconUrl: pj.icon ? pj.icon : "file://skill/icon.svg",
+        };
+    } catch (e) {
+        debug(`Failed to require '${path}'`);
+        return {} as any;
+    }
 }
 
 export function skill<PARAMS = any>(skill: Partial<Metadata> & Configuration<PARAMS> & Operations,
