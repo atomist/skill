@@ -38,13 +38,21 @@ export function kubernetesResourceProvider(options: Omit<ResourceProvider, "type
 }
 
 /**
+ * Create a GoogleCloudPlatformProvider to use in a Skill resourceProvider definitions
+ */
+export function gcpResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+    return resourceProvider(
+      { displayName: "Google Cloud Platform", typeName: "GoogleCloudPlatformProvider", ...options });
+}
+
+/**
  * Create an DockerRegistryProvider to use in a Skill resourceProvider definitions
  */
 export function dockerRegistryProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
     return resourceProvider({ displayName: "Docker Registry", typeName: "DockerRegistryProvider", ...options });
 }
 
-function resourceProvider(options: ResourceProvider): ResourceProvider {
+export function resourceProvider(options: ResourceProvider): ResourceProvider {
     return {
         typeName: options.typeName,
         displayName: options.displayName,
