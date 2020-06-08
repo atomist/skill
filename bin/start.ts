@@ -86,6 +86,23 @@ yargs
         },
     )
     .command(
+        ["clean"],
+        "Clean skill archive",
+        args => args.option({
+            cwd: { type: "string", description: "Set working directory", default: process.cwd(), demandOption: false },
+            verbose: { type: "boolean", description: "Enable verbose logging", default: false, demandOption: false },
+        }),
+        async argv => {
+            try {
+                await (await import("../lib/scripts/skill_clean")).cleanSkill(argv.cwd);
+                return 0;
+            } catch (e) {
+                error(e.message);
+                process.exit(1);
+            }
+        },
+    )
+    .command(
         ["register", "reg"],
         "Register skill",
         args => args.option({

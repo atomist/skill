@@ -15,7 +15,6 @@
  */
 
 import * as fs from "fs-extra";
-import * as yaml from "js-yaml";
 import * as path from "path";
 import { debug } from "./log";
 
@@ -286,20 +285,29 @@ export function packageJson(path = "package.json"): Metadata {
 
 export type SkillInput<PARAMS = any> = Partial<Metadata> & Configuration<PARAMS> & Operations;
 
-export async function skill<PARAMS = any>(skill: SkillInput<PARAMS> | Promise<SkillInput<PARAMS>>,
-                                          p: string = path.join(process.cwd(), "package.json")): Promise<Skill<PARAMS>> {
-    // Join an existing skill.yaml file from the root of the project
-    const skillYamlPath = path.join(path.dirname(p), "skill.yaml");
+export async function skill<PARAMS = any>(skill: SkillInput<PARAMS> | Promise<SkillInput<PARAMS>>): Promise<Skill<PARAMS>> {
+    // Get the directory of the calling script
+    let cwd = process.cwd();
+    try {
+        throw new Error();
+    } catch (e) {
+        const stack = (await import("stack-trace")).parse(e);
+        cwd = path.dirname(stack[1].getFileName());
+    }
+
+    // Merge in an existing skill.yaml file from the root of the project
+    const skillYamlPath = path.join(cwd, "skill.yaml");
     let skillYaml: any = {};
-    if (fs.pathExistsSync(skillYamlPath)) {
-        skillYaml = yaml.safeLoad(fs.readFileSync(skillYamlPath).toString());
+    if (await fs.pathExists(skillYamlPath)) {
+        const yaml = await import("js-yaml");
+        skillYaml = yaml.safeLoad((await fs.readFile(skillYamlPath)).toString());
         if (skillYaml.skill) {
             skillYaml = skillYaml.skill;
         }
     }
-
+    
     return {
-        ...packageJson(p),
+        ...packageJson(path.join(cwd, "package.json")),
         ...(skillYaml || {}),
         ...(await skill),
     };

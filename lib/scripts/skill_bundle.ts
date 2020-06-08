@@ -31,42 +31,40 @@ export async function bundleSkill(cwd: string,
         process.env.ATOMIST_LOG_LEVEL = "info";
     }
     info(`Creating skill bundle...`);
-    
-    const events = await withGlobMatches<string>(cwd, ["events/*.js", "lib/events/*.js"], async file => {
-        const content = (await fs.readFile(path.join(cwd, file))).toString();
-        if (/exports\.handler\s*=/.test(content)) {
-            const name = path.basename(file);
-            return `registerEvent("${name.replace(/\.js/, "")}", async () => (await import("./${file.replace(/\.js/, "")}")).handler);`;
-        }
-        return undefined;
-    });
-    const commands = await withGlobMatches<string>(cwd, ["commands/*.js", "lib/commands/*.js"], async file => {
-        const content = (await fs.readFile(path.join(cwd, file))).toString();
-        if (/exports\.handler\s*=/.test(content)) {
-            const name = path.basename(file);
-            return `registerCommand("${name.replace(/\.js/, "")}", async () => (await import("./${file.replace(/\.js/, "")}")).handler);`;
-        }
-        return undefined;
-    });
 
-    const imports = [];
-    if (commands.length > 0) {
-        imports.push("registerCommand");
-    }
-    if (events.length > 0) {
-        imports.push("registerEvent");
-    }
+    const skillEntryPointExists = await fs.pathExists(path.join(cwd, "skill.js"));
 
-    const skillTs = [
-        `import { ${imports.join(", ")} } from "@atomist/skill/lib/bundle";`,
-        `export const entryPoint = require("@atomist/skill/lib/bundle").bundle;`,
-    ];
+    if (!skillEntryPointExists) {
+        const events = await withGlobMatches<string>(cwd, ["events/*.js", "lib/events/*.js"], async file => {
+            const content = (await fs.readFile(path.join(cwd, file))).toString();
+            if (/exports\.handler\s*=/.test(content)) {
+                const name = path.basename(file).replace(/\.js/, "");
+                const fileName = file.replace(/\.js/, "");
+                return `bundle.registerEvent("${name}", async () => (await Promise.resolve().then(() => require("./${fileName}"))).handler);`;
+            }
+            return undefined;
+        });
+        const commands = await withGlobMatches<string>(cwd, ["commands/*.js", "lib/commands/*.js"], async file => {
+            const content = (await fs.readFile(path.join(cwd, file))).toString();
+            if (/exports\.handler\s*=/.test(content)) {
+                const name = path.basename(file).replace(/\.js/, "");
+                const fileName = file.replace(/\.js/, "");
+                return `bundle.registerCommand("${name}", async () => (await Promise.resolve().then(() => require("./${fileName}"))).handler);`;
+            }
+            return undefined;
+        });
 
-    await fs.writeFile(path.join(cwd, "skill.ts"), `${skillTs.join("\n")}
+        const skillTs = [
+            `exports.entryPoint = require("@atomist/skill/lib/bundle").bundle;`,
+            `const bundle = require("./lib/bundle");`,
+        ];
+
+        await fs.writeFile(path.join(cwd, "skill.js"), `${skillTs.join("\n")}
 ${events.join("\n")}
 ${commands.join("\n")}`);
+    }
 
-    const nccArgs = ["build", "skill.ts", "-o", "bundle"];
+    const nccArgs = ["build", "skill.js", "-o", "bundle"];
     if (minify) {
         nccArgs.push("-m");
     }
@@ -75,21 +73,34 @@ ${commands.join("\n")}`);
     }
 
     // Run ncc
-    await spawnPromise(path.join(cwd, "node_modules", ".bin", "ncc"), nccArgs, { cwd, log: { write: (msg: string): void => debug(msg.trim()) } });
+    const result = await spawnPromise(
+        path.join(cwd, "node_modules", ".bin", "ncc"),
+        nccArgs,
+        { cwd, log: { write: (msg: string): void => debug(msg.trim()) } });
+    if (result.status !== 0) {
+        throw new Error("Failed to create skill bundle");
+    }
+
 
     // Update package.json
     // - rewrite main
     // - remove dependencies
-    const pjContent = (await fs.readFile(path.join(cwd, "package.json"))).toString()
-        .replace(/"dependencies"(\s*:)/, `"_dependencies_"$1`)
-        .replace(/"devDependencies"(\s*:)/, `"_devDependencies_"$1`)
-        .replace(/"main"(\s*:)/, `"_main_"$1`);
-    const pj = JSON.parse(pjContent);
+    await fs.ensureDir(path.join(cwd, ".atomist"));
+    await fs.copyFile(path.join(cwd, "package.json"), path.join(cwd, ".atomist", "package.json"));
+    if (await fs.pathExists(path.join(cwd, "package-lock.json"))) {
+        await fs.copyFile(path.join(cwd, "package-lock.json"), path.join(cwd, ".atomist", "package-lock.json"));
+    }
+    const pj = await fs.readJson(path.join(cwd, "package.json"));
     pj.main = "bundle/index.js";
+    delete pj.dependencies;
+    delete pj.devDependencies;
+    delete pj.scripts;
     await fs.writeJson(path.join(cwd, "package.json"), pj, { spaces: "  " });
-
     await fs.remove(path.join(cwd, "package-lock.json"));
-    await fs.remove(path.join(cwd, "skill.ts"));
-    info(`Skill bundle created at '${path.join(cwd, "bundle")}'`);
 
+    if (!skillEntryPointExists) {
+        await fs.remove(path.join(cwd, "skill.js"));
+    }
+
+    info(`Skill bundle created at '${path.join(cwd, "bundle")}'`);
 }

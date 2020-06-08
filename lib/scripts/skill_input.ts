@@ -467,8 +467,8 @@ ${errors.map(e => `        - ${e}`).join("\n")}`);
     }
 }
 
-export async function writeAtomistYaml(cwd: string,
-                                       skill: AtomistSkillInput): Promise<void> {
+export async function writeSkillYaml(cwd: string,
+                                     skill: AtomistSkillInput): Promise<void> {
     const p = path.join(cwd, ".atomist", "skill.yaml");
     await fs.ensureDir(path.dirname(p));
     const yaml = await import("js-yaml");
@@ -493,7 +493,7 @@ export async function generateSkill(cwd: string): Promise<void> {
     } else {
         throw new Error(`No suitable skill input detected in '${cwd}'`);
     }
-    await writeAtomistYaml(cwd, s);
+    await writeSkillYaml(cwd, s);
 }
 
 export function content(cwd: string): (key: string) => Promise<string[]> {
