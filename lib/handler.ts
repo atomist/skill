@@ -81,9 +81,6 @@ export interface CommandContext<C = any> extends Contextual<CommandIncoming, C> 
         prompt<PARAMS = any>(parameters: ParametersPromptObject<PARAMS>, options?: ParameterPromptOptions): Promise<PARAMS>;
     };
 
-    credential: CredentialProvider;
-    graphql: GraphQLClient;
-    http: HttpClient;
     message: CommandMessageClient;
 }
 
