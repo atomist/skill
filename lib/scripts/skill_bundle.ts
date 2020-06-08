@@ -94,7 +94,6 @@ ${commands.join("\n")}`);
     pj.main = "bundle/index.js";
     delete pj.dependencies;
     delete pj.devDependencies;
-    delete pj.scripts;
     await fs.writeJson(path.join(cwd, "package.json"), pj, { spaces: "  " });
     await fs.remove(path.join(cwd, "package-lock.json"));
 
