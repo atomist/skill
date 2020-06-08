@@ -16,7 +16,6 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
-import { debug } from "./log";
 
 export enum Category {
     Build = "BUILD",
@@ -278,7 +277,6 @@ export function packageJson(path = "package.json"): Metadata {
             iconUrl: pj.icon ? pj.icon : "file://skill/icon.svg",
         };
     } catch (e) {
-        debug(`Failed to require '${path}'`);
         return {} as any;
     }
 }
