@@ -438,8 +438,8 @@ export async function validateSkillInput(cwd: string,
                 if (!p) {
                     errors.push(`Registered command '${command.name}' can't be found`);
                 }
-            }, () => {
-                errors.push(`Registered command '${command.name}' can't be found`);
+            }, err => {
+                errors.push(`Registered command '${command.name}' can't be found: ${err.message}`);
             });
         }
 
@@ -453,8 +453,8 @@ export async function validateSkillInput(cwd: string,
                     if (!p) {
                         errors.push(`Registered event handler '${operationName}' can't be found`);
                     }
-                }, () => {
-                    errors.push(`Registered event handler '${operationName}' can't be found`);
+                }, err => {
+                    errors.push(`Registered event handler '${operationName}' can't be found: ${err.message}`);
                 });
             }
         }
