@@ -49,7 +49,7 @@ export function gcpResourceProvider(options: Omit<ResourceProvider, "typeName"> 
  * Create an DockerRegistryProvider to use in a Skill resourceProvider definitions
  */
 export function dockerRegistryProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Docker Registry", typeName: "DockerRegistryProvider", ...options });
+    return resourceProvider({ displayName: "Docker Registry", typeName: "DockerRegistry", ...options });
 }
 
 export function resourceProvider(options: ResourceProvider): ResourceProvider {
