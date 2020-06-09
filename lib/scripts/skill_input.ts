@@ -369,6 +369,7 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
 
         resourceProviders: map(is.resourceProviders || {}, (v, k) => ({
             name: k,
+            displayName: v.displayName,
             typeName: v.typeName,
             description: v.description,
             minRequired: v.minRequired,
