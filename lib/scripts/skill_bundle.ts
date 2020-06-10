@@ -56,7 +56,7 @@ export async function bundleSkill(cwd: string,
 
         const skillTs = [
             `exports.entryPoint = require("@atomist/skill/lib/bundle").bundle;`,
-            `const bundle = require("./lib/bundle");`,
+            `const bundle = require("@atomist/skill/lib/bundle");`,
         ];
 
         await fs.writeFile(path.join(cwd, "skill.js"), `${skillTs.join("\n")}
