@@ -34,6 +34,8 @@ export interface GitPushOptions {
     force_with_lease?: boolean | string;
     quiet?: boolean;
     verbose?: boolean;
+
+    branch?: string;
 }
 
 /**
@@ -84,18 +86,29 @@ export async function revert(projectOrCwd: Project | string): Promise<void> {
  */
 export async function push(projectOrCwd: Project | string, options?: GitPushOptions): Promise<void> {
     const gitPushArgs = ["push"];
+    const branch = options?.branch;
+
     forOwn(options, (v, k) => {
-        const opt = k.replace(/_/g, "-");
-        if (typeof v === "boolean") {
-            if (v === false) {
-                gitPushArgs.push(`--no-${opt}`);
-            } else {
-                gitPushArgs.push(`--${opt}`);
+        if (k !== "branch") {
+            const opt = k.replace(/_/g, "-");
+            if (typeof v === "boolean") {
+                if (v === false) {
+                    gitPushArgs.push(`--no-${opt}`);
+                } else {
+                    gitPushArgs.push(`--${opt}`);
+                }
+            } else if (typeof v === "string") {
+                gitPushArgs.push(`--${opt}=${v}`);
             }
-        } else if (typeof v === "string") {
-            gitPushArgs.push(`--${opt}=${v}`);
         }
     });
+
+    if (branch) {
+        gitPushArgs.push("--set-upstream", "origin", branch);
+    } else {
+        gitPushArgs.push("origin");
+    }
+
     const retryOptions = {
         retries: 4,
         factor: 2,
@@ -105,11 +118,11 @@ export async function push(projectOrCwd: Project | string, options?: GitPushOpti
     };
     await pRetry(async () => {
         try {
-            await execPromise("git", [...gitPushArgs, "origin"], { cwd: cwd(projectOrCwd) });
+            await execPromise("git", gitPushArgs, { cwd: cwd(projectOrCwd) });
         } catch (e) {
             debug("Push failed. Attempting rebase");
             await execPromise("git", ["pull", "--rebase"], { cwd: cwd(projectOrCwd) });
-            await execPromise("git", [...gitPushArgs, "origin"], { cwd: cwd(projectOrCwd) });
+            await execPromise("git", gitPushArgs, { cwd: cwd(projectOrCwd) });
         }
     }, retryOptions);
 
