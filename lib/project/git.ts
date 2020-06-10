@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as pRetry from "p-retry";
 import { execPromise } from "../child_process";
 import { debug } from "../log";
 import {
@@ -22,7 +23,6 @@ import {
 } from "./gitStatus";
 import { Project } from "./project";
 import { cwd } from "./util";
-import * as pRetry from "p-retry";
 import forOwn = require("lodash.forown");
 
 /**
@@ -53,7 +53,13 @@ export async function status(projectOrCwd: Project | string): Promise<GitStatus>
 /**
  * `git add .` and `git commit -m MESSAGE`
  */
-export async function commit(projectOrCwd: Project | string, message: string): Promise<void> {
+export async function commit(projectOrCwd: Project | string, message: string, options: { name?: string; email?: string } = {}): Promise<void> {
+    if (options.name) {
+        await execPromise("git", ["config", "user.name", name], { cwd: cwd(projectOrCwd) });
+    }
+    if (options.email) {
+        await execPromise("git", ["config", "user.email", options.email], { cwd: cwd(projectOrCwd) });
+    }
     await execPromise("git", ["add", "."], { cwd: cwd(projectOrCwd) });
     await execPromise("git", ["commit", "-m", message], { cwd: cwd(projectOrCwd) });
 }
