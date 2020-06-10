@@ -57,7 +57,7 @@ export async function status(projectOrCwd: Project | string): Promise<GitStatus>
  */
 export async function commit(projectOrCwd: Project | string, message: string, options: { name?: string; email?: string } = {}): Promise<void> {
     if (options.name) {
-        await execPromise("git", ["config", "user.name", name], { cwd: cwd(projectOrCwd) });
+        await execPromise("git", ["config", "user.name", options.name], { cwd: cwd(projectOrCwd) });
     }
     if (options.email) {
         await execPromise("git", ["config", "user.email", options.email], { cwd: cwd(projectOrCwd) });
