@@ -68,7 +68,10 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
 
                 const sr = await step.run(context, parameters);
                 if (sr) {
-                    result = sr;
+                    result = {
+                        ...(result || {}),
+                        ...sr,
+                    };
                 }
                 await invokeListeners(listeners.filter(l => !!l.completed), async l => l.completed(step, parameters, sr));
 
