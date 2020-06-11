@@ -42,7 +42,7 @@ export function kubernetesResourceProvider(options: Omit<ResourceProvider, "type
  */
 export function gcpResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
     return resourceProvider(
-      { displayName: "Google Cloud Platform", typeName: "GoogleCloudPlatformProvider", ...options });
+        { displayName: "Google Cloud Platform", typeName: "GoogleCloudPlatformProvider", ...options });
 }
 
 /**
@@ -63,7 +63,7 @@ export function resourceProvider(options: ResourceProvider): ResourceProvider {
     return {
         typeName: options.typeName,
         displayName: options.displayName,
-        description: options.description,
+        description: options.description || options.displayName,
         minRequired: options?.minRequired !== undefined ? options.minRequired : 0,
     };
 }
