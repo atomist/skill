@@ -52,6 +52,13 @@ export function dockerRegistryProvider(options: Omit<ResourceProvider, "typeName
     return resourceProvider({ displayName: "Docker Registry", typeName: "DockerRegistry", ...options });
 }
 
+/**
+ * Create an MavenRepositoryProvider to use in a Skill resourceProvider definitions
+ */
+export function mavenRepositoryProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+    return resourceProvider({ displayName: "Maven Repository", typeName: "MavenRepositoryProvider", ...options });
+}
+
 export function resourceProvider(options: ResourceProvider): ResourceProvider {
     return {
         typeName: options.typeName,
