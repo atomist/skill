@@ -10,3 +10,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 -   Add options to set name and email on commit. [762d025](https://github.com/atomist/skill/commit/762d025ff6f301a0aea9e57377b1779efa018396)
+-   Add signals, gates and gateSubscriptions. [5f26261](https://github.com/atomist/skill/commit/5f26261e889c905fce64c1e897dd2905b99663ac)
