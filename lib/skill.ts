@@ -166,10 +166,13 @@ export interface StringArrayParameter extends Parameter<ParameterType.StringArra
     pattern?: string;
 }
 
-export interface Metadata {
-
+export interface Named {
     name: string;
-    namespace: string;
+    namespace?: string;
+}
+
+export interface Metadata extends Required<Named> {
+
     version?: string;
 
     author: string;
@@ -244,6 +247,12 @@ export interface Operations {
     commands?: Command[];
 
     subscriptions?: string[];
+
+    signals?: string[];
+
+    gates?: Record<string, Named[]>;
+
+    gateSubscriptions?: Named[];
 }
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
@@ -271,7 +280,7 @@ export function packageJson(path = "package.json"): Metadata {
             readme: "file://README.md",
             license: pj.license,
             categories: pj.categories || pj.keywords,
-            technologies: pj.technologies,
+            technologies: pj.technologies,                       
             homepageUrl: pj.homepage,
             repositoryUrl: typeof pj.repository === "string" ? pj.repository : pj.repository?.url,
             iconUrl: pj.icon ? pj.icon : "file://skill/icon.svg",
@@ -303,7 +312,7 @@ export async function skill<PARAMS = any>(skill: SkillInput<PARAMS> | Promise<Sk
             skillYaml = skillYaml.skill;
         }
     }
-    
+
     return {
         ...packageJson(path.join(cwd, "package.json")),
         ...(skillYaml || {}),

@@ -66,6 +66,9 @@ export type AtomistSkillInput = {
     technologies?: Maybe<Array<AtomistSkillTechnology>>;
     version: Scalars['String'];
     videoUrl?: Maybe<Scalars['String']>;
+    gateSubscriptions?: Maybe<Array<AtomistGateRefInput>>;
+    gates?: Maybe<Array<AtomistGateInput>>;
+    signals?: Maybe<Array<Scalars['String']>>;
 };
 
 export type AtomistSkillArtifactsInput = {
@@ -282,6 +285,16 @@ export enum AtomistSkillTechnology {
     Kubernetes = 'KUBERNETES'
 }
 
+export type AtomistGateRefInput = {
+    name: Scalars['String'];
+    namespace?: Maybe<Scalars['String']>;
+};
+
+export type AtomistGateInput = {
+    and: Array<AtomistGateRefInput>;
+    name: Scalars['String'];
+};
+
 export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSkillInput> {
     const p = path.join(cwd, "index.js");
     info(`Generating skill metadata...`);
@@ -301,6 +314,10 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
     const subscriptions = [];
     for (const subscription of (is.subscriptions || [])) {
         subscriptions.push(...(await rc(subscription)));
+    }
+    const signals = [];
+    for (const signal of (is.signals || [])) {
+        signals.push(...(await rc(signal)));
     }
 
     let readme = (await rc(is.readme))[0];
@@ -395,6 +412,14 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
         })),
 
         subscriptions,
+
+        signals,
+        gates: map(is.gates || {}, (v, k) => ({
+            name: k,
+            and: v,
+        })),
+        gateSubscriptions: is.gateSubscriptions,
+
     };
 
     if (!y.longDescription) {
