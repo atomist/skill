@@ -53,6 +53,10 @@ export class GoogleCloudStorageProvider implements StorageProvider {
 }
 
 function bucketName(workspaceId: string): string {
-    const bucket = process.env.ATOMIST_STORAGE || `gs://${workspaceId.toLowerCase()}-workspace-storage`;
-    return bucket.replace(/gs:\/\//, "");
+    const bucket = process.env.ATOMIST_STORAGE || (workspaceId ? `gs://${workspaceId.toLowerCase()}-workspace-storage` : undefined);
+    if (!!bucket) {
+        return bucket.replace(/gs:\/\//, "");
+    } else {
+        return undefined;
+    }
 }
