@@ -15,6 +15,7 @@
  */
 
 import { Octokit } from "@octokit/rest"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../project";
 import {
     GitHubAppCredential,
@@ -49,4 +50,21 @@ export function gitHub(id: Pick<AuthenticatedRepositoryId<GitHubCredential | Git
             },
         },
     });
+}
+
+export function formatMarkers(ctx: Contextual<any, any>, ...tags: string[]): string {
+    return `
+---
+
+<details>
+  <summary>Tags</summary>
+  <br/>
+  <code>[atomist:generated]</code>
+  <br/>
+  <code>[atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]</code>
+  <br/>
+  <code>[atomist-correlation-id:${ctx.correlationId}]</code>
+  ${tags.map(t => `<br/>
+  <code>[t]</code>`).join("\n")}
+</details>`;
 }
