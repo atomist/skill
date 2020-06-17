@@ -28,7 +28,7 @@ export function gitHub(id: Pick<AuthenticatedRepositoryId<GitHubCredential | Git
     const url = id.apiUrl || DefaultGitHubApiUrl;
 
     const { Octokit } = require("@octokit/rest"); // eslint-disable-line @typescript-eslint/no-var-requires
-    const { throttling }= require("@octokit/plugin-throttling"); // eslint-disable-line @typescript-eslint/no-var-requires
+    const { throttling } = require("@octokit/plugin-throttling"); // eslint-disable-line @typescript-eslint/no-var-requires
     const { retry } = require("@octokit/plugin-retry"); // eslint-disable-line @typescript-eslint/no-var-requires
     const ConfiguredOctokit = Octokit.plugin(throttling, retry);
 
@@ -65,6 +65,42 @@ export function formatMarkers(ctx: Contextual<any, any>, ...tags: string[]): str
   <br/>
   <code>[atomist-correlation-id:${ctx.correlationId}]</code>
   ${tags.map(t => `<br/>
-  <code>[t]</code>`).join("\n")}
+  <code>[${t}]</code>`).join("\n")}
 </details>`;
+}
+
+export async function convergeLabel(id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
+                                    name: string,
+                                    color: string,
+                                    description?: string): Promise<void> {
+    try {
+        await gitHub(id).issues.updateLabel({
+            name,
+            color,
+            description,
+            repo: id.repo,
+            owner: id.owner,
+        });
+    } catch (err) {
+        await gitHub(id).issues.createLabel({
+            name,
+            color,
+            description,
+            repo: id.repo,
+            owner: id.owner,
+        });
+    }
+}
+
+export async function removeLabel(id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
+                                  name: string): Promise<void> {
+    try {
+        await gitHub(id).issues.deleteLabel({
+            name,
+            repo: id.repo,
+            owner: id.owner,
+        });
+    } catch (err) {
+        // ignore
+    }
 }
