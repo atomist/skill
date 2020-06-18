@@ -17,7 +17,10 @@
 import * as pRetry from "p-retry";
 import { execPromise } from "../child_process";
 import { debug } from "../log";
-import { GitStatus, runStatusIn } from "./gitStatus";
+import {
+    GitStatus,
+    runStatusIn,
+} from "./gitStatus";
 import { Project } from "./project";
 import { cwd } from "./util";
 import forOwn = require("lodash.forown");

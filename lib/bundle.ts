@@ -14,10 +14,25 @@
  * limitations under the License.
  */
 
-import { processCommand, processEvent, PubSubMessage } from "./function";
-import { CommandHandler, EventHandler } from "./handler";
-import { debug, info } from "./log";
-import { CommandIncoming, EventIncoming, isCommandIncoming, isEventIncoming } from "./payload";
+import {
+    processCommand,
+    processEvent,
+    PubSubMessage,
+} from "./function";
+import {
+    CommandHandler,
+    EventHandler,
+} from "./handler";
+import {
+    debug,
+    info,
+} from "./log";
+import {
+    CommandIncoming,
+    EventIncoming,
+    isCommandIncoming,
+    isEventIncoming,
+} from "./payload";
 import { replacer } from "./util";
 
 const HandlerRegistry = {

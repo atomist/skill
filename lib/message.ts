@@ -14,14 +14,34 @@
  * limitations under the License.
  */
 
-import { render, SlackMessage } from "@atomist/slack-messages";
+import {
+    render,
+    SlackMessage,
+} from "@atomist/slack-messages";
 import { Action as SlackAction } from "@atomist/slack-messages/lib/SlackMessages";
 import { PubSub } from "@google-cloud/pubsub";
 import { GraphQLClient } from "./graphql";
-import { CommandContext, EventContext, HandlerStatus } from "./handler";
-import { debug, error } from "./log";
-import { CommandIncoming, EventIncoming, isCommandIncoming, isEventIncoming, Skill, Source } from "./payload";
-import { replacer, toArray } from "./util";
+import {
+    CommandContext,
+    EventContext,
+    HandlerStatus,
+} from "./handler";
+import {
+    debug,
+    error,
+} from "./log";
+import {
+    CommandIncoming,
+    EventIncoming,
+    isCommandIncoming,
+    isEventIncoming,
+    Skill,
+    Source,
+} from "./payload";
+import {
+    replacer,
+    toArray,
+} from "./util";
 import cloneDeep = require("lodash.clonedeep");
 
 export interface Destinations {

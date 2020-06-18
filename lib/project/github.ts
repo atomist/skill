@@ -17,7 +17,10 @@
 import { Octokit } from "@octokit/rest"; // eslint-disable-line @typescript-eslint/no-unused-vars
 import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../project";
-import { GitHubAppCredential, GitHubCredential } from "../secrets";
+import {
+    GitHubAppCredential,
+    GitHubCredential,
+} from "../secrets";
 
 const DefaultGitHubApiUrl = "https://api.github.com/";
 

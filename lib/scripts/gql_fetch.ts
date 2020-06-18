@@ -18,7 +18,10 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import { createGraphQLClient } from "../graphql";
 import { info } from "../log";
-import { apiKey, wid } from "./skill_register";
+import {
+    apiKey,
+    wid,
+} from "./skill_register";
 
 const IntrospectionQuery = `query IntrospectionQuery {
   __schema {

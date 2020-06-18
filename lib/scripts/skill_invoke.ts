@@ -16,10 +16,24 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
-import { processCommand, processEvent } from "../function";
-import { CommandIncoming, EventIncoming, isCommandIncoming, isEventIncoming } from "../payload";
-import { guid, handlerLoader } from "../util";
-import { apiKey, wid } from "./skill_register";
+import {
+    processCommand,
+    processEvent,
+} from "../function";
+import {
+    CommandIncoming,
+    EventIncoming,
+    isCommandIncoming,
+    isEventIncoming,
+} from "../payload";
+import {
+    guid,
+    handlerLoader,
+} from "../util";
+import {
+    apiKey,
+    wid,
+} from "./skill_register";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const merge = require("lodash.merge");
 
