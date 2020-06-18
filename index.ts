@@ -47,17 +47,7 @@ export {
     Destinations,
     SlackFileMessage,
 } from "./lib/message";
-export {
-    slackErrorMessage,
-    slackFooter,
-    slackInfoMessage,
-    slackSeparator,
-    slackSupportLink,
-    slackSuccessMessage,
-    slackTs,
-    slackQuestionMessage,
-    slackWarningMessage,
-} from "./lib/messages";
+export { slack } from "./lib/messages";
 export {
     ParameterPrompt,
     ParametersPromptObject,
