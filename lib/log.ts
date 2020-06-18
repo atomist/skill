@@ -112,3 +112,10 @@ function enabled(level: string): boolean {
     const configuredLevel = Level[process.env.ATOMIST_LOG_LEVEL || "debug"];
     return configuredLevel >= Level[level];
 }
+
+export const log = {
+    debug,
+    error,
+    info,
+    warn,
+};

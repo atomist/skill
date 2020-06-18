@@ -38,7 +38,7 @@ export {
     HandlerStatus,
 } from "./lib/handler";
 export { HttpClient } from "./lib/http";
-export { debug, error, info, warn } from "./lib/log";
+export { log } from "./lib/log";
 export {
     CommandMessageClient,
     MessageClient,
@@ -47,17 +47,7 @@ export {
     Destinations,
     SlackFileMessage,
 } from "./lib/message";
-export {
-    slackErrorMessage,
-    slackFooter,
-    slackInfoMessage,
-    slackSeparator,
-    slackSupportLink,
-    slackSuccessMessage,
-    slackTs,
-    slackQuestionMessage,
-    slackWarningMessage,
-} from "./lib/messages";
+export { slack } from "./lib/messages";
 export {
     ParameterPrompt,
     ParametersPromptObject,

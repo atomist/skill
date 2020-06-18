@@ -156,3 +156,15 @@ export function slackTs(): number {
 export function slackSeparator(): string {
     return "\u00B7";
 }
+
+export const slack = {
+    errorMessage: slackErrorMessage,
+    footer: slackFooter,
+    infoMessage: slackInfoMessage,
+    separator: slackSeparator,
+    supportLink: slackSupportLink,
+    successMessage: slackSuccessMessage,
+    ts: slackTs,
+    questionMessage: slackQuestionMessage,
+    warningMessage: slackWarningMessage,
+};

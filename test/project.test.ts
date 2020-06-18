@@ -16,10 +16,24 @@
 
 import * as assert from "assert";
 import * as fs from "fs-extra";
+import * as log from "../lib/log";
 import { createProjectLoader, gitHubComRepository } from "../lib/project";
 import { commit, createBranch, status } from "../lib/project/git";
 
 describe("project", () => {
+    let originalLogDebug: any;
+    before(() => {
+        originalLogDebug = Object.getOwnPropertyDescriptor(log, "debug");
+        Object.defineProperty(log, "debug", {
+            value: async () => {
+                return;
+            },
+        });
+    });
+    after(() => {
+        Object.defineProperty(log, "debug", originalLogDebug);
+    });
+
     it("should clone public repo", async () => {
         const p = await createProjectLoader().clone(
             gitHubComRepository({ owner: "atomist", repo: "skill", credential: undefined }),
