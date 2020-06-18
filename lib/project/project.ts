@@ -24,10 +24,7 @@ import {
     SpawnPromiseReturns,
 } from "../child_process";
 import { debug } from "../log";
-import {
-    AuthenticatedRepositoryId,
-    CloneOptions,
-} from "../project";
+import { AuthenticatedRepositoryId, CloneOptions } from "../project";
 import { doClone } from "./clone";
 import { setUserConfig } from "./git";
 
@@ -35,7 +32,6 @@ export type Spawn = (cmd: string, args?: string[], opts?: SpawnPromiseOptions) =
 export type Exec = (cmd: string, args?: string[], opts?: SpawnSyncOptions) => Promise<ExecPromiseResult>;
 
 export interface Project<C = any> {
-
     id: AuthenticatedRepositoryId<C>;
 
     path(...elements: string[]): string;
@@ -48,8 +44,10 @@ export async function load<C>(id: AuthenticatedRepositoryId<C>, baseDir: string)
     const project = {
         id,
         path: (...elements: string[]): string => path.join(baseDir, ...(elements || [])),
-        spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> => spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
-        exec: (cmd, args, opts): Promise<ExecPromiseResult> => execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
+        spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> =>
+            spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
+        exec: (cmd, args, opts): Promise<ExecPromiseResult> =>
+            execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
     };
     await setUserConfig(project);
     return project;
@@ -60,8 +58,10 @@ export async function clone<C>(id: AuthenticatedRepositoryId<C>, options?: Clone
     const project = {
         id,
         path: (...elements: string[]): string => path.join(baseDir, ...(elements || [])),
-        spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> => spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
-        exec: (cmd, args, opts): Promise<ExecPromiseResult> => execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
+        spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> =>
+            spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
+        exec: (cmd, args, opts): Promise<ExecPromiseResult> =>
+            execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
     };
     await setUserConfig(project);
     return project;

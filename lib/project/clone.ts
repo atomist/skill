@@ -19,18 +19,17 @@ import * as pRetry from "p-retry";
 import * as path from "path";
 import { execPromise } from "../child_process";
 import { debug } from "../log";
-import {
-    AuthenticatedRepositoryId,
-    CloneOptions,
-} from "../project";
+import { AuthenticatedRepositoryId, CloneOptions } from "../project";
 import { guid } from "../util";
 
 export const ClonePath = path.join(os.tmpdir(), "atm-clone");
 
-export async function doClone(id: AuthenticatedRepositoryId<any>,
-                              options: CloneOptions = {}): Promise<string> {
+export async function doClone(id: AuthenticatedRepositoryId<any>, options: CloneOptions = {}): Promise<string> {
     debug(
-        `Cloning repository '${id.owner}/${id.repo}', branch '${id.branch}', sha '${id.sha}' and options '${JSON.stringify(options)}'`);
+        `Cloning repository '${id.owner}/${id.repo}', branch '${id.branch}', sha '${
+            id.sha
+        }' and options '${JSON.stringify(options)}'`,
+    );
     const sha = id.sha || "HEAD";
     const repoDir = options.path || path.join(ClonePath, guid());
     const url = id.cloneUrl();
@@ -38,13 +37,18 @@ export async function doClone(id: AuthenticatedRepositoryId<any>,
     const cloneArgs = ["clone", url, repoDir];
 
     // Set the global symlink flag on git according to our options; this defaults to false to err on  the safe side
-    await execPromise("git", ["config", "--global", "core.symlinks", options.symLinks !== undefined ? `${options.symLinks}` : "false"]);
+    await execPromise("git", [
+        "config",
+        "--global",
+        "core.symlinks",
+        options.symLinks !== undefined ? `${options.symLinks}` : "false",
+    ]);
 
     // If we wanted a deep clone, just clone it
     if (!options.alwaysDeep) {
         // If we didn't ask for a deep clone, then default to cloning only the tip of the default branch.
         // the cloneOptions let us ask for more commits than that
-        cloneArgs.push("--depth", ((options.depth && options.depth > 0) ? options.depth : 1).toString(10));
+        cloneArgs.push("--depth", (options.depth && options.depth > 0 ? options.depth : 1).toString(10));
         if (cloneBranch) {
             // if not cloning deeply, be sure we clone the right branch
             cloneArgs.push("--branch", cloneBranch);
@@ -65,8 +69,8 @@ export async function doClone(id: AuthenticatedRepositoryId<any>,
         maxTimeout: 500,
         randomize: false,
     };
-    await pRetry( () => execPromise("git", cloneArgs), retryOptions);
-    
+    await pRetry(() => execPromise("git", cloneArgs), retryOptions);
+
     try {
         await execPromise("git", ["checkout", checkoutRef, "--"], { cwd: repoDir });
     } catch (err) {

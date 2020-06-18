@@ -15,10 +15,7 @@
  */
 
 import { CommandContext } from "./handler";
-import {
-    RepositoryId,
-    RepositoryProviderType,
-} from "./project";
+import { RepositoryId, RepositoryProviderType } from "./project";
 
 const LinkedRepositoriesQuery = `query LinkedRepositories($id: String!) {
   ChatChannel(channelId: $id) {
@@ -46,12 +43,13 @@ export async function linkedRepositories(ctx: CommandContext): Promise<Repositor
         return [];
     }
 
-    const channel = await ctx.graphql.query<{ ChatChannel: Array<{ repos: Array<{ name: string; owner: string; defaultBranch: string; org: { provider: { apiUrl: string } } }> }> }>(
-        LinkedRepositoriesQuery,
-        {
-            id: channelId,
-        },
-    );
+    const channel = await ctx.graphql.query<{
+        ChatChannel: Array<{
+            repos: Array<{ name: string; owner: string; defaultBranch: string; org: { provider: { apiUrl: string } } }>;
+        }>;
+    }>(LinkedRepositoriesQuery, {
+        id: channelId,
+    });
 
     if (channel.ChatChannel?.length > 0 && channel.ChatChannel[0]?.repos?.length > 0) {
         return channel.ChatChannel[0].repos.map(r => ({
@@ -76,7 +74,10 @@ export async function linkedRepository(ctx: CommandContext): Promise<RepositoryI
                 description: "Select repository",
                 type: {
                     kind: "single",
-                    options: repositories.map(r => ({ description: `${r.owner}/${r.repo}`, value: `${r.owner}/${r.repo}` })),
+                    options: repositories.map(r => ({
+                        description: `${r.owner}/${r.repo}`,
+                        value: `${r.owner}/${r.repo}`,
+                    })),
                 },
             },
         });

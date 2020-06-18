@@ -14,104 +14,134 @@
  * limitations under the License.
  */
 
-import {
-    Attachment,
-    SlackMessage,
-    url,
-} from "@atomist/slack-messages";
+import { Attachment, SlackMessage, url } from "@atomist/slack-messages";
 import { Contextual } from "./handler";
 import { guid } from "./util";
 
-/* eslint-disable @typescript-eslint/camelcase */
-
-export function slackSuccessMessage(title: string, text: string, ctx: Contextual<any, any>, options: Partial<Attachment> = {}): SlackMessage {
+export function slackSuccessMessage(
+    title: string,
+    text: string,
+    ctx: Contextual<any, any>,
+    options: Partial<Attachment> = {},
+): SlackMessage {
     const msg: SlackMessage = {
-        attachments: [{
-            author_icon: `https://images.atomist.com/rug/check-circle.gif?gif=${guid()}`,
-            author_name: title,
-            text,
-            fallback: text,
-            color: "#37A745",
-            mrkdwn_in: ["text"],
-            footer: slackFooter(ctx),
-            ts: slackTs(),
-            ...options,
-        }],
+        attachments: [
+            {
+                author_icon: `https://images.atomist.com/rug/check-circle.gif?gif=${guid()}`,
+                author_name: title,
+                text,
+                fallback: text,
+                color: "#37A745",
+                mrkdwn_in: ["text"],
+                footer: slackFooter(ctx),
+                ts: slackTs(),
+                ...options,
+            },
+        ],
     };
     return msg;
 }
 
-export function slackQuestionMessage(title: string, text: string, ctx: Contextual<any, any>, options: Partial<Attachment> = {}): SlackMessage {
+export function slackQuestionMessage(
+    title: string,
+    text: string,
+    ctx: Contextual<any, any>,
+    options: Partial<Attachment> = {},
+): SlackMessage {
     const msg: SlackMessage = {
-        attachments: [{
-            author_icon: `https://images.atomist.com/rug/question.png`,
-            author_name: title,
-            text,
-            fallback: text,
-            color: "#B5B5B5",
-            mrkdwn_in: ["text"],
-            footer: slackFooter(ctx),
-            ts: slackTs(),
-            ...options,
-        }],
+        attachments: [
+            {
+                author_icon: `https://images.atomist.com/rug/question.png`,
+                author_name: title,
+                text,
+                fallback: text,
+                color: "#B5B5B5",
+                mrkdwn_in: ["text"],
+                footer: slackFooter(ctx),
+                ts: slackTs(),
+                ...options,
+            },
+        ],
     };
     return msg;
 }
 
-export function slackInfoMessage(title: string, text: string, ctx: Contextual<any, any>, options: Partial<Attachment> = {}): SlackMessage {
+export function slackInfoMessage(
+    title: string,
+    text: string,
+    ctx: Contextual<any, any>,
+    options: Partial<Attachment> = {},
+): SlackMessage {
     const msg: SlackMessage = {
-        attachments: [{
-            author_icon: `https://images.atomist.com/rug/info.png`,
-            author_name: title,
-            text,
-            fallback: text,
-            color: "#B5B5B5",
-            mrkdwn_in: ["text"],
-            footer: slackFooter(ctx),
-            ts: slackTs(),
-            ...options,
-        }],
+        attachments: [
+            {
+                author_icon: `https://images.atomist.com/rug/info.png`,
+                author_name: title,
+                text,
+                fallback: text,
+                color: "#B5B5B5",
+                mrkdwn_in: ["text"],
+                footer: slackFooter(ctx),
+                ts: slackTs(),
+                ...options,
+            },
+        ],
     };
     return msg;
 }
 
-export function slackWarningMessage(title: string, text: string, ctx: Contextual<any, any>, options: Partial<Attachment> = {}): SlackMessage {
+export function slackWarningMessage(
+    title: string,
+    text: string,
+    ctx: Contextual<any, any>,
+    options: Partial<Attachment> = {},
+): SlackMessage {
     const msg: SlackMessage = {
-        attachments: [{
-            author_icon: `https://images.atomist.com/rug/warning-yellow.png`,
-            author_name: title,
-            text,
-            fallback: text,
-            color: "#D7B958",
-            mrkdwn_in: ["text"],
-            footer: slackSupportLink(ctx),
-            ts: slackTs(),
-            ...options,
-        }],
+        attachments: [
+            {
+                author_icon: `https://images.atomist.com/rug/warning-yellow.png`,
+                author_name: title,
+                text,
+                fallback: text,
+                color: "#D7B958",
+                mrkdwn_in: ["text"],
+                footer: slackSupportLink(ctx),
+                ts: slackTs(),
+                ...options,
+            },
+        ],
     };
     return msg;
 }
 
-export function slackErrorMessage(title: string, text: string, ctx: Contextual<any, any>, options: Partial<Attachment> = {}): SlackMessage {
+export function slackErrorMessage(
+    title: string,
+    text: string,
+    ctx: Contextual<any, any>,
+    options: Partial<Attachment> = {},
+): SlackMessage {
     const msg: SlackMessage = {
-        attachments: [{
-            author_icon: "https://images.atomist.com/rug/error-circle.png",
-            author_name: title,
-            text,
-            fallback: text,
-            color: "#BC3D33",
-            mrkdwn_in: ["text"],
-            footer: slackSupportLink(ctx),
-            ts: slackTs(),
-            ...options,
-        }],
+        attachments: [
+            {
+                author_icon: "https://images.atomist.com/rug/error-circle.png",
+                author_name: title,
+                text,
+                fallback: text,
+                color: "#BC3D33",
+                mrkdwn_in: ["text"],
+                footer: slackSupportLink(ctx),
+                ts: slackTs(),
+                ...options,
+            },
+        ],
     };
     return msg;
 }
 
 export function slackSupportLink(ctx: Contextual<any, any>): string {
-    const supportUrl =
-        `https://atomist.typeform.com/to/yvnyOj?message_id=${Buffer.from(ctx.correlationId).toString("base64")}`;
+    const supportUrl = `https://atomist.typeform.com/to/yvnyOj?message_id=${Buffer.from(ctx.correlationId).toString(
+        "base64",
+    )}`;
     return `${slackFooter(ctx)} \u00B7 ${url(supportUrl, "Support")}`;
 }
 

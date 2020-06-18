@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
-import {
-    clone,
-    load,
-    Project,
-} from "./project/project";
-import {
-    GitHubAppCredential,
-    GitHubCredential,
-} from "./secrets";
+import { clone, load, Project } from "./project/project";
+import { GitHubAppCredential, GitHubCredential } from "./secrets";
 
 export interface CloneOptions {
-
     /**
      * If this is true, the implementation should keep the directory at least
      * for the duration of the current process. If it's false, persistence can be treated
@@ -122,11 +114,9 @@ export interface AuthenticatedRepositoryId<T> extends RepositoryId {
 }
 
 export interface ProjectLoader {
-
     load<C>(id: AuthenticatedRepositoryId<C>, baseDir: string): Promise<Project<C>>;
 
     clone<C>(id: AuthenticatedRepositoryId<C>, options?: CloneOptions): Promise<Project<C>>;
-
 }
 
 export function createProjectLoader(): ProjectLoader {
@@ -134,7 +124,6 @@ export function createProjectLoader(): ProjectLoader {
 }
 
 export class DefaultProjectLoader implements ProjectLoader {
-
     public async load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project> {
         return load(id, baseDir);
     }

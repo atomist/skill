@@ -17,14 +17,13 @@
 import { Octokit } from "@octokit/rest"; // eslint-disable-line @typescript-eslint/no-unused-vars
 import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../project";
-import {
-    GitHubAppCredential,
-    GitHubCredential,
-} from "../secrets";
+import { GitHubAppCredential, GitHubCredential } from "../secrets";
 
 const DefaultGitHubApiUrl = "https://api.github.com/";
 
-export function gitHub(id: Pick<AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>, "credential" | "apiUrl">): Octokit {
+export function gitHub(
+    id: Pick<AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>, "credential" | "apiUrl">,
+): Octokit {
     const url = id.apiUrl || DefaultGitHubApiUrl;
 
     const { Octokit } = require("@octokit/rest"); // eslint-disable-line @typescript-eslint/no-var-requires
@@ -39,7 +38,8 @@ export function gitHub(id: Pick<AuthenticatedRepositoryId<GitHubCredential | Git
             onRateLimit: (retryAfter: any, options: any): boolean => {
                 console.warn(`Request quota exhausted for request '${options.method} ${options.url}'`);
 
-                if (options.request.retryCount === 0) { // only retries once
+                if (options.request.retryCount === 0) {
+                    // only retries once
                     console.debug(`Retrying after ${retryAfter} seconds!`);
                     return true;
                 }
@@ -64,15 +64,21 @@ export function formatMarkers(ctx: Contextual<any, any>, ...tags: string[]): str
   <code>[atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]</code>
   <br/>
   <code>[atomist-correlation-id:${ctx.correlationId}]</code>
-  ${tags.map(t => `<br/>
-  <code>[${t}]</code>`).join("\n")}
+  ${tags
+      .map(
+          t => `<br/>
+  <code>[${t}]</code>`,
+      )
+      .join("\n")}
 </details>`;
 }
 
-export async function convergeLabel(id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
-                                    name: string,
-                                    color: string,
-                                    description?: string): Promise<void> {
+export async function convergeLabel(
+    id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
+    name: string,
+    color: string,
+    description?: string,
+): Promise<void> {
     try {
         await gitHub(id).issues.updateLabel({
             name,
@@ -92,8 +98,10 @@ export async function convergeLabel(id: AuthenticatedRepositoryId<GitHubCredenti
     }
 }
 
-export async function removeLabel(id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
-                                  name: string): Promise<void> {
+export async function removeLabel(
+    id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
+    name: string,
+): Promise<void> {
     try {
         await gitHub(id).issues.deleteLabel({
             name,

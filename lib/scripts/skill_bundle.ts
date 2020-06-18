@@ -17,16 +17,10 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 import { spawnPromise } from "../child_process";
-import {
-    debug,
-    info,
-} from "../log";
+import { debug, info } from "../log";
 import { withGlobMatches } from "../project/util";
 
-export async function bundleSkill(cwd: string,
-                                  minify: boolean,
-                                  sourceMap: boolean,
-                                  verbose: boolean): Promise<void> {
+export async function bundleSkill(cwd: string, minify: boolean, sourceMap: boolean, verbose: boolean): Promise<void> {
     if (!verbose) {
         process.env.ATOMIST_LOG_LEVEL = "info";
     }
@@ -59,9 +53,12 @@ export async function bundleSkill(cwd: string,
             `const bundle = require("@atomist/skill/lib/bundle");`,
         ];
 
-        await fs.writeFile(path.join(cwd, "skill.js"), `${skillTs.join("\n")}
+        await fs.writeFile(
+            path.join(cwd, "skill.js"),
+            `${skillTs.join("\n")}
 ${events.join("\n")}
-${commands.join("\n")}`);
+${commands.join("\n")}`,
+        );
     }
 
     const nccArgs = ["build", "skill.js", "-o", "bundle"];
@@ -73,14 +70,13 @@ ${commands.join("\n")}`);
     }
 
     // Run ncc
-    const result = await spawnPromise(
-        path.join(cwd, "node_modules", ".bin", "ncc"),
-        nccArgs,
-        { cwd, log: { write: (msg: string): void => debug(msg.trim()) } });
+    const result = await spawnPromise(path.join(cwd, "node_modules", ".bin", "ncc"), nccArgs, {
+        cwd,
+        log: { write: (msg: string): void => debug(msg.trim()) },
+    });
     if (result.status !== 0) {
         throw new Error("Failed to create skill bundle");
     }
-
 
     // Update package.json
     // - rewrite main

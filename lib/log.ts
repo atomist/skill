@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-import {
-    createLogger,
-    Logger,
-    Severity,
-} from "@atomist/skill-logging";
+import { createLogger, Logger, Severity } from "@atomist/skill-logging";
 import { redact } from "./redact";
 import { toArray } from "./util";
 
-export function wrapAuditLogger(context: { eventId?: string; correlationId: string; workspaceId: string },
-                                labels: Record<string, any> = {}): Logger & { url: string } {
+export function wrapAuditLogger(
+    context: { eventId?: string; correlationId: string; workspaceId: string },
+    labels: Record<string, any> = {},
+): Logger & { url: string } {
     const logger = createLogger(context, labels);
     return {
-        log: async (msg: string | string[],
-                    severity: Severity = Severity.INFO,
-                    labels?: Record<string, any>): Promise<void> => {
+        log: async (
+            msg: string | string[],
+            severity: Severity = Severity.INFO,
+            labels?: Record<string, any>,
+        ): Promise<void> => {
             const msgs = toArray(msg);
             switch (severity) {
                 case Severity.WARNING:
@@ -43,8 +43,9 @@ export function wrapAuditLogger(context: { eventId?: string; correlationId: stri
             }
             return logger.log(msg, severity, labels);
         },
-        url: `https://go.atomist.${(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
-            ? "services" : "com"}/log/${context.workspaceId}/${context.correlationId}`,
+        url: `https://go.atomist.${
+            (process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging") ? "services" : "com"
+        }/log/${context.workspaceId}/${context.correlationId}`,
     };
 }
 

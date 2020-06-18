@@ -20,22 +20,18 @@ import * as os from "os";
 import * as path from "path";
 import * as semver from "semver";
 import { spawnPromise } from "../child_process";
-import {
-    createGraphQLClient,
-    GraphQLClient,
-} from "../graphql";
-import {
-    error,
-    info,
-} from "../log";
+import { createGraphQLClient, GraphQLClient } from "../graphql";
+import { error, info } from "../log";
 import * as git from "../project/git";
 import { GoogleCloudStorageProvider } from "../storage";
 import { AtomistSkillInput } from "./skill_input";
 
-export async function registerSkill(cwd: string,
-                                    workspaceId?: string,
-                                    version?: string,
-                                    verbose?: boolean): Promise<void> {
+export async function registerSkill(
+    cwd: string,
+    workspaceId?: string,
+    version?: string,
+    verbose?: boolean,
+): Promise<void> {
     if (!verbose) {
         process.env.ATOMIST_LOG_LEVEL = "info";
     }
@@ -56,7 +52,11 @@ export async function registerSkill(cwd: string,
     const key = `skills/${w}/${giturl.owner}/${giturl.name}`;
     const url = `gs://${w.toLowerCase()}-workspace-storage/${key}/${status.sha}.zip`;
 
-    const ids = await loadRepoAndBranch(client, { owner: giturl.owner, name: giturl.name, branch: branchName.stdout.trim() });
+    const ids = await loadRepoAndBranch(client, {
+        owner: giturl.owner,
+        name: giturl.name,
+        branch: branchName.stdout.trim(),
+    });
 
     const content = (await fs.readFile(path.join(cwd, ".atomist", "skill.yaml"))).toString();
     const atomistYaml: { skill: AtomistSkillInput } = yaml.safeLoad(content);
@@ -74,7 +74,9 @@ export async function registerSkill(cwd: string,
         if (latestTagOutput.status === 0) {
             latestTag = latestTagOutput.stdout.trim();
         }
-        atomistYaml.skill.version = `${semver.major(latestTag)}.${semver.minor(latestTag)}.${semver.patch(latestTag)}-${q}`;
+        atomistYaml.skill.version = `${semver.major(latestTag)}.${semver.minor(latestTag)}.${semver.patch(
+            latestTag,
+        )}-${q}`;
     }
     atomistYaml.skill.branchId = ids.branchId;
     atomistYaml.skill.repoId = ids.repoId;
@@ -89,9 +91,15 @@ export async function registerSkill(cwd: string,
 
     await register(client, atomistYaml.skill);
 
-    await spawnPromise("git", ["tag", "-a", atomistYaml.skill.version, "-m", `Registered skill with version ${atomistYaml.skill.version}`], { cwd });
+    await spawnPromise(
+        "git",
+        ["tag", "-a", atomistYaml.skill.version, "-m", `Registered skill with version ${atomistYaml.skill.version}`],
+        { cwd },
+    );
 
-    info(`Registered skill '${atomistYaml.skill.namespace}/${atomistYaml.skill.name}' with version '${atomistYaml.skill.version}'`);
+    info(
+        `Registered skill '${atomistYaml.skill.namespace}/${atomistYaml.skill.name}' with version '${atomistYaml.skill.version}'`,
+    );
 }
 
 const BranchQuery = `query BranchForName($name: String!, $owner: String!, $branch: String!) {
@@ -104,7 +112,10 @@ const BranchQuery = `query BranchForName($name: String!, $owner: String!, $branc
 }
 `;
 
-async function loadRepoAndBranch(client: GraphQLClient, branch: { owner: string; name: string; branch: string }): Promise<{ repoId: string; branchId: string }> {
+async function loadRepoAndBranch(
+    client: GraphQLClient,
+    branch: { owner: string; name: string; branch: string },
+): Promise<{ repoId: string; branchId: string }> {
     const result = await client.query(BranchQuery, branch);
     return {
         repoId: result.Branch[0].repo.id,
@@ -134,18 +145,14 @@ const BuildMutation = `mutation StoreBuildIdentifierForRepo($identifier: String!
 `;
 
 async function qualifier(client: GraphQLClient, repo: { owner: string; name: string }): Promise<string> {
-    const bi = await client.query(
-        BuildQuery,
-        repo);
+    const bi = await client.query(BuildQuery, repo);
     const count = (+bi?.SdmBuildIdentifier[0]?.identifier || 0) + 1;
-    await client.mutate(
-        BuildMutation,
-        {
-            providerId: bi?.SdmBuildIdentifier[0]?.repo?.providerId,
-            name: repo.name,
-            owner: repo.owner,
-            identifier: count.toString(),
-        });
+    await client.mutate(BuildMutation, {
+        providerId: bi?.SdmBuildIdentifier[0]?.repo?.providerId,
+        name: repo.name,
+        owner: repo.owner,
+        identifier: count.toString(),
+    });
     return count.toString();
 }
 
@@ -157,15 +164,12 @@ const RegisterSkillMutation = `mutation RegisterSkill($skill: AtomistSkillInput!
 `;
 
 async function register(client: GraphQLClient, skill: AtomistSkillInput): Promise<void> {
-    await client.mutate(
-        RegisterSkillMutation,
-        {
-            skill,
-        },
-    );
+    await client.mutate(RegisterSkillMutation, {
+        skill,
+    });
 }
 
-export async function wid(workspaceId: string): Promise<string> {
+export async function wid(workspaceId?: string): Promise<string> {
     let w = workspaceId || process.env.ATOMIST_WORKSPACE_ID;
     if (!w) {
         const cfgPath = path.join(os.homedir(), ".atomist", "client.config.json");
@@ -180,8 +184,8 @@ export async function wid(workspaceId: string): Promise<string> {
     return w;
 }
 
-export async function apiKey(): Promise<string> {
-    let apiKey = process.env.ATOMIST_API_KEY;
+export async function apiKey(key?: string): Promise<string> {
+    let apiKey = key || process.env.ATOMIST_API_KEY;
     if (!apiKey) {
         const cfgPath = path.join(os.homedir(), ".atomist", "client.config.json");
         if (await fs.pathExists(cfgPath)) {

@@ -14,37 +14,15 @@
  * limitations under the License.
  */
 
-import {
-    render,
-    SlackMessage,
-} from "@atomist/slack-messages";
+import { render, SlackMessage } from "@atomist/slack-messages";
 import { Action as SlackAction } from "@atomist/slack-messages/lib/SlackMessages";
 import { PubSub } from "@google-cloud/pubsub";
 import { GraphQLClient } from "./graphql";
-import {
-    CommandContext,
-    EventContext,
-    HandlerStatus,
-} from "./handler";
-import {
-    debug,
-    error,
-} from "./log";
-import {
-    CommandIncoming,
-    EventIncoming,
-    isCommandIncoming,
-    isEventIncoming,
-    Skill,
-    Source,
-} from "./payload";
-import {
-    replacer,
-    toArray,
-} from "./util";
+import { CommandContext, EventContext, HandlerStatus } from "./handler";
+import { debug, error } from "./log";
+import { CommandIncoming, EventIncoming, isCommandIncoming, isEventIncoming, Skill, Source } from "./payload";
+import { replacer, toArray } from "./util";
 import cloneDeep = require("lodash.clonedeep");
-
-/* eslint-disable @typescript-eslint/camelcase */
 
 export interface Destinations {
     users: string | string[];
@@ -52,17 +30,13 @@ export interface Destinations {
 }
 
 export interface MessageClient {
-    send(msg: any,
-         destinations: Destinations,
-         options?: MessageOptions): Promise<any>;
+    send(msg: any, destinations: Destinations, options?: MessageOptions): Promise<any>;
 
-    delete?(destinations: Destinations,
-            options: RequiredMessageOptions): Promise<void>;
+    delete?(destinations: Destinations, options: RequiredMessageOptions): Promise<void>;
 }
 
 export interface CommandMessageClient extends MessageClient {
-    respond(msg: any,
-            options?: MessageOptions): Promise<any>;
+    respond(msg: any, options?: MessageOptions): Promise<any>;
 }
 
 export type RequiredMessageOptions = Pick<MessageOptions, "id" | "thread"> & { id: string };
@@ -71,7 +45,6 @@ export type RequiredMessageOptions = Pick<MessageOptions, "id" | "thread"> & { i
  * Options for sending messages using the MessageClient.
  */
 export interface MessageOptions extends Record<string, any> {
-
     /**
      * Unique message id per channel and team. This is required
      * if you wish to re-write a message at a later time.
@@ -116,46 +89,39 @@ export const MessageMimeTypes = {
 };
 
 export abstract class MessageClientSupport implements MessageClient, CommandMessageClient {
-
-    public respond(msg: any,
-                   options?: MessageOptions): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    public respond(msg: any, options?: MessageOptions): Promise<any> {
         return this.doSend(msg, { users: [], channels: [] }, options);
     }
 
-    public send(msg: any,
-                destinations: Destinations,
-                options?: MessageOptions): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    public send(msg: any, destinations: Destinations, options?: MessageOptions): Promise<any> {
         return this.doSend(msg, destinations, options);
     }
 
-    public abstract delete(destinations: Destinations,
-                           options: RequiredMessageOptions): Promise<void>;
+    public abstract delete(destinations: Destinations, options: RequiredMessageOptions): Promise<void>;
 
-    protected abstract doSend(msg: any,
-                              destinations: Destinations,
-                              options?: MessageOptions): Promise<any>;
-
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    protected abstract doSend(msg: any, destinations: Destinations, options?: MessageOptions): Promise<any>;
 }
 
 export abstract class AbstractMessageClient extends MessageClientSupport {
-
-    constructor(protected readonly request: CommandIncoming | EventIncoming,
-                protected readonly correlationId: string,
-                protected readonly team: { id: string; name?: string },
-                protected readonly source: Source,
-                protected readonly graphClient: GraphQLClient) {
+    constructor(
+        protected readonly request: CommandIncoming | EventIncoming,
+        protected readonly correlationId: string,
+        protected readonly team: { id: string; name?: string },
+        protected readonly source: Source,
+        protected readonly graphClient: GraphQLClient,
+    ) {
         super();
     }
 
-    public async delete(destinations: Destinations,
-                        options: RequiredMessageOptions): Promise<void> {
+    public async delete(destinations: Destinations, options: RequiredMessageOptions): Promise<void> {
         return this.doSend(undefined, destinations, { ...options, delete: true });
     }
 
-    // tslint:disable-next-line:cyclomatic-complexity
-    protected async doSend(msg: any,
-                           destinations: Destinations,
-                           options: MessageOptions = {}): Promise<any> {
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    protected async doSend(msg: any, destinations: Destinations, options: MessageOptions = {}): Promise<any> {
         if (!!msg && (msg as HandlerResponse).content_type === "application/x-atomist-continuation+json") {
             return this.sendResponse(msg).then(() => msg);
         }
@@ -224,7 +190,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
             id: options.id ? options.id : undefined,
             timestamp: ts,
             ttl: ts && options.ttl ? options.ttl : undefined,
-            post_mode: options.post === "update_only" ? "update_only" : (options.post === "always" ? "always" : "ttl"),
+            post_mode: options.post === "update_only" ? "update_only" : options.post === "always" ? "always" : "ttl",
             skill: this.request.skill,
         };
 
@@ -253,6 +219,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
         return this.sendResponse(response).then(() => response);
     }
 
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     protected abstract sendResponse(response: any): Promise<void>;
 
     private ts(options: MessageOptions): number {
@@ -267,8 +234,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
         }
     }
 
-    private async getTeamId(teamId: string,
-                            graphClient: GraphQLClient): Promise<string> {
+    private async getTeamId(teamId: string, graphClient: GraphQLClient): Promise<string> {
         if (teamId) {
             return teamId;
         } else {
@@ -280,7 +246,6 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 }
 
 export interface CommandReferencingAction extends SlackAction {
-
     command: CommandReference;
 }
 
@@ -289,7 +254,6 @@ export interface CommandReferencingAction extends SlackAction {
  * to a command.
  */
 export interface CommandReference {
-
     /**
      * The id of the action as referenced in the markup.
      */
@@ -319,33 +283,36 @@ export function mapActions(msg: SlackMessage): Action[] {
     let counter = 0;
 
     if (msg.attachments) {
-        msg.attachments.filter(attachment => attachment.actions).forEach(attachment => {
-            attachment.actions.forEach(a => {
-                if (!!a && !!(a as CommandReferencingAction).command) {
-                    const cra = a as CommandReferencingAction;
+        msg.attachments
+            .filter(attachment => attachment.actions)
+            .forEach(attachment => {
+                attachment.actions.forEach(a => {
+                    if (!!a && !!(a as CommandReferencingAction).command) {
+                        const cra = a as CommandReferencingAction;
 
-                    const id = counter++;
-                    cra.command.id = `${cra.command.id}-${id}`;
-                    a.name = `${a.name}-${id}`;
+                        const id = counter++;
+                        cra.command.id = `${cra.command.id}-${id}`;
+                        a.name = `${a.name}-${id}`;
 
-                    const action: Action = {
-                        id: cra.command.id,
-                        parameter_name: cra.command.parameterName,
-                        command: cra.command.name,
-                        parameters: mapParameters(cra.command.parameters),
-                    };
+                        const action: Action = {
+                            id: cra.command.id,
+                            parameter_name: cra.command.parameterName,
+                            command: cra.command.name,
+                            parameters: mapParameters(cra.command.parameters),
+                        };
 
-                    actions.push(action);
-                    // Lastly we need to delete our extension from the slack action
-                    cra.command = undefined;
-                }
+                        actions.push(action);
+                        // Lastly we need to delete our extension from the slack action
+                        cra.command = undefined;
+                    }
+                });
             });
-        });
     }
     return actions;
 }
 
-function mapParameters(data: {}): Parameter[] {
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+function mapParameters(data: any): Parameter[] {
     const parameters: Parameter[] = [];
     for (const key in data) {
         const value = data[key];
@@ -411,6 +378,7 @@ export interface Parameter {
     value: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function isSlackMessage(object: any): object is SlackMessage {
     return !!object && (object.text || object.attachments || object.blocks) && !object.content;
 }
@@ -425,9 +393,9 @@ export interface SlackFileMessage {
     // https://api.slack.com/types/file#file_types
     fileType?: string;
     comment?: string;
-
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function isFileMessage(object: any): object is SlackFileMessage {
     return !!object && !object.length && object.content;
 }
@@ -437,18 +405,18 @@ export interface StatusPublisher {
 }
 
 abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
-
     private readonly pubsub: PubSub;
 
-    constructor(protected readonly request: CommandIncoming | EventIncoming,
-                protected readonly correlationId: string,
-                protected readonly team: { id: string; name?: string },
-                protected readonly source: Source,
-                protected readonly workspaceId: string,
-                protected readonly graphClient: GraphQLClient) {
+    constructor(
+        protected readonly request: CommandIncoming | EventIncoming,
+        protected readonly correlationId: string,
+        protected readonly team: { id: string; name?: string },
+        protected readonly source: Source,
+        protected readonly workspaceId: string,
+        protected readonly graphClient: GraphQLClient,
+    ) {
         super(request, correlationId, team, source, graphClient);
         this.pubsub = new PubSub();
-
     }
 
     public async sendResponse(message: any): Promise<void> {
@@ -467,15 +435,15 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
 }
 
 export class PubSubCommandMessageClient extends AbstractPubSubMessageClient implements StatusPublisher {
-
-    constructor(protected readonly request: CommandIncoming,
-                protected readonly graphClient: GraphQLClient) {
+    constructor(protected readonly request: CommandIncoming, protected readonly graphClient: GraphQLClient) {
         super(request, request.correlation_id, request.team, request.source, request.team.id, graphClient);
     }
 
-    protected async doSend(msg: string | SlackMessage,
-                           destinations: Destinations,
-                           options: MessageOptions = {}): Promise<any> {
+    protected async doSend(
+        msg: string | SlackMessage,
+        destinations: Destinations,
+        options: MessageOptions = {},
+    ): Promise<any> {
         return super.doSend(msg, destinations, options);
     }
 
@@ -499,16 +467,22 @@ export class PubSubCommandMessageClient extends AbstractPubSubMessageClient impl
 }
 
 export class PubSubEventMessageClient extends AbstractPubSubMessageClient implements StatusPublisher {
-
-    constructor(protected readonly request: EventIncoming,
-                protected readonly graphClient: GraphQLClient) {
-        super(request, request.extensions.correlation_id,
-            { id: request.extensions.team_id, name: request.extensions.team_name }, undefined, request.extensions.team_id, graphClient);
+    constructor(protected readonly request: EventIncoming, protected readonly graphClient: GraphQLClient) {
+        super(
+            request,
+            request.extensions.correlation_id,
+            { id: request.extensions.team_id, name: request.extensions.team_name },
+            undefined,
+            request.extensions.team_id,
+            graphClient,
+        );
     }
 
-    protected async doSend(msg: string | SlackMessage,
-                           destinations: Destinations,
-                           options: MessageOptions = {}): Promise<any> {
+    protected async doSend(
+        msg: string | SlackMessage,
+        destinations: Destinations,
+        options: MessageOptions = {},
+    ): Promise<any> {
         return super.doSend(msg, destinations, options);
     }
 
@@ -528,14 +502,19 @@ export class PubSubEventMessageClient extends AbstractPubSubMessageClient implem
     }
 }
 
-export function prepareStatus(status: HandlerStatus | Error, context: EventContext | CommandContext): HandlerResponse["status"] {
+export function prepareStatus(
+    status: HandlerStatus | Error,
+    context: EventContext | CommandContext,
+): HandlerResponse["status"] {
     if (status instanceof Error) {
         return {
             code: 1,
             reason: `Error invoking ${context.skill.namespace}/${context.skill.name}`,
         };
     } else {
-        const reason = `${status?.code === 0 ? "Successfully" : "Unsuccessfully"} invoked ${context.skill.namespace}/${context.skill.name}`;
+        const reason = `${status?.code === 0 ? "Successfully" : "Unsuccessfully"} invoked ${context.skill.namespace}/${
+            context.skill.name
+        }`;
         return {
             visibility: status?.visibility,
             code: status?.code || 0,

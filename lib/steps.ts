@@ -15,11 +15,7 @@
  */
 
 import { Severity } from "@atomist/skill-logging";
-import {
-    CommandContext,
-    EventContext,
-    HandlerStatus,
-} from "./handler";
+import { CommandContext, EventContext, HandlerStatus } from "./handler";
 import { warn } from "./log";
 import { toArray } from "./util";
 
@@ -64,7 +60,10 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
         try {
             if (!step.runWhen || !!(await step.runWhen(context, parameters))) {
                 await context.audit.log(`Running '${step.name}'`);
-                await invokeListeners(listeners.filter(l => !!l.starting), async l => l.starting(step, parameters));
+                await invokeListeners(
+                    listeners.filter(l => !!l.starting),
+                    async l => l.starting(step, parameters),
+                );
 
                 const sr = await step.run(context, parameters);
                 if (sr) {
@@ -73,7 +72,10 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
                         ...sr,
                     };
                 }
-                await invokeListeners(listeners.filter(l => !!l.completed), async l => l.completed(step, parameters, sr));
+                await invokeListeners(
+                    listeners.filter(l => !!l.completed),
+                    async l => l.completed(step, parameters, sr),
+                );
 
                 if (!!sr && sr.code !== 0) {
                     await context.audit.log(`'${step.name}' errored with: ${sr.reason}`, Severity.ERROR);
@@ -85,12 +87,18 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
                 }
             } else {
                 await context.audit.log(`Skipping '${step.name}'`);
-                await invokeListeners(listeners.filter(l => !!l.skipped), async l => l.skipped(step, parameters));
+                await invokeListeners(
+                    listeners.filter(l => !!l.skipped),
+                    async l => l.skipped(step, parameters),
+                );
             }
         } catch (e) {
             await context.audit.log(`'${step.name}' errored with: ${e.message}`, Severity.ERROR);
             await context.audit.log(e.stack, Severity.ERROR);
-            await invokeListeners(listeners.filter(l => !!l.failed), async l => l.failed(step, parameters, e));
+            await invokeListeners(
+                listeners.filter(l => !!l.failed),
+                async l => l.failed(step, parameters, e),
+            );
             warn(`'${step.name}' errored with:`);
             warn(e.stack);
             return {
@@ -99,11 +107,17 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
             };
         }
     }
-    return invokeDone(listeners.filter(l => !!l.done), parameters, result);
+    return invokeDone(
+        listeners.filter(l => !!l.done),
+        parameters,
+        result,
+    );
 }
 
-async function invokeListeners(listeners: Array<StepListener<any>>,
-                               cb: (l: StepListener<any>) => Promise<void>): Promise<void> {
+async function invokeListeners(
+    listeners: Array<StepListener<any>>,
+    cb: (l: StepListener<any>) => Promise<void>,
+): Promise<void> {
     for (const listener of listeners) {
         try {
             await cb(listener);
@@ -114,9 +128,11 @@ async function invokeListeners(listeners: Array<StepListener<any>>,
     }
 }
 
-async function invokeDone(listeners: Array<StepListener<any>>,
-                          parameters: any,
-                          inputResult: undefined | HandlerStatus): Promise<undefined | HandlerStatus> {
+async function invokeDone(
+    listeners: Array<StepListener<any>>,
+    parameters: any,
+    inputResult: undefined | HandlerStatus,
+): Promise<undefined | HandlerStatus> {
     let result = inputResult;
     for (const listener of listeners) {
         try {

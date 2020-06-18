@@ -20,9 +20,7 @@ import { Project } from "../../lib/project/project";
 import { globFiles } from "../../lib/project/util";
 
 describe("util", () => {
-
     describe("globFiles", () => {
-
         it("should find all expected files", async () => {
             const project: Project = {
                 path: (...elements: string[]) => {
@@ -32,7 +30,5 @@ describe("util", () => {
             const files = await globFiles(project, ["**/*.ts", "!**/*.d.ts"]);
             assert(files.length > 0);
         });
-
     });
-
 });

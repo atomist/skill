@@ -18,10 +18,7 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import { createGraphQLClient } from "../graphql";
 import { info } from "../log";
-import {
-    apiKey,
-    wid,
-} from "./skill_register";
+import { apiKey, wid } from "./skill_register";
 
 const IntrospectionQuery = `query IntrospectionQuery {
   __schema {
@@ -124,8 +121,7 @@ fragment TypeRef on __Type {
 }
 `;
 
-export async function fetchGql(cwd: string,
-                               workspaceId?: string): Promise<void> {
+export async function fetchGql(cwd: string, workspaceId?: string): Promise<void> {
     process.env.ATOMIST_LOG_LEVEL = "info";
     const w = await wid(workspaceId);
     info(`Fetching GraphQL schema for workspace '${w}'`);

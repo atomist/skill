@@ -112,7 +112,8 @@ export interface ChatChannelParameter {
     resourceProviderId: string;
 }
 
-export interface ChatChannelsParameter extends Omit<Parameter<ParameterType.ChatChannels, ChatChannelParameter[]>, "defaultValue"> {
+export interface ChatChannelsParameter
+    extends Omit<Parameter<ParameterType.ChatChannels, ChatChannelParameter[]>, "defaultValue"> {
     maxAllowed?: number;
     minRequired?: number;
 }
@@ -172,7 +173,6 @@ export interface Named {
 }
 
 export interface Metadata extends Required<Named> {
-
     version?: string;
 
     author: string;
@@ -210,7 +210,6 @@ export type ParametersType = {
 };
 
 export interface Configuration<PARAMS extends ParametersType = any> {
-
     dispatchStyle?: DispatchStyle;
 
     maxConfigurations?: number;
@@ -221,16 +220,19 @@ export interface Configuration<PARAMS extends ParametersType = any> {
 
     package?: SkillPackage;
 
-    parameters?: Record<keyof PARAMS, BooleanParameter |
-        FloatParameter |
-        IntParameter |
-        MultiChoiceParameter |
-        SingleChoiceParameter |
-        RepoFilterParameter |
-        ScheduleParameter |
-        StringParameter |
-        StringArrayParameter |
-        ChatChannelsParameter>;
+    parameters?: Record<
+        keyof PARAMS,
+        | BooleanParameter
+        | FloatParameter
+        | IntParameter
+        | MultiChoiceParameter
+        | SingleChoiceParameter
+        | RepoFilterParameter
+        | ScheduleParameter
+        | StringParameter
+        | StringArrayParameter
+        | ChatChannelsParameter
+    >;
 
     resourceProviders?: Record<string, ResourceProvider>;
 }
@@ -243,7 +245,6 @@ export interface Command {
 }
 
 export interface Operations {
-
     commands?: Command[];
 
     subscriptions?: string[];
@@ -280,7 +281,7 @@ export function packageJson(path = "package.json"): Metadata {
             readme: "file://README.md",
             license: pj.license,
             categories: pj.categories || pj.keywords,
-            technologies: pj.technologies,                       
+            technologies: pj.technologies,
             homepageUrl: pj.homepage,
             repositoryUrl: typeof pj.repository === "string" ? pj.repository : pj.repository?.url,
             iconUrl: pj.icon ? pj.icon : "file://skill/icon.svg",
@@ -292,7 +293,9 @@ export function packageJson(path = "package.json"): Metadata {
 
 export type SkillInput<PARAMS = any> = Partial<Metadata> & Configuration<PARAMS> & Operations;
 
-export async function skill<PARAMS = any>(skill: SkillInput<PARAMS> | Promise<SkillInput<PARAMS>>): Promise<Skill<PARAMS>> {
+export async function skill<PARAMS = any>(
+    skill: SkillInput<PARAMS> | Promise<SkillInput<PARAMS>>,
+): Promise<Skill<PARAMS>> {
     // Get the directory of the calling script
     let cwd = process.cwd();
     try {
@@ -319,5 +322,3 @@ export async function skill<PARAMS = any>(skill: SkillInput<PARAMS> | Promise<Sk
         ...(await skill),
     };
 }
-
-

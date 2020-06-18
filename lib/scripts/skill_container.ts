@@ -19,11 +19,7 @@ import * as yaml from "js-yaml";
 import * as path from "path";
 import { info } from "../log";
 import { packageJson } from "../skill";
-import {
-    AtomistSkillInput,
-    content,
-    icon,
-} from "./skill_input";
+import { AtomistSkillInput, content, icon } from "./skill_input";
 
 export async function createYamlSkillInput(cwd: string): Promise<AtomistSkillInput> {
     info(`Generating skill metadata...`);
@@ -38,7 +34,7 @@ export async function createYamlSkillInput(cwd: string): Promise<AtomistSkillInp
     const rc = content(cwd);
 
     const subscriptions = [];
-    for (const subscription of (is.subscriptions || ["file://**/graphql/subscription/*.graphql"])) {
+    for (const subscription of is.subscriptions || ["file://**/graphql/subscription/*.graphql"]) {
         subscriptions.push(...(await rc(subscription)));
     }
 

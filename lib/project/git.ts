@@ -17,10 +17,7 @@
 import * as pRetry from "p-retry";
 import { execPromise } from "../child_process";
 import { debug } from "../log";
-import {
-    GitStatus,
-    runStatusIn,
-} from "./gitStatus";
+import { GitStatus, runStatusIn } from "./gitStatus";
 import { Project } from "./project";
 import { cwd } from "./util";
 import forOwn = require("lodash.forown");
@@ -55,12 +52,17 @@ export async function status(projectOrCwd: Project | string): Promise<GitStatus>
 /**
  * `git add .` and `git commit -m MESSAGE`
  */
-export async function commit(projectOrCwd: Project | string, message: string, options: { name?: string; email?: string } = {}): Promise<void> {
+export async function commit(
+    projectOrCwd: Project | string,
+    message: string,
+    options: { name?: string; email?: string } = {},
+): Promise<void> {
     await execPromise("git", ["add", "."], { cwd: cwd(projectOrCwd) });
     await execPromise("git", ["commit", "-m", message], { cwd: cwd(projectOrCwd) });
     if (options.name && options.email) {
-        await execPromise("git", ["commit", "--amend", `--author="${options.name} <${options.email}>"`, "--no-edit"],
-            { cwd: cwd(projectOrCwd) });
+        await execPromise("git", ["commit", "--amend", `--author="${options.name} <${options.email}>"`, "--no-edit"], {
+            cwd: cwd(projectOrCwd),
+        });
     }
 }
 
@@ -123,7 +125,6 @@ export async function push(projectOrCwd: Project | string, options?: GitPushOpti
             await execPromise("git", gitPushArgs, { cwd: cwd(projectOrCwd) });
         }
     }, retryOptions);
-
 }
 
 /**

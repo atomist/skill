@@ -18,8 +18,7 @@ import * as path from "path";
 import * as fs from "fs-extra";
 import { info } from "../log";
 
-export async function packageSkill(cwd: string,
-                                   verbose: boolean): Promise<void> {
+export async function packageSkill(cwd: string, verbose: boolean): Promise<void> {
     if (!verbose) {
         process.env.ATOMIST_LOG_LEVEL = "info";
     }
@@ -44,7 +43,7 @@ export async function packageSkill(cwd: string,
 
     for (const match of matches) {
         const file = path.join(cwd, match);
-        if (await fs.pathExists(file) && (await fs.stat(file)).isFile()) {
+        if ((await fs.pathExists(file)) && (await fs.stat(file)).isFile()) {
             zip.file(match, fs.createReadStream(file));
         }
     }

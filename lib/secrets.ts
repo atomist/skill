@@ -15,13 +15,12 @@
  */
 
 import { GraphQLClient } from "./graphql";
-import {
-    CommandIncoming,
-    EventIncoming,
-    isCommandIncoming,
-} from "./payload";
+import { CommandIncoming, EventIncoming, isCommandIncoming } from "./payload";
 
-export type CredentialResolver<T> = (graphClient: GraphQLClient, payload: CommandIncoming | EventIncoming) => Promise<T>;
+export type CredentialResolver<T> = (
+    graphClient: GraphQLClient,
+    payload: CommandIncoming | EventIncoming,
+) => Promise<T>;
 
 export interface GitHubCredential {
     token: string;
@@ -33,10 +32,12 @@ export interface GitHubAppCredential {
     permissions: Record<string, "write" | "read">;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function isGitHubCredential(spec: any): spec is GitHubCredential {
     return !!spec.token && !!spec.scopes;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function isGitHubAppCredential(spec: any): spec is GitHubAppCredential {
     return !!spec.token && !!spec.permissions;
 }
@@ -162,26 +163,26 @@ interface ScmProviderResponse {
     }>;
 }
 
-export function gitHubAppToken(id: { owner: string; repo: string; apiUrl?: string } | string): CredentialResolver<GitHubAppCredential | GitHubCredential> {
+export function gitHubAppToken(
+    id: { owner: string; repo: string; apiUrl?: string } | string,
+): CredentialResolver<GitHubAppCredential | GitHubCredential> {
     return async (graph): Promise<GitHubAppCredential | GitHubCredential> => {
         let repo;
         let owner;
         let apiUrl;
         let providerId;
         if (typeof id === "string") {
-            const provider = await graph.query<ProviderResponse>(
-                ProviderByRepoIdQuery,
-                { id },
-            );
+            const provider = await graph.query<ProviderResponse>(ProviderByRepoIdQuery, { id });
             providerId = provider?.Repo[0]?.org?.provider?.id;
         } else {
             repo = id.repo;
             owner = id.owner;
             apiUrl = id.apiUrl;
-            const provider = await graph.query<ProviderResponse>(
-                ProviderQuery,
-                { apiUrl: apiUrl || "https://api.github.com/", owner, repo },
-            );
+            const provider = await graph.query<ProviderResponse>(ProviderQuery, {
+                apiUrl: apiUrl || "https://api.github.com/",
+                owner,
+                repo,
+            });
             providerId = provider?.Repo[0]?.org?.provider?.id;
         }
 
@@ -216,10 +217,10 @@ export interface CredentialProvider {
 }
 
 export class DefaultCredentialProvider implements CredentialProvider {
-
-    constructor(private readonly graphClient: GraphQLClient,
-                private readonly payload: CommandIncoming | EventIncoming) {
-    }
+    constructor(
+        private readonly graphClient: GraphQLClient,
+        private readonly payload: CommandIncoming | EventIncoming,
+    ) {}
 
     public async resolve<T>(spec: CredentialResolver<T>): Promise<T> {
         return spec(this.graphClient, this.payload);

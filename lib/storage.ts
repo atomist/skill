@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-import * as  fs from "fs-extra";
+import * as fs from "fs-extra";
 import * as os from "os";
 import * as path from "path";
 import { guid } from "./util";
 
 export interface StorageProvider {
-
     store(key: string, sourceFilePath: string): Promise<void>;
 
     retrieve(key: string, targetFilePath?: string): Promise<string>;
@@ -31,9 +30,7 @@ export function createStorageProvider(workspaceId: string): StorageProvider {
 }
 
 export class GoogleCloudStorageProvider implements StorageProvider {
-
-    constructor(private readonly bucket: string) {
-    }
+    constructor(private readonly bucket: string) {}
 
     public async retrieve(key: string, filePath?: string): Promise<string> {
         const targetFilePath = filePath || path.join(os.tmpdir() || "/tmp", guid());
@@ -53,7 +50,9 @@ export class GoogleCloudStorageProvider implements StorageProvider {
 }
 
 function bucketName(workspaceId: string): string {
-    const bucket = process.env.ATOMIST_STORAGE || (workspaceId ? `gs://${workspaceId.toLowerCase()}-workspace-storage` : undefined);
+    const bucket =
+        process.env.ATOMIST_STORAGE ||
+        (workspaceId ? `gs://${workspaceId.toLowerCase()}-workspace-storage` : undefined);
     if (bucket) {
         return bucket.replace(/gs:\/\//, "");
     } else {

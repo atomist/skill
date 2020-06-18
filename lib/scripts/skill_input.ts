@@ -16,16 +16,10 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
-import {
-    error,
-    info,
-} from "../log";
+import { error, info } from "../log";
 import { withGlobMatches } from "../project/util";
 import { Skill } from "../skill";
-import {
-    handleError,
-    handlerLoader,
-} from "../util";
+import { handleError, handlerLoader } from "../util";
 import { createYamlSkillInput } from "./skill_container";
 import map = require("lodash.map");
 
@@ -42,33 +36,33 @@ export type Scalars = {
 /** Start: registration inputs */
 export type AtomistSkillInput = {
     artifacts: AtomistSkillArtifactsInput;
-    author: Scalars['String'];
-    branchId: Scalars['String'];
+    author: Scalars["String"];
+    branchId: Scalars["String"];
     categories?: Maybe<Array<AtomistSkillCategoryKey>>;
     commands?: Maybe<Array<AtomistChatCommandInput>>;
-    commitSha: Scalars['String'];
-    description: Scalars['String'];
+    commitSha: Scalars["String"];
+    description: Scalars["String"];
     dispatchStyle?: Maybe<AtomistSkillEventDispatchStyle>;
-    displayName?: Maybe<Scalars['String']>;
-    homepageUrl: Scalars['String'];
-    iconUrl: Scalars['String'];
-    ingesters?: Maybe<Array<Scalars['String']>>;
-    license: Scalars['String'];
-    longDescription: Scalars['String'];
-    maxConfigurations?: Maybe<Scalars['Int']>;
-    name: Scalars['String'];
-    namespace: Scalars['String'];
+    displayName?: Maybe<Scalars["String"]>;
+    homepageUrl: Scalars["String"];
+    iconUrl: Scalars["String"];
+    ingesters?: Maybe<Array<Scalars["String"]>>;
+    license: Scalars["String"];
+    longDescription: Scalars["String"];
+    maxConfigurations?: Maybe<Scalars["Int"]>;
+    name: Scalars["String"];
+    namespace: Scalars["String"];
     parameters?: Maybe<Array<AtomistSkillParameterSpecInput>>;
-    readme?: Maybe<Scalars['String']>;
-    repoId: Scalars['String'];
+    readme?: Maybe<Scalars["String"]>;
+    repoId: Scalars["String"];
     resourceProviders?: Maybe<Array<AtomistSkillResourceProviderSpecInput>>;
-    subscriptions?: Maybe<Array<Scalars['String']>>;
+    subscriptions?: Maybe<Array<Scalars["String"]>>;
     technologies?: Maybe<Array<AtomistSkillTechnology>>;
-    version: Scalars['String'];
-    videoUrl?: Maybe<Scalars['String']>;
+    version: Scalars["String"];
+    videoUrl?: Maybe<Scalars["String"]>;
     gateSubscriptions?: Maybe<Array<AtomistGateRefInput>>;
     gates?: Maybe<Array<AtomistGateInput>>;
-    signals?: Maybe<Array<Scalars['String']>>;
+    signals?: Maybe<Array<Scalars["String"]>>;
 };
 
 export type AtomistSkillArtifactsInput = {
@@ -77,32 +71,32 @@ export type AtomistSkillArtifactsInput = {
 };
 
 export type AtomistDockerSkillArtifactInput = {
-    args?: Maybe<Array<Scalars['String']>>;
-    command?: Maybe<Array<Scalars['String']>>;
+    args?: Maybe<Array<Scalars["String"]>>;
+    command?: Maybe<Array<Scalars["String"]>>;
     env?: Maybe<Array<AtomistSkillEnvVariableInput>>;
-    image: Scalars['String'];
-    name: Scalars['ID'];
-    workingDir?: Maybe<Scalars['String']>;
+    image: Scalars["String"];
+    name: Scalars["ID"];
+    workingDir?: Maybe<Scalars["String"]>;
 };
 
 export type AtomistSkillEnvVariableInput = {
-    name: Scalars['String'];
-    value: Scalars['String'];
+    name: Scalars["String"];
+    value: Scalars["String"];
 };
 
 export type AtomistGcfSkillArtifactInput = {
-    entryPoint: Scalars['String'];
-    memory?: Maybe<Scalars['Int']>;
-    name: Scalars['ID'];
+    entryPoint: Scalars["String"];
+    memory?: Maybe<Scalars["Int"]>;
+    name: Scalars["ID"];
     runtime: AtomistSkillRuntime;
-    timeout?: Maybe<Scalars['Int']>;
-    url: Scalars['String'];
+    timeout?: Maybe<Scalars["Int"]>;
+    url: Scalars["String"];
 };
 
 export enum AtomistSkillRuntime {
-    Nodejs10 = 'nodejs10',
-    Python37 = 'python37',
-    Go113 = 'go113'
+    Nodejs10 = "nodejs10",
+    Python37 = "python37",
+    Go113 = "go113",
 }
 
 export enum AtomistSkillCategoryKey {
@@ -120,21 +114,21 @@ export enum AtomistSkillCategoryKey {
 }
 
 export type AtomistChatCommandInput = {
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
-    name: Scalars['String'];
-    pattern: Scalars['String'];
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
+    name: Scalars["String"];
+    pattern: Scalars["String"];
 };
 
 export enum AtomistSkillEventDispatchStyle {
-    Single = 'single',
-    Multiple = 'multiple'
+    Single = "single",
+    Multiple = "multiple",
 }
 
 export enum AtomistSkillParameterVisiblity {
-    Hidden = 'hidden',
-    Advanced = 'advanced',
-    Normal = 'normal'
+    Hidden = "hidden",
+    Advanced = "advanced",
+    Normal = "normal",
 }
 
 export type AtomistSkillParameterSpecInput = {
@@ -151,148 +145,148 @@ export type AtomistSkillParameterSpecInput = {
 };
 
 export type AtomistSkillBooleanParameterSpecInput = {
-    defaultValue?: Maybe<Scalars['Boolean']>;
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
-    name: Scalars['String'];
-    required: Scalars['Boolean'];
+    defaultValue?: Maybe<Scalars["Boolean"]>;
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
+    name: Scalars["String"];
+    required: Scalars["Boolean"];
 };
 
 export type AtomistSkillChatChannelsParameterSpecInput = {
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
-    maxAllowed?: Maybe<Scalars['Int']>;
-    minRequired?: Maybe<Scalars['Int']>;
-    name: Scalars['String'];
-    required: Scalars['Boolean'];
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
+    maxAllowed?: Maybe<Scalars["Int"]>;
+    minRequired?: Maybe<Scalars["Int"]>;
+    name: Scalars["String"];
+    required: Scalars["Boolean"];
     visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillFloatParameterSpecInput = {
-    defaultValue?: Maybe<Scalars['Float']>;
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
-    maximum?: Maybe<Scalars['Float']>;
-    minimum?: Maybe<Scalars['Float']>;
-    name: Scalars['String'];
-    placeHolder?: Maybe<Scalars['String']>;
-    required: Scalars['Boolean'];
+    defaultValue?: Maybe<Scalars["Float"]>;
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
+    maximum?: Maybe<Scalars["Float"]>;
+    minimum?: Maybe<Scalars["Float"]>;
+    name: Scalars["String"];
+    placeHolder?: Maybe<Scalars["String"]>;
+    required: Scalars["Boolean"];
     visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillIntParameterSpecInput = {
-    defaultValue?: Maybe<Scalars['Int']>;
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
-    maximum?: Maybe<Scalars['Int']>;
-    minimum?: Maybe<Scalars['Int']>;
-    name: Scalars['String'];
-    placeHolder?: Maybe<Scalars['String']>;
-    required: Scalars['Boolean'];
+    defaultValue?: Maybe<Scalars["Int"]>;
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
+    maximum?: Maybe<Scalars["Int"]>;
+    minimum?: Maybe<Scalars["Int"]>;
+    name: Scalars["String"];
+    placeHolder?: Maybe<Scalars["String"]>;
+    required: Scalars["Boolean"];
     visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillMultiChoiceParameterSpecInput = {
-    defaultValues?: Maybe<Array<Scalars['String']>>;
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
-    maxAllowed?: Maybe<Scalars['Int']>;
-    minRequired?: Maybe<Scalars['Int']>;
-    name: Scalars['String'];
+    defaultValues?: Maybe<Array<Scalars["String"]>>;
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
+    maxAllowed?: Maybe<Scalars["Int"]>;
+    minRequired?: Maybe<Scalars["Int"]>;
+    name: Scalars["String"];
     options?: Maybe<Array<AtomistSkillChoiceInput>>;
-    required: Scalars['Boolean'];
+    required: Scalars["Boolean"];
     visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillChoiceInput = {
-    description?: Maybe<Scalars['String']>;
-    text: Scalars['String'];
-    value: Scalars['String'];
+    description?: Maybe<Scalars["String"]>;
+    text: Scalars["String"];
+    value: Scalars["String"];
 };
 
 export type AtomistSkillRepoFilterParameterSpecInput = {
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
-    name: Scalars['String'];
-    required: Scalars['Boolean'];
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
+    name: Scalars["String"];
+    required: Scalars["Boolean"];
     visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillScheduleParameterSpecInput = {
-    defaultValue?: Maybe<Scalars['String']>;
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
-    name: Scalars['String'];
-    required: Scalars['Boolean'];
+    defaultValue?: Maybe<Scalars["String"]>;
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
+    name: Scalars["String"];
+    required: Scalars["Boolean"];
     visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillSingleChoiceParameterSpecInput = {
-    defaultValue?: Maybe<Scalars['String']>;
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
-    name: Scalars['String'];
+    defaultValue?: Maybe<Scalars["String"]>;
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
+    name: Scalars["String"];
     options?: Maybe<Array<AtomistSkillChoiceInput>>;
-    required: Scalars['Boolean'];
+    required: Scalars["Boolean"];
     visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillStringParameterSpecInput = {
-    defaultValue?: Maybe<Scalars['String']>;
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
+    defaultValue?: Maybe<Scalars["String"]>;
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
     lineStyle?: Maybe<AtomistSkillStringParameterLineStyle>;
-    name: Scalars['String'];
-    pattern?: Maybe<Scalars['String']>;
-    placeHolder?: Maybe<Scalars['String']>;
-    required: Scalars['Boolean'];
+    name: Scalars["String"];
+    pattern?: Maybe<Scalars["String"]>;
+    placeHolder?: Maybe<Scalars["String"]>;
+    required: Scalars["Boolean"];
     visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export enum AtomistSkillStringParameterLineStyle {
-    Single = 'single',
-    Multiple = 'multiple'
+    Single = "single",
+    Multiple = "multiple",
 }
 
 export type AtomistSkillStringArrayParameterSpecInput = {
-    defaultValue?: Maybe<Array<Maybe<Scalars['String']>>>;
-    description: Scalars['String'];
-    displayName?: Maybe<Scalars['String']>;
-    maxAllowed?: Maybe<Scalars['Int']>;
-    minRequired?: Maybe<Scalars['Int']>;
-    name: Scalars['String'];
-    pattern?: Maybe<Scalars['String']>;
-    required: Scalars['Boolean'];
+    defaultValue?: Maybe<Array<Maybe<Scalars["String"]>>>;
+    description: Scalars["String"];
+    displayName?: Maybe<Scalars["String"]>;
+    maxAllowed?: Maybe<Scalars["Int"]>;
+    minRequired?: Maybe<Scalars["Int"]>;
+    name: Scalars["String"];
+    pattern?: Maybe<Scalars["String"]>;
+    required: Scalars["Boolean"];
     visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
 
 export type AtomistSkillResourceProviderSpecInput = {
-    description?: Maybe<Scalars['String']>;
-    maxAllowed?: Maybe<Scalars['Int']>;
-    minRequired?: Maybe<Scalars['Int']>;
-    name: Scalars['String'];
-    typeName: Scalars['String'];
+    description?: Maybe<Scalars["String"]>;
+    maxAllowed?: Maybe<Scalars["Int"]>;
+    minRequired?: Maybe<Scalars["Int"]>;
+    name: Scalars["String"];
+    typeName: Scalars["String"];
 };
 
 export enum AtomistSkillTechnology {
-    Java = 'JAVA',
-    Maven = 'MAVEN',
-    Docker = 'DOCKER',
-    Javascript = 'JAVASCRIPT',
-    Npm = 'NPM',
-    Lein = 'LEIN',
-    Clojure = 'CLOJURE',
-    Kubernetes = 'KUBERNETES'
+    Java = "JAVA",
+    Maven = "MAVEN",
+    Docker = "DOCKER",
+    Javascript = "JAVASCRIPT",
+    Npm = "NPM",
+    Lein = "LEIN",
+    Clojure = "CLOJURE",
+    Kubernetes = "KUBERNETES",
 }
 
 export type AtomistGateRefInput = {
-    name: Scalars['String'];
-    namespace?: Maybe<Scalars['String']>;
+    name: Scalars["String"];
+    namespace?: Maybe<Scalars["String"]>;
 };
 
 export type AtomistGateInput = {
     and: Array<AtomistGateRefInput>;
-    name: Scalars['String'];
+    name: Scalars["String"];
 };
 
 export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSkillInput> {
@@ -303,7 +297,8 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
         () => {
             error(`Error loading '${p}'`);
             return undefined;
-        });
+        },
+    );
 
     if (!is) {
         throw new Error(`Failed to load exported Skill constant from '${p}'`);
@@ -312,11 +307,11 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
     const rc = content(cwd);
 
     const subscriptions = [];
-    for (const subscription of (is.subscriptions || [])) {
+    for (const subscription of is.subscriptions || []) {
         subscriptions.push(...(await rc(subscription)));
     }
     const signals = [];
-    for (const signal of (is.signals || [])) {
+    for (const signal of is.signals || []) {
         signals.push(...(await rc(signal)));
     }
 
@@ -347,14 +342,16 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
 
     const artifacts: any = {};
     if (!is.containers) {
-        artifacts.gcf = [{
-            entryPoint: is.runtime?.entryPoint || "entryPoint",
-            memory: is.runtime?.memory || 256,
-            timeout: is.runtime?.timeout || 60,
-            runtime: is.runtime?.platform as any || AtomistSkillRuntime.Nodejs10,
-            name: "gcf",
-            url: undefined,
-        }];
+        artifacts.gcf = [
+            {
+                entryPoint: is.runtime?.entryPoint || "entryPoint",
+                memory: is.runtime?.memory || 256,
+                timeout: is.runtime?.timeout || 60,
+                runtime: (is.runtime?.platform as any) || AtomistSkillRuntime.Nodejs10,
+                name: "gcf",
+                url: undefined,
+            },
+        ];
     } else {
         artifacts.docker = map(is.containers, (v, k) => ({
             name: k,
@@ -419,7 +416,6 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
             and: v,
         })),
         gateSubscriptions: is.gateSubscriptions,
-
     };
 
     if (!y.longDescription) {
@@ -429,13 +425,24 @@ export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSk
     return y as any;
 }
 
-export async function validateSkillInput(cwd: string,
-                                         s: AtomistSkillInput,
-                                         options: { validateHandlers: boolean } = { validateHandlers: true }): Promise<void> {
+export async function validateSkillInput(
+    cwd: string,
+    s: AtomistSkillInput,
+    options: { validateHandlers: boolean } = { validateHandlers: true },
+): Promise<void> {
     const errors = [];
 
     // Check required fields
-    const requiredFields = ["name", "namespace", "description", "longDescription", "author", "homepageUrl", "iconUrl", "license"];
+    const requiredFields = [
+        "name",
+        "namespace",
+        "description",
+        "longDescription",
+        "author",
+        "homepageUrl",
+        "iconUrl",
+        "license",
+    ];
     for (const requiredField of requiredFields) {
         if (!s[requiredField]) {
             errors.push(`Required field '${requiredField}' missing`);
@@ -443,14 +450,14 @@ export async function validateSkillInput(cwd: string,
     }
 
     // Check categories against schema
-    for (const category of (s.categories || [])) {
+    for (const category of s.categories || []) {
         if (!Object.values(AtomistSkillCategoryKey).includes(category as any)) {
             errors.push(`Category '${category}' invalid`);
         }
     }
 
     // Check technologies against schema
-    for (const technology of (s.technologies || [])) {
+    for (const technology of s.technologies || []) {
         if (!Object.values(AtomistSkillTechnology).includes(technology as any)) {
             errors.push(`Technology '${technology}' invalid`);
         }
@@ -458,30 +465,36 @@ export async function validateSkillInput(cwd: string,
 
     if (options.validateHandlers) {
         // Validate commands
-        for (const command of (s.commands || [])) {
-            await handleError(async () => {
-                const p = await handlerLoader(`commands/${command.name}`);
-                if (!p) {
-                    errors.push(`Registered command '${command.name}' can't be found`);
-                }
-            }, err => {
-                errors.push(`Registered command '${command.name}' can't be found: ${err.message}`);
-            });
+        for (const command of s.commands || []) {
+            await handleError(
+                async () => {
+                    const p = await handlerLoader(`commands/${command.name}`);
+                    if (!p) {
+                        errors.push(`Registered command '${command.name}' can't be found`);
+                    }
+                },
+                err => {
+                    errors.push(`Registered command '${command.name}' can't be found: ${err.message}`);
+                },
+            );
         }
 
         // Validate subscriptions
-        for (const subscription of (s.subscriptions || [])) {
+        for (const subscription of s.subscriptions || []) {
             const match = subscription.match(/subscription\s([^\s({]+)[\s({]/);
             if (match) {
                 const operationName = match[1];
-                await handleError(async () => {
-                    const p = await handlerLoader(`events/${operationName}`);
-                    if (!p) {
-                        errors.push(`Registered event handler '${operationName}' can't be found`);
-                    }
-                }, err => {
-                    errors.push(`Registered event handler '${operationName}' can't be found: ${err.message}`);
-                });
+                await handleError(
+                    async () => {
+                        const p = await handlerLoader(`events/${operationName}`);
+                        if (!p) {
+                            errors.push(`Registered event handler '${operationName}' can't be found`);
+                        }
+                    },
+                    err => {
+                        errors.push(`Registered event handler '${operationName}' can't be found: ${err.message}`);
+                    },
+                );
             }
         }
     }
@@ -493,8 +506,7 @@ ${errors.map(e => `        - ${e}`).join("\n")}`);
     }
 }
 
-export async function writeSkillYaml(cwd: string,
-                                     skill: AtomistSkillInput): Promise<void> {
+export async function writeSkillYaml(cwd: string, skill: AtomistSkillInput): Promise<void> {
     const p = path.join(cwd, ".atomist", "skill.yaml");
     await fs.ensureDir(path.dirname(p));
     const yaml = await import("js-yaml");
@@ -503,7 +515,8 @@ export async function writeSkillYaml(cwd: string,
             apiVersion: 1,
             skill,
         },
-        { skipInvalid: true });
+        { skipInvalid: true },
+    );
     await fs.writeFile(p, content);
     info(`Written skill metadata to '${p}'`);
 }

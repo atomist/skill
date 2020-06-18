@@ -17,48 +17,8 @@
 import { ResourceProvider } from "./skill";
 
 /**
- * Create an SlackResourceProvider to use in a Skill resourceProvider definitions
+ * Create a ResourceProvider instance to use in Skill resourceProvider definitions
  */
-export function slackResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Slack", typeName: "SlackResourceProvider", ...options });
-}
-
-/**
- * Create an GitHubAppResourceProvider to use in a Skill resourceProvider definitions
- */
-export function gitHubResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "GitHub", typeName: "GitHubAppResourceProvider", ...options });
-}
-
-/**
- * Create an KubernetesClusterProvider to use in a Skill resourceProvider definitions
- */
-export function kubernetesResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Kubernetes Cluster", typeName: "KubernetesClusterProvider", ...options });
-}
-
-/**
- * Create a GoogleCloudPlatformProvider to use in a Skill resourceProvider definitions
- */
-export function gcpResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider(
-        { displayName: "Google Cloud Platform", typeName: "GoogleCloudPlatformProvider", ...options });
-}
-
-/**
- * Create an DockerRegistryProvider to use in a Skill resourceProvider definitions
- */
-export function dockerRegistryProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Docker Registry", typeName: "DockerRegistry", ...options });
-}
-
-/**
- * Create an MavenRepositoryProvider to use in a Skill resourceProvider definitions
- */
-export function mavenRepositoryProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Maven Repository", typeName: "MavenRepositoryProvider", ...options });
-}
-
 export function resourceProvider(options: ResourceProvider): ResourceProvider {
     return {
         typeName: options.typeName,
@@ -66,4 +26,64 @@ export function resourceProvider(options: ResourceProvider): ResourceProvider {
         description: options.description || options.displayName,
         minRequired: options?.minRequired !== undefined ? options.minRequired : 0,
     };
+}
+
+/**
+ * Create an ChatProvider to use in Skill resourceProvider definitions
+ */
+export function chatResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+    return resourceProvider({ displayName: "Chat", typeName: "ChatProvider", ...options });
+}
+
+/**
+ * Create an SlackResourceProvider to use in Skill resourceProvider definitions
+ */
+export function slackResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+    return resourceProvider({ displayName: "Slack", typeName: "SlackResourceProvider", ...options });
+}
+
+/**
+ * Create an MicrosoftTeamsResourceProvider to use in Skill resourceProvider definitions
+ */
+export function msteamsResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+    return resourceProvider({ displayName: "Microsoft Teams", typeName: "MicrosoftTeamsResourceProvider", ...options });
+}
+
+/**
+ * Create an GitHubAppResourceProvider to use in Skill resourceProvider definitions
+ */
+export function gitHubResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+    return resourceProvider({ displayName: "GitHub", typeName: "GitHubAppResourceProvider", ...options });
+}
+
+/**
+ * Create an KubernetesClusterProvider to use in Skill resourceProvider definitions
+ */
+export function kubernetesResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+    return resourceProvider({ displayName: "Kubernetes Cluster", typeName: "KubernetesClusterProvider", ...options });
+}
+
+/**
+ * Create a GoogleCloudPlatformProvider to use in Skill resourceProvider definitions
+ */
+export function gcpResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+    return resourceProvider({
+        displayName: "Google Cloud Platform",
+        typeName: "GoogleCloudPlatformProvider",
+        ...options,
+    });
+}
+
+/**
+ * Create an DockerRegistryProvider to use in Skill resourceProvider definitions
+ */
+export function dockerRegistryProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+    return resourceProvider({ displayName: "Docker Registry", typeName: "DockerRegistry", ...options });
+}
+
+/**
+ * Create an MavenRepositoryProvider to use in Skill resourceProvider definitions
+ */
+export function mavenRepositoryProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+    return resourceProvider({ displayName: "Maven Repository", typeName: "MavenRepositoryProvider", ...options });
 }

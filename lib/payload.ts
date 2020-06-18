@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function isCommandIncoming(event: any): event is CommandIncoming {
     return !!event.command;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function isEventIncoming(event: any): event is EventIncoming {
     return !!event.data;
 }
@@ -36,7 +38,6 @@ export function workspaceId(event: CommandIncoming | EventIncoming): string | un
  * skill specific information
  */
 export interface Skill {
-
     id: string;
     name: string;
     namespace: string;
@@ -58,13 +59,16 @@ export interface Skill {
         instances: Array<{
             name: string;
             parameters: Array<{ name: string; value: any }>;
-            resourceProviders: Array<{ name: string; typeName: string; selectedResourceProviders: Array<{ id: string }> }>;
+            resourceProviders: Array<{
+                name: string;
+                typeName: string;
+                selectedResourceProviders: Array<{ id: string }>;
+            }>;
         }>;
     };
 }
 
 export interface EventIncoming {
-
     data: any;
     extensions: Extensions;
     secrets: Secret[];
@@ -72,7 +76,6 @@ export interface EventIncoming {
 }
 
 export interface Extensions {
-
     team_id: string;
     team_name?: string;
     operationName: string;
@@ -80,7 +83,6 @@ export interface Extensions {
 }
 
 export interface CommandIncoming {
-
     api_version?: string;
     correlation_id: string;
     command: string;
@@ -119,19 +121,16 @@ export interface Source {
 }
 
 export interface Team {
-
     id: string;
     name?: string;
 }
 
 export interface Arg {
-
     name: string;
     value: string;
 }
 
 export interface Secret {
-
     uri: string;
     value: string;
 }

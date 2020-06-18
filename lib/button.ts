@@ -28,9 +28,11 @@ export type ParameterType = {
 /**
  * Create a slack button that invokes a command handler.
  */
-export function buttonForCommand(buttonSpec: ButtonSpecification,
-                                 command: string,
-                                 parameters: ParameterType = {}): Action {
+export function buttonForCommand(
+    buttonSpec: ButtonSpecification,
+    command: string,
+    parameters: ParameterType = {},
+): Action {
     const params = mergeParameters(command, parameters);
     const id = command.toLocaleLowerCase();
     const action = chatButtonFrom(buttonSpec, { id }) as CommandReferencingAction;
@@ -45,10 +47,12 @@ export function buttonForCommand(buttonSpec: ButtonSpecification,
 /**
  * Create a Slack menu that invokes a command handler.
  */
-export function menuForCommand(selectSpec: MenuSpecification,
-                               command: string,
-                               parameterName: string,
-                               parameters: ParameterType = {}): Action {
+export function menuForCommand(
+    selectSpec: MenuSpecification,
+    command: string,
+    parameterName: string,
+    parameters: ParameterType = {},
+): Action {
     const params = mergeParameters(command, parameters);
     const id = command.toLocaleLowerCase();
     const action = chatMenuFrom(selectSpec, { id, parameterName }) as CommandReferencingAction;
@@ -65,6 +69,7 @@ export function menuForCommand(selectSpec: MenuSpecification,
  * Merge the provided parameters into any parameters provided as
  * command object instance variables.
  */
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function mergeParameters(command: any, parameters: any): any {
     // Reuse parameters defined on the instance
     if (typeof command !== "string" && typeof command !== "function") {
@@ -90,7 +95,6 @@ function chatButtonFrom(action: ButtonSpecification, command: any): Action {
 }
 
 function chatMenuFrom(action: MenuSpecification, command: any): Action {
-
     if (!command.id) {
         throw new Error("SelectableIdentifiableInstruction must have id set");
     }
@@ -106,7 +110,7 @@ function chatMenuFrom(action: MenuSpecification, command: any): Action {
     };
 
     if (typeof action.options === "string") {
-        select.data_source = action.options; // eslint-disable-line @typescript-eslint/camelcase
+        select.data_source = action.options;
     } else if (action.options.length > 0) {
         const first = action.options[0] as any;
         if (first.value) {
@@ -114,7 +118,7 @@ function chatMenuFrom(action: MenuSpecification, command: any): Action {
             select.options = action.options as SelectOption[];
         } else {
             // then it's option groups
-            select.option_groups = action.options as OptionGroup[]; // eslint-disable-line @typescript-eslint/camelcase
+            select.option_groups = action.options as OptionGroup[];
         }
     }
 

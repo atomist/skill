@@ -23,7 +23,6 @@ export interface Option {
  * Represents a selection of exactly one or some strings from a fixed list of options
  */
 export interface Options {
-
     /**
      * Whether the user must select exactly one option. In this case,
      * binds to string. Otherwise binds to string[]
@@ -44,7 +43,7 @@ export interface Options {
 export const FreeChoices = "freeChoices";
 
 // tslint:disable-next-line:deprecation
-export type ParameterType = "string" | "number" | "boolean" |  Options;
+export type ParameterType = "string" | "number" | "boolean" | Options;
 
 export interface BaseParameter {
     readonly pattern?: RegExp;
@@ -78,9 +77,11 @@ export type Parameters<PARAMS = any> = ParametersListing | ParametersObject<PARA
  * When the class-style decorated approach is used, this is unnecessary as any field
  * value will be used as a default.
  */
-export interface HasDefaultValue { defaultValue?: any }
+export interface HasDefaultValue {
+    defaultValue?: any;
+}
 
-export type ParametersObjectValue = (BaseParameter & HasDefaultValue);
+export type ParametersObjectValue = BaseParameter & HasDefaultValue;
 
 export type MappedParameterOrSecretObjectValue = MappedParameterOrSecretDeclaration;
 
@@ -90,8 +91,10 @@ export type ValueParameterObjectValue = ValueDeclaration;
  * Object with properties defining parameters, secrets, mapped parameters and values.
  * Useful for combination via spreads.
  */
-export type ParametersObject<PARAMS, K extends keyof PARAMS = keyof PARAMS>
-    = Record<K, ParametersObjectValue | MappedParameterOrSecretObjectValue | ValueParameterObjectValue>;
+export type ParametersObject<PARAMS, K extends keyof PARAMS = keyof PARAMS> = Record<
+    K,
+    ParametersObjectValue | MappedParameterOrSecretObjectValue | ValueParameterObjectValue
+>;
 
 export enum DeclarationType {
     /**
@@ -108,7 +111,6 @@ export enum DeclarationType {
 }
 
 export interface MappedParameterOrSecretDeclaration {
-
     declarationType: DeclarationType;
 
     uri: string;
@@ -127,7 +129,6 @@ export type ValueDeclaration = BaseValue;
  * Define parameters used in a command
  */
 export interface ParametersListing {
-
     readonly parameters: NamedParameter[];
 
     readonly mappedParameters: NamedMappedParameter[];

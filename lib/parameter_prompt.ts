@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 
-import {
-    CommandMessageClient,
-    HandlerResponse,
-    Parameter,
-} from "./message";
+import { CommandMessageClient, HandlerResponse, Parameter } from "./message";
 import { ParametersObjectValue } from "./parameters";
-import {
-    Arg,
-    CommandIncoming,
-} from "./payload";
+import { Arg, CommandIncoming } from "./payload";
 import cloneDeep = require("lodash.clonedeep");
 import map = require("lodash.map");
 import set = require("lodash.set");
-
-/* eslint-disable @typescript-eslint/camelcase */
 
 /**
  * Object with properties defining parameters. Useful for combination via spreads.
@@ -39,7 +30,6 @@ export type ParametersPromptObject<PARAMS, K extends keyof PARAMS = keyof PARAMS
  * Different strategies to ask for parameters in chat or web
  */
 export enum ParameterStyle {
-
     /** Parameter questions will be prompted in a dialog */
     Dialog = "dialog",
 
@@ -63,7 +53,6 @@ export enum ParameterStyle {
  * Options to configure the parameter prompt
  */
 export interface ParameterPromptOptions {
-
     /** Optional thread identifier to send this message to or true to send
      * this to the message that triggered this command.
      */
@@ -83,7 +72,10 @@ export interface ParameterPromptOptions {
 /**
  * ParameterPrompts let the caller prompt for the provided parameters
  */
-export type ParameterPrompt<PARAMS> = (parameters: ParametersPromptObject<PARAMS>, options?: ParameterPromptOptions) => Promise<PARAMS>;
+export type ParameterPrompt<PARAMS> = (
+    parameters: ParametersPromptObject<PARAMS>,
+    options?: ParameterPromptOptions,
+) => Promise<PARAMS>;
 
 export const AtomistContinuationMimeType = "application/x-atomist-continuation+json";
 
@@ -91,10 +83,11 @@ export const AtomistContinuationMimeType = "application/x-atomist-continuation+j
  * Default ParameterPromptFactory that uses the WebSocket connection to send parameter prompts to the backend.
  * @param ctx
  */
-export function commandRequestParameterPromptFactory<T>(messageClient: CommandMessageClient,
-                                                        payload: CommandIncoming): ParameterPrompt<T> {
+export function commandRequestParameterPromptFactory<T>(
+    messageClient: CommandMessageClient,
+    payload: CommandIncoming,
+): ParameterPrompt<T> {
     return async (parameters, options = {}): Promise<T> => {
-
         const existingParameters = payload.parameters;
         const newParameters = cloneDeep(parameters);
 
@@ -132,8 +125,12 @@ export function commandRequestParameterPromptFactory<T>(messageClient: CommandMe
 
         // Create a continuation message using the existing HandlerResponse and mixing in parameters
         // and parameter_specs
-        const response: HandlerResponse
-            & { parameters: Arg[]; parameter_specs: Parameter[]; question: any; auto_submit: boolean } = {
+        const response: HandlerResponse & {
+            parameters: Arg[];
+            parameter_specs: Parameter[];
+            question: any;
+            auto_submit: boolean;
+        } = {
             api_version: "1",
             correlation_id: payload.correlation_id,
             team: payload.team,

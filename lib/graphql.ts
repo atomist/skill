@@ -29,17 +29,13 @@ export interface Location {
 export type QueryOrLocation = string | Location;
 
 export interface GraphQLClient {
-
     query<T = any, V = any>(query: QueryOrLocation, variables?: V): Promise<T>;
 
     mutate<T = any, V = any>(mutation: QueryOrLocation, variables?: V): Promise<T>;
 }
 
 class NodeFetchGraphQLClient implements GraphQLClient {
-
-    constructor(private readonly apiKey: string,
-                private readonly url: string) {
-    }
+    constructor(private readonly apiKey: string, private readonly url: string) {}
 
     public async query<T>(query: QueryOrLocation, variables?: Record<string, any>): Promise<T> {
         const f = (await import("node-fetch")).default;
@@ -48,16 +44,16 @@ class NodeFetchGraphQLClient implements GraphQLClient {
             variables,
         });
         debug(`GraphQL query: ${body}`);
-        const result = await (await f(
-            this.url,
-            {
+        const result = await (
+            await f(this.url, {
                 method: "post",
                 body,
                 headers: {
-                    "authorization": `bearer ${this.apiKey}`,
+                    authorization: `bearer ${this.apiKey}`,
                     "content-type": "application/json",
                 },
-            })).json();
+            })
+        ).json();
         debug(`GraphQL result: ${JSON.stringify(result, replacer)}`);
         if (result.errors) {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
@@ -72,16 +68,16 @@ class NodeFetchGraphQLClient implements GraphQLClient {
             variables,
         });
         debug(`GraphQL mutation: ${body}`);
-        const result = await (await f(
-            this.url,
-            {
+        const result = await (
+            await f(this.url, {
                 method: "post",
                 body,
                 headers: {
-                    "authorization": `bearer ${this.apiKey}`,
+                    authorization: `bearer ${this.apiKey}`,
                     "content-type": "application/json",
                 },
-            })).json();
+            })
+        ).json();
         debug(`GraphQL result: ${JSON.stringify(result, replacer)}`);
         if (result.errors) {
             throw new Error(JSON.stringify(result.errors, undefined, 2));
@@ -124,7 +120,6 @@ class NodeFetchGraphQLClient implements GraphQLClient {
 }
 
 export function createGraphQLClient(apiKey: string, wid: string): GraphQLClient {
-    const url = `${process.env.ATOMIST_GRAPHQL_ENDPOINT
-    || "https://automation.atomist.com/graphql"}/team/${wid}`;
+    const url = `${process.env.ATOMIST_GRAPHQL_ENDPOINT || "https://automation.atomist.com/graphql"}/team/${wid}`;
     return new NodeFetchGraphQLClient(apiKey, url);
 }

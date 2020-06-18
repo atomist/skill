@@ -14,25 +14,10 @@
  * limitations under the License.
  */
 
-import {
-    processCommand,
-    processEvent,
-    PubSubMessage,
-} from "./function";
-import {
-    CommandHandler,
-    EventHandler,
-} from "./handler";
-import {
-    debug,
-    info,
-} from "./log";
-import {
-    CommandIncoming,
-    EventIncoming,
-    isCommandIncoming,
-    isEventIncoming,
-} from "./payload";
+import { processCommand, processEvent, PubSubMessage } from "./function";
+import { CommandHandler, EventHandler } from "./handler";
+import { debug, info } from "./log";
+import { CommandIncoming, EventIncoming, isCommandIncoming, isEventIncoming } from "./payload";
 import { replacer } from "./util";
 
 const HandlerRegistry = {
@@ -61,8 +46,7 @@ export const bundle = async (pubSubEvent: PubSubMessage, context: { eventId: str
     };
     debug(`atm:attributes=${JSON.stringify(attributes)}`);
 
-    const payload: CommandIncoming | EventIncoming =
-        JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
+    const payload: CommandIncoming | EventIncoming = JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
     info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
 
     if (isEventIncoming(payload)) {

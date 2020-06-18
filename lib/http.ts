@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-import {
-    RequestInit,
-    Response,
-} from "node-fetch";
+import { RequestInit, Response } from "node-fetch";
 
 export interface HttpClient {
     request<T>(url: string, options: RequestInit): Promise<Response & { json(): Promise<T> }>;
@@ -28,7 +25,6 @@ export function createHttpClient(): HttpClient {
 }
 
 export class NodeFetchHttpClient implements HttpClient {
-
     public async request<T>(url: string, options: RequestInit): Promise<Response & { json(): Promise<T> }> {
         const f = (await import("node-fetch")).default;
         return f(url, options);

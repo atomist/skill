@@ -19,32 +19,12 @@ import "source-map-support/register";
 
 import { Severity } from "@atomist/skill-logging";
 import { createContext } from "./context";
-import {
-    CommandContext,
-    CommandHandler,
-    EventContext,
-    EventHandler,
-    HandlerStatus,
-} from "./handler";
-import {
-    debug,
-    info,
-} from "./log";
-import {
-    prepareStatus,
-    StatusPublisher,
-} from "./message";
+import { CommandContext, CommandHandler, EventContext, EventHandler, HandlerStatus } from "./handler";
+import { debug, info } from "./log";
+import { prepareStatus, StatusPublisher } from "./message";
 import { CommandListenerExecutionInterruptError } from "./parameter_prompt";
-import {
-    CommandIncoming,
-    EventIncoming,
-    isCommandIncoming,
-    isEventIncoming,
-} from "./payload";
-import {
-    handlerLoader,
-    replacer,
-} from "./util";
+import { CommandIncoming, EventIncoming, isCommandIncoming, isEventIncoming } from "./payload";
+import { handlerLoader, replacer } from "./util";
 
 export interface PubSubMessage {
     data: string;
@@ -58,8 +38,7 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId:
     };
     debug(`atm:attributes=${JSON.stringify(attributes)}`);
 
-    const payload: CommandIncoming | EventIncoming =
-        JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
+    const payload: CommandIncoming | EventIncoming = JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
     info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
     // debug(`Incoming message context: ${JSON.stringify(context, replacer)}`);
     // debug(`Incoming mskill.tsessage: ${JSON.stringify(pubSubEvent, replacer)}`);
@@ -71,41 +50,44 @@ export const entryPoint = async (pubSubEvent: PubSubMessage, context: { eventId:
     }
 };
 
-export async function processEvent(event: EventIncoming,
-                                   ctx: { eventId: string },
-                                   loader: (name: string) => Promise<EventHandler> = handlerLoader): Promise<void> {
+export async function processEvent(
+    event: EventIncoming,
+    ctx: { eventId: string },
+    loader: (name: string) => Promise<EventHandler> = handlerLoader,
+): Promise<void> {
     const context = createContext(event, ctx) as EventContext<any>;
     try {
         debug(`Invoking event handler '${context.name}'`);
-        const result = await (await loader(`events/${context.name}`))(context) as HandlerStatus;
-        await (context.message as any as StatusPublisher).publish(prepareStatus(result || { code: 0 }, context));
-    }  catch (e) {
+        const result = (await (await loader(`events/${context.name}`))(context)) as HandlerStatus;
+        await ((context.message as any) as StatusPublisher).publish(prepareStatus(result || { code: 0 }, context));
+    } catch (e) {
         await context.audit.log(`Error occurred: ${e.stack}`, Severity.ERROR);
-        await (context.message as any as StatusPublisher).publish(prepareStatus(e, context));
+        await ((context.message as any) as StatusPublisher).publish(prepareStatus(e, context));
     } finally {
         await context.close();
     }
     debug(`Completed event handler '${context.name}'`);
 }
 
-export async function processCommand(event: CommandIncoming,
-                                     ctx: { eventId: string },
-                                     loader: (name: string) => Promise<CommandHandler> = handlerLoader): Promise<void> {
+export async function processCommand(
+    event: CommandIncoming,
+    ctx: { eventId: string },
+    loader: (name: string) => Promise<CommandHandler> = handlerLoader,
+): Promise<void> {
     const context = createContext(event, ctx) as CommandContext;
     try {
         debug(`Invoking command handler '${context.name}'`);
-        const result = await (await loader(`commands/${context.name}`))(context) as HandlerStatus;
-        await (context.message as any as StatusPublisher).publish(prepareStatus(result || { code: 0 }, context));
-    }  catch (e) {
+        const result = (await (await loader(`commands/${context.name}`))(context)) as HandlerStatus;
+        await ((context.message as any) as StatusPublisher).publish(prepareStatus(result || { code: 0 }, context));
+    } catch (e) {
         if (e instanceof CommandListenerExecutionInterruptError) {
-            await (context.message as any as StatusPublisher).publish(prepareStatus({ code: 0 }, context));
+            await ((context.message as any) as StatusPublisher).publish(prepareStatus({ code: 0 }, context));
         } else {
             await context.audit.log(`Error occurred: ${e.stack}`, Severity.ERROR);
-            await (context.message as any as StatusPublisher).publish(prepareStatus(e, context));
+            await ((context.message as any) as StatusPublisher).publish(prepareStatus(e, context));
         }
     } finally {
         await context.close();
     }
     debug(`Completed command handler '${context.name}'`);
 }
-

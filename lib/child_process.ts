@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-import {
-    SpawnOptions,
-    SpawnSyncOptions,
-    SpawnSyncReturns,
-} from "child_process";
+import { SpawnOptions, SpawnSyncOptions, SpawnSyncReturns } from "child_process";
 import * as process from "process";
-import {
-    debug,
-    error,
-    warn,
-} from "./log";
+import { debug, error, warn } from "./log";
 
 /**
  * Convert child process into an informative string.
@@ -34,8 +26,9 @@ import {
  * @param opts Standard child_process.SpawnOptions.
  */
 export function childProcessString(cmd: string, args: string[] = [], opts: SpawnOptions = {}): string {
-    return (opts.cwd ? opts.cwd : process.cwd()) + " ==> " + cmd +
-        (args.length > 0 ? " '" + args.join("' '") + "'" : "");
+    return (
+        (opts.cwd ? opts.cwd : process.cwd()) + " ==> " + cmd + (args.length > 0 ? " '" + args.join("' '") + "'" : "")
+    );
 }
 
 /**
@@ -47,7 +40,7 @@ export function childProcessString(cmd: string, args: string[] = [], opts: Spawn
  * @param signal optional signal name or number, Node.js default is used if not provided
  */
 export function killProcess(pid: number, signal?: string | number): void {
-    const sig = (signal) ? `signal ${signal}` : "default signal";
+    const sig = signal ? `signal ${signal}` : "default signal";
     debug(`Calling tree-kill on child process ${pid} with ${sig}`);
     // Lazy import
     require("tree-kill")(pid, signal); // eslint-disable-line @typescript-eslint/no-var-requires
@@ -130,7 +123,11 @@ export interface SpawnPromiseReturns extends SpawnSyncReturns<string> {
  *         its execution result.  If an error occurs, the `error` property
  *         of [[SpawnPromiseReturns]] will be populated.
  */
-export async function spawnPromise(cmd: string, args: string[] = [], opts: SpawnPromiseOptions = {}): Promise<SpawnPromiseReturns> {
+export async function spawnPromise(
+    cmd: string,
+    args: string[] = [],
+    opts: SpawnPromiseOptions = {},
+): Promise<SpawnPromiseReturns> {
     // Lazy import
     const spawn = await import("cross-spawn");
     return new Promise<SpawnPromiseReturns>(resolve => {
@@ -152,13 +149,13 @@ export async function spawnPromise(cmd: string, args: string[] = [], opts: Spawn
         }
 
         function pLog(data: string): void {
-            const formatted = (optsToUse.log && optsToUse.log.stripAnsi) ? require("strip-ansi")(data) : data;  // eslint-disable-line @typescript-eslint/no-var-requires
+            const formatted = optsToUse.log && optsToUse.log.stripAnsi ? require("strip-ansi")(data) : data; // eslint-disable-line @typescript-eslint/no-var-requires
             optsToUse.log.write(formatted);
         }
 
         function commandLog(data: string, l: (message: string, ...optionalParams: any[]) => void = debug): void {
             if (optsToUse.log && optsToUse.logCommand) {
-                const terminated = (data.endsWith("\n")) ? data : data + "\n";
+                const terminated = data.endsWith("\n") ? data : data + "\n";
                 pLog(terminated);
             } else {
                 l(data);
@@ -186,8 +183,8 @@ export async function spawnPromise(cmd: string, args: string[] = [], opts: Spawn
             childProcess.stdout.on("data", logData);
             stderr = stdout = "See log\n";
         } else {
-            childProcess.stderr.on("data", (data: string) => stderr += data);
-            childProcess.stdout.on("data", (data: string) => stdout += data);
+            childProcess.stderr.on("data", (data: string) => (stderr += data));
+            childProcess.stdout.on("data", (data: string) => (stdout += data));
         }
         childProcess.on("exit", (code, signal) => {
             timer = clearTimer(timer);
@@ -289,7 +286,11 @@ export class ExecPromiseError extends Error implements ExecPromiseResult {
  *         with a non-zero status, and killed with a signal, the
  *         Promise is rejected with an [[ExecPromiseError]].
  */
-export async function execPromise(cmd: string, args: string[] = [], opts: SpawnSyncOptions = {}): Promise<ExecPromiseResult> {
+export async function execPromise(
+    cmd: string,
+    args: string[] = [],
+    opts: SpawnSyncOptions = {},
+): Promise<ExecPromiseResult> {
     opts.stdio = ["pipe", "pipe", "pipe"];
     if (!opts.encoding) {
         opts.encoding = "utf8";

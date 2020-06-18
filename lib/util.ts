@@ -32,21 +32,22 @@ export function toArray<T>(value: T | T[]): T[] {
     }
 }
 
-export async function handlerLoader<T>(name: string): Promise<T> {
-    const path = await requirePath(name);
+export async function handlerLoader<T>(name: string, cwd?: string): Promise<T> {
+    const path = await requirePath(name, cwd);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     return require(path).handler as T;
 }
 
-export async function requirePath(folderOrFile: string): Promise<string> {
-    const p = __dirname.split("/node_modules/");
-    const rp = path.join(p[0], folderOrFile);
-    const lp = path.join(p[0], "lib", folderOrFile);
+export async function requirePath(file: string, cwd?: string): Promise<string> {
+    const p = cwd || __dirname.split("/node_modules/")[0];
+    const rp = path.join(p, file);
+    const lp = path.join(p, "lib", file);
     if (await fs.pathExists(rp + ".js")) {
         return rp;
     } else if (await fs.pathExists(lp + ".js")) {
         return lp;
     }
-    throw new Error(`'${folderOrFile}' not found in '${p[0]}' or '${p[0]}/lib'`);
+    throw new Error(`'${file}' not found in '${p[0]}' or '${p[0]}/lib'`);
 }
 
 export function extractParameters(intent: string): Arg[] {
@@ -63,14 +64,17 @@ export function extractParameters(intent: string): Arg[] {
         match = regexp.exec(intentToMatch);
     }
 
-    return args.reduce((p, c) => {
-        if (!p.some(e => e.name === c.name)) {
-            p.push(c);
-        }
-        return p;
-    }, []).reverse();
+    return args
+        .reduce((p, c) => {
+            if (!p.some(e => e.name === c.name)) {
+                p.push(c);
+            }
+            return p;
+        }, [])
+        .reverse();
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function replacer(key: string, value: any): any {
     if (key === "secrets" && value) {
         return value.map(v => ({ uri: v.uri, value: hideString(v.value) }));
@@ -81,6 +85,7 @@ export function replacer(key: string, value: any): any {
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function hideString(value: any): any {
     if (!value) {
         return value;
@@ -108,8 +113,10 @@ export function guid(): string {
     return uuid();
 }
 
-export async function handleError<T>(f: () => Promise<T>,
-                                     cb: (err: Error) => T | undefined = DefaultErrorHandler): Promise<T | undefined> {
+export async function handleError<T>(
+    f: () => Promise<T>,
+    cb: (err: Error) => T | undefined = DefaultErrorHandler,
+): Promise<T | undefined> {
     try {
         const result = await f();
         return result;
@@ -118,8 +125,7 @@ export async function handleError<T>(f: () => Promise<T>,
     }
 }
 
-export function handleErrorSync<T>(f: () => T,
-                                   cb: (err: Error) => T | undefined = DefaultErrorHandler): T | undefined {
+export function handleErrorSync<T>(f: () => T, cb: (err: Error) => T | undefined = DefaultErrorHandler): T | undefined {
     try {
         return f();
     } catch (e) {

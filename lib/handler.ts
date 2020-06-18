@@ -17,18 +17,9 @@
 import { Logger } from "@atomist/skill-logging/lib/logging";
 import { GraphQLClient } from "./graphql";
 import { HttpClient } from "./http";
-import {
-    CommandMessageClient,
-    MessageClient,
-} from "./message";
-import {
-    ParameterPromptOptions,
-    ParametersPromptObject,
-} from "./parameter_prompt";
-import {
-    CommandIncoming,
-    EventIncoming,
-} from "./payload";
+import { CommandMessageClient, MessageClient } from "./message";
+import { ParameterPromptOptions, ParametersPromptObject } from "./parameter_prompt";
+import { CommandIncoming, EventIncoming } from "./payload";
 import { ProjectLoader } from "./project";
 import { CredentialProvider } from "./secrets";
 import { StorageProvider } from "./storage";
@@ -42,7 +33,6 @@ export interface Configuration<C extends Record<string, any>> {
 }
 
 export interface Contextual<T, C> {
-
     name: string;
     workspaceId: string;
     correlationId: string;
@@ -70,15 +60,15 @@ export interface Contextual<T, C> {
 }
 
 export interface EventContext<E = any, C = any> extends Contextual<EventIncoming, C> {
-
     data: E;
-    
 }
 
 export interface CommandContext<C = any> extends Contextual<CommandIncoming, C> {
-
     parameters: {
-        prompt<PARAMS = any>(parameters: ParametersPromptObject<PARAMS>, options?: ParameterPromptOptions): Promise<PARAMS>;
+        prompt<PARAMS = any>(
+            parameters: ParametersPromptObject<PARAMS>,
+            options?: ParameterPromptOptions,
+        ): Promise<PARAMS>;
     };
 
     message: CommandMessageClient;
