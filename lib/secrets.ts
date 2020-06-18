@@ -15,11 +15,7 @@
  */
 
 import { GraphQLClient } from "./graphql";
-import {
-    CommandIncoming,
-    EventIncoming,
-    isCommandIncoming,
-} from "./payload";
+import { CommandIncoming, EventIncoming, isCommandIncoming } from "./payload";
 
 export type CredentialResolver<T> = (
     graphClient: GraphQLClient,

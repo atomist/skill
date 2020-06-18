@@ -17,10 +17,7 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 import { spawnPromise } from "../child_process";
-import {
-    debug,
-    info,
-} from "../log";
+import { debug, info } from "../log";
 import { withGlobMatches } from "../project/util";
 
 export async function bundleSkill(cwd: string, minify: boolean, sourceMap: boolean, verbose: boolean): Promise<void> {

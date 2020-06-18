@@ -14,15 +14,8 @@
  * limitations under the License.
  */
 
-import {
-    clone,
-    load,
-    Project,
-} from "./project/project";
-import {
-    GitHubAppCredential,
-    GitHubCredential,
-} from "./secrets";
+import { clone, load, Project } from "./project/project";
+import { GitHubAppCredential, GitHubCredential } from "./secrets";
 
 export interface CloneOptions {
     /**

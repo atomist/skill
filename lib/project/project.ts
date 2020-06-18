@@ -24,10 +24,7 @@ import {
     SpawnPromiseReturns,
 } from "../child_process";
 import { debug } from "../log";
-import {
-    AuthenticatedRepositoryId,
-    CloneOptions,
-} from "../project";
+import { AuthenticatedRepositoryId, CloneOptions } from "../project";
 import { doClone } from "./clone";
 import { setUserConfig } from "./git";
 

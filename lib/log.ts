@@ -14,11 +14,7 @@
  * limitations under the License.
  */
 
-import {
-    createLogger,
-    Logger,
-    Severity,
-} from "@atomist/skill-logging";
+import { createLogger, Logger, Severity } from "@atomist/skill-logging";
 import { redact } from "./redact";
 import { toArray } from "./util";
 
