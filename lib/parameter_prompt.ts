@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-import {
-    CommandMessageClient,
-    HandlerResponse,
-    Parameter,
-} from "./message";
+import { CommandMessageClient, HandlerResponse, Parameter } from "./message";
 import { ParametersObjectValue } from "./parameters";
-import {
-    Arg,
-    CommandIncoming,
-} from "./payload";
+import { Arg, CommandIncoming } from "./payload";
 import cloneDeep = require("lodash.clonedeep");
 import map = require("lodash.map");
 import set = require("lodash.set");

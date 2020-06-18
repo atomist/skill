@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-import {
-    SpawnOptions,
-    SpawnSyncOptions,
-    SpawnSyncReturns,
-} from "child_process";
+import { SpawnOptions, SpawnSyncOptions, SpawnSyncReturns } from "child_process";
 import * as process from "process";
-import {
-    debug,
-    error,
-    warn,
-} from "./log";
+import { debug, error, warn } from "./log";
 
 /**
  * Convert child process into an informative string.
