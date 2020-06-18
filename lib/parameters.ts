@@ -35,16 +35,6 @@ export interface Options {
     options?: Option[];
 }
 
-/**
- * Constant for "freeChoices" type. Indicates that valid input is any number of strings, without validation.
- * Useful in accepting input from other systems that perform their own validation.
- * Binds to string[].
- */
-export const FreeChoices = "freeChoices";
-
-// tslint:disable-next-line:deprecation
-export type ParameterType = "string" | "number" | "boolean" | Options;
-
 export interface BaseParameter {
     readonly pattern?: RegExp;
     readonly required?: boolean;
@@ -54,7 +44,7 @@ export interface BaseParameter {
     readonly displayable?: boolean;
     readonly maxLength?: number;
     readonly minLength?: number;
-    readonly type?: ParameterType;
+    readonly type?: "string" | "number" | "boolean" | Options;
     readonly order?: number;
     readonly control?: "input" | "textarea";
 }
@@ -63,14 +53,6 @@ export interface Parameter extends BaseParameter {
     readonly name: string;
     // readonly default?: string;
 }
-
-export interface BaseValue {
-    path: string;
-    required?: boolean;
-    type?: "string" | "number" | "boolean";
-}
-
-export type Parameters<PARAMS = any> = ParametersListing | ParametersObject<PARAMS>;
 
 /**
  * Interface mixed in with BaseParameter to allow adding a default value to a parameter.
@@ -82,77 +64,3 @@ export interface HasDefaultValue {
 }
 
 export type ParametersObjectValue = BaseParameter & HasDefaultValue;
-
-export type MappedParameterOrSecretObjectValue = MappedParameterOrSecretDeclaration;
-
-export type ValueParameterObjectValue = ValueDeclaration;
-
-/**
- * Object with properties defining parameters, secrets, mapped parameters and values.
- * Useful for combination via spreads.
- */
-export type ParametersObject<PARAMS, K extends keyof PARAMS = keyof PARAMS> = Record<
-    K,
-    ParametersObjectValue | MappedParameterOrSecretObjectValue | ValueParameterObjectValue
->;
-
-export enum DeclarationType {
-    /**
-     * @deprecated use Mapped
-     */
-    mapped = "mapped",
-    /**
-     * @deprecated use Secret
-     */
-    secret = "secret",
-
-    Mapped = "mapped",
-    Secret = "secret",
-}
-
-export interface MappedParameterOrSecretDeclaration {
-    declarationType: DeclarationType;
-
-    uri: string;
-    /**
-     * Only valid on mapped parameters
-     */
-    required?: boolean;
-}
-
-/**
- * Define values to be injected from the SDM configuration
- */
-export type ValueDeclaration = BaseValue;
-
-/**
- * Define parameters used in a command
- */
-export interface ParametersListing {
-    readonly parameters: NamedParameter[];
-
-    readonly mappedParameters: NamedMappedParameter[];
-
-    readonly secrets: NamedSecret[];
-
-    readonly values: NamedValue[];
-}
-
-export type NamedParameter = BaseParameter & { name: string } & HasDefaultValue;
-
-export interface NamedSecret {
-    name: string;
-    uri: string;
-}
-
-export interface NamedMappedParameter {
-    name: string;
-    uri: string;
-    required?: boolean;
-}
-
-export type NamedValue = NamedValueParameter;
-
-export interface NamedValueParameter extends BaseValue {
-    name: string;
-}

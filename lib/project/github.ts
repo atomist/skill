@@ -24,7 +24,7 @@ import {
 
 const DefaultGitHubApiUrl = "https://api.github.com/";
 
-export function gitHub(
+export function api(
     id: Pick<AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>, "credential" | "apiUrl">,
 ): Octokit {
     const url = id.apiUrl || DefaultGitHubApiUrl;
@@ -83,7 +83,7 @@ export async function convergeLabel(
     description?: string,
 ): Promise<void> {
     try {
-        await gitHub(id).issues.updateLabel({
+        await api(id).issues.updateLabel({
             name,
             color,
             description,
@@ -91,7 +91,7 @@ export async function convergeLabel(
             owner: id.owner,
         });
     } catch (err) {
-        await gitHub(id).issues.createLabel({
+        await api(id).issues.createLabel({
             name,
             color,
             description,
@@ -106,7 +106,7 @@ export async function removeLabel(
     name: string,
 ): Promise<void> {
     try {
-        await gitHub(id).issues.deleteLabel({
+        await api(id).issues.deleteLabel({
             name,
             repo: id.repo,
             owner: id.owner,

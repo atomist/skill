@@ -36,7 +36,7 @@ export type ParametersPromptObject<PARAMS, K extends keyof PARAMS = keyof PARAMS
 /**
  * Different strategies to ask for parameters in chat or web
  */
-export enum ParameterStyle {
+export enum ParameterPromptStyle {
     /** Parameter questions will be prompted in a dialog */
     Dialog = "dialog",
 
@@ -68,7 +68,7 @@ export interface ParameterPromptOptions {
     /**
      * Configure strategy on how to ask for parameters in chat or web
      */
-    parameterStyle?: ParameterStyle;
+    parameterStyle?: ParameterPromptStyle;
 
     /**
      * Configure auto submit strategy for when all required parameters are collected
