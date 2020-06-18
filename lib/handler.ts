@@ -17,9 +17,18 @@
 import { Logger } from "@atomist/skill-logging/lib/logging";
 import { GraphQLClient } from "./graphql";
 import { HttpClient } from "./http";
-import { CommandMessageClient, MessageClient } from "./message";
-import { ParameterPromptOptions, ParametersPromptObject } from "./parameter_prompt";
-import { CommandIncoming, EventIncoming } from "./payload";
+import {
+    CommandMessageClient,
+    MessageClient,
+} from "./message";
+import {
+    ParameterPromptOptions,
+    ParametersPromptObject,
+} from "./parameter_prompt";
+import {
+    CommandIncoming,
+    EventIncoming,
+} from "./payload";
 import { ProjectLoader } from "./project";
 import { CredentialProvider } from "./secrets";
 import { StorageProvider } from "./storage";

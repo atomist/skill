@@ -15,7 +15,10 @@
  */
 
 import { CommandContext } from "./handler";
-import { RepositoryId, RepositoryProviderType } from "./project";
+import {
+    RepositoryId,
+    RepositoryProviderType,
+} from "./project";
 
 const LinkedRepositoriesQuery = `query LinkedRepositories($id: String!) {
   ChatChannel(channelId: $id) {

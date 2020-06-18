@@ -16,8 +16,15 @@
 
 import * as assert from "assert";
 import * as fs from "fs-extra";
-import { createProjectLoader, gitHubComRepository } from "../lib/project";
-import { commit, createBranch, status } from "../lib/project/git";
+import {
+    createProjectLoader,
+    gitHubComRepository,
+} from "../lib/project";
+import {
+    commit,
+    createBranch,
+    status,
+} from "../lib/project/git";
 
 describe("project", () => {
     it("should clone public repo", async () => {

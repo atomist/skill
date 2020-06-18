@@ -19,7 +19,10 @@ import * as pRetry from "p-retry";
 import * as path from "path";
 import { execPromise } from "../child_process";
 import { debug } from "../log";
-import { AuthenticatedRepositoryId, CloneOptions } from "../project";
+import {
+    AuthenticatedRepositoryId,
+    CloneOptions,
+} from "../project";
 import { guid } from "../util";
 
 export const ClonePath = path.join(os.tmpdir(), "atm-clone");

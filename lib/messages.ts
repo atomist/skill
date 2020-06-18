@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import { Attachment, SlackMessage, url } from "@atomist/slack-messages";
+import {
+    Attachment,
+    SlackMessage,
+    url,
+} from "@atomist/slack-messages";
 import { Contextual } from "./handler";
 import { guid } from "./util";
 
