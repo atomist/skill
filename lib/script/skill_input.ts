@@ -18,7 +18,7 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import { error, info } from "../log";
 import { withGlobMatches } from "../project/util";
-import { Skill } from "../skill";
+import { Skill } from "../definition/skill";
 import { handleError, handlerLoader } from "../util";
 import { createYamlSkillInput } from "./skill_container";
 import map = require("lodash.map");

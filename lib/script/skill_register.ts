@@ -22,7 +22,7 @@ import * as semver from "semver";
 import { spawnPromise } from "../child_process";
 import { createGraphQLClient, GraphQLClient } from "../graphql";
 import { error, info } from "../log";
-import * as git from "../project/git";
+import * as git from "../git";
 import { GoogleCloudStorageProvider } from "../storage";
 import { AtomistSkillInput } from "./skill_input";
 
