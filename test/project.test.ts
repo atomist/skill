@@ -16,9 +16,11 @@
 
 import * as assert from "assert";
 import * as fs from "fs-extra";
+import { commit, createBranch } from "../lib/git/operation";
 import * as log from "../lib/log";
-import { createProjectLoader, gitHubComRepository } from "../lib/project";
-import { commit, createBranch, status } from "../lib/project/git";
+import { createProjectLoader } from "../lib/project/loader";
+import { gitHubComRepository } from "../lib/repository/id";
+import { status } from "../lib/git/operation";
 
 describe("project", () => {
     let originalLogDebug: any;
