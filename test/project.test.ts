@@ -56,5 +56,5 @@ describe("project", () => {
             .filter(f => !!f && f.length > 0);
         assert(changedFiles.length > 0);
         await commit(p, "Test commit");
-    });
+    }).timeout(5000);
 });
