@@ -35,7 +35,7 @@ export async function globFiles(
 }
 
 /**
- * Utility to runSkill a callback with any matched file
+ * Utility to run a callback with any matched file
  */
 export async function withGlobMatches<T>(
     projectOrCwd: Project | string,

@@ -31,7 +31,7 @@ yargs
                 skill: { type: "string", description: "Name of skill to load", demandOption: false },
             }),
         async argv => {
-            return (await import("../lib/scripts/skill_run")).runSkill(argv.skill);
+            return (await import("../lib/script/skill_run")).runSkill(argv.skill);
         },
     )
     .command(
@@ -52,7 +52,7 @@ yargs
             }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_invoke")).invokeSkill(argv);
+                await (await import("../lib/script/skill_invoke")).invokeSkill(argv);
                 return 0;
             } catch (e) {
                 error(e.message);
@@ -74,7 +74,7 @@ yargs
             }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_input")).generateSkill(argv.cwd);
+                await (await import("../lib/script/skill_input")).generateSkill(argv.cwd);
                 return 0;
             } catch (e) {
                 error(e.message);
@@ -104,7 +104,7 @@ yargs
             }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_bundle")).bundleSkill(
+                await (await import("../lib/script/skill_bundle")).bundleSkill(
                     argv.cwd,
                     argv.minify,
                     argv.sourceMap,
@@ -137,7 +137,7 @@ yargs
             }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_package")).packageSkill(argv.cwd, argv.verbose);
+                await (await import("../lib/script/skill_package")).packageSkill(argv.cwd, argv.verbose);
                 return 0;
             } catch (e) {
                 error(e.message);
@@ -165,7 +165,7 @@ yargs
             }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_clean")).cleanSkill(argv.cwd);
+                await (await import("../lib/script/skill_clean")).cleanSkill(argv.cwd);
                 return 0;
             } catch (e) {
                 error(e.message);
@@ -195,7 +195,7 @@ yargs
             }),
         async argv => {
             try {
-                await (await import("../lib/scripts/skill_register")).registerSkill(
+                await (await import("../lib/script/skill_register")).registerSkill(
                     argv.cwd,
                     argv.workspace,
                     argv.version,
@@ -223,7 +223,7 @@ yargs
             }),
         async argv => {
             try {
-                await (await import("../lib/scripts/gql_fetch")).fetchGql(argv.cwd, argv.workspace);
+                await (await import("../lib/script/gql_fetch")).fetchGql(argv.cwd, argv.workspace);
                 return 0;
             } catch (e) {
                 error(e.message);
