@@ -24,12 +24,9 @@ import {
     SpawnPromiseReturns,
 } from "../child_process";
 import { debug } from "../log";
-import {
-    AuthenticatedRepositoryId,
-    CloneOptions,
-} from "../project";
-import { doClone } from "./clone";
-import { setUserConfig } from "./git";
+import { AuthenticatedRepositoryId } from "../repository/id";
+import { CloneOptions, doClone } from "./clone";
+import { setUserConfig } from "../git";
 
 export type Spawn = (cmd: string, args?: string[], opts?: SpawnPromiseOptions) => Promise<SpawnPromiseReturns>;
 export type Exec = (cmd: string, args?: string[], opts?: SpawnSyncOptions) => Promise<ExecPromiseResult>;

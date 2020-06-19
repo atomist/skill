@@ -49,11 +49,6 @@ export interface BaseParameter {
     readonly control?: "input" | "textarea";
 }
 
-export interface Parameter extends BaseParameter {
-    readonly name: string;
-    // readonly default?: string;
-}
-
 /**
  * Interface mixed in with BaseParameter to allow adding a default value to a parameter.
  * When the class-style decorated approach is used, this is unnecessary as any field
@@ -63,4 +58,4 @@ export interface HasDefaultValue {
     defaultValue?: any;
 }
 
-export type ParametersObjectValue = BaseParameter & HasDefaultValue;
+export type ParameterObjectValue = BaseParameter & HasDefaultValue;

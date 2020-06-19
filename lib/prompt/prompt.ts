@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-import {
-    CommandMessageClient,
-    HandlerResponse,
-    Parameter,
-} from "./message";
-import { ParametersObjectValue } from "./parameters";
-import {
-    Arg,
-    CommandIncoming,
-} from "./payload";
+import { CommandMessageClient, HandlerResponse, Parameter } from "../message";
+import { ParameterObjectValue } from "./parameter";
+import { Arg, CommandIncoming } from "../payload";
 import cloneDeep = require("lodash.clonedeep");
 import map = require("lodash.map");
 import set = require("lodash.set");
@@ -31,7 +24,7 @@ import set = require("lodash.set");
 /**
  * Object with properties defining parameters. Useful for combination via spreads.
  */
-export type ParametersPromptObject<PARAMS, K extends keyof PARAMS = keyof PARAMS> = Record<K, ParametersObjectValue>;
+export type ParameterPromptObject<PARAMS, K extends keyof PARAMS = keyof PARAMS> = Record<K, ParameterObjectValue>;
 
 /**
  * Different strategies to ask for parameters in chat or web
@@ -80,7 +73,7 @@ export interface ParameterPromptOptions {
  * ParameterPrompts let the caller prompt for the provided parameters
  */
 export type ParameterPrompt<PARAMS> = (
-    parameters: ParametersPromptObject<PARAMS>,
+    parameters: ParameterPromptObject<PARAMS>,
     options?: ParameterPromptOptions,
 ) => Promise<PARAMS>;
 

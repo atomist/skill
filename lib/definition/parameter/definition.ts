@@ -14,19 +14,13 @@
  * limitations under the License.
  */
 
-import { RequestInit, Response } from "node-fetch";
+import { ParameterType, RepoFilterParameter } from "../skill";
 
-export interface HttpClient {
-    request<T>(url: string, options: RequestInit): Promise<Response & { json(): Promise<T> }>;
-}
-
-export function createHttpClient(): HttpClient {
-    return new NodeFetchHttpClient();
-}
-
-export class NodeFetchHttpClient implements HttpClient {
-    public async request<T>(url: string, options: RequestInit): Promise<Response & { json(): Promise<T> }> {
-        const f = (await import("node-fetch")).default;
-        return f(url, options);
-    }
+export function repoFilter(options: { required?: boolean } = { required: true }): RepoFilterParameter {
+    return {
+        type: ParameterType.RepoFilter,
+        displayName: "Which repositories",
+        description: "",
+        required: options.required !== undefined ? options.required : true,
+    };
 }

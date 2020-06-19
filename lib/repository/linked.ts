@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-import { CommandContext } from "./handler";
-import {
-    RepositoryId,
-    RepositoryProviderType,
-} from "./project";
+import { CommandContext } from "../handler";
+import { RepositoryId, RepositoryProviderType } from "./id";
 
 const LinkedRepositoriesQuery = `query LinkedRepositories($id: String!) {
   ChatChannel(channelId: $id) {

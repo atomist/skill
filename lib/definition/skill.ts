@@ -105,7 +105,7 @@ export interface Parameter<T, D = any> {
 
 export type BooleanParameter = Parameter<ParameterType.Boolean, boolean>;
 
-export interface ChatChannelParameter {
+export interface ChatChannelParameterValue {
     channelName: string;
     channelId: string;
     chatTeamId: string;
@@ -113,7 +113,7 @@ export interface ChatChannelParameter {
 }
 
 export interface ChatChannelsParameter
-    extends Omit<Parameter<ParameterType.ChatChannels, ChatChannelParameter[]>, "defaultValue"> {
+    extends Omit<Parameter<ParameterType.ChatChannels, ChatChannelParameterValue[]>, "defaultValue"> {
     maxAllowed?: number;
     minRequired?: number;
 }
@@ -257,15 +257,6 @@ export interface Operations {
 }
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
-
-export function repoFilter(options: { required?: boolean } = { required: true }): RepoFilterParameter {
-    return {
-        type: ParameterType.RepoFilter,
-        displayName: "Which repositories",
-        description: "",
-        required: options.required !== undefined ? options.required : true,
-    };
-}
 
 export function packageJson(path = "package.json"): Metadata {
     try {

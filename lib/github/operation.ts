@@ -16,11 +16,8 @@
 
 import { Octokit } from "@octokit/rest"; // eslint-disable-line @typescript-eslint/no-unused-vars
 import { Contextual } from "../handler";
-import { AuthenticatedRepositoryId } from "../project";
-import {
-    GitHubAppCredential,
-    GitHubCredential,
-} from "../secrets";
+import { AuthenticatedRepositoryId } from "../repository/id";
+import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 
 const DefaultGitHubApiUrl = "https://api.github.com/";
 
@@ -98,20 +95,5 @@ export async function convergeLabel(
             repo: id.repo,
             owner: id.owner,
         });
-    }
-}
-
-export async function removeLabel(
-    id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
-    name: string,
-): Promise<void> {
-    try {
-        await api(id).issues.deleteLabel({
-            name,
-            repo: id.repo,
-            owner: id.owner,
-        });
-    } catch (err) {
-        // ignore
     }
 }

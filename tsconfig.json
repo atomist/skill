@@ -29,7 +29,7 @@
     "test/**/*.ts"
   ],
   "exclude": [
-    ".#*
+    ".#*"
   ],
   "compileOnSave": true,
   "buildOnSave": false,

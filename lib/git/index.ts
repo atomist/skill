@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-import { RequestInit, Response } from "node-fetch";
-
-export interface HttpClient {
-    request<T>(url: string, options: RequestInit): Promise<Response & { json(): Promise<T> }>;
-}
-
-export function createHttpClient(): HttpClient {
-    return new NodeFetchHttpClient();
-}
-
-export class NodeFetchHttpClient implements HttpClient {
-    public async request<T>(url: string, options: RequestInit): Promise<Response & { json(): Promise<T> }> {
-        const f = (await import("node-fetch")).default;
-        return f(url, options);
-    }
-}
+export {
+    commit,
+    status,
+    push,
+    createBranch,
+    checkout,
+    init,
+    revert,
+    hasBranch,
+    setUserConfig,
+    GitPushOptions,
+} from "./operation";

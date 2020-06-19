@@ -18,12 +18,8 @@ import * as fs from "fs-extra";
 import * as yaml from "js-yaml";
 import * as path from "path";
 import { info } from "../log";
-import { packageJson } from "../skill";
-import {
-    AtomistSkillInput,
-    content,
-    icon,
-} from "./skill_input";
+import { packageJson } from "../definition/skill";
+import { AtomistSkillInput, content, icon } from "./skill_input";
 
 export async function createYamlSkillInput(cwd: string): Promise<AtomistSkillInput> {
     info(`Generating skill metadata...`);

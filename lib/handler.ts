@@ -17,20 +17,11 @@
 import { Logger } from "@atomist/skill-logging/lib/logging";
 import { GraphQLClient } from "./graphql";
 import { HttpClient } from "./http";
-import {
-    CommandMessageClient,
-    MessageClient,
-} from "./message";
-import {
-    ParameterPromptOptions,
-    ParametersPromptObject,
-} from "./parameter_prompt";
-import {
-    CommandIncoming,
-    EventIncoming,
-} from "./payload";
+import { CommandMessageClient, MessageClient } from "./message";
+import { CommandIncoming, EventIncoming } from "./payload";
 import { ProjectLoader } from "./project";
-import { CredentialProvider } from "./secrets";
+import { ParameterPromptObject, ParameterPromptOptions } from "./prompt/prompt";
+import { CredentialProvider } from "./secret/provider";
 import { StorageProvider } from "./storage";
 
 export interface Configuration<C extends Record<string, any>> {
@@ -75,7 +66,7 @@ export interface EventContext<E = any, C = any> extends Contextual<EventIncoming
 export interface CommandContext<C = any> extends Contextual<CommandIncoming, C> {
     parameters: {
         prompt<PARAMS = any>(
-            parameters: ParametersPromptObject<PARAMS>,
+            parameters: ParameterPromptObject<PARAMS>,
             options?: ParameterPromptOptions,
         ): Promise<PARAMS>;
     };

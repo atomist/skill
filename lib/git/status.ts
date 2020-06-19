@@ -16,7 +16,7 @@
 
 import { execPromise } from "../child_process";
 
-export interface GitStatus {
+export interface Status {
     isClean: boolean;
     ignoredChanges: string[];
     raw: string;
@@ -28,11 +28,11 @@ export interface GitStatus {
     };
 }
 
-export function isFullyClean(gs: GitStatus): boolean {
+export function isFullyClean(gs: Status): boolean {
     return gs.isClean && gs.ignoredChanges.length === 0;
 }
 
-export async function runStatusIn(baseDir: string): Promise<GitStatus> {
+export async function runStatusIn(baseDir: string): Promise<Status> {
     const branch = await determineBranch(baseDir);
     const upstreamData = await collectUpstream(baseDir, branch);
     const shaData = await collectFullSha(baseDir);

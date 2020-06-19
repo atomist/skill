@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 
-import {
-    Attachment,
-    SlackMessage,
-    url,
-} from "@atomist/slack-messages";
-import { Contextual } from "./handler";
-import { guid } from "./util";
+import { Attachment, SlackMessage, url } from "@atomist/slack-messages";
+import { Contextual } from "../handler";
+import { guid } from "../util";
 
-export function slackSuccessMessage(
+export function successMessage(
     title: string,
     text: string,
     ctx: Contextual<any, any>,
@@ -37,8 +33,8 @@ export function slackSuccessMessage(
                 fallback: text,
                 color: "#37A745",
                 mrkdwn_in: ["text"],
-                footer: slackFooter(ctx),
-                ts: slackTs(),
+                footer: footer(ctx),
+                ts: ts(),
                 ...options,
             },
         ],
@@ -46,7 +42,7 @@ export function slackSuccessMessage(
     return msg;
 }
 
-export function slackQuestionMessage(
+export function questionMessage(
     title: string,
     text: string,
     ctx: Contextual<any, any>,
@@ -61,8 +57,8 @@ export function slackQuestionMessage(
                 fallback: text,
                 color: "#B5B5B5",
                 mrkdwn_in: ["text"],
-                footer: slackFooter(ctx),
-                ts: slackTs(),
+                footer: footer(ctx),
+                ts: ts(),
                 ...options,
             },
         ],
@@ -70,7 +66,7 @@ export function slackQuestionMessage(
     return msg;
 }
 
-export function slackInfoMessage(
+export function infoMessage(
     title: string,
     text: string,
     ctx: Contextual<any, any>,
@@ -85,8 +81,8 @@ export function slackInfoMessage(
                 fallback: text,
                 color: "#B5B5B5",
                 mrkdwn_in: ["text"],
-                footer: slackFooter(ctx),
-                ts: slackTs(),
+                footer: footer(ctx),
+                ts: ts(),
                 ...options,
             },
         ],
@@ -94,7 +90,7 @@ export function slackInfoMessage(
     return msg;
 }
 
-export function slackWarningMessage(
+export function warningMessage(
     title: string,
     text: string,
     ctx: Contextual<any, any>,
@@ -109,8 +105,8 @@ export function slackWarningMessage(
                 fallback: text,
                 color: "#D7B958",
                 mrkdwn_in: ["text"],
-                footer: slackSupportLink(ctx),
-                ts: slackTs(),
+                footer: supportLink(ctx),
+                ts: ts(),
                 ...options,
             },
         ],
@@ -118,7 +114,7 @@ export function slackWarningMessage(
     return msg;
 }
 
-export function slackErrorMessage(
+export function errorMessage(
     title: string,
     text: string,
     ctx: Contextual<any, any>,
@@ -133,8 +129,8 @@ export function slackErrorMessage(
                 fallback: text,
                 color: "#BC3D33",
                 mrkdwn_in: ["text"],
-                footer: slackSupportLink(ctx),
-                ts: slackTs(),
+                footer: supportLink(ctx),
+                ts: ts(),
                 ...options,
             },
         ],
@@ -142,21 +138,21 @@ export function slackErrorMessage(
     return msg;
 }
 
-export function slackSupportLink(ctx: Contextual<any, any>): string {
+export function supportLink(ctx: Contextual<any, any>): string {
     const supportUrl = `https://atomist.typeform.com/to/yvnyOj?message_id=${Buffer.from(ctx.correlationId).toString(
         "base64",
     )}`;
-    return `${slackFooter(ctx)} \u00B7 ${url(supportUrl, "Support")}`;
+    return `${footer(ctx)} \u00B7 ${url(supportUrl, "Support")}`;
 }
 
-export function slackFooter(ctx: Contextual<any, any>): string {
+export function footer(ctx: Contextual<any, any>): string {
     return `${ctx.skill.namespace}/${ctx.skill.name}`;
 }
 
-export function slackTs(): number {
+export function ts(): number {
     return Math.floor(Date.now() / 1000);
 }
 
-export function slackSeparator(): string {
+export function separator(): string {
     return "\u00B7";
 }

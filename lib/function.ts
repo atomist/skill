@@ -19,32 +19,12 @@ import "source-map-support/register";
 
 import { Severity } from "@atomist/skill-logging";
 import { createContext } from "./context";
-import {
-    CommandContext,
-    CommandHandler,
-    EventContext,
-    EventHandler,
-    HandlerStatus,
-} from "./handler";
-import {
-    debug,
-    info,
-} from "./log";
-import {
-    prepareStatus,
-    StatusPublisher,
-} from "./message";
-import { CommandListenerExecutionInterruptError } from "./parameter_prompt";
-import {
-    CommandIncoming,
-    EventIncoming,
-    isCommandIncoming,
-    isEventIncoming,
-} from "./payload";
-import {
-    handlerLoader,
-    replacer,
-} from "./util";
+import { CommandContext, CommandHandler, EventContext, EventHandler, HandlerStatus } from "./handler";
+import { debug, info } from "./log";
+import { prepareStatus, StatusPublisher } from "./message";
+import { CommandIncoming, EventIncoming, isCommandIncoming, isEventIncoming } from "./payload";
+import { CommandListenerExecutionInterruptError } from "./prompt/prompt";
+import { handlerLoader, replacer } from "./util";
 
 export interface PubSubMessage {
     data: string;
