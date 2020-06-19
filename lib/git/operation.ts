@@ -16,10 +16,10 @@
 
 import * as pRetry from "p-retry";
 import { execPromise } from "../child_process";
-import { debug } from "../log";
-import { GitStatus, runStatusIn } from "./gitStatus";
-import { Project } from "./project";
-import { cwd } from "./util";
+import { debug } from "../log/index";
+import { Status, runStatusIn } from "./status";
+import { Project } from "../project/project";
+import { cwd } from "../project/util";
 import forOwn = require("lodash.forown");
 
 /**
@@ -45,7 +45,7 @@ export async function init(projectOrCwd: Project | string): Promise<void> {
 /**
  * Return status information about a Git repository
  */
-export async function status(projectOrCwd: Project | string): Promise<GitStatus> {
+export async function status(projectOrCwd: Project | string): Promise<Status> {
     return runStatusIn(cwd(projectOrCwd));
 }
 

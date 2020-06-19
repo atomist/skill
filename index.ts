@@ -14,17 +14,29 @@
  * limitations under the License.
  */
 
+// lib/git
+export * as git from "./lib/git";
+// lib/github
+export * as github from "./lib/github";
+// lib/log
+export * as log from "./lib/log";
+// lib/project
+export * as project from "./lib/project";
+// lib/prompt
+export * as prompt from "./lib/prompt";
+// lib/repository
+export * as repository from "./lib/repository";
+// lib/resource_providers
+export * as resourceProviders from "./lib/resource_provider";
+// lib/script
+// lib/secret
+export * as secret from "./lib/secret";
+// lib/slack
+export * as slack from "./lib/slack";
+
 // lib
 export {} from "./lib/bundle";
-export { buttonForCommand, menuForCommand } from "./lib/button";
-export {
-    execPromise,
-    spawnPromise,
-    killProcess,
-    SpawnPromiseOptions,
-    SpawnPromiseReturns,
-    WritableLog,
-} from "./lib/child_process";
+export * as process from "./lib/child_process";
 export {} from "./lib/context";
 export {} from "./lib/function";
 export { GraphQLClient, QueryOrLocation, Location } from "./lib/graphql";
@@ -38,7 +50,6 @@ export {
     HandlerStatus,
 } from "./lib/handler";
 export { HttpClient } from "./lib/http";
-export { log } from "./lib/log";
 export {
     CommandMessageClient,
     MessageClient,
@@ -47,54 +58,8 @@ export {
     Destinations,
     SlackFileMessage,
 } from "./lib/message";
-export { slack } from "./lib/messages";
-export {
-    ParameterPrompt,
-    ParametersPromptObject,
-    ParameterPromptOptions,
-    ParameterPromptStyle,
-} from "./lib/parameter_prompt";
-export { BaseParameter, Option, Options, Parameter, ParametersObjectValue, HasDefaultValue } from "./lib/parameters";
 export {} from "./lib/payload";
-export {
-    ProjectLoader,
-    CloneOptions,
-    AuthenticatedRepositoryId,
-    gitHubComRepository,
-    RepositoryId,
-    RepositoryProviderType,
-} from "./lib/project";
-export { DEFAULT_REDACTION_PATTERNS, redact } from "./lib/redact";
-export { linkedRepositories, linkedRepository } from "./lib/repository";
-export * from "./lib/resource_providers";
-export {
-    GitHubAppCredential,
-    GitHubCredential,
-    gitHubAppToken,
-    gitHubUserToken,
-    CredentialProvider,
-    CredentialResolver,
-} from "./lib/secrets";
 export * from "./lib/skill";
 export { runSteps, Step, StepListener } from "./lib/steps";
 export { StorageProvider } from "./lib/storage";
 export { guid, handleError, handleErrorSync, hideString, toArray, replacer } from "./lib/util";
-
-// lib/project
-export {} from "./lib/project/clone";
-export * as git from "./lib/project/git";
-export * as github from "./lib/project/github";
-export {} from "./lib/project/gitStatus";
-export { Project, Exec, Spawn } from "./lib/project/project";
-export { cwd, globFiles, withGlobMatches } from "./lib/project/util";
-
-// lib/scripts
-export {} from "./lib/scripts/gql_fetch";
-export {} from "./lib/scripts/skill_bundle";
-export {} from "./lib/scripts/skill_clean";
-export {} from "./lib/scripts/skill_container";
-export {} from "./lib/scripts/skill_input";
-export {} from "./lib/scripts/skill_invoke";
-export {} from "./lib/scripts/skill_package";
-export {} from "./lib/scripts/skill_register";
-export {} from "./lib/scripts/skill_run";

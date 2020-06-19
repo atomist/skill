@@ -18,13 +18,13 @@ import * as fs from "fs-extra";
 import { createGraphQLClient } from "./graphql";
 import { CommandContext, Configuration, EventContext } from "./handler";
 import { createHttpClient } from "./http";
-import { wrapAuditLogger } from "./log";
+import { wrapAuditLogger } from "./log/util";
 import { PubSubCommandMessageClient, PubSubEventMessageClient } from "./message";
-import { commandRequestParameterPromptFactory } from "./parameter_prompt";
 import { CommandIncoming, EventIncoming, isCommandIncoming, isEventIncoming, workspaceId } from "./payload";
-import { createProjectLoader } from "./project";
 import { ClonePath } from "./project/clone";
-import { DefaultCredentialProvider } from "./secrets";
+import { createProjectLoader } from "./project/loader";
+import { commandRequestParameterPromptFactory } from "./prompt/prompt";
+import { DefaultCredentialProvider } from "./secret/provider";
 import { createStorageProvider } from "./storage";
 import { extractParameters } from "./util";
 
