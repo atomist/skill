@@ -15,8 +15,8 @@
  */
 
 import { createLogger, Logger, Severity } from "@atomist/skill-logging";
-import { redact } from "./redact";
-import { toArray } from "./util";
+import { toArray } from "../util";
+import { error, info, warn } from "./console";
 
 export function wrapAuditLogger(
     context: { eventId?: string; correlationId: string; workspaceId: string },
@@ -49,58 +49,6 @@ export function wrapAuditLogger(
     };
 }
 
-/**
- * Print the debug level message to stdout
- *
- * @param message The message to print
- * @param optionalParams Optional params to pass to the logger
- */
-export function debug(message: string, ...optionalParams: any[]): void {
-    if (enabled("debug")) {
-        // tslint:disable-next-line:no-console
-        console.debug(`[debug] ${redact(message)}`, ...optionalParams);
-    }
-}
-
-/**
- * Print the info level message to stdout
- *
- * @param message The message to print
- * @param optionalParams Optional params to pass to the logger
- */
-export function info(message: string, ...optionalParams: any[]): void {
-    if (enabled("info")) {
-        // tslint:disable-next-line:no-console
-        console.info(` [info] ${redact(message)}`, ...optionalParams);
-    }
-}
-
-/**
- * Print the warn level message to stdout
- *
- * @param message The message to print
- * @param optionalParams Optional params to pass to the logger
- */
-export function warn(message: string, ...optionalParams: any[]): void {
-    if (enabled("warn")) {
-        // tslint:disable-next-line:no-console
-        console.warn(` [warn] ${redact(message)}`, ...optionalParams);
-    }
-}
-
-/**
- * Print the error level message to stdout
- *
- * @param message The message to print
- * @param optionalParams Optional params to pass to the logger
- */
-export function error(message: string, ...optionalParams: any[]): void {
-    if (enabled("error")) {
-        // tslint:disable-next-line:no-console
-        console.error(`[error] ${redact(message)}`, ...optionalParams);
-    }
-}
-
 enum Level {
     error = 0,
     warn = 1,
@@ -108,14 +56,7 @@ enum Level {
     debug = 3,
 }
 
-function enabled(level: string): boolean {
+export function enabled(level: string): boolean {
     const configuredLevel = Level[process.env.ATOMIST_LOG_LEVEL || "debug"];
     return configuredLevel >= Level[level];
 }
-
-export const log = {
-    debug,
-    error,
-    info,
-    warn,
-};

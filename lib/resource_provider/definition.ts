@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ResourceProvider } from "./skill";
+import { ResourceProvider } from "../skill";
 
 /**
  * Create a ResourceProvider instance to use in Skill resourceProvider definitions
@@ -31,42 +31,42 @@ export function resourceProvider(options: ResourceProvider): ResourceProvider {
 /**
  * Create an ChatProvider to use in Skill resourceProvider definitions
  */
-export function chatResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+export function chat(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
     return resourceProvider({ displayName: "Chat", typeName: "ChatProvider", ...options });
 }
 
 /**
  * Create an SlackResourceProvider to use in Skill resourceProvider definitions
  */
-export function slackResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+export function slack(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
     return resourceProvider({ displayName: "Slack", typeName: "SlackResourceProvider", ...options });
 }
 
 /**
  * Create an MicrosoftTeamsResourceProvider to use in Skill resourceProvider definitions
  */
-export function msteamsResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+export function msteams(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
     return resourceProvider({ displayName: "Microsoft Teams", typeName: "MicrosoftTeamsResourceProvider", ...options });
 }
 
 /**
  * Create an GitHubAppResourceProvider to use in Skill resourceProvider definitions
  */
-export function gitHubResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+export function gitHub(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
     return resourceProvider({ displayName: "GitHub", typeName: "GitHubAppResourceProvider", ...options });
 }
 
 /**
  * Create an KubernetesClusterProvider to use in Skill resourceProvider definitions
  */
-export function kubernetesResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+export function kubernetes(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
     return resourceProvider({ displayName: "Kubernetes Cluster", typeName: "KubernetesClusterProvider", ...options });
 }
 
 /**
  * Create a GoogleCloudPlatformProvider to use in Skill resourceProvider definitions
  */
-export function gcpResourceProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+export function gcp(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
     return resourceProvider({
         displayName: "Google Cloud Platform",
         typeName: "GoogleCloudPlatformProvider",
@@ -77,13 +77,13 @@ export function gcpResourceProvider(options: Omit<ResourceProvider, "typeName"> 
 /**
  * Create an DockerRegistryProvider to use in Skill resourceProvider definitions
  */
-export function dockerRegistryProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+export function dockerRegistry(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
     return resourceProvider({ displayName: "Docker Registry", typeName: "DockerRegistry", ...options });
 }
 
 /**
  * Create an MavenRepositoryProvider to use in Skill resourceProvider definitions
  */
-export function mavenRepositoryProvider(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
+export function mavenRepository(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
     return resourceProvider({ displayName: "Maven Repository", typeName: "MavenRepositoryProvider", ...options });
 }

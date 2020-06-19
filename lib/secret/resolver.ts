@@ -14,33 +14,8 @@
  * limitations under the License.
  */
 
-import { GraphQLClient } from "./graphql";
-import { CommandIncoming, EventIncoming, isCommandIncoming } from "./payload";
-
-export type CredentialResolver<T> = (
-    graphClient: GraphQLClient,
-    payload: CommandIncoming | EventIncoming,
-) => Promise<T>;
-
-export interface GitHubCredential {
-    token: string;
-    scopes: string[];
-}
-
-export interface GitHubAppCredential {
-    token: string;
-    permissions: Record<string, "write" | "read">;
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function isGitHubCredential(spec: any): spec is GitHubCredential {
-    return !!spec.token && !!spec.scopes;
-}
-
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export function isGitHubAppCredential(spec: any): spec is GitHubAppCredential {
-    return !!spec.token && !!spec.permissions;
-}
+import { isCommandIncoming } from "../payload";
+import { CredentialResolver, GitHubAppCredential, GitHubCredential } from "./provider";
 
 const ResourceUserQuery = `query ResourceUser($id: String!) {
   ChatId(userId: $id) {
@@ -210,19 +185,4 @@ export function gitHubAppToken(
         }
         return undefined;
     };
-}
-
-export interface CredentialProvider {
-    resolve<T>(spec: CredentialResolver<T>): Promise<T | undefined>;
-}
-
-export class DefaultCredentialProvider implements CredentialProvider {
-    constructor(
-        private readonly graphClient: GraphQLClient,
-        private readonly payload: CommandIncoming | EventIncoming,
-    ) {}
-
-    public async resolve<T>(spec: CredentialResolver<T>): Promise<T> {
-        return spec(this.graphClient, this.payload);
-    }
 }
