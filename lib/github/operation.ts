@@ -63,7 +63,7 @@ export function formatMarkers(ctx: Contextual<any, any>, ...tags: string[]): str
   <br/>
   <code>[atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]</code>
   <br/>
-  <code>[atomist-correlation-id:${ctx.correlationId}]</code>
+  <code><a href="${ctx.audit.url}">[atomist-correlation-id:${ctx.correlationId}]</a></code>
   ${tags
       .map(
           t => `<br/>
