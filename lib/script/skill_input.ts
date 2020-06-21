@@ -289,8 +289,8 @@ export type AtomistGateInput = {
     name: Scalars["String"];
 };
 
-export async function createJavaScriptSkillInput(cwd: string): Promise<AtomistSkillInput> {
-    const p = path.join(cwd, "index.js");
+export async function createJavaScriptSkillInput(cwd: string, name = "index.js"): Promise<AtomistSkillInput> {
+    const p = path.join(cwd, name);
     info(`Generating skill metadata...`);
     const is: Skill = await handleError<Skill>(
         async () => await (await import(p)).Skill,
@@ -523,8 +523,11 @@ export async function writeSkillYaml(cwd: string, skill: AtomistSkillInput): Pro
 
 export async function generateSkill(cwd: string): Promise<void> {
     let s;
-    if (await fs.pathExists(path.join(cwd, "index.js"))) {
-        s = await createJavaScriptSkillInput(cwd);
+    if (await fs.pathExists(path.join(cwd, "skill.js"))) {
+        s = await createJavaScriptSkillInput(cwd, "skill.js");
+        await validateSkillInput(cwd, s);
+    } else if (await fs.pathExists(path.join(cwd, "index.js"))) {
+        s = await createJavaScriptSkillInput(cwd, "index.js");
         await validateSkillInput(cwd, s);
     } else if (await fs.pathExists(path.join(cwd, "skill.yaml"))) {
         s = await createYamlSkillInput(cwd);

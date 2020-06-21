@@ -26,7 +26,7 @@ export async function bundleSkill(cwd: string, minify: boolean, sourceMap: boole
     }
     info(`Creating skill bundle...`);
 
-    const skillEntryPointExists = await fs.pathExists(path.join(cwd, "skill.js"));
+    const skillEntryPointExists = await fs.pathExists(path.join(cwd, "skill.bundle.js"));
 
     if (!skillEntryPointExists) {
         const events = await withGlobMatches<string>(cwd, ["events/*.js", "lib/events/*.js"], async file => {
@@ -54,14 +54,14 @@ export async function bundleSkill(cwd: string, minify: boolean, sourceMap: boole
         ];
 
         await fs.writeFile(
-            path.join(cwd, "skill.js"),
+            path.join(cwd, "skill.bundle.js"),
             `${skillTs.join("\n")}
 ${events.join("\n")}
 ${commands.join("\n")}`,
         );
     }
 
-    const nccArgs = ["build", "skill.js", "-o", "bundle"];
+    const nccArgs = ["build", "skill.bundle.js", "-o", "bundle"];
     if (minify) {
         nccArgs.push("-m");
     }
@@ -94,7 +94,7 @@ ${commands.join("\n")}`,
     await fs.remove(path.join(cwd, "package-lock.json"));
 
     if (!skillEntryPointExists) {
-        await fs.remove(path.join(cwd, "skill.js"));
+        await fs.remove(path.join(cwd, "skill.bundle.js"));
     }
 
     info(`Skill bundle created at '${path.join(cwd, "bundle")}'`);
