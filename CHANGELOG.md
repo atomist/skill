@@ -18,3 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add persistChanges helper. [1f8c8e2](https://github.com/atomist/skill/commit/1f8c8e219cd49b03be349ec8a77a8b190e9c199c)
 -   Add closePullRequests helper. [882f8c1](https://github.com/atomist/skill/commit/882f8c173ffd73afaec13ad3846e7fa62c37d771)
 -   Allow parameters to be passed into runSteps. [bcf1f83](https://github.com/atomist/skill/commit/bcf1f83e21bb7bd97880139af506f57222ca2404)
+
+### Changed
+
+-   Move to skill.ts from index.ts for skill definition. [#15](https://github.com/atomist/skill/issues/15)
