@@ -20,6 +20,7 @@ export {
     ResourceProvider,
     RepoFilterParameter,
     Skill,
+    SkillInput,
     BooleanParameter,
     Category,
     ChatChannelParameterValue,
