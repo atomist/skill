@@ -123,6 +123,7 @@ export interface UpdateCheck {
 }
 
 export interface Check {
+    data: Endpoints["POST /repos/:owner/:repo/check-runs"]["response"]["data"];
     update: (parameters: UpdateCheck) => Promise<void>;
 }
 
@@ -148,6 +149,7 @@ ${formatMarkers(ctx)}`,
         },
     });
     return {
+        data: check.data,
         update: async params => {
             await api(id).checks.update({
                 owner: id.owner,
