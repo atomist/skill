@@ -102,7 +102,7 @@ ${formatMarkers(ctx)}
                     });
                 }
             }
-            await gh.pulls.createReviewRequest({
+            await gh.pulls.requestReviewers({
                 owner: project.id.owner,
                 repo: project.id.repo,
                 pull_number: pr.number,
