@@ -16,3 +16,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add function to manage a GitHub check. [9ed9428](https://github.com/atomist/skill/commit/9ed942833d33c3c55ac276af4a727583fa40a5fc)
 -   Add pushStrategy parameters helper. [42535da](https://github.com/atomist/skill/commit/42535da53a04b4260be82b67dea3605ced10c37d)
 -   Add persistChanges helper. [1f8c8e2](https://github.com/atomist/skill/commit/1f8c8e219cd49b03be349ec8a77a8b190e9c199c)
+-   Add closePullRequests helper. [882f8c1](https://github.com/atomist/skill/commit/882f8c173ffd73afaec13ad3846e7fa62c37d771)
