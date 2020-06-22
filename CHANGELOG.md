@@ -15,3 +15,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add `index.ts` and re-structure code. [#14](https://github.com/atomist/skill/pull/14)
 -   Add function to manage a GitHub check. [9ed9428](https://github.com/atomist/skill/commit/9ed942833d33c3c55ac276af4a727583fa40a5fc)
 -   Add pushStrategy parameters helper. [42535da](https://github.com/atomist/skill/commit/42535da53a04b4260be82b67dea3605ced10c37d)
+-   Add persistChanges helper. [1f8c8e2](https://github.com/atomist/skill/commit/1f8c8e219cd49b03be349ec8a77a8b190e9c199c)
