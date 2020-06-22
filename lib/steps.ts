@@ -50,8 +50,9 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
     context: C;
     steps: Step<C> | Array<Step<C>>;
     listeners?: StepListener<C> | Array<StepListener<C>>;
+    parameters?: Record<string, any>;
 }): Promise<undefined | HandlerStatus> {
-    const parameters: Record<string, any> = {};
+    const parameters: Record<string, any> = options.parameters || {};
     const context = options.context;
     const listeners = toArray(options.listeners) || [];
     let result;
