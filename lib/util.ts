@@ -17,6 +17,8 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 import * as uuid from "uuid/v4";
+import { createContext } from "./context";
+import { PushStrategy } from "./definition/parameter/definition";
 import { error } from "./log";
 import { Arg } from "./payload";
 
@@ -140,3 +142,30 @@ export const DefaultErrorHandler: (err: Error) => undefined = err => {
     }
     return undefined;
 };
+
+export type ConfigurationMapper = (value: any, key: string) => string[];
+
+export function identity(): ConfigurationMapper {
+    return (v, k) => [`--${k}`, v];
+}
+
+export function file(name: string): ConfigurationMapper {
+    return (v, k) => {
+        fs.writeFileSync(name, v);
+        return [`--${k}`, name];
+    };
+}
+
+export function configurationToArgs(mapping: Record<string, ConfigurationMapper>): string[] {
+    const args = [];
+    const payload = fs.readJsonSync(process.env.ATOMIST_PAYLOAD);
+    const ctx = createContext(payload as any, {} as any);
+    for (const key of ctx.configuration?.[0]?.parameters) {
+        const value = ctx.configuration[0].parameters[key];
+        const arg = mapping?.[key]?.(value, key);
+        if (arg) {
+            args.push(...arg);
+        }
+    }
+    return args;
+}
