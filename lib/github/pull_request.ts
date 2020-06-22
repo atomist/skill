@@ -87,7 +87,7 @@ ${formatMarkers(ctx)}
                     await gh.pulls.create({
                         owner: project.id.owner,
                         repo: project.id.repo,
-                        title: pr.title,
+                        title: pullRequest.title,
                         body,
                         base: push.branch,
                         head: prBranch,
