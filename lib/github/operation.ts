@@ -158,6 +158,10 @@ ${formatMarkers(ctx)}`,
                 conclusion: params.conclusion,
                 completed_at: new Date().toISOString(),
                 status: "completed",
+                output: {
+                    title: check.data.output.title,
+                    summary: parameters.body ? `${parameters.body}\n${formatMarkers(ctx)}` : check.data.output.summary,
+                },
             });
             await updateAnnotation(ctx, id, check, params);
         },
