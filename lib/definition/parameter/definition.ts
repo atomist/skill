@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ParameterType, RepoFilterParameter } from "../skill";
+import { ParameterType, RepoFilterParameter, SingleChoiceParameter } from "../skill";
 
 export function repoFilter(options: { required?: boolean } = { required: true }): RepoFilterParameter {
     return {
@@ -22,5 +22,46 @@ export function repoFilter(options: { required?: boolean } = { required: true })
         displayName: "Which repositories",
         description: "",
         required: options.required !== undefined ? options.required : true,
+    };
+}
+
+export type PushStrategy = "pr_default_commit" | "pr_default" | "pr" | "commit_default" | "commit";
+
+export function pushStrategy(options: {
+    displayName: string;
+    description: string;
+    required?: boolean;
+    defaultValue?: string;
+    options?: SingleChoiceParameter["options"];
+}): SingleChoiceParameter {
+    return {
+        type: ParameterType.SingleChoice,
+        displayName: options.displayName,
+        description: options.description,
+        defaultValue: options.defaultValue ? options.defaultValue : "pr_default_commit",
+        options: [
+            {
+                text: "Raise pull request for default branch; commit to other branches",
+                value: "pr_default_commit",
+            },
+            {
+                text: "Raise pull request for default branch only",
+                value: "pr_default",
+            },
+            {
+                text: "Raise pull request for any branch",
+                value: "pr",
+            },
+            {
+                text: "Commit to default branch only",
+                value: "commit_default",
+            },
+            {
+                text: "Commit to any branch",
+                value: "commit",
+            },
+            ...(options.options || []),
+        ],
+        required: options.required !== undefined ? options.required : false,
     };
 }
