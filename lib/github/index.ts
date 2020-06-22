@@ -16,4 +16,4 @@
 
 export { UpdateCheck, CreateCheck, Check, openCheck } from "./check";
 export { api, formatMarkers, convergeLabel } from "./operation";
-export { persistChanges } from "./pull_request";
+export { persistChanges, closePullRequests } from "./pull_request";

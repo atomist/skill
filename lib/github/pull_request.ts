@@ -118,3 +118,39 @@ ${formatMarkers(ctx)}
         reason: `Not pushed because of selected push strategy`,
     };
 }
+
+export async function closePullRequests(
+    ctx: Contextual<any, any>,
+    project: Project,
+    base: string,
+    head: string,
+    comment: string,
+): Promise<void> {
+    const gh = api(project.id);
+    const openPrs = (
+        await gh.pulls.list({
+            owner: project.id.owner,
+            repo: project.id.repo,
+            state: "open",
+            base,
+            head: `${project.id.owner}:${head}`,
+            per_page: 100,
+        })
+    ).data;
+
+    for (const openPr of openPrs) {
+        await gh.issues.createComment({
+            owner: project.id.owner,
+            repo: project.id.repo,
+            issue_number: openPr.number,
+            body: `${comment}
+${formatMarkers(ctx)}`,
+        });
+        await gh.pulls.update({
+            owner: project.id.owner,
+            repo: project.id.repo,
+            pull_number: openPr.number,
+            state: "closed",
+        });
+    }
+}
