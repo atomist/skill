@@ -86,4 +86,15 @@ export {
 export {} from "./lib/payload";
 export { runSteps, Step, StepListener } from "./lib/steps";
 export { StorageProvider } from "./lib/storage";
-export { guid, handleError, handleErrorSync, hideString, toArray, replacer } from "./lib/util";
+export {
+    guid,
+    handleError,
+    handleErrorSync,
+    hideString,
+    toArray,
+    replacer,
+    ConfigurationMapper,
+    file,
+    identity,
+    configurationToArgs,
+} from "./lib/util";
