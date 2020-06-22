@@ -14,4 +14,4 @@
  * limitations under the License.
  */
 
-export { api, formatMarkers, convergeLabel } from "./operation";
+export { api, formatMarkers, convergeLabel, UpdateCheck, CreateCheck, Check, openCheck } from "./operation";
