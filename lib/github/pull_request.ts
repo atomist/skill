@@ -23,6 +23,8 @@ export async function persistChanges(
         name: push.author.name,
         email: push.author.email,
     };
+    const commitMsg = commit.message || `Updates from ${ctx.skill.namespace}/${ctx.skill.name}`;
+    const prBranch = pullRequest.branch || `${ctx.skill.name}-${Date.now()}`;
     const repoUrl = `https://github.com/${project.id.owner}/${project.id.repo}`;
 
     if (
@@ -39,9 +41,9 @@ ${changedFiles.map(f => ` * \`${f}\``).join("\n")}
 ${formatMarkers(ctx)}
 `;
 
-        await git.createBranch(project, pullRequest.branch);
-        await git.commit(project, commit.message, commitOptions);
-        await git.push(project, { force: true, branch: pullRequest.branch });
+        await git.createBranch(project, prBranch);
+        await git.commit(project, commitMsg, commitOptions);
+        await git.push(project, { force: true, branch: prBranch });
 
         try {
             let pr;
@@ -52,7 +54,7 @@ ${formatMarkers(ctx)}
                     repo: project.id.repo,
                     state: "open",
                     base: push.branch,
-                    head: `${project.id.owner}:${pullRequest.branch}`,
+                    head: `${project.id.owner}:${prBranch}`,
                     per_page: 100,
                 })
             ).data;
@@ -72,7 +74,7 @@ ${formatMarkers(ctx)}
                         title: pr.title,
                         body,
                         base: push.branch,
-                        head: pullRequest.branch,
+                        head: prBranch,
                     })
                 ).data;
                 if (pullRequest.labels?.length > 0) {
@@ -92,21 +94,21 @@ ${formatMarkers(ctx)}
             });
             return {
                 code: 0,
-                reason: `Pushed to [${project.id.owner}/${project.id.repo}/${pullRequest.branch}](${repoUrl}) and raised PR [#${pr.number}](${pr.html_url})`,
+                reason: `Pushed to [${project.id.owner}/${project.id.repo}/${prBranch}](${repoUrl}) and raised PR [#${pr.number}](${pr.html_url})`,
             };
         } catch (e) {
             // This might fail if the PR already exists
         }
         return {
             code: 0,
-            reason: `Pushed to [${project.id.owner}/${project.id.repo}/${pullRequest.branch}](${repoUrl})`,
+            reason: `Pushed to [${project.id.owner}/${project.id.repo}/${prBranch}](${repoUrl})`,
         };
     } else if (
         strategy === "commit" ||
         (push.branch === push.defaultBranch && strategy === "commit_default") ||
         (push.branch !== push.defaultBranch && strategy === "pr_default_commit")
     ) {
-        await git.commit(project, commit.message, commitOptions);
+        await git.commit(project, commitMsg, commitOptions);
         await git.push(project);
         return {
             code: 0,
