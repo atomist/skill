@@ -14,4 +14,6 @@
  * limitations under the License.
  */
 
-export { api, formatMarkers, convergeLabel, UpdateCheck, CreateCheck, Check, openCheck } from "./operation";
+export { UpdateCheck, CreateCheck, Check, openCheck } from "./check";
+export { api, formatMarkers, convergeLabel } from "./operation";
+export { persistChanges } from "./pull_request";
