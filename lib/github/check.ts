@@ -26,6 +26,7 @@ export interface CreateCheck {
     name: string;
     title: string;
     body: string;
+    startedAt?: string;
 }
 
 export interface UpdateCheck {
@@ -53,13 +54,12 @@ export async function openCheck(
     id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
     parameters: CreateCheck,
 ): Promise<Check> {
-    const start = new Date().toISOString();
     const check = await api(id).checks.create({
         owner: id.owner,
         repo: id.repo,
         head_sha: parameters.sha,
         name: parameters.name,
-        started_at: start,
+        started_at: parameters.startedAt || new Date().toISOString(),
         external_id: ctx.correlationId,
         details_url: ctx.audit.url,
         status: "in_progress",
