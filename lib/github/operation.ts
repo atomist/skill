@@ -160,7 +160,7 @@ ${formatMarkers(ctx)}`,
                 status: "completed",
                 output: {
                     title: check.data.output.title,
-                    summary: parameters.body ? `${parameters.body}\n${formatMarkers(ctx)}` : check.data.output.summary,
+                    summary: params.body ? `${params.body}\n${formatMarkers(ctx)}` : check.data.output.summary,
                 },
             });
             await updateAnnotation(ctx, id, check, params);
