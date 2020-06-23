@@ -78,6 +78,11 @@ export interface MessageOptions extends Record<string, any> {
      * this to the message that triggered this command.
      */
     thread?: string | boolean;
+
+    /**
+     * Optional array of actions to mapped into the message
+     */
+    actions?: Action[];
 }
 
 /** Valid MessageClient types. */
@@ -199,7 +204,7 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
             const actions = mapActions(msgClone);
             response.content_type = MessageMimeTypes.SLACK_JSON;
             response.body = render(msgClone, false);
-            response.actions = actions;
+            response.actions = [...(actions || []), ...(options.actions || [])];
         } else if (isFileMessage(msg)) {
             response.content_type = MessageMimeTypes.SLACK_FILE_JSON;
             response.body = JSON.stringify({
