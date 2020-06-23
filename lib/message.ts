@@ -200,8 +200,15 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
         };
 
         if (isSlackMessage(msg)) {
-            const msgClone = cloneDeep(msg);
+            const msgClone = cloneDeep(msg) as SlackMessage & { blocks: any };
             const actions = mapActions(msgClone);
+
+            // special handling for blocks
+            if (Array.isArray(msgClone.blocks)) {
+                msgClone.text = msgClone.text || "fallback";
+                msgClone.blocks = JSON.stringify(msgClone.blocks);
+            }
+
             response.content_type = MessageMimeTypes.SLACK_JSON;
             response.body = render(msgClone, false);
             response.actions = [...(actions || []), ...(options.actions || [])];
