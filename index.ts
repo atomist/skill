@@ -61,7 +61,7 @@ export * as secret from "./lib/secret";
 export * as slack from "./lib/slack";
 // lib
 export {} from "./lib/bundle";
-export * as process from "./lib/child_process";
+export * as childProcess from "./lib/child_process";
 export {} from "./lib/context";
 export {} from "./lib/function";
 export { GraphQLClient, QueryOrLocation, Location } from "./lib/graphql";
