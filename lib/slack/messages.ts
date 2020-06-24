@@ -29,6 +29,7 @@ export function successMessage(
             {
                 author_icon: `https://images.atomist.com/rug/check-circle.gif?gif=${guid()}`,
                 author_name: title,
+                author_link: ctx.audit.url,
                 text,
                 fallback: text,
                 color: "#37A745",
@@ -53,6 +54,7 @@ export function questionMessage(
             {
                 author_icon: `https://images.atomist.com/rug/question.png`,
                 author_name: title,
+                author_link: ctx.audit.url,
                 text,
                 fallback: text,
                 color: "#B5B5B5",
@@ -77,6 +79,7 @@ export function infoMessage(
             {
                 author_icon: `https://images.atomist.com/rug/info.png`,
                 author_name: title,
+                author_link: ctx.audit.url,
                 text,
                 fallback: text,
                 color: "#B5B5B5",
@@ -101,6 +104,7 @@ export function warningMessage(
             {
                 author_icon: `https://images.atomist.com/rug/warning-yellow.png`,
                 author_name: title,
+                author_link: ctx.audit.url,
                 text,
                 fallback: text,
                 color: "#D7B958",
@@ -125,6 +129,7 @@ export function errorMessage(
             {
                 author_icon: "https://images.atomist.com/rug/error-circle.png",
                 author_name: title,
+                author_link: ctx.audit.url,
                 text,
                 fallback: text,
                 color: "#BC3D33",
