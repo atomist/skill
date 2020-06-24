@@ -47,7 +47,7 @@ export async function requirePath(file: string, cwd?: string): Promise<string> {
     } else if (await fs.pathExists(lp + ".js")) {
         return lp;
     }
-    throw new Error(`'${file}' not found in '${p[0]}' or '${p[0]}/lib'`);
+    throw new Error(`'${file}' not found in '${p}' or '${p}/lib'`);
 }
 
 export function extractParameters(intent: string): Arg[] {
