@@ -37,6 +37,10 @@ export async function createYamlSkillInput(cwd: string): Promise<AtomistSkillInp
     for (const subscription of is.subscriptions || ["file://**/graphql/subscription/*.graphql"]) {
         subscriptions.push(...(await rc(subscription)));
     }
+    const signals = [];
+    for (const signal of is.signals || ["file://**/graphql/signal/*.graphql"]) {
+        signals.push(...(await rc(signal)));
+    }
 
     let readme = (await rc(is.readme || "file://README.md"))[0];
     let description = (await rc(is.description || "file://skill/description.md"))[0];
@@ -70,6 +74,7 @@ export async function createYamlSkillInput(cwd: string): Promise<AtomistSkillInp
         iconUrl: await icon(cwd, is.iconUrl || "file://skill/icon.svg"),
         readme: readme ? Buffer.from(readme).toString("base64") : undefined,
         subscriptions,
+        signals,
     };
 
     if (!y.longDescription) {
