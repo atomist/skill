@@ -313,3 +313,9 @@ export async function execPromise(
     }
     return { stdout: result.stdout, stderr: result.stderr };
 }
+
+export const ConsoleLog: WritableLog = {
+    write: (what: string) => {
+        debug(what);
+    },
+};
