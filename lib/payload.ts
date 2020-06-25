@@ -50,9 +50,16 @@ export interface Skill {
         args?: string[];
         env?: Array<{ name: string; value: string }>;
         workingDir?: string;
-        // secrets?: ContainerSecrets;
-        // input?: string[];
-        // output?: CacheEntry[];
+        resources?: {
+            limit?: {
+                cpu: number;
+                memory: number;
+            };
+            request?: {
+                cpu: number;
+                memory: number;
+            };
+        };
     }>;
 
     configuration: {

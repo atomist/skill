@@ -73,6 +73,16 @@ export interface SkillContainer {
     command?: string[];
     env?: Array<{ name: string; value: string }>;
     workingDir?: string;
+    resources?: {
+        limit?: {
+            cpu: number;
+            memory: number;
+        };
+        request?: {
+            cpu: number;
+            memory: number;
+        };
+    };
 }
 
 export interface ResourceProvider {
