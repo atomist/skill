@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add closePullRequests helper. [882f8c1](https://github.com/atomist/skill/commit/882f8c173ffd73afaec13ad3846e7fa62c37d771)
 -   Allow parameters to be passed into runSteps. [bcf1f83](https://github.com/atomist/skill/commit/bcf1f83e21bb7bd97880139af506f57222ca2404)
 -   Add support for resources on docker artifacts. [d3e0eae](https://github.com/atomist/skill/commit/d3e0eae0426d7784d6b10a4f05767b8f04d6bcd2)
+-   Add helper to select skill configuration for commands. [#16](https://github.com/atomist/skill/issues/16)
 
 ### Changed
 
