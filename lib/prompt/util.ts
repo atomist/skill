@@ -17,8 +17,10 @@
 import { CommandContext } from "../handler";
 import { ParameterPromptObject } from "./prompt";
 
-export async function configurationWithParameters<PARAMS, C>(ctx: CommandContext<C>,
-                                                             parameters: ParameterPromptObject<PARAMS>): Promise<PARAMS & { configuration: C }> {
+export async function configurationWithParameters<PARAMS, C>(
+    ctx: CommandContext<C>,
+    parameters: ParameterPromptObject<PARAMS>,
+): Promise<PARAMS & { configuration: C }> {
     await ctx.audit.log("Checking configuration");
     const cfgs = ctx.configuration;
     const promptParameters: any = {
@@ -40,5 +42,4 @@ export async function configurationWithParameters<PARAMS, C>(ctx: CommandContext
         ...params,
         configuration,
     } as any;
-
 }
