@@ -19,6 +19,7 @@ import { ParameterPromptObject } from "./prompt";
 
 export async function configurationWithParameters<PARAMS, C>(ctx: CommandContext<C>,
                                                              parameters: ParameterPromptObject<PARAMS>): Promise<PARAMS & { configuration: C }> {
+    await ctx.audit.log("Checking configuration");
     const cfgs = ctx.configuration;
     const promptParameters: any = {
         ...(parameters || {}),
@@ -32,9 +33,12 @@ export async function configurationWithParameters<PARAMS, C>(ctx: CommandContext
     }
 
     const params = await ctx.parameters.prompt<PARAMS & { configuration: string }>(promptParameters);
+    const configuration = cfgs.length === 1 ? cfgs[0] : cfgs.find(c => c.name === params.configuration);
+    await ctx.audit.log(`Configuration to invoke '${configuration.name}'`);
+
     return {
         ...params,
-        configuration: cfgs.length === 1 ? cfgs[0] : cfgs.find(c => c.name === params.configuration),
+        configuration,
     } as any;
 
 }
