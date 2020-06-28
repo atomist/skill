@@ -17,8 +17,10 @@
 import { CommandContext } from "../handler";
 import { ParameterPromptObject } from "./prompt";
 
-export async function configurationWithParameters<PARAMS, C>(ctx: CommandContext<C>,
-                                                             parameters: ParameterPromptObject<PARAMS>): Promise<PARAMS & { configuration: C }> {
+export async function configurationWithParameters<PARAMS, C>(
+    ctx: CommandContext<C>,
+    parameters: ParameterPromptObject<PARAMS>,
+): Promise<PARAMS & { configuration: C }> {
     const cfgs = ctx.configuration;
     const promptParameters: any = {
         ...(parameters || {}),
@@ -36,5 +38,4 @@ export async function configurationWithParameters<PARAMS, C>(ctx: CommandContext
         ...params,
         configuration: cfgs.length === 1 ? cfgs[0] : cfgs.find(c => c.name === params.configuration),
     } as any;
-
 }
