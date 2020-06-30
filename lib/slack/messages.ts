@@ -157,7 +157,8 @@ export function progressMessage(
             | "waiting_for_approval"
             | "approved"
             | "waiting_for_pre_approval"
-            | "pre_approved";
+            | "pre_approved"
+            | "success";
         color?: string;
         counter?: boolean;
         status?: boolean;
@@ -225,6 +226,7 @@ export function progressMessage(
                 color,
                 footer: footer(ctx),
                 ts: ts(),
+                ...(options || {}),
             },
         ],
     };
