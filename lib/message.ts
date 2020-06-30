@@ -25,8 +25,8 @@ import { replacer, toArray } from "./util";
 import cloneDeep = require("lodash.clonedeep");
 
 export interface Destinations {
-    users: string | string[];
-    channels: string | string[];
+    users?: string | string[];
+    channels?: string | string[];
 }
 
 export interface MessageClient {
