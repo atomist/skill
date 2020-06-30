@@ -24,3 +24,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 -   Move to skill.ts from index.ts for skill definition. [#15](https://github.com/atomist/skill/issues/15)
+-   Make users and channels optional in Destinations. [d0eb283](https://github.com/atomist/skill/commit/d0eb283b368c371f5dcc8198333dd377ccad8537)
