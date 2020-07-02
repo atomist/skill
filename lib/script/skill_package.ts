@@ -27,7 +27,7 @@ export async function packageSkill(cwd: string, verbose: boolean): Promise<void>
     const fileName = path.join(cwd, ".atomist", "skill.zip");
     await fs.ensureDir(path.dirname(fileName));
 
-    const ignores = [".git", "node_modules", "atomist.yaml"];
+    const ignores = [".git", "node_modules"];
     const ignoreFile = ".atomistignore";
     if (await fs.pathExists(path.join(cwd, ignoreFile))) {
         ignores.push(...(await (await fs.readFile(path.join(cwd, ignoreFile))).toString()).trim().split("\n"));
