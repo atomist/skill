@@ -1,4 +1,4 @@
-# `@atomist/skill` 
+# `@atomist/skill`
 
 API to implement a JavaScript/TypeScript-based Atomist Skills.
 
@@ -28,7 +28,7 @@ Please see [docs.atomist.com][atomist-doc] for
 [typedoc]: https://atomist.github.io/sdm/ "@atomist/sdm TypeDoc"
 [licenses]: legal/THIRD_PARTY.md "@atomist/sdm Third-Party Licenses"
 
-## Connect 
+## Connect
 
 Follow [@atomist][atomist-twitter] and [The Composition][atomist-blog]
 blog related to SDM.
