@@ -1,7 +1,7 @@
-# `@atomist/skill` 
- 
-API to implement a JavaScript/TypeScript-based Atomist Skills. 
- 
+# `@atomist/skill`
+
+API to implement a JavaScript/TypeScript-based Atomist Skills.
+
 ## Contributing
 
 Contributions to this project from community members are encouraged
@@ -16,7 +16,7 @@ Conduct](CODE_OF_CONDUCT.md). You are expected to act in accordance
 with this code by participating. Please report any unacceptable
 behavior to code-of-conduct@atomist.com.
 
-## Documentation 
+## Documentation
 
 Please see [docs.atomist.com][atomist-doc] for
 [developer][atomist-doc-sdm] documentation.
@@ -24,17 +24,17 @@ Please see [docs.atomist.com][atomist-doc] for
 -   API documentation for this project: [@atomist/sdm TypeDoc][typedoc]
 -   List of third-party OSS licenses used in this project: [@atomist/sdm OSS licenses][licenses]
 
-[atomist-doc-sdm]: https://docs.atomist.com/developer/sdm/ (Atomist Documentation - SDM Developer)
-[typedoc]: https://atomist.github.io/sdm/ (@atomist/sdm TypeDoc)
-[licenses]: legal/THIRD_PARTY.md (@atomist/sdm Third-Party Licenses)
+[atomist-doc-sdm]: https://docs.atomist.com/developer/sdm/ "Atomist Documentation - SDM Developer"
+[typedoc]: https://atomist.github.io/sdm/ "@atomist/sdm TypeDoc"
+[licenses]: legal/THIRD_PARTY.md "@atomist/sdm Third-Party Licenses"
 
 ## Connect
 
 Follow [@atomist][atomist-twitter] and [The Composition][atomist-blog]
 blog related to SDM.
 
-[atomist-twitter]: https://twitter.com/atomist (Atomist on Twitter)
-[atomist-blog]: https://the-composition.com/ (The Composition - The Official Atomist Blog)
+[atomist-twitter]: https://twitter.com/atomist "Atomist on Twitter"
+[atomist-blog]: https://the-composition.com/ "The Composition - The Official Atomist Blog"
 
 ## Support
 
@@ -50,7 +50,7 @@ If you find a problem, please create an [issue][].
 You will need to install [Node.js][node] to build and test this
 project.
 
-[node]: https://nodejs.org/ (Node.js)
+[node]: https://nodejs.org/ "Node.js"
 
 ### Build and test
 
@@ -69,16 +69,15 @@ $ npm run build
 
 ### Release
 
-Releases are handled via the [Atomist SDM][atomist-sdm].  Just press
+Releases are handled via the [Atomist SDM][atomist-sdm]. Just press
 the 'Approve' button in the Atomist dashboard or Slack.
 
-[atomist-sdm]: https://github.com/atomist/atomist-sdm (Atomist Software Delivery Machine)
+[atomist-sdm]: https://github.com/atomist/atomist-sdm "Atomist Software Delivery Machine"
 
---- 
+---
 
 Created by [Atomist][atomist].
-Need Help?  [Join our Slack workspace][slack].
+Need Help? [Join our Slack workspace][slack].
 
-[atomist]: https://atomist.com/ (Atomist - How Teams Deliver Software)
-[slack]: https://join.atomist.com/ (Atomist Community Slack)
- 
+[atomist]: https://atomist.com/ "Atomist - How Teams Deliver Software"
+[slack]: https://join.atomist.com/ "Atomist Community Slack"

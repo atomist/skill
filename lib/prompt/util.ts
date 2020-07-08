@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import {
-    CommandContext,
-    Configuration,
-} from "../handler";
+import { CommandContext, Configuration } from "../handler";
 import { ParameterPromptObject } from "./prompt";
 
-export async function configurationWithParameters<PARAMS, C>(ctx: CommandContext<C>,
-                                                             parameters: ParameterPromptObject<PARAMS>): Promise<PARAMS & { configuration: Configuration<C> }> {
+export async function configurationWithParameters<PARAMS, C>(
+    ctx: CommandContext<C>,
+    parameters: ParameterPromptObject<PARAMS>,
+): Promise<PARAMS & { configuration: Configuration<C> }> {
     await ctx.audit.log("Checking configuration");
     const cfgs = ctx.configuration;
     const promptParameters: any = {
@@ -43,5 +42,4 @@ export async function configurationWithParameters<PARAMS, C>(ctx: CommandContext
         ...params,
         configuration,
     };
-
 }
