@@ -17,25 +17,11 @@
 import * as assert from "assert";
 import * as fs from "fs-extra";
 import { commit, createBranch } from "../lib/git/operation";
-import * as log from "../lib/log";
 import { createProjectLoader } from "../lib/project/loader";
 import { gitHubComRepository } from "../lib/repository/id";
 import { status } from "../lib/git/operation";
 
 describe("project", () => {
-    let originalLogDebug: any;
-    before(() => {
-        originalLogDebug = Object.getOwnPropertyDescriptor(log, "debug");
-        Object.defineProperty(log, "debug", {
-            value: async () => {
-                return;
-            },
-        });
-    });
-    after(() => {
-        Object.defineProperty(log, "debug", originalLogDebug);
-    });
-
     it("should clone public repo", async () => {
         const p = await createProjectLoader().clone(
             gitHubComRepository({ owner: "atomist", repo: "skill", credential: undefined }),
