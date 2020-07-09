@@ -14,6 +14,6 @@
  * limitations under the License.
  */
 
-export { UpdateCheck, CreateCheck, Check, openCheck } from "./check";
+export { UpdateCheck, CreateCheck, Check, createCheck } from "./check";
 export { api, formatMarkers, convergeLabel } from "./operation";
 export { persistChanges, closePullRequests } from "./pull_request";

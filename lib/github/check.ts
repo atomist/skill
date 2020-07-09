@@ -49,26 +49,55 @@ export interface Check {
     update: (parameters: UpdateCheck) => Promise<void>;
 }
 
-export async function openCheck(
+export async function createCheck(
     ctx: Contextual<any, any>,
     id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
     parameters: CreateCheck,
 ): Promise<Check> {
-    const check = await api(id).checks.create({
-        owner: id.owner,
-        repo: id.repo,
-        head_sha: parameters.sha,
-        name: parameters.name,
-        started_at: parameters.startedAt || new Date().toISOString(),
-        external_id: ctx.correlationId,
-        details_url: ctx.audit.url,
-        status: "in_progress",
-        output: {
-            title: parameters.title,
-            summary: `${parameters.body}
+    // Check if there is a check open with that name
+    const openChecks = (
+        await api(id).checks.listForRef({
+            owner: id.owner,
+            repo: id.repo,
+            ref: parameters.sha,
+            check_name: parameters.name,
+            status: "in_progress",
+            filter: "latest",
+        })
+    ).data;
+
+    let check;
+    if (openChecks.total_count === 1) {
+        check = openChecks.check_runs[0];
+        await api(id).checks.update({
+            owner: id.owner,
+            repo: id.repo,
+            check_run_id: check.data.id,
+            external_id: ctx.correlationId,
+            details_url: ctx.audit.url,
+            output: {
+                title: parameters.title,
+                summary: `${parameters.body}
 ${formatMarkers(ctx)}`,
-        },
-    });
+            },
+        });
+    } else {
+        check = await api(id).checks.create({
+            owner: id.owner,
+            repo: id.repo,
+            head_sha: parameters.sha,
+            name: parameters.name,
+            started_at: parameters.startedAt || new Date().toISOString(),
+            external_id: ctx.correlationId,
+            details_url: ctx.audit.url,
+            status: "in_progress",
+            output: {
+                title: parameters.title,
+                summary: `${parameters.body}
+${formatMarkers(ctx)}`,
+            },
+        });
+    }
     return {
         data: check.data,
         update: async params => {
