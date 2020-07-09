@@ -45,7 +45,7 @@ export function wrapAuditLogger(
         },
         url: `https://go.atomist.${
             (process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging") ? "services" : "com"
-        }/log/${context.workspaceId}/${context.correlationId}`,
+        }/${context.workspaceId}/log/${context.correlationId}`,
     };
 }
 
