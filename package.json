@@ -67,7 +67,7 @@
     "yargs": "^15.1.0"
   },
   "devDependencies": {
-    "@atomist/npm-tools": "0.1.0-master.20200708095558",
+    "@atomist/npm-tools": "0.1.0-master.20200709090755",
     "@google-cloud/functions-framework": "^1.6.0",
     "@types/mocha": "^7.0.2",
     "@types/power-assert": "^1.5.3",
@@ -113,7 +113,7 @@
     "test": "mocha --require espower-typescript/guess \"test/**/*.test.ts\"",
     "test:one": "mocha --require espower-typescript/guess \"test/**/${TEST:-*.test.ts}\"",
     "typedoc": "npm run doc",
-    "source-maps": "atm-npm-tools source-maps"
+    "prepack": "atm-npm-tools source-maps"
   },
   "engines": {
     "node": ">=8.2.0",
