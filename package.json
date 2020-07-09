@@ -10,14 +10,14 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/atomist/skill.git"
+    "url": "https://github.com/atomist-skills/skill.git"
   },
   "keywords": [
     "DEV_EX"
   ],
-  "homepage": "https://github.com/atomist/skill#readme",
+  "homepage": "https://github.com/atomist-skills/skill#readme",
   "bugs": {
-    "url": "https://github.com/atomist/skill/issues"
+    "url": "https://github.com/atomist-skills/skill/issues"
   },
   "dependencies": {
     "@atomist/skill-logging": "0.1.0-master.20200316180914",
