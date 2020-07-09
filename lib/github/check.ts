@@ -30,7 +30,7 @@ export interface CreateCheck {
 }
 
 export interface UpdateCheck {
-    conclusion: "success" | "failure" | "neutral" | "cancelled" | "skipped" | "timed_out" | "action_required";
+    conclusion?: "success" | "failure" | "neutral" | "cancelled" | "skipped" | "timed_out" | "action_required";
     body?: string;
     annotations?: Array<{
         path: string;
