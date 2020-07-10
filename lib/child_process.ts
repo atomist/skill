@@ -319,3 +319,21 @@ export const ConsoleLog: WritableLog = {
         debug(what);
     },
 };
+
+export function captureLog(): WritableLog & { log: string } {
+    const logLines = [];
+    return {
+        write: (msg): void => {
+            let line = msg;
+            if (line.endsWith("\n")) {
+                line = line.slice(0, -1);
+            }
+            const lines = line.split("\n");
+            lines.forEach(l => debug(l.trimRight()));
+            logLines.push(msg);
+        },
+        get log() {
+            return logLines.join("");
+        },
+    };
+}
