@@ -25,10 +25,10 @@ class BuildableHandlerStatus implements HandlerStatus {
     }
 }
 
-export function success(reason: string): HandlerStatus & { hidden: () => HandlerStatus } {
+export function success(reason?: string): HandlerStatus & { hidden: () => HandlerStatus } {
     return new BuildableHandlerStatus(0, reason);
 }
 
-export function failure(reason: string): HandlerStatus & { hidden: () => HandlerStatus } {
+export function failure(reason?: string): HandlerStatus & { hidden: () => HandlerStatus } {
     return new BuildableHandlerStatus(1, reason);
 }
