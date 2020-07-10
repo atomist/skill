@@ -77,8 +77,7 @@ export async function createCheck(
             details_url: ctx.audit.url,
             output: {
                 title: parameters.title,
-                summary: `${parameters.body}
-${formatMarkers(ctx)}`,
+                summary: truncateText(`${parameters.body}\n${formatMarkers(ctx)}`),
             },
         });
     } else {
@@ -93,8 +92,7 @@ ${formatMarkers(ctx)}`,
             status: "in_progress",
             output: {
                 title: parameters.title,
-                summary: `${parameters.body}
-${formatMarkers(ctx)}`,
+                summary: truncateText(`${parameters.body}\n${formatMarkers(ctx)}`),
             },
         });
     }
@@ -110,7 +108,9 @@ ${formatMarkers(ctx)}`,
                 status: params.conclusion ? "completed" : "in_progress",
                 output: {
                     title: check.data.output.title,
-                    summary: params.body ? `${params.body}\n${formatMarkers(ctx)}` : check.data.output.summary,
+                    summary: truncateText(
+                        params.body ? `${params.body}\n${formatMarkers(ctx)}` : check.data.output.summary,
+                    ),
                 },
             });
             await updateAnnotation(ctx, id, check, params);
@@ -133,7 +133,9 @@ async function updateAnnotation(
             check_run_id: check.data.id,
             output: {
                 title: check.data.output.title,
-                summary: parameters.body ? `${parameters.body}\n${formatMarkers(ctx)}` : check.data.output.summary,
+                summary: truncateText(
+                    parameters.body ? `${parameters.body}\n${formatMarkers(ctx)}` : check.data.output.summary,
+                ),
                 annotations: chunk.map(c => ({
                     annotation_level: c.annotationLevel,
                     title: c.title,
@@ -146,5 +148,15 @@ async function updateAnnotation(
                 })),
             },
         });
+    }
+}
+
+export function truncateText(text: string, length = 65535): string {
+    const ellipsis = " ... ";
+    if (text.length <= length) {
+        return text;
+    } else {
+        const partLength = Math.floor((length - ellipsis.length) / 2);
+        return text.slice(0, partLength) + ellipsis + text.slice(-1 * partLength);
     }
 }
