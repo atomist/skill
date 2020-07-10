@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add support for resources on docker artifacts. [d3e0eae](https://github.com/atomist/skill/commit/d3e0eae0426d7784d6b10a4f05767b8f04d6bcd2)
 -   Add helper to select skill configuration for commands. [#16](https://github.com/atomist/skill/issues/16)
 -   Add helper to create HandlerStatus instances. [00a6ecf](https://github.com/atomist-skills/skill/commit/00a6ecff4b07510d9452b6263898e3224c00e45b)
+-   Rexport the slack-messages helpers. [c7bde59](https://github.com/atomist-skills/skill/commit/c7bde5975957b4f4d0a1e5413a98b8227a7d2983)
 
 ### Changed
 
