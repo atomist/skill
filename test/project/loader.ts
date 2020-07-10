@@ -16,12 +16,10 @@
 
 import * as assert from "assert";
 import * as fs from "fs-extra";
-import { commit, createBranch } from "../lib/git/operation";
-import { createProjectLoader } from "../lib/project/loader";
-import { gitHubComRepository } from "../lib/repository/id";
-import { status } from "../lib/git/operation";
+import { createProjectLoader } from "../../lib/project/loader";
+import { gitHubComRepository } from "../../lib/repository/id";
 
-describe("project", () => {
+describe("loader", () => {
     it("should clone public repo", async () => {
         const p = await createProjectLoader().clone(
             gitHubComRepository({ owner: "atomist", repo: "skill", credential: undefined }),
@@ -30,17 +28,5 @@ describe("project", () => {
         const readmePath = p.path("README.md");
         assert(baseDir);
         assert.strictEqual(await fs.pathExists(readmePath), true);
-
-        await fs.remove(readmePath);
-        const gs = await status(p);
-        assert(!!gs);
-        await createBranch(p, "test-" + Date.now());
-        const gs1 = await status(p);
-        assert(!!gs1);
-        const changedFiles = (await p.exec("git", ["diff", "--name-only"])).stdout
-            .split("\n")
-            .filter(f => !!f && f.length > 0);
-        assert(changedFiles.length > 0);
-        await commit(p, "Test commit");
     }).timeout(5000);
 });
