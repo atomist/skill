@@ -27,3 +27,4 @@ export {
     ParameterIndexType,
     SelectOption,
 } from "./button";
+export * from "@atomist/slack-messages";
