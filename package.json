@@ -48,8 +48,8 @@
     "fs-extra": "^8.1.0",
     "git-url-parse": "^11.1.2",
     "glob-gitignore": "^1.0.14",
-    "js-yaml": "^3.13.1",
-    "jszip": "^3.4.0",
+    "js-yaml": "^3.14.0",
+    "jszip": "^3.5.0",
     "lodash.chunk": "^4.2.0",
     "lodash.clonedeep": "^4.5.0",
     "lodash.forown": "^4.4.0",
@@ -59,12 +59,12 @@
     "node-fetch": "^2.6.0",
     "p-retry": "^4.2.0",
     "semver": "^7.3.2",
-    "source-map-support": "^0.5.16",
+    "source-map-support": "^0.5.19",
     "stack-trace": "0.0.10",
     "strip-ansi": "^6.0.0",
     "tree-kill": "^1.2.2",
     "uuid": "^3.3.3",
-    "yargs": "^15.1.0"
+    "yargs": "^15.4.0"
   },
   "devDependencies": {
     "@atomist/npm-tools": "0.1.0-master.20200709090755",
