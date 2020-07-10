@@ -84,7 +84,7 @@ export async function doClone(id: AuthenticatedRepositoryId<any>, options: Clone
     const cloneBranch = id.branch;
     const cloneArgs = ["clone", url, repoDir];
 
-    // Set the global symlink flag on git according to our options; this defaults to false to err on  the safe side
+    // Set the global symlink flag on git according to our options; this defaults to false to err on the safe side
     await execPromise("git", [
         "config",
         "--global",
