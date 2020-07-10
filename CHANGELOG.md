@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add helper to create HandlerStatus instances. [00a6ecf](https://github.com/atomist-skills/skill/commit/00a6ecff4b07510d9452b6263898e3224c00e45b)
 -   Rexport the slack-messages helpers. [c7bde59](https://github.com/atomist-skills/skill/commit/c7bde5975957b4f4d0a1e5413a98b8227a7d2983)
 -   Add npmJSRegistry resource provider method. [984f406](https://github.com/atomist-skills/skill/commit/984f406b589876f3997be22b9d4b432d50ed9137)
+-   GitHub Check output.summary can only have 65535 characters. [#29](https://github.com/atomist-skills/skill/issues/29)
 
 ### Changed
 
