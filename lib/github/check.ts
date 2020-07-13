@@ -72,7 +72,7 @@ export async function createCheck(
         await api(id).checks.update({
             owner: id.owner,
             repo: id.repo,
-            check_run_id: check.data.id,
+            check_run_id: check.id,
             external_id: ctx.correlationId,
             details_url: ctx.audit.url,
             output: {
