@@ -24,6 +24,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Rexport the slack-messages helpers. [c7bde59](https://github.com/atomist-skills/skill/commit/c7bde5975957b4f4d0a1e5413a98b8227a7d2983)
 -   Add npmJSRegistry resource provider method. [984f406](https://github.com/atomist-skills/skill/commit/984f406b589876f3997be22b9d4b432d50ed9137)
 -   GitHub Check output.summary can only have 65535 characters. [#29](https://github.com/atomist-skills/skill/issues/29)
+-   Add matchesFilter helper for repository filtering. [522afd6](https://github.com/atomist-skills/skill/commit/522afd6442ea7d5c6210505d9ad18fed28beed3d)
 
 ### Changed
 
