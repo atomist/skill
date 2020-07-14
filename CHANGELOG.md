@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add npmJSRegistry resource provider method. [984f406](https://github.com/atomist-skills/skill/commit/984f406b589876f3997be22b9d4b432d50ed9137)
 -   GitHub Check output.summary can only have 65535 characters. [#29](https://github.com/atomist-skills/skill/issues/29)
 -   Add matchesFilter helper for repository filtering. [522afd6](https://github.com/atomist-skills/skill/commit/522afd6442ea7d5c6210505d9ad18fed28beed3d)
+-   Add state backed by storage bucket. [1d2cd72](https://github.com/atomist-skills/skill/commit/1d2cd724480409de71ee85e2024b540d4fc4c443)
 
 ### Changed
 
