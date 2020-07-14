@@ -21,13 +21,13 @@ import { Contextual } from "./handler";
 import { warn } from "./log/console";
 import { guid } from "./util";
 
-export async function hydrate<T>(ctx: Contextual<any, any>): Promise<T> {
+export async function hydrate<T>(ctx: Contextual<any, any>, value?: T): Promise<T> {
     const key = stateKey(ctx);
     try {
         const stateFile = await ctx.storage.retrieve(key);
         return fs.readJson(stateFile);
     } catch (e) {
-        return {} as T;
+        return value || ({} as T);
     }
 }
 
