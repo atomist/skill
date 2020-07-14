@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types";
 import { Endpoints } from "@octokit/types";
 import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
@@ -66,13 +67,12 @@ export async function createCheck(
         })
     ).data;
 
-    let check;
+    let check: RestEndpointMethodTypes["checks"]["create"]["response"];
     if (openChecks.total_count === 1) {
-        check = openChecks.check_runs[0];
-        await api(id).checks.update({
+        check = await api(id).checks.update({
             owner: id.owner,
             repo: id.repo,
-            check_run_id: check.id,
+            check_run_id: openChecks.check_runs[0].id,
             external_id: ctx.correlationId,
             details_url: ctx.audit.url,
             output: {
