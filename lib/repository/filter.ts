@@ -26,8 +26,8 @@ export function matchesFilter(
     const cfg = ctx.configuration.find(c => c.name === configurationName);
     const repoFilter = cfg.parameters[parameterName];
     if (repoFilter) {
-        const excludes = repoFilter.value?.excludes || [];
-        const includes = repoFilter.value?.includes || [];
+        const excludes = repoFilter.excludes || [];
+        const includes = repoFilter.includes || [];
         if (includes.length === 0 && excludes.length === 0) {
             return true;
         } else if (excludes.some(e => (e.repoIds || []).includes(repoId))) {

@@ -38,13 +38,11 @@ describe("filter", () => {
                     name: "test",
                     parameters: {
                         repos: {
-                            value: {
-                                includes: [
-                                    {
-                                        ownerId: "bar",
-                                    },
-                                ],
-                            },
+                            includes: [
+                                {
+                                    ownerId: "bar",
+                                },
+                            ],
                         },
                     },
                 },
@@ -60,13 +58,11 @@ describe("filter", () => {
                     name: "test",
                     parameters: {
                         repos: {
-                            value: {
-                                includes: [
-                                    {
-                                        ownerId: "otherOrg",
-                                    },
-                                ],
-                            },
+                            includes: [
+                                {
+                                    ownerId: "otherOrg",
+                                },
+                            ],
                         },
                     },
                 },
@@ -82,14 +78,12 @@ describe("filter", () => {
                     name: "test",
                     parameters: {
                         repos: {
-                            value: {
-                                includes: [
-                                    {
-                                        ownerId: "otherOrg",
-                                        repoIds: ["foo"],
-                                    },
-                                ],
-                            },
+                            includes: [
+                                {
+                                    ownerId: "otherOrg",
+                                    repoIds: ["foo"],
+                                },
+                            ],
                         },
                     },
                 },
@@ -105,14 +99,12 @@ describe("filter", () => {
                     name: "test",
                     parameters: {
                         repos: {
-                            value: {
-                                includes: [
-                                    {
-                                        ownerId: "otherOrg",
-                                        repoIds: ["otherFoo"],
-                                    },
-                                ],
-                            },
+                            includes: [
+                                {
+                                    ownerId: "otherOrg",
+                                    repoIds: ["otherFoo"],
+                                },
+                            ],
                         },
                     },
                 },
