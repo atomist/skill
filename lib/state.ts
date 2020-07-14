@@ -21,8 +21,8 @@ import { Contextual } from "./handler";
 import { warn } from "./log/console";
 import { guid } from "./util";
 
-export async function hydrate<T>(ctx: Contextual<any, any>, value?: T): Promise<T> {
-    const key = stateKey(ctx);
+export async function hydrate<T>(configurationName, ctx: Contextual<any, any>, value?: T): Promise<T> {
+    const key = stateKey(configurationName, ctx);
     try {
         const stateFile = await ctx.storage.retrieve(key);
         return fs.readJson(stateFile);
@@ -43,6 +43,8 @@ export async function save(state: any, ctx: Contextual<any, any>): Promise<void>
     }
 }
 
-function stateKey(ctx: Contextual<any, any>): string {
-    return `state/${ctx.workspaceId}/${ctx.skill.namespace}/${ctx.skill.name}/${ctx.skill.id}.json`;
+function stateKey(configurationName: string, ctx: Contextual<any, any>): string {
+    return `state/${ctx.workspaceId}/${ctx.skill.namespace}/${ctx.skill.name}/${configurationName
+        .replace(/[^a-zA-Z0-9-_]/g, "")
+        .toLowerCase()}.json`;
 }
