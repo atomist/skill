@@ -31,8 +31,8 @@ export async function hydrate<T>(configurationName, ctx: Contextual<any, any>, v
     }
 }
 
-export async function save(state: any, ctx: Contextual<any, any>): Promise<void> {
-    const key = stateKey(ctx);
+export async function save(state: any, configurationName: string, ctx: Contextual<any, any>): Promise<void> {
+    const key = stateKey(configurationName, ctx);
     try {
         const targetFilePath = path.join(os.tmpdir() || "/tmp", guid());
         await fs.ensureDir(path.dirname(targetFilePath));
