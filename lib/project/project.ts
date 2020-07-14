@@ -25,6 +25,7 @@ import {
 } from "../child_process";
 import { debug } from "../log";
 import { AuthenticatedRepositoryId } from "../repository/id";
+import { handleError } from "../util";
 import { CloneOptions, doClone } from "./clone";
 import { setUserConfig } from "../git";
 
@@ -49,7 +50,7 @@ export async function load<C>(id: AuthenticatedRepositoryId<C>, baseDir: string)
         exec: (cmd, args, opts): Promise<ExecPromiseResult> =>
             execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
     };
-    await setUserConfig(project);
+    await handleError(() => setUserConfig(project));
     return project;
 }
 
@@ -63,7 +64,7 @@ export async function clone<C>(id: AuthenticatedRepositoryId<C>, options?: Clone
         exec: (cmd, args, opts): Promise<ExecPromiseResult> =>
             execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
     };
-    await setUserConfig(project);
+    await handleError(() => setUserConfig(project));
     return project;
 }
 
