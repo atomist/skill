@@ -51,8 +51,11 @@ export async function persistChanges(
             .split("\n")
             .map(f => f.trim())
             .filter(f => !!f && f.length > 0);
-        const body = `${pullRequest.body}
+        const body = `${pullRequest.body.trim()}
 
+---
+
+${changedFiles.length === 1 ? "File" : "Files"} changed:
 ${changedFiles.map(f => ` * \`${f}\``).join("\n")}
 ${formatMarkers(ctx)}
 `;

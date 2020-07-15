@@ -54,23 +54,12 @@ export function api(
 
 export function formatMarkers(ctx: Contextual<any, any>, ...tags: string[]): string {
     return `
----
-
-<details>
-  <summary>Tags</summary>
-  <br/>
-  <code>[atomist:generated]</code>
-  <br/>
-  <code>[atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]</code>
-  <br/>
-  <code><a href="${ctx.audit.url}">[atomist-correlation-id:${ctx.correlationId}]</a></code>
-  ${tags
-      .map(
-          t => `<br/>
-  <code>[${t}]</code>`,
-      )
-      .join("\n")}
-</details>`;
+<!--
+  [atomist:generated]</code>
+  [atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]
+  [atomist-correlation-id:${ctx.correlationId}]
+${tags.map(t => `  [${t}]`).join("\n")}
+-->`;
 }
 
 export async function convergeLabel(
