@@ -110,6 +110,6 @@ describe("filter", () => {
                 },
             ],
         } as any;
-        assert.deepStrictEqual(matchesFilter("foo", "bar", "test", "repos", ctx), false);
+        assert.deepStrictEqual(matchesFilter("foo", "otherOrg", "test", "repos", ctx), false);
     });
 });

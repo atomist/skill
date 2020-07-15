@@ -34,9 +34,9 @@ export function matchesFilter(
             return false;
         } else if (includes.some(i => (i.repoIds || []).includes(repoId))) {
             return true;
-        } else if (excludes.some(e => e.ownerId === orgId)) {
+        } else if (excludes.some(e => e.ownerId === orgId && !e.repoIds)) {
             return false;
-        } else if (includes.some(i => i.ownerId === orgId)) {
+        } else if (includes.some(i => i.ownerId === orgId && !i.repoIds)) {
             return true;
         }
         return false;
