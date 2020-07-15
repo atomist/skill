@@ -51,6 +51,27 @@ describe("filter", () => {
         assert.deepStrictEqual(matchesFilter("foo", "bar", "test", "repos", ctx), true);
     });
 
+    it("should match repository with repoFilter param for entire org and empty repos", () => {
+        const ctx: Contextual<any, any> = {
+            configuration: [
+                {
+                    name: "test",
+                    parameters: {
+                        repos: {
+                            includes: [
+                                {
+                                    ownerId: "bar",
+                                    repoIds: [],
+                                },
+                            ],
+                        },
+                    },
+                },
+            ],
+        } as any;
+        assert.deepStrictEqual(matchesFilter("foo", "bar", "test", "repos", ctx), true);
+    });
+
     it("should not match repository with repoFilter param for entire org", () => {
         const ctx: Contextual<any, any> = {
             configuration: [
