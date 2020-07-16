@@ -78,6 +78,8 @@
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
     "espower-typescript": "^9.0.2",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
     "mocha": "^8.0.1",
     "npm-run-all": "^4.1.5",
     "power-assert": "^1.6.1",
@@ -113,7 +115,8 @@
     "test": "mocha --require espower-typescript/guess \"test/**/*.test.ts\"",
     "test:one": "mocha --require espower-typescript/guess \"test/**/${TEST:-*.test.ts}\"",
     "typedoc": "npm run doc",
-    "prepack": "atm-npm-tools source-maps"
+    "prepack": "atm-npm-tools source-maps",
+    "atm:lint:prettier": "prettier --write"
   },
   "engines": {
     "node": ">=8.2.0",
@@ -121,5 +124,13 @@
   },
   "bin": {
     "atm-skill": "./bin/start.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.@(graphql|json|markdown|yaml|yml|md)": "npm run atm:lint:prettier"
   }
 }
