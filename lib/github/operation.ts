@@ -55,7 +55,7 @@ export function api(
 export function formatMarkers(ctx: Contextual<any, any>, ...tags: string[]): string {
     return `
 <!--
-  [atomist:generated]</code>
+  [atomist:generated]
   [atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]
   [atomist-correlation-id:${ctx.correlationId}]${tags.length > 0 ? "\n" : ""}${tags.map(t => `  [${t}]`).join("\n")}
 -->`;
