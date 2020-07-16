@@ -56,12 +56,17 @@ export async function persistChanges(
             .split("\n")
             .map(f => f.trim())
             .filter(f => !!f && f.length > 0);
+        const untrackedFiles = (await project.exec("git", ["ls-files", "--exclude-standard", "--others"])).stdout
+            .split("\n")
+            .map(f => f.trim())
+            .filter(f => !!f && f.length > 0);
+        const files = [...changedFiles, ...untrackedFiles].sort();
         const body = `${pullRequest.body.trim()}
 
 ---
 
-${changedFiles.length === 1 ? "File" : "Files"} changed:
-${changedFiles.map(f => ` * \`${f}\``).join("\n")}
+${files.length === 1 ? "File" : "Files"} changed:
+${files.map(f => ` * \`${f}\``).join("\n")}
 ${formatMarkers(ctx)}
 `;
 
