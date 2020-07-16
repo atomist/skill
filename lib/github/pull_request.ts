@@ -18,6 +18,7 @@ import { PushStrategy } from "../definition/parameter/definition";
 import * as git from "../git/operation";
 import { Contextual, HandlerStatus } from "../handler";
 import { Project } from "../project/project";
+import * as status from "../status";
 import { api, formatMarkers } from "./operation";
 
 export async function persistChanges(
@@ -25,14 +26,18 @@ export async function persistChanges(
     project: Project,
     strategy: PushStrategy,
     push: { branch: string; defaultBranch: string; author: { login: string; name?: string; email?: string } },
-    pullRequest: { title: string; body: string; branch: string; labels?: string[] },
+    pullRequest: {
+        title: string;
+        body: string;
+        branch: string;
+        labels?: string[];
+        reviewers?: string[];
+        assignReviewer?: boolean;
+    },
     commit: { message: string },
 ): Promise<HandlerStatus> {
     if ((await git.status(project)).isClean) {
-        return {
-            code: 0,
-            reason: `No changes to push`,
-        };
+        return status.success(`No changes to push`);
     }
 
     const commitOptions = {
@@ -40,7 +45,7 @@ export async function persistChanges(
         email: push.author.email,
     };
     const commitMsg = commit.message || `Updates from ${ctx.skill.namespace}/${ctx.skill.name}`;
-    const prBranch = pullRequest.branch || `${ctx.skill.name}-${Date.now()}`;
+    const prBranch = pullRequest.branch || `atomist/${ctx.skill.name.toLowerCase()}-${Date.now()}`;
     const repoUrl = `https://github.com/${project.id.owner}/${project.id.repo}`;
 
     if (
@@ -67,6 +72,7 @@ ${formatMarkers(ctx)}
         try {
             let pr;
             const gh = api(project.id);
+            let newPr = true;
             const openPrs = (
                 await gh.pulls.list({
                     owner: project.id.owner,
@@ -78,6 +84,7 @@ ${formatMarkers(ctx)}
                 })
             ).data;
             if (openPrs.length === 1) {
+                newPr = false;
                 pr = openPrs[0];
                 await gh.pulls.update({
                     owner: project.id.owner,
@@ -105,23 +112,30 @@ ${formatMarkers(ctx)}
                     });
                 }
             }
-            await gh.pulls.requestReviewers({
-                owner: project.id.owner,
-                repo: project.id.repo,
-                pull_number: pr.number,
-                reviewers: [push.author.login],
-            });
-            return {
-                code: 0,
-                reason: `Pushed to [${project.id.owner}/${project.id.repo}/${prBranch}](${repoUrl}) and raised PR [#${pr.number}](${pr.html_url})`,
-            };
+            if (
+                !pullRequest.labels?.includes("auto-merge:on-check-success") &&
+                (pullRequest.assignReviewer !== false || pullRequest.reviewers?.length > 0)
+            ) {
+                const reviewers = [...(pullRequest.reviewers || [])];
+                if (pullRequest.assignReviewer !== false) {
+                    reviewers.push(push.author.login);
+                }
+                await gh.pulls.requestReviewers({
+                    owner: project.id.owner,
+                    repo: project.id.repo,
+                    pull_number: pr.number,
+                    reviewers,
+                });
+            }
+            return status.success(
+                `Pushed changes to [${project.id.owner}/${project.id.repo}/${prBranch}](${repoUrl}) and ${
+                    newPr ? "raised" : "updated"
+                } [#${pr.number}](${pr.html_url})`,
+            );
         } catch (e) {
             // This might fail if the PR already exists
         }
-        return {
-            code: 0,
-            reason: `Pushed to [${project.id.owner}/${project.id.repo}/${prBranch}](${repoUrl})`,
-        };
+        return status.success(`Pushed changes to [${project.id.owner}/${project.id.repo}/${prBranch}](${repoUrl})`);
     } else if (
         strategy === "commit" ||
         (push.branch === push.defaultBranch && strategy === "commit_default") ||
@@ -129,15 +143,9 @@ ${formatMarkers(ctx)}
     ) {
         await git.commit(project, commitMsg, commitOptions);
         await git.push(project);
-        return {
-            code: 0,
-            reason: `Pushed to [${project.id.owner}/${project.id.repo}/${push.branch}](${repoUrl})`,
-        };
+        return status.success(`Pushed changes to [${project.id.owner}/${project.id.repo}/${push.branch}](${repoUrl})`);
     }
-    return {
-        code: 0,
-        reason: `Not pushed because of selected push strategy`,
-    };
+    return status.success(`Not pushed because of selected push strategy`);
 }
 
 export async function closePullRequests(
