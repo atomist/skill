@@ -26,15 +26,15 @@ export function wrapAuditLogger(
     return {
         log: async (
             msg: string | string[],
-            severity: Severity = Severity.INFO,
+            severity: Severity = Severity.Info,
             labels?: Record<string, any>,
         ): Promise<void> => {
             const msgs = toArray(msg);
             switch (severity) {
-                case Severity.WARNING:
+                case Severity.Warning:
                     msgs.forEach(m => warn(m));
                     break;
-                case Severity.ERROR:
+                case Severity.Error:
                     msgs.forEach(m => error(m));
                     break;
                 default:

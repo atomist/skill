@@ -74,73 +74,68 @@ ${formatMarkers(ctx)}
         await git.commit(project, commitMsg, commitOptions);
         await git.push(project, { force: true, branch: prBranch });
 
-        try {
-            let pr;
-            const gh = api(project.id);
-            let newPr = true;
-            const openPrs = (
-                await gh.pulls.list({
+        let pr;
+        const gh = api(project.id);
+        let newPr = true;
+        const openPrs = (
+            await gh.pulls.list({
+                owner: project.id.owner,
+                repo: project.id.repo,
+                state: "open",
+                base: push.branch,
+                head: `${project.id.owner}:${prBranch}`,
+                per_page: 100,
+            })
+        ).data;
+        if (openPrs.length === 1) {
+            newPr = false;
+            pr = openPrs[0];
+            await gh.pulls.update({
+                owner: project.id.owner,
+                repo: project.id.repo,
+                pull_number: pr.number,
+                body,
+            });
+        } else {
+            pr = (
+                await gh.pulls.create({
                     owner: project.id.owner,
                     repo: project.id.repo,
-                    state: "open",
+                    title: pullRequest.title,
+                    body,
                     base: push.branch,
-                    head: `${project.id.owner}:${prBranch}`,
-                    per_page: 100,
+                    head: prBranch,
                 })
             ).data;
-            if (openPrs.length === 1) {
-                newPr = false;
-                pr = openPrs[0];
-                await gh.pulls.update({
+            if (pullRequest.labels?.length > 0) {
+                await gh.issues.update({
                     owner: project.id.owner,
                     repo: project.id.repo,
-                    pull_number: pr.number,
-                    body,
-                });
-            } else {
-                pr = (
-                    await gh.pulls.create({
-                        owner: project.id.owner,
-                        repo: project.id.repo,
-                        title: pullRequest.title,
-                        body,
-                        base: push.branch,
-                        head: prBranch,
-                    })
-                ).data;
-                if (pullRequest.labels?.length > 0) {
-                    await gh.issues.update({
-                        owner: project.id.owner,
-                        repo: project.id.repo,
-                        issue_number: pr.number,
-                        labels: pullRequest.labels,
-                    });
-                }
-            }
-            if (
-                !pullRequest.labels?.includes("auto-merge:on-check-success") &&
-                (pullRequest.assignReviewer !== false || pullRequest.reviewers?.length > 0)
-            ) {
-                const reviewers = [...(pullRequest.reviewers || [])];
-                if (pullRequest.assignReviewer !== false) {
-                    reviewers.push(push.author.login);
-                }
-                await gh.pulls.requestReviewers({
-                    owner: project.id.owner,
-                    repo: project.id.repo,
-                    pull_number: pr.number,
-                    reviewers,
+                    issue_number: pr.number,
+                    labels: pullRequest.labels,
                 });
             }
-            return status.success(
-                `Pushed changes to [${project.id.owner}/${project.id.repo}/${prBranch}](${repoUrl}) and ${
-                    newPr ? "raised" : "updated"
-                } [#${pr.number}](${pr.html_url})`,
-            );
-        } catch (e) {
-            // This might fail if the PR already exists
         }
-        return status.success(`Pushed changes to [${project.id.owner}/${project.id.repo}/${prBranch}](${repoUrl})`);
+        if (
+            !pullRequest.labels?.includes("auto-merge:on-check-success") &&
+            (pullRequest.assignReviewer !== false || pullRequest.reviewers?.length > 0)
+        ) {
+            const reviewers = [...(pullRequest.reviewers || [])];
+            if (pullRequest.assignReviewer !== false) {
+                reviewers.push(push.author.login);
+            }
+            await gh.pulls.requestReviewers({
+                owner: project.id.owner,
+                repo: project.id.repo,
+                pull_number: pr.number,
+                reviewers,
+            });
+        }
+        return status.success(
+            `Pushed changes to [${project.id.owner}/${project.id.repo}/${prBranch}](${repoUrl}) and ${
+                newPr ? "raised" : "updated"
+            } [#${pr.number}](${pr.html_url})`,
+        );
     } else if (
         strategy === "commit" ||
         (push.branch === push.defaultBranch && strategy === "commit_default") ||

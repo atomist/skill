@@ -61,7 +61,7 @@ export async function processEvent(
         const result = (await (await loader(`events/${context.name}`))(context)) as HandlerStatus;
         await ((context.message as any) as StatusPublisher).publish(prepareStatus(result || { code: 0 }, context));
     } catch (e) {
-        await context.audit.log(`Error occurred: ${e.stack}`, Severity.ERROR);
+        await context.audit.log(`Error occurred: ${e.stack}`, Severity.Error);
         await ((context.message as any) as StatusPublisher).publish(prepareStatus(e, context));
     } finally {
         await context.close();
@@ -83,7 +83,7 @@ export async function processCommand(
         if (e instanceof CommandListenerExecutionInterruptError) {
             await ((context.message as any) as StatusPublisher).publish(prepareStatus({ code: 0 }, context));
         } else {
-            await context.audit.log(`Error occurred: ${e.stack}`, Severity.ERROR);
+            await context.audit.log(`Error occurred: ${e.stack}`, Severity.Error);
             await ((context.message as any) as StatusPublisher).publish(prepareStatus(e, context));
         }
     } finally {

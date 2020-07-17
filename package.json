@@ -20,7 +20,7 @@
     "url": "https://github.com/atomist-skills/skill/issues"
   },
   "dependencies": {
-    "@atomist/skill-logging": "0.1.0-master.20200316180914",
+    "@atomist/skill-logging": "0.1.0-master.20200713114843",
     "@atomist/slack-messages": "^1.1.1",
     "@google-cloud/pubsub": "^2.2.0",
     "@google-cloud/storage": "^5.1.1",
