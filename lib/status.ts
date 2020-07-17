@@ -44,7 +44,10 @@ class BuildableHandlerStatus implements HandlerStatus {
  */
 export function success(
 	reason?: string,
-): HandlerStatus & { hidden: () => HandlerStatus; abort: () => HandlerStatus } {
+): HandlerStatus & {
+	hidden: () => BuildableHandlerStatus;
+	abort: () => BuildableHandlerStatus;
+} {
 	return new BuildableHandlerStatus(0, reason);
 }
 
@@ -57,6 +60,9 @@ export function success(
  */
 export function failure(
 	reason?: string,
-): HandlerStatus & { hidden: () => HandlerStatus; abort: () => HandlerStatus } {
+): HandlerStatus & {
+	hidden: () => BuildableHandlerStatus;
+	abort: () => BuildableHandlerStatus;
+} {
 	return new BuildableHandlerStatus(1, reason);
 }
