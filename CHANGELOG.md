@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   GitHub Check output.summary can only have 65535 characters. [#29](https://github.com/atomist-skills/skill/issues/29)
 -   Add matchesFilter helper for repository filtering. [522afd6](https://github.com/atomist-skills/skill/commit/522afd6442ea7d5c6210505d9ad18fed28beed3d)
 -   Add state backed by storage bucket. [1d2cd72](https://github.com/atomist-skills/skill/commit/1d2cd724480409de71ee85e2024b540d4fc4c443)
+-   Allow for explicit abort of steps. [3a79edf](https://github.com/atomist-skills/skill/commit/3a79edfba893a804a8d57267c1b9d5dfb931bf1c)
 
 ### Changed
 
