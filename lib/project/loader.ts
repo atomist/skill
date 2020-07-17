@@ -19,21 +19,33 @@ import { CloneOptions } from "./clone";
 import { clone, load, Project } from "./project";
 
 export interface ProjectLoader {
-    load<C>(id: AuthenticatedRepositoryId<C>, baseDir: string): Promise<Project<C>>;
+	load<C>(
+		id: AuthenticatedRepositoryId<C>,
+		baseDir: string,
+	): Promise<Project<C>>;
 
-    clone<C>(id: AuthenticatedRepositoryId<C>, options?: CloneOptions): Promise<Project<C>>;
+	clone<C>(
+		id: AuthenticatedRepositoryId<C>,
+		options?: CloneOptions,
+	): Promise<Project<C>>;
 }
 
 export function createProjectLoader(): ProjectLoader {
-    return new DefaultProjectLoader();
+	return new DefaultProjectLoader();
 }
 
 export class DefaultProjectLoader implements ProjectLoader {
-    public async load(id: AuthenticatedRepositoryId<any>, baseDir: string): Promise<Project> {
-        return load(id, baseDir);
-    }
+	public async load(
+		id: AuthenticatedRepositoryId<any>,
+		baseDir: string,
+	): Promise<Project> {
+		return load(id, baseDir);
+	}
 
-    public async clone(id: AuthenticatedRepositoryId<any>, options?: CloneOptions): Promise<Project> {
-        return clone(id, options);
-    }
+	public async clone(
+		id: AuthenticatedRepositoryId<any>,
+		options?: CloneOptions,
+	): Promise<Project> {
+		return clone(id, options);
+	}
 }

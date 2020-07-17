@@ -18,21 +18,21 @@ import * as assert from "power-assert";
 import { failure, success } from "../lib/status";
 
 describe("status", () => {
-    it("should create success status", () => {
-        const status = success("This is a test");
-        assert.deepStrictEqual(status.code, 0);
-        assert.deepStrictEqual(status.reason, "This is a test");
-        assert(!status.visibility);
-        status.hidden();
-        assert.deepStrictEqual(status.visibility, "hidden");
-    });
+	it("should create success status", () => {
+		const status = success("This is a test");
+		assert.deepStrictEqual(status.code, 0);
+		assert.deepStrictEqual(status.reason, "This is a test");
+		assert(!status.visibility);
+		status.hidden();
+		assert.deepStrictEqual(status.visibility, "hidden");
+	});
 
-    it("should create failure status", () => {
-        const status = failure("This is a test");
-        assert.deepStrictEqual(status.code, 1);
-        assert.deepStrictEqual(status.reason, "This is a test");
-        assert(!status.visibility);
-        status.hidden();
-        assert.deepStrictEqual(status.visibility, "hidden");
-    });
+	it("should create failure status", () => {
+		const status = failure("This is a test");
+		assert.deepStrictEqual(status.code, 1);
+		assert.deepStrictEqual(status.reason, "This is a test");
+		assert(!status.visibility);
+		status.hidden();
+		assert.deepStrictEqual(status.visibility, "hidden");
+	});
 });

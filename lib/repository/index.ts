@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
-export { RepositoryId, AuthenticatedRepositoryId, RepositoryProviderType, gitHubComRepository as gitHub } from "./id";
+export {
+	RepositoryId,
+	AuthenticatedRepositoryId,
+	RepositoryProviderType,
+	gitHubComRepository as gitHub,
+} from "./id";
 export { linkedRepositories, linkedRepository } from "./linked";
 export { matchesFilter } from "./filter";

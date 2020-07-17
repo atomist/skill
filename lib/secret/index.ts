@@ -14,5 +14,10 @@
  * limitations under the License.
  */
 
-export { CredentialResolver, CredentialProvider, GitHubCredential, GitHubAppCredential } from "./provider";
+export {
+	CredentialResolver,
+	CredentialProvider,
+	GitHubCredential,
+	GitHubAppCredential,
+} from "./provider";
 export { gitHubUserToken, gitHubAppToken } from "./resolver";

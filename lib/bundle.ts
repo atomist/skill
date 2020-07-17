@@ -17,55 +17,75 @@
 import { processCommand, processEvent, PubSubMessage } from "./function";
 import { CommandHandler, EventHandler } from "./handler";
 import { debug, info } from "./log";
-import { CommandIncoming, EventIncoming, isCommandIncoming, isEventIncoming } from "./payload";
+import {
+	CommandIncoming,
+	EventIncoming,
+	isCommandIncoming,
+	isEventIncoming,
+} from "./payload";
 import { replacer } from "./util";
 
 const HandlerRegistry = {
-    events: {},
-    commands: {},
+	events: {},
+	commands: {},
 };
 
 /**
  * Register a command handler with a certain name
  */
-export function registerCommand(name: string, loader: () => Promise<CommandHandler>): void {
-    HandlerRegistry.commands[name] = loader;
+export function registerCommand(
+	name: string,
+	loader: () => Promise<CommandHandler>,
+): void {
+	HandlerRegistry.commands[name] = loader;
 }
 
 /**
  * Register a event handler with a certain name
  */
-export function registerEvent(name: string, loader: () => Promise<EventHandler>): void {
-    HandlerRegistry.events[name] = loader;
+export function registerEvent(
+	name: string,
+	loader: () => Promise<EventHandler>,
+): void {
+	HandlerRegistry.events[name] = loader;
 }
 
-export const bundle = async (pubSubEvent: PubSubMessage, context: { eventId: string }): Promise<void> => {
-    const attributes = {
-        ...(pubSubEvent.attributes || {}),
-        eventId: context.eventId,
-    };
-    debug(`atm:attributes=${JSON.stringify(attributes)}`);
+export const bundle = async (
+	pubSubEvent: PubSubMessage,
+	context: { eventId: string },
+): Promise<void> => {
+	const attributes = {
+		...(pubSubEvent.attributes || {}),
+		eventId: context.eventId,
+	};
+	debug(`atm:attributes=${JSON.stringify(attributes)}`);
 
-    const payload: CommandIncoming | EventIncoming = JSON.parse(Buffer.from(pubSubEvent.data, "base64").toString());
-    info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
+	const payload: CommandIncoming | EventIncoming = JSON.parse(
+		Buffer.from(pubSubEvent.data, "base64").toString(),
+	);
+	info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
 
-    if (isEventIncoming(payload)) {
-        return processEvent(payload, context, async () => {
-            const loader = HandlerRegistry.events[payload.extensions.operationName];
-            if (loader) {
-                return loader();
-            } else {
-                throw new Error(`Event handler with name '${payload.extensions.operationName}' not registered`);
-            }
-        });
-    } else if (isCommandIncoming(payload)) {
-        return processCommand(payload, context, async () => {
-            const loader = HandlerRegistry.commands[payload.command];
-            if (loader) {
-                return loader();
-            } else {
-                throw new Error(`Command handler with name '${payload.command}' not registered`);
-            }
-        });
-    }
+	if (isEventIncoming(payload)) {
+		return processEvent(payload, context, async () => {
+			const loader = HandlerRegistry.events[payload.extensions.operationName];
+			if (loader) {
+				return loader();
+			} else {
+				throw new Error(
+					`Event handler with name '${payload.extensions.operationName}' not registered`,
+				);
+			}
+		});
+	} else if (isCommandIncoming(payload)) {
+		return processCommand(payload, context, async () => {
+			const loader = HandlerRegistry.commands[payload.command];
+			if (loader) {
+				return loader();
+			} else {
+				throw new Error(
+					`Command handler with name '${payload.command}' not registered`,
+				);
+			}
+		});
+	}
 };

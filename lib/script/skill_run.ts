@@ -19,16 +19,18 @@ import { processCommand, processEvent } from "../function";
 import { isCommandIncoming, isEventIncoming } from "../payload";
 
 export async function runSkill(skill?: string): Promise<void> {
-    const payload = await fs.readJson(process.env.ATOMIST_PAYLOAD || "/atm/payload.json");
-    if (isEventIncoming(payload)) {
-        if (skill) {
-            payload.extensions.operationName = skill;
-        }
-        await processEvent(payload, {} as any);
-    } else if (isCommandIncoming(payload)) {
-        if (skill) {
-            payload.command = skill;
-        }
-        await processCommand(payload, {} as any);
-    }
+	const payload = await fs.readJson(
+		process.env.ATOMIST_PAYLOAD || "/atm/payload.json",
+	);
+	if (isEventIncoming(payload)) {
+		if (skill) {
+			payload.extensions.operationName = skill;
+		}
+		await processEvent(payload, {} as any);
+	} else if (isCommandIncoming(payload)) {
+		if (skill) {
+			payload.command = skill;
+		}
+		await processCommand(payload, {} as any);
+	}
 }

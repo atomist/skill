@@ -22,25 +22,29 @@ import { info } from "../log";
  * Clean a skill project that was previously processed by generate, bundle or package commands
  */
 export async function cleanSkill(cwd: string): Promise<void> {
-    // Restore package.json and package_lock.json
-    info("Restoring 'package.json' and 'package-lock.json'");
-    await safeCopy(cwd, path.join(".atomist", "package.json"), "package.json");
-    await safeCopy(cwd, path.join(".atomist", "package-lock.json"), "package-lock.json");
+	// Restore package.json and package_lock.json
+	info("Restoring 'package.json' and 'package-lock.json'");
+	await safeCopy(cwd, path.join(".atomist", "package.json"), "package.json");
+	await safeCopy(
+		cwd,
+		path.join(".atomist", "package-lock.json"),
+		"package-lock.json",
+	);
 
-    // Delete .atomist and bundle folders
-    info("Cleaning '.atomist' and 'bundle' folders");
-    await safeDelete(cwd, ".atomist");
-    await safeDelete(cwd, "bundle");
+	// Delete .atomist and bundle folders
+	info("Cleaning '.atomist' and 'bundle' folders");
+	await safeDelete(cwd, ".atomist");
+	await safeDelete(cwd, "bundle");
 }
 
 async function safeDelete(cwd: string, p: string): Promise<void> {
-    if (await fs.pathExists(path.join(cwd, p))) {
-        await fs.remove(path.join(cwd, p));
-    }
+	if (await fs.pathExists(path.join(cwd, p))) {
+		await fs.remove(path.join(cwd, p));
+	}
 }
 
 async function safeCopy(cwd: string, from: string, to: string): Promise<void> {
-    if (await fs.pathExists(path.join(cwd, from))) {
-        await fs.copyFile(path.join(cwd, from), path.join(cwd, to));
-    }
+	if (await fs.pathExists(path.join(cwd, from))) {
+		await fs.copyFile(path.join(cwd, from), path.join(cwd, to));
+	}
 }

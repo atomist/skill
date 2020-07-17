@@ -17,49 +17,49 @@
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 
 export enum RepositoryProviderType {
-    GitHubCom,
-    GitHubEnterprise,
+	GitHubCom,
+	GitHubEnterprise,
 }
 
 export interface RepositoryId {
-    owner: string;
-    repo: string;
+	owner: string;
+	repo: string;
 
-    branch?: string;
-    sha?: string;
+	branch?: string;
+	sha?: string;
 
-    type: RepositoryProviderType;
-    apiUrl?: string;
-    gitUrl?: string;
+	type: RepositoryProviderType;
+	apiUrl?: string;
+	gitUrl?: string;
 }
 
 export interface AuthenticatedRepositoryId<T> extends RepositoryId {
-    credential: T;
+	credential: T;
 
-    cloneUrl(): string;
+	cloneUrl(): string;
 }
 
 export function gitHubComRepository(details: {
-    owner: string;
-    repo: string;
-    branch?: string;
-    sha?: string;
-    credential: GitHubCredential | GitHubAppCredential;
+	owner: string;
+	repo: string;
+	branch?: string;
+	sha?: string;
+	credential: GitHubCredential | GitHubAppCredential;
 }): AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential> {
-    return {
-        ...details,
-        type: RepositoryProviderType.GitHubCom,
-        cloneUrl: (): string => {
-            if (details.credential) {
-                // GitHub App tokens start with v1. and are expected in the password field
-                if (details.credential.token.startsWith("v1.")) {
-                    return `https://atomist:${details.credential.token}@github.com/${details.owner}/${details.repo}.git`;
-                } else {
-                    return `https://${details.credential.token}:x-oauth-basic@github.com/${details.owner}/${details.repo}.git`;
-                }
-            } else {
-                return `https://github.com/${details.owner}/${details.repo}.git`;
-            }
-        },
-    };
+	return {
+		...details,
+		type: RepositoryProviderType.GitHubCom,
+		cloneUrl: (): string => {
+			if (details.credential) {
+				// GitHub App tokens start with v1. and are expected in the password field
+				if (details.credential.token.startsWith("v1.")) {
+					return `https://atomist:${details.credential.token}@github.com/${details.owner}/${details.repo}.git`;
+				} else {
+					return `https://${details.credential.token}:x-oauth-basic@github.com/${details.owner}/${details.repo}.git`;
+				}
+			} else {
+				return `https://github.com/${details.owner}/${details.repo}.git`;
+			}
+		},
+	};
 }

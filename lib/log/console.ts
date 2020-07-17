@@ -24,10 +24,10 @@ import { enabled } from "./util";
  * @param optionalParams Optional params to pass to the logger
  */
 export function debug(message: string, ...optionalParams: any[]): void {
-    if (enabled("debug")) {
-        // tslint:disable-next-line:no-console
-        console.debug(`[debug] ${redact(message)}`, ...optionalParams);
-    }
+	if (enabled("debug")) {
+		// tslint:disable-next-line:no-console
+		console.debug(`[debug] ${redact(message)}`, ...optionalParams);
+	}
 }
 
 /**
@@ -37,10 +37,10 @@ export function debug(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function info(message: string, ...optionalParams: any[]): void {
-    if (enabled("info")) {
-        // tslint:disable-next-line:no-console
-        console.info(` [info] ${redact(message)}`, ...optionalParams);
-    }
+	if (enabled("info")) {
+		// tslint:disable-next-line:no-console
+		console.info(` [info] ${redact(message)}`, ...optionalParams);
+	}
 }
 
 /**
@@ -50,10 +50,10 @@ export function info(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function warn(message: string, ...optionalParams: any[]): void {
-    if (enabled("warn")) {
-        // tslint:disable-next-line:no-console
-        console.warn(` [warn] ${redact(message)}`, ...optionalParams);
-    }
+	if (enabled("warn")) {
+		// tslint:disable-next-line:no-console
+		console.warn(` [warn] ${redact(message)}`, ...optionalParams);
+	}
 }
 
 /**
@@ -63,8 +63,8 @@ export function warn(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function error(message: string, ...optionalParams: any[]): void {
-    if (enabled("error")) {
-        // tslint:disable-next-line:no-console
-        console.error(`[error] ${redact(message)}`, ...optionalParams);
-    }
+	if (enabled("error")) {
+		// tslint:disable-next-line:no-console
+		console.error(`[error] ${redact(message)}`, ...optionalParams);
+	}
 }

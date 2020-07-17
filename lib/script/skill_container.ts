@@ -21,65 +21,73 @@ import { info } from "../log";
 import { packageJson } from "../definition/skill";
 import { AtomistSkillInput, content, icon } from "./skill_input";
 
-export async function createYamlSkillInput(cwd: string): Promise<AtomistSkillInput> {
-    info(`Generating skill metadata...`);
+export async function createYamlSkillInput(
+	cwd: string,
+): Promise<AtomistSkillInput> {
+	info(`Generating skill metadata...`);
 
-    const p = path.join(cwd, "skill.yaml");
-    const doc = yaml.safeLoad((await fs.readFile(p)).toString());
-    const is = {
-        ...packageJson(path.join(cwd, "package.json")),
-        ...(doc.skill ? doc.skill : doc),
-    };
+	const p = path.join(cwd, "skill.yaml");
+	const doc = yaml.safeLoad((await fs.readFile(p)).toString());
+	const is = {
+		...packageJson(path.join(cwd, "package.json")),
+		...(doc.skill ? doc.skill : doc),
+	};
 
-    const rc = content(cwd);
+	const rc = content(cwd);
 
-    const subscriptions = [];
-    for (const subscription of is.subscriptions || ["file://**/graphql/subscription/*.graphql"]) {
-        subscriptions.push(...(await rc(subscription)));
-    }
-    const signals = [];
-    for (const signal of is.signals || ["file://**/graphql/signal/*.graphql"]) {
-        signals.push(...(await rc(signal)));
-    }
+	const subscriptions = [];
+	for (const subscription of is.subscriptions || [
+		"file://**/graphql/subscription/*.graphql",
+	]) {
+		subscriptions.push(...(await rc(subscription)));
+	}
+	const signals = [];
+	for (const signal of is.signals || ["file://**/graphql/signal/*.graphql"]) {
+		signals.push(...(await rc(signal)));
+	}
 
-    let readme = (await rc(is.readme || "file://README.md"))[0];
-    let description = (await rc(is.description || "file://skill/description.md"))[0];
-    let longDescription = (await rc(is.longDescription || "file://skill/long_description.md"))[0];
-    if (readme) {
-        if (!description) {
-            const descriptionRegexp = /<!---atomist-skill-description:start--->([\s\S]*)<!---atomist-skill-description:end--->/gm;
-            const descriptionMatch = descriptionRegexp.exec(readme);
-            if (descriptionMatch) {
-                description = descriptionMatch[1].trim();
-            }
-        }
-        if (!longDescription) {
-            const longDescriptionRegexp = /<!---atomist-skill-long_description:start--->([\s\S]*)<!---atomist-skill-long_description:end--->/gm;
-            const longDescriptionMatch = longDescriptionRegexp.exec(readme);
-            if (longDescriptionMatch) {
-                longDescription = longDescriptionMatch[1].trim();
-            }
-        }
-        const readmeRegexp = /<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
-        const readmeMatch = readmeRegexp.exec(readme);
-        if (readmeMatch) {
-            readme = readmeMatch[1].trim();
-        }
-    }
+	let readme = (await rc(is.readme || "file://README.md"))[0];
+	let description = (
+		await rc(is.description || "file://skill/description.md")
+	)[0];
+	let longDescription = (
+		await rc(is.longDescription || "file://skill/long_description.md")
+	)[0];
+	if (readme) {
+		if (!description) {
+			const descriptionRegexp = /<!---atomist-skill-description:start--->([\s\S]*)<!---atomist-skill-description:end--->/gm;
+			const descriptionMatch = descriptionRegexp.exec(readme);
+			if (descriptionMatch) {
+				description = descriptionMatch[1].trim();
+			}
+		}
+		if (!longDescription) {
+			const longDescriptionRegexp = /<!---atomist-skill-long_description:start--->([\s\S]*)<!---atomist-skill-long_description:end--->/gm;
+			const longDescriptionMatch = longDescriptionRegexp.exec(readme);
+			if (longDescriptionMatch) {
+				longDescription = longDescriptionMatch[1].trim();
+			}
+		}
+		const readmeRegexp = /<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
+		const readmeMatch = readmeRegexp.exec(readme);
+		if (readmeMatch) {
+			readme = readmeMatch[1].trim();
+		}
+	}
 
-    const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> = {
-        ...is,
-        description,
-        longDescription,
-        iconUrl: await icon(cwd, is.iconUrl || "file://skill/icon.svg"),
-        readme: readme ? Buffer.from(readme).toString("base64") : undefined,
-        subscriptions,
-        signals,
-    };
+	const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> = {
+		...is,
+		description,
+		longDescription,
+		iconUrl: await icon(cwd, is.iconUrl || "file://skill/icon.svg"),
+		readme: readme ? Buffer.from(readme).toString("base64") : undefined,
+		subscriptions,
+		signals,
+	};
 
-    if (!y.longDescription) {
-        y.longDescription = y.description;
-    }
+	if (!y.longDescription) {
+		y.longDescription = y.description;
+	}
 
-    return y as any;
+	return y as any;
 }
