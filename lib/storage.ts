@@ -20,42 +20,47 @@ import * as path from "path";
 import { guid } from "./util";
 
 export interface StorageProvider {
-    store(key: string, sourceFilePath: string): Promise<void>;
+	store(key: string, sourceFilePath: string): Promise<void>;
 
-    retrieve(key: string, targetFilePath?: string): Promise<string>;
+	retrieve(key: string, targetFilePath?: string): Promise<string>;
 }
 
 export function createStorageProvider(workspaceId: string): StorageProvider {
-    return new GoogleCloudStorageProvider(bucketName(workspaceId));
+	return new GoogleCloudStorageProvider(bucketName(workspaceId));
 }
 
 export class GoogleCloudStorageProvider implements StorageProvider {
-    constructor(private readonly bucket: string) {}
+	constructor(private readonly bucket: string) {}
 
-    public async retrieve(key: string, filePath?: string): Promise<string> {
-        const targetFilePath = filePath || path.join(os.tmpdir() || "/tmp", guid());
-        await fs.ensureDir(path.dirname(targetFilePath));
-        const storage = new (await import("@google-cloud/storage")).Storage();
-        await storage.bucket(this.bucket).file(key).download({ destination: targetFilePath });
-        return targetFilePath;
-    }
+	public async retrieve(key: string, filePath?: string): Promise<string> {
+		const targetFilePath = filePath || path.join(os.tmpdir() || "/tmp", guid());
+		await fs.ensureDir(path.dirname(targetFilePath));
+		const storage = new (await import("@google-cloud/storage")).Storage();
+		await storage
+			.bucket(this.bucket)
+			.file(key)
+			.download({ destination: targetFilePath });
+		return targetFilePath;
+	}
 
-    public async store(key: string, filePath: string): Promise<void> {
-        const storage = new (await import("@google-cloud/storage")).Storage();
-        await storage.bucket(this.bucket).upload(filePath, {
-            destination: key,
-            resumable: false,
-        });
-    }
+	public async store(key: string, filePath: string): Promise<void> {
+		const storage = new (await import("@google-cloud/storage")).Storage();
+		await storage.bucket(this.bucket).upload(filePath, {
+			destination: key,
+			resumable: false,
+		});
+	}
 }
 
 function bucketName(workspaceId: string): string {
-    const bucket =
-        process.env.ATOMIST_STORAGE ||
-        (workspaceId ? `gs://${workspaceId.toLowerCase()}-workspace-storage` : undefined);
-    if (bucket) {
-        return bucket.replace(/gs:\/\//, "");
-    } else {
-        return undefined;
-    }
+	const bucket =
+		process.env.ATOMIST_STORAGE ||
+		(workspaceId
+			? `gs://${workspaceId.toLowerCase()}-workspace-storage`
+			: undefined);
+	if (bucket) {
+		return bucket.replace(/gs:\/\//, "");
+	} else {
+		return undefined;
+	}
 }

@@ -21,39 +21,39 @@ import { Project } from "./project";
  * Utility to find files in a project via provided glob patterns
  */
 export async function globFiles(
-    projectOrCwd: Project | string,
-    patterns: string | string[],
-    options: Options = {},
+	projectOrCwd: Project | string,
+	patterns: string | string[],
+	options: Options = {},
 ): Promise<string[]> {
-    return (await import("fast-glob"))(patterns, {
-        cwd: cwd(projectOrCwd),
-        onlyFiles: true,
-        dot: true,
-        ignore: [".git"],
-        ...options,
-    });
+	return (await import("fast-glob"))(patterns, {
+		cwd: cwd(projectOrCwd),
+		onlyFiles: true,
+		dot: true,
+		ignore: [".git"],
+		...options,
+	});
 }
 
 /**
  * Utility to run a callback with any matched file
  */
 export async function withGlobMatches<T>(
-    projectOrCwd: Project | string,
-    patterns: string | string[],
-    cb: (match: string) => Promise<T>,
-    options: Options = {},
+	projectOrCwd: Project | string,
+	patterns: string | string[],
+	cb: (match: string) => Promise<T>,
+	options: Options = {},
 ): Promise<T[]> {
-    const files = await globFiles(projectOrCwd, patterns, options);
-    const results = [];
-    for (const file of files) {
-        const result = await cb(file);
-        if (result) {
-            results.push(result);
-        }
-    }
-    return results;
+	const files = await globFiles(projectOrCwd, patterns, options);
+	const results = [];
+	for (const file of files) {
+		const result = await cb(file);
+		if (result) {
+			results.push(result);
+		}
+	}
+	return results;
 }
 
 export function cwd(projectOrCwd: Project | string): string {
-    return typeof projectOrCwd === "string" ? projectOrCwd : projectOrCwd.path();
+	return typeof projectOrCwd === "string" ? projectOrCwd : projectOrCwd.path();
 }

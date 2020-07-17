@@ -15,38 +15,38 @@
  */
 
 export interface Option {
-    value: string;
-    description?: string;
+	value: string;
+	description?: string;
 }
 
 /**
  * Represents a selection of exactly one or some strings from a fixed list of options
  */
 export interface Options {
-    /**
-     * Whether the user must select exactly one option. In this case,
-     * binds to string. Otherwise binds to string[]
-     */
-    kind?: "single" | "multiple";
+	/**
+	 * Whether the user must select exactly one option. In this case,
+	 * binds to string. Otherwise binds to string[]
+	 */
+	kind?: "single" | "multiple";
 
-    /**
-     * Possible options to select from
-     */
-    options?: Option[];
+	/**
+	 * Possible options to select from
+	 */
+	options?: Option[];
 }
 
 export interface BaseParameter {
-    readonly pattern?: RegExp;
-    readonly required?: boolean;
-    readonly description?: string;
-    readonly displayName?: string;
-    readonly validInput?: string;
-    readonly displayable?: boolean;
-    readonly maxLength?: number;
-    readonly minLength?: number;
-    readonly type?: "string" | "number" | "boolean" | Options;
-    readonly order?: number;
-    readonly control?: "input" | "textarea";
+	readonly pattern?: RegExp;
+	readonly required?: boolean;
+	readonly description?: string;
+	readonly displayName?: string;
+	readonly validInput?: string;
+	readonly displayable?: boolean;
+	readonly maxLength?: number;
+	readonly minLength?: number;
+	readonly type?: "string" | "number" | "boolean" | Options;
+	readonly order?: number;
+	readonly control?: "input" | "textarea";
 }
 
 /**
@@ -55,7 +55,7 @@ export interface BaseParameter {
  * value will be used as a default.
  */
 export interface HasDefaultValue {
-    defaultValue?: any;
+	defaultValue?: any;
 }
 
 export type ParameterObjectValue = BaseParameter & HasDefaultValue;

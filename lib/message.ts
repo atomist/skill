@@ -20,245 +20,301 @@ import { PubSub } from "@google-cloud/pubsub";
 import { GraphQLClient } from "./graphql";
 import { CommandContext, EventContext, HandlerStatus } from "./handler";
 import { debug, error } from "./log";
-import { CommandIncoming, EventIncoming, isCommandIncoming, isEventIncoming, Skill, Source } from "./payload";
+import {
+	CommandIncoming,
+	EventIncoming,
+	isCommandIncoming,
+	isEventIncoming,
+	Skill,
+	Source,
+} from "./payload";
 import { replacer, toArray } from "./util";
 import cloneDeep = require("lodash.clonedeep");
 
 export interface Destinations {
-    users?: string | string[];
-    channels?: string | string[];
+	users?: string | string[];
+	channels?: string | string[];
 }
 
 export interface MessageClient {
-    send(msg: any, destinations: Destinations, options?: MessageOptions): Promise<any>;
+	send(
+		msg: any,
+		destinations: Destinations,
+		options?: MessageOptions,
+	): Promise<any>;
 
-    delete?(destinations: Destinations, options: RequiredMessageOptions): Promise<void>;
+	delete?(
+		destinations: Destinations,
+		options: RequiredMessageOptions,
+	): Promise<void>;
 }
 
 export interface CommandMessageClient extends MessageClient {
-    respond(msg: any, options?: MessageOptions): Promise<any>;
+	respond(msg: any, options?: MessageOptions): Promise<any>;
 }
 
-export type RequiredMessageOptions = Pick<MessageOptions, "id" | "thread"> & { id: string };
+export type RequiredMessageOptions = Pick<MessageOptions, "id" | "thread"> & {
+	id: string;
+};
 
 /**
  * Options for sending messages using the MessageClient.
  */
 export interface MessageOptions extends Record<string, any> {
-    /**
-     * Unique message id per channel and team. This is required
-     * if you wish to re-write a message at a later time.
-     */
-    id?: string;
+	/**
+	 * Unique message id per channel and team. This is required
+	 * if you wish to re-write a message at a later time.
+	 */
+	id?: string;
 
-    /**
-     * Time to live for a posted message. If ts + ttl of the
-     * existing message with ts is < as a new incoming message
-     * with the same id, the message will be re-written.
-     */
-    ttl?: number;
+	/**
+	 * Time to live for a posted message. If ts + ttl of the
+	 * existing message with ts is < as a new incoming message
+	 * with the same id, the message will be re-written.
+	 */
+	ttl?: number;
 
-    /**
-     * Timestamp of the message. The timestamp needs to be
-     * sortable lexicographically. Should be in milliseconds and
-     * defaults to Date.now().
-     *
-     * This is only applicable if id is set too.
-     */
-    ts?: number;
+	/**
+	 * Timestamp of the message. The timestamp needs to be
+	 * sortable lexicographically. Should be in milliseconds and
+	 * defaults to Date.now().
+	 *
+	 * This is only applicable if id is set too.
+	 */
+	ts?: number;
 
-    /**
-     * If update_only is given, this message will only be posted
-     * if a previous message with the same id exists.
-     */
-    post?: "update_only" | "always";
+	/**
+	 * If update_only is given, this message will only be posted
+	 * if a previous message with the same id exists.
+	 */
+	post?: "update_only" | "always";
 
-    /**
-     * Optional thread identifier to send this message to or true to send
-     * this to the message that triggered this command.
-     */
-    thread?: string | boolean;
+	/**
+	 * Optional thread identifier to send this message to or true to send
+	 * this to the message that triggered this command.
+	 */
+	thread?: string | boolean;
 
-    /**
-     * Optional array of actions to mapped into the message
-     */
-    actions?: Action[];
+	/**
+	 * Optional array of actions to mapped into the message
+	 */
+	actions?: Action[];
 }
 
 /** Valid MessageClient types. */
 export const MessageMimeTypes = {
-    SLACK_JSON: "application/x-atomist-slack+json",
-    SLACK_FILE_JSON: "application/x-atomist-slack-file+json",
-    PLAIN_TEXT: "text/plain",
-    APPLICATION_JSON: "application/json",
+	SLACK_JSON: "application/x-atomist-slack+json",
+	SLACK_FILE_JSON: "application/x-atomist-slack-file+json",
+	PLAIN_TEXT: "text/plain",
+	APPLICATION_JSON: "application/json",
 };
 
-export abstract class MessageClientSupport implements MessageClient, CommandMessageClient {
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public respond(msg: any, options?: MessageOptions): Promise<any> {
-        return this.doSend(msg, { users: [], channels: [] }, options);
-    }
+export abstract class MessageClientSupport
+	implements MessageClient, CommandMessageClient {
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	public respond(msg: any, options?: MessageOptions): Promise<any> {
+		return this.doSend(msg, { users: [], channels: [] }, options);
+	}
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    public send(msg: any, destinations: Destinations, options?: MessageOptions): Promise<any> {
-        return this.doSend(msg, destinations, options);
-    }
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	public send(
+		msg: any,
+		destinations: Destinations,
+		options?: MessageOptions,
+	): Promise<any> {
+		return this.doSend(msg, destinations, options);
+	}
 
-    public abstract delete(destinations: Destinations, options: RequiredMessageOptions): Promise<void>;
+	public abstract delete(
+		destinations: Destinations,
+		options: RequiredMessageOptions,
+	): Promise<void>;
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    protected abstract doSend(msg: any, destinations: Destinations, options?: MessageOptions): Promise<any>;
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	protected abstract doSend(
+		msg: any,
+		destinations: Destinations,
+		options?: MessageOptions,
+	): Promise<any>;
 }
 
 export abstract class AbstractMessageClient extends MessageClientSupport {
-    constructor(
-        protected readonly request: CommandIncoming | EventIncoming,
-        protected readonly correlationId: string,
-        protected readonly team: { id: string; name?: string },
-        protected readonly source: Source,
-        protected readonly graphClient: GraphQLClient,
-    ) {
-        super();
-    }
+	constructor(
+		protected readonly request: CommandIncoming | EventIncoming,
+		protected readonly correlationId: string,
+		protected readonly team: { id: string; name?: string },
+		protected readonly source: Source,
+		protected readonly graphClient: GraphQLClient,
+	) {
+		super();
+	}
 
-    public async delete(destinations: Destinations, options: RequiredMessageOptions): Promise<void> {
-        return this.doSend(undefined, destinations, { ...options, delete: true });
-    }
+	public async delete(
+		destinations: Destinations,
+		options: RequiredMessageOptions,
+	): Promise<void> {
+		return this.doSend(undefined, destinations, { ...options, delete: true });
+	}
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    protected async doSend(msg: any, destinations: Destinations, options: MessageOptions = {}): Promise<any> {
-        if (!!msg && (msg as HandlerResponse).content_type === "application/x-atomist-continuation+json") {
-            return this.sendResponse(msg).then(() => msg);
-        }
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	protected async doSend(
+		msg: any,
+		destinations: Destinations,
+		options: MessageOptions = {},
+	): Promise<any> {
+		if (
+			!!msg &&
+			(msg as HandlerResponse).content_type ===
+				"application/x-atomist-continuation+json"
+		) {
+			return this.sendResponse(msg).then(() => msg);
+		}
 
-        const ts = this.ts(options);
+		const ts = this.ts(options);
 
-        const responseDestinations = [];
+		const responseDestinations = [];
 
-        let threadTs;
-        if (options.thread === true && !!this.source) {
-            threadTs = (this.source?.slack as any)?.message.ts;
-        } else if (typeof options.thread === "string") {
-            threadTs = options.thread;
-        }
-        const teamId = await this.getTeamId(this.source?.slack?.team?.id, this.graphClient);
+		let threadTs;
+		if (options.thread === true && !!this.source) {
+			threadTs = (this.source?.slack as any)?.message.ts;
+		} else if (typeof options.thread === "string") {
+			threadTs = options.thread;
+		}
+		const teamId = await this.getTeamId(
+			this.source?.slack?.team?.id,
+			this.graphClient,
+		);
 
-        toArray(destinations.users || []).forEach(d => {
-            responseDestinations.push({
-                user_agent: "slack",
-                slack: {
-                    team: {
-                        id: teamId,
-                    },
-                    user: {
-                        name: d,
-                    },
-                    thread_ts: threadTs,
-                },
-            });
-        });
+		toArray(destinations.users || []).forEach(d => {
+			responseDestinations.push({
+				user_agent: "slack",
+				slack: {
+					team: {
+						id: teamId,
+					},
+					user: {
+						name: d,
+					},
+					thread_ts: threadTs,
+				},
+			});
+		});
 
-        toArray(destinations.channels || []).forEach(d => {
-            responseDestinations.push({
-                user_agent: "slack",
-                slack: {
-                    team: {
-                        id: teamId,
-                    },
-                    channel: {
-                        name: d,
-                    },
-                    thread_ts: threadTs,
-                },
-            });
-        });
+		toArray(destinations.channels || []).forEach(d => {
+			responseDestinations.push({
+				user_agent: "slack",
+				slack: {
+					team: {
+						id: teamId,
+					},
+					channel: {
+						name: d,
+					},
+					thread_ts: threadTs,
+				},
+			});
+		});
 
-        if (responseDestinations.length === 0 && this.source) {
-            const responseDestination = cloneDeep(this.source);
-            if (responseDestination.slack) {
-                delete responseDestination.slack.user;
-                if (threadTs) {
-                    responseDestination.slack.thread_ts = threadTs;
-                }
-            }
-            responseDestinations.push(responseDestination);
-        }
+		if (responseDestinations.length === 0 && this.source) {
+			const responseDestination = cloneDeep(this.source);
+			if (responseDestination.slack) {
+				delete responseDestination.slack.user;
+				if (threadTs) {
+					responseDestination.slack.thread_ts = threadTs;
+				}
+			}
+			responseDestinations.push(responseDestination);
+		}
 
-        const response: HandlerResponse = {
-            api_version: "1",
-            correlation_id: this.correlationId,
-            team: this.team,
-            source: this.source ? this.source : undefined,
-            command: isCommandIncoming(this.request) ? this.request.command : undefined,
-            event: isEventIncoming(this.request) ? this.request.extensions.operationName : undefined,
-            destinations: responseDestinations,
-            id: options.id ? options.id : undefined,
-            timestamp: ts,
-            ttl: ts && options.ttl ? options.ttl : undefined,
-            post_mode: options.post === "update_only" ? "update_only" : options.post === "always" ? "always" : "ttl",
-            skill: this.request.skill,
-        };
+		const response: HandlerResponse = {
+			api_version: "1",
+			correlation_id: this.correlationId,
+			team: this.team,
+			source: this.source ? this.source : undefined,
+			command: isCommandIncoming(this.request)
+				? this.request.command
+				: undefined,
+			event: isEventIncoming(this.request)
+				? this.request.extensions.operationName
+				: undefined,
+			destinations: responseDestinations,
+			id: options.id ? options.id : undefined,
+			timestamp: ts,
+			ttl: ts && options.ttl ? options.ttl : undefined,
+			post_mode:
+				options.post === "update_only"
+					? "update_only"
+					: options.post === "always"
+					? "always"
+					: "ttl",
+			skill: this.request.skill,
+		};
 
-        if (isSlackMessage(msg)) {
-            const msgClone = cloneDeep(msg) as SlackMessage & { blocks: any };
-            const actions = mapActions(msgClone);
+		if (isSlackMessage(msg)) {
+			const msgClone = cloneDeep(msg) as SlackMessage & { blocks: any };
+			const actions = mapActions(msgClone);
 
-            // special handling for blocks
-            if (Array.isArray(msgClone.blocks)) {
-                msgClone.text = msgClone.text || "fallback";
-                msgClone.blocks = JSON.stringify(msgClone.blocks);
-            }
+			// special handling for blocks
+			if (Array.isArray(msgClone.blocks)) {
+				msgClone.text = msgClone.text || "fallback";
+				msgClone.blocks = JSON.stringify(msgClone.blocks);
+			}
 
-            response.content_type = MessageMimeTypes.SLACK_JSON;
-            response.body = render(msgClone, false);
-            response.actions = [...(actions || []), ...(options.actions || [])];
-        } else if (isFileMessage(msg)) {
-            response.content_type = MessageMimeTypes.SLACK_FILE_JSON;
-            response.body = JSON.stringify({
-                content: msg.content,
-                filename: msg.fileName,
-                filetype: msg.fileType,
-                title: msg.title,
-                initial_comment: msg.comment,
-            });
-        } else if (typeof msg === "string") {
-            response.content_type = MessageMimeTypes.PLAIN_TEXT;
-            response.body = msg;
-        } else if (options.delete) {
-            response.content_type = "application/x-atomist-delete";
-            response.body = undefined;
-        }
-        return this.sendResponse(response).then(() => response);
-    }
+			response.content_type = MessageMimeTypes.SLACK_JSON;
+			response.body = render(msgClone, false);
+			response.actions = [...(actions || []), ...(options.actions || [])];
+		} else if (isFileMessage(msg)) {
+			response.content_type = MessageMimeTypes.SLACK_FILE_JSON;
+			response.body = JSON.stringify({
+				content: msg.content,
+				filename: msg.fileName,
+				filetype: msg.fileType,
+				title: msg.title,
+				initial_comment: msg.comment,
+			});
+		} else if (typeof msg === "string") {
+			response.content_type = MessageMimeTypes.PLAIN_TEXT;
+			response.body = msg;
+		} else if (options.delete) {
+			response.content_type = "application/x-atomist-delete";
+			response.body = undefined;
+		}
+		return this.sendResponse(response).then(() => response);
+	}
 
-    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-    protected abstract sendResponse(response: any): Promise<void>;
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	protected abstract sendResponse(response: any): Promise<void>;
 
-    private ts(options: MessageOptions): number {
-        if (options.id) {
-            if (options.ts) {
-                return options.ts;
-            } else {
-                return Date.now();
-            }
-        } else {
-            return undefined;
-        }
-    }
+	private ts(options: MessageOptions): number {
+		if (options.id) {
+			if (options.ts) {
+				return options.ts;
+			} else {
+				return Date.now();
+			}
+		} else {
+			return undefined;
+		}
+	}
 
-    private async getTeamId(teamId: string, graphClient: GraphQLClient): Promise<string> {
-        if (teamId) {
-            return teamId;
-        } else {
-            const query = `query ChatTeam { ChatTeam { id } }`;
-            const result = await graphClient.query<{ ChatTeam: Array<{ id: string }> }>(query);
-            return result?.ChatTeam[0]?.id;
-        }
-    }
+	private async getTeamId(
+		teamId: string,
+		graphClient: GraphQLClient,
+	): Promise<string> {
+		if (teamId) {
+			return teamId;
+		} else {
+			const query = `query ChatTeam { ChatTeam { id } }`;
+			const result = await graphClient.query<{
+				ChatTeam: Array<{ id: string }>;
+			}>(query);
+			return result?.ChatTeam[0]?.id;
+		}
+	}
 }
 
 export interface CommandReferencingAction extends SlackAction {
-    command: CommandReference;
+	command: CommandReference;
 }
 
 /**
@@ -266,271 +322,292 @@ export interface CommandReferencingAction extends SlackAction {
  * to a command.
  */
 export interface CommandReference {
-    /**
-     * The id of the action as referenced in the markup.
-     */
-    id: string;
+	/**
+	 * The id of the action as referenced in the markup.
+	 */
+	id: string;
 
-    /**
-     * The name of the command the button or menu should invoke
-     * when selected.
-     */
-    name: string;
+	/**
+	 * The name of the command the button or menu should invoke
+	 * when selected.
+	 */
+	name: string;
 
-    /**
-     *  List of parameters to be passed to the command.
-     */
-    parameters?: { [key: string]: any };
+	/**
+	 *  List of parameters to be passed to the command.
+	 */
+	parameters?: { [key: string]: any };
 
-    /**
-     * Name of the parameter that should be used to pass the values
-     * of the menu drop-down.
-     */
-    parameterName?: string;
+	/**
+	 * Name of the parameter that should be used to pass the values
+	 * of the menu drop-down.
+	 */
+	parameterName?: string;
 }
 
 export function mapActions(msg: SlackMessage): Action[] {
-    const actions: Action[] = [];
+	const actions: Action[] = [];
 
-    let counter = 0;
+	let counter = 0;
 
-    if (msg.attachments) {
-        msg.attachments
-            .filter(attachment => attachment.actions)
-            .forEach(attachment => {
-                attachment.actions.forEach(a => {
-                    if (!!a && !!(a as CommandReferencingAction).command) {
-                        const cra = a as CommandReferencingAction;
+	if (msg.attachments) {
+		msg.attachments
+			.filter(attachment => attachment.actions)
+			.forEach(attachment => {
+				attachment.actions.forEach(a => {
+					if (!!a && !!(a as CommandReferencingAction).command) {
+						const cra = a as CommandReferencingAction;
 
-                        const id = counter++;
-                        cra.command.id = `${cra.command.id}-${id}`;
-                        a.name = `${a.name}-${id}`;
+						const id = counter++;
+						cra.command.id = `${cra.command.id}-${id}`;
+						a.name = `${a.name}-${id}`;
 
-                        const action: Action = {
-                            id: cra.command.id,
-                            parameter_name: cra.command.parameterName,
-                            command: cra.command.name,
-                            parameters: mapParameters(cra.command.parameters),
-                        };
+						const action: Action = {
+							id: cra.command.id,
+							parameter_name: cra.command.parameterName,
+							command: cra.command.name,
+							parameters: mapParameters(cra.command.parameters),
+						};
 
-                        actions.push(action);
-                        // Lastly we need to delete our extension from the slack action
-                        cra.command = undefined;
-                    }
-                });
-            });
-    }
-    return actions;
+						actions.push(action);
+						// Lastly we need to delete our extension from the slack action
+						cra.command = undefined;
+					}
+				});
+			});
+	}
+	return actions;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function mapParameters(data: any): Parameter[] {
-    const parameters: Parameter[] = [];
-    for (const key in data) {
-        const value = data[key];
-        if (value) {
-            parameters.push({
-                name: key,
-                value: value.toString(),
-            });
-        } else {
-            // logger.debug(`Parameter value for '${key}' is null`);
-        }
-    }
-    return parameters;
+	const parameters: Parameter[] = [];
+	for (const key in data) {
+		const value = data[key];
+		if (value) {
+			parameters.push({
+				name: key,
+				value: value.toString(),
+			});
+		} else {
+			// logger.debug(`Parameter value for '${key}' is null`);
+		}
+	}
+	return parameters;
 }
 
 export interface HandlerResponse {
-    api_version: "1";
+	api_version: "1";
 
-    correlation_id: any;
+	correlation_id: any;
 
-    team: {
-        id: string;
-        name?: string;
-    };
+	team: {
+		id: string;
+		name?: string;
+	};
 
-    command?: string;
-    event?: string;
+	command?: string;
+	event?: string;
 
-    status?: {
-        visibility?: "hidden";
-        code?: number;
-        reason: string;
-    };
+	status?: {
+		visibility?: "hidden";
+		code?: number;
+		reason: string;
+	};
 
-    source?: Source;
+	source?: Source;
 
-    destinations?: any[];
+	destinations?: any[];
 
-    content_type?: string;
+	content_type?: string;
 
-    body?: string;
+	body?: string;
 
-    // Updatable messages
-    id?: string;
-    timestamp?: number;
-    ttl?: number;
-    post_mode?: "ttl" | "always" | "update_only";
+	// Updatable messages
+	id?: string;
+	timestamp?: number;
+	ttl?: number;
+	post_mode?: "ttl" | "always" | "update_only";
 
-    actions?: Action[];
+	actions?: Action[];
 
-    skill: Skill;
+	skill: Skill;
 }
 
 export interface Action {
-    id: string;
-    parameter_name?: string;
-    command: string;
-    parameters: Parameter[];
+	id: string;
+	parameter_name?: string;
+	command: string;
+	parameters: Parameter[];
 }
 
 export interface Parameter {
-    name: string;
-    value: string;
+	name: string;
+	value: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function isSlackMessage(object: any): object is SlackMessage {
-    return !!object && (object.text || object.attachments || object.blocks) && !object.content;
+	return (
+		!!object &&
+		(object.text || object.attachments || object.blocks) &&
+		!object.content
+	);
 }
 
 /**
  * Message to create a Snippet in Slack
  */
 export interface SlackFileMessage {
-    content: string;
-    title?: string;
-    fileName?: string;
-    // https://api.slack.com/types/file#file_types
-    fileType?: string;
-    comment?: string;
+	content: string;
+	title?: string;
+	fileName?: string;
+	// https://api.slack.com/types/file#file_types
+	fileType?: string;
+	comment?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function isFileMessage(object: any): object is SlackFileMessage {
-    return !!object && !object.length && object.content;
+	return !!object && !object.length && object.content;
 }
 
 export interface StatusPublisher {
-    publish(status: HandlerResponse["status"]): Promise<void>;
+	publish(status: HandlerResponse["status"]): Promise<void>;
 }
 
 abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
-    private readonly pubsub: PubSub;
+	private readonly pubsub: PubSub;
 
-    constructor(
-        protected readonly request: CommandIncoming | EventIncoming,
-        protected readonly correlationId: string,
-        protected readonly team: { id: string; name?: string },
-        protected readonly source: Source,
-        protected readonly workspaceId: string,
-        protected readonly graphClient: GraphQLClient,
-    ) {
-        super(request, correlationId, team, source, graphClient);
-        this.pubsub = new PubSub();
-    }
+	constructor(
+		protected readonly request: CommandIncoming | EventIncoming,
+		protected readonly correlationId: string,
+		protected readonly team: { id: string; name?: string },
+		protected readonly source: Source,
+		protected readonly workspaceId: string,
+		protected readonly graphClient: GraphQLClient,
+	) {
+		super(request, correlationId, team, source, graphClient);
+		this.pubsub = new PubSub();
+	}
 
-    public async sendResponse(message: any): Promise<void> {
-        const topicName = process.env.ATOMIST_TOPIC || `${this.workspaceId}-${this.request.skill.id}-response`;
-        try {
-            debug(`Sending message: ${JSON.stringify(message, replacer)}`);
-            if (topicName) {
-                const topic = this.pubsub.topic(topicName);
-                const messageBuffer = Buffer.from(JSON.stringify(message), "utf8");
-                await topic.publish(messageBuffer);
-            }
-        } catch (err) {
-            error(`Error occurred sending message: ${err.message}`);
-        }
-    }
+	public async sendResponse(message: any): Promise<void> {
+		const topicName =
+			process.env.ATOMIST_TOPIC ||
+			`${this.workspaceId}-${this.request.skill.id}-response`;
+		try {
+			debug(`Sending message: ${JSON.stringify(message, replacer)}`);
+			if (topicName) {
+				const topic = this.pubsub.topic(topicName);
+				const messageBuffer = Buffer.from(JSON.stringify(message), "utf8");
+				await topic.publish(messageBuffer);
+			}
+		} catch (err) {
+			error(`Error occurred sending message: ${err.message}`);
+		}
+	}
 }
 
-export class PubSubCommandMessageClient extends AbstractPubSubMessageClient implements StatusPublisher {
-    constructor(protected readonly request: CommandIncoming, protected readonly graphClient: GraphQLClient) {
-        super(request, request.correlation_id, request.team, request.source, request.team.id, graphClient);
-    }
+export class PubSubCommandMessageClient extends AbstractPubSubMessageClient
+	implements StatusPublisher {
+	constructor(
+		protected readonly request: CommandIncoming,
+		protected readonly graphClient: GraphQLClient,
+	) {
+		super(
+			request,
+			request.correlation_id,
+			request.team,
+			request.source,
+			request.team.id,
+			graphClient,
+		);
+	}
 
-    protected async doSend(
-        msg: string | SlackMessage,
-        destinations: Destinations,
-        options: MessageOptions = {},
-    ): Promise<any> {
-        return super.doSend(msg, destinations, options);
-    }
+	protected async doSend(
+		msg: string | SlackMessage,
+		destinations: Destinations,
+		options: MessageOptions = {},
+	): Promise<any> {
+		return super.doSend(msg, destinations, options);
+	}
 
-    public async publish(status: HandlerResponse["status"]): Promise<void> {
-        const source = cloneDeep(this.request.source);
-        if (source && source.slack) {
-            delete source.slack.user;
-        }
-        const response: HandlerResponse = {
-            api_version: "1",
-            correlation_id: this.request.correlation_id,
-            team: this.request.team,
-            command: this.request.command,
-            source: this.request.source,
-            destinations: [source],
-            status,
-            skill: this.request.skill,
-        };
-        return this.sendResponse(response);
-    }
+	public async publish(status: HandlerResponse["status"]): Promise<void> {
+		const source = cloneDeep(this.request.source);
+		if (source && source.slack) {
+			delete source.slack.user;
+		}
+		const response: HandlerResponse = {
+			api_version: "1",
+			correlation_id: this.request.correlation_id,
+			team: this.request.team,
+			command: this.request.command,
+			source: this.request.source,
+			destinations: [source],
+			status,
+			skill: this.request.skill,
+		};
+		return this.sendResponse(response);
+	}
 }
 
-export class PubSubEventMessageClient extends AbstractPubSubMessageClient implements StatusPublisher {
-    constructor(protected readonly request: EventIncoming, protected readonly graphClient: GraphQLClient) {
-        super(
-            request,
-            request.extensions.correlation_id,
-            { id: request.extensions.team_id, name: request.extensions.team_name },
-            undefined,
-            request.extensions.team_id,
-            graphClient,
-        );
-    }
+export class PubSubEventMessageClient extends AbstractPubSubMessageClient
+	implements StatusPublisher {
+	constructor(
+		protected readonly request: EventIncoming,
+		protected readonly graphClient: GraphQLClient,
+	) {
+		super(
+			request,
+			request.extensions.correlation_id,
+			{ id: request.extensions.team_id, name: request.extensions.team_name },
+			undefined,
+			request.extensions.team_id,
+			graphClient,
+		);
+	}
 
-    protected async doSend(
-        msg: string | SlackMessage,
-        destinations: Destinations,
-        options: MessageOptions = {},
-    ): Promise<any> {
-        return super.doSend(msg, destinations, options);
-    }
+	protected async doSend(
+		msg: string | SlackMessage,
+		destinations: Destinations,
+		options: MessageOptions = {},
+	): Promise<any> {
+		return super.doSend(msg, destinations, options);
+	}
 
-    public async publish(status: HandlerResponse["status"]): Promise<void> {
-        const response: HandlerResponse = {
-            api_version: "1",
-            correlation_id: this.request.extensions.correlation_id,
-            team: {
-                id: this.request.extensions.team_id,
-                name: this.request.extensions.team_name,
-            },
-            event: this.request.extensions.operationName,
-            status,
-            skill: this.request.skill,
-        };
-        return this.sendResponse(response);
-    }
+	public async publish(status: HandlerResponse["status"]): Promise<void> {
+		const response: HandlerResponse = {
+			api_version: "1",
+			correlation_id: this.request.extensions.correlation_id,
+			team: {
+				id: this.request.extensions.team_id,
+				name: this.request.extensions.team_name,
+			},
+			event: this.request.extensions.operationName,
+			status,
+			skill: this.request.skill,
+		};
+		return this.sendResponse(response);
+	}
 }
 
 export function prepareStatus(
-    status: HandlerStatus | Error,
-    context: EventContext | CommandContext,
+	status: HandlerStatus | Error,
+	context: EventContext | CommandContext,
 ): HandlerResponse["status"] {
-    if (status instanceof Error) {
-        return {
-            code: 1,
-            reason: `Error invoking ${context.skill.namespace}/${context.skill.name}`,
-        };
-    } else {
-        const reason = `${status?.code === 0 ? "Successfully" : "Unsuccessfully"} invoked ${context.skill.namespace}/${
-            context.skill.name
-        }`;
-        return {
-            visibility: status?.visibility,
-            code: status?.code || 0,
-            reason: status?.reason || reason,
-        };
-    }
+	if (status instanceof Error) {
+		return {
+			code: 1,
+			reason: `Error invoking ${context.skill.namespace}/${context.skill.name}`,
+		};
+	} else {
+		const reason = `${
+			status?.code === 0 ? "Successfully" : "Unsuccessfully"
+		} invoked ${context.skill.namespace}/${context.skill.name}`;
+		return {
+			visibility: status?.visibility,
+			code: status?.code || 0,
+			reason: status?.reason || reason,
+		};
+	}
 }

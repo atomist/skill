@@ -19,44 +19,46 @@ import { toArray } from "../util";
 import { error, info, warn } from "./console";
 
 export function wrapAuditLogger(
-    context: { eventId?: string; correlationId: string; workspaceId: string },
-    labels: Record<string, any> = {},
+	context: { eventId?: string; correlationId: string; workspaceId: string },
+	labels: Record<string, any> = {},
 ): Logger & { url: string } {
-    const logger = createLogger(context, labels);
-    return {
-        log: async (
-            msg: string | string[],
-            severity: Severity = Severity.Info,
-            labels?: Record<string, any>,
-        ): Promise<void> => {
-            const msgs = toArray(msg);
-            switch (severity) {
-                case Severity.Warning:
-                    msgs.forEach(m => warn(m));
-                    break;
-                case Severity.Error:
-                    msgs.forEach(m => error(m));
-                    break;
-                default:
-                    msgs.forEach(m => info(m));
-                    break;
-            }
-            return logger.log(msg, severity, labels);
-        },
-        url: `https://go.atomist.${
-            (process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging") ? "services" : "com"
-        }/log/${context.workspaceId}/${context.correlationId}`,
-    };
+	const logger = createLogger(context, labels);
+	return {
+		log: async (
+			msg: string | string[],
+			severity: Severity = Severity.Info,
+			labels?: Record<string, any>,
+		): Promise<void> => {
+			const msgs = toArray(msg);
+			switch (severity) {
+				case Severity.Warning:
+					msgs.forEach(m => warn(m));
+					break;
+				case Severity.Error:
+					msgs.forEach(m => error(m));
+					break;
+				default:
+					msgs.forEach(m => info(m));
+					break;
+			}
+			return logger.log(msg, severity, labels);
+		},
+		url: `https://go.atomist.${
+			(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
+				? "services"
+				: "com"
+		}/log/${context.workspaceId}/${context.correlationId}`,
+	};
 }
 
 enum Level {
-    error = 0,
-    warn = 1,
-    info = 2,
-    debug = 3,
+	error = 0,
+	warn = 1,
+	info = 2,
+	debug = 3,
 }
 
 export function enabled(level: string): boolean {
-    const configuredLevel = Level[process.env.ATOMIST_LOG_LEVEL || "debug"];
-    return configuredLevel >= Level[level];
+	const configuredLevel = Level[process.env.ATOMIST_LOG_LEVEL || "debug"];
+	return configuredLevel >= Level[level];
 }

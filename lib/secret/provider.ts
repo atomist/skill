@@ -18,41 +18,41 @@ import { GraphQLClient } from "../graphql";
 import { CommandIncoming, EventIncoming } from "../payload";
 
 export type CredentialResolver<T> = (
-    graphClient: GraphQLClient,
-    payload: CommandIncoming | EventIncoming,
+	graphClient: GraphQLClient,
+	payload: CommandIncoming | EventIncoming,
 ) => Promise<T>;
 
 export interface GitHubCredential {
-    token: string;
-    scopes: string[];
+	token: string;
+	scopes: string[];
 }
 
 export interface GitHubAppCredential {
-    token: string;
-    permissions: Record<string, "write" | "read">;
+	token: string;
+	permissions: Record<string, "write" | "read">;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function isGitHubCredential(spec: any): spec is GitHubCredential {
-    return !!spec.token && !!spec.scopes;
+	return !!spec.token && !!spec.scopes;
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function isGitHubAppCredential(spec: any): spec is GitHubAppCredential {
-    return !!spec.token && !!spec.permissions;
+	return !!spec.token && !!spec.permissions;
 }
 
 export interface CredentialProvider {
-    resolve<T>(spec: CredentialResolver<T>): Promise<T | undefined>;
+	resolve<T>(spec: CredentialResolver<T>): Promise<T | undefined>;
 }
 
 export class DefaultCredentialProvider implements CredentialProvider {
-    constructor(
-        private readonly graphClient: GraphQLClient,
-        private readonly payload: CommandIncoming | EventIncoming,
-    ) {}
+	constructor(
+		private readonly graphClient: GraphQLClient,
+		private readonly payload: CommandIncoming | EventIncoming,
+	) {}
 
-    public async resolve<T>(spec: CredentialResolver<T>): Promise<T> {
-        return spec(this.graphClient, this.payload);
-    }
+	public async resolve<T>(spec: CredentialResolver<T>): Promise<T> {
+		return spec(this.graphClient, this.payload);
+	}
 }

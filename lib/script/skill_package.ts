@@ -18,47 +18,62 @@ import * as path from "path";
 import * as fs from "fs-extra";
 import { info } from "../log";
 
-export async function packageSkill(cwd: string, verbose: boolean): Promise<void> {
-    if (!verbose) {
-        process.env.ATOMIST_LOG_LEVEL = "info";
-    }
-    info(`Packaging skill archive...`);
+export async function packageSkill(
+	cwd: string,
+	verbose: boolean,
+): Promise<void> {
+	if (!verbose) {
+		process.env.ATOMIST_LOG_LEVEL = "info";
+	}
+	info(`Packaging skill archive...`);
 
-    const fileName = path.join(cwd, ".atomist", "skill.zip");
-    await fs.ensureDir(path.dirname(fileName));
+	const fileName = path.join(cwd, ".atomist", "skill.zip");
+	await fs.ensureDir(path.dirname(fileName));
 
-    const ignores = [".git", "node_modules"];
-    const ignoreFile = ".atomistignore";
-    if (await fs.pathExists(path.join(cwd, ignoreFile))) {
-        ignores.push(...(await (await fs.readFile(path.join(cwd, ignoreFile))).toString()).trim().split("\n"));
-    }
+	const ignores = [".git", "node_modules"];
+	const ignoreFile = ".atomistignore";
+	if (await fs.pathExists(path.join(cwd, ignoreFile))) {
+		ignores.push(
+			...(await (await fs.readFile(path.join(cwd, ignoreFile))).toString())
+				.trim()
+				.split("\n"),
+		);
+	}
 
-    const matches: string[] = await (await import("glob-gitignore")).glob(["**"], {
-        cwd,
-        ignore: ignores,
-        dot: true,
-    });
+	const matches: string[] = await (await import("glob-gitignore")).glob(
+		["**"],
+		{
+			cwd,
+			ignore: ignores,
+			dot: true,
+		},
+	);
 
-    const zip = new (await import("jszip"))();
+	const zip = new (await import("jszip"))();
 
-    for (const match of matches) {
-        const file = path.join(cwd, match);
-        if ((await fs.pathExists(file)) && (await fs.stat(file)).isFile()) {
-            zip.file(match, fs.createReadStream(file));
-        }
-    }
+	for (const match of matches) {
+		const file = path.join(cwd, match);
+		if ((await fs.pathExists(file)) && (await fs.stat(file)).isFile()) {
+			zip.file(match, fs.createReadStream(file));
+		}
+	}
 
-    await new Promise<string>(resolve => {
-        zip.generateNodeStream({
-            type: "nodebuffer",
-            streamFiles: true,
-            compression: "DEFLATE",
-            compressionOptions: { level: 6 },
-        })
-            .pipe(fs.createWriteStream(fileName))
-            .on("finish", () => {
-                resolve(fileName);
-            });
-    });
-    info(`Packaged ${matches.length} ${matches.length === 1 ? "file" : "files"} into archive '${fileName}'`);
+	await new Promise<string>(resolve => {
+		zip
+			.generateNodeStream({
+				type: "nodebuffer",
+				streamFiles: true,
+				compression: "DEFLATE",
+				compressionOptions: { level: 6 },
+			})
+			.pipe(fs.createWriteStream(fileName))
+			.on("finish", () => {
+				resolve(fileName);
+			});
+	});
+	info(
+		`Packaged ${matches.length} ${
+			matches.length === 1 ? "file" : "files"
+		} into archive '${fileName}'`,
+	);
 }
