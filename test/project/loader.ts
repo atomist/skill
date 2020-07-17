@@ -20,13 +20,17 @@ import { createProjectLoader } from "../../lib/project/loader";
 import { gitHubComRepository } from "../../lib/repository/id";
 
 describe("loader", () => {
-    it("should clone public repo", async () => {
-        const p = await createProjectLoader().clone(
-            gitHubComRepository({ owner: "atomist", repo: "skill", credential: undefined }),
-        );
-        const baseDir = p.path();
-        const readmePath = p.path("README.md");
-        assert(baseDir);
-        assert.strictEqual(await fs.pathExists(readmePath), true);
-    }).timeout(5000);
+	it("should clone public repo", async () => {
+		const p = await createProjectLoader().clone(
+			gitHubComRepository({
+				owner: "atomist",
+				repo: "skill",
+				credential: undefined,
+			}),
+		);
+		const baseDir = p.path();
+		const readmePath = p.path("README.md");
+		assert(baseDir);
+		assert.strictEqual(await fs.pathExists(readmePath), true);
+	}).timeout(5000);
 });

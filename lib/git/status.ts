@@ -17,78 +17,104 @@
 import { execPromise } from "../child_process";
 
 export interface Status {
-    isClean: boolean;
-    ignoredChanges: string[];
-    raw: string;
-    sha: string;
-    branch: string;
-    upstream?: {
-        branch: string;
-        inSync: boolean;
-    };
+	isClean: boolean;
+	ignoredChanges: string[];
+	raw: string;
+	sha: string;
+	branch: string;
+	upstream?: {
+		branch: string;
+		inSync: boolean;
+	};
 }
 
 export function isFullyClean(gs: Status): boolean {
-    return gs.isClean && gs.ignoredChanges.length === 0;
+	return gs.isClean && gs.ignoredChanges.length === 0;
 }
 
 export async function runStatusIn(baseDir: string): Promise<Status> {
-    const branch = await determineBranch(baseDir);
-    const upstreamData = await collectUpstream(baseDir, branch);
-    const shaData = await collectFullSha(baseDir);
-    const cleanlinessData = await collectCleanliness(baseDir);
-    const ignoredChangeData = await collectIgnoredChanges(baseDir);
-    return {
-        branch,
-        ...ignoredChangeData,
-        ...cleanlinessData,
-        ...shaData,
-        ...upstreamData,
-    };
+	const branch = await determineBranch(baseDir);
+	const upstreamData = await collectUpstream(baseDir, branch);
+	const shaData = await collectFullSha(baseDir);
+	const cleanlinessData = await collectCleanliness(baseDir);
+	const ignoredChangeData = await collectIgnoredChanges(baseDir);
+	return {
+		branch,
+		...ignoredChangeData,
+		...cleanlinessData,
+		...shaData,
+		...upstreamData,
+	};
 }
 
 async function determineBranch(baseDir: string): Promise<string> {
-    const branchNameResult = await execPromise("git", ["rev-parse", "--abbrev-ref", "HEAD"], { cwd: baseDir });
-    return branchNameResult.stdout.trim();
+	const branchNameResult = await execPromise(
+		"git",
+		["rev-parse", "--abbrev-ref", "HEAD"],
+		{ cwd: baseDir },
+	);
+	return branchNameResult.stdout.trim();
 }
 
-async function collectCleanliness(baseDir: string): Promise<{ isClean: boolean }> {
-    const porcelainStatusResult = await execPromise("git", ["status", "--porcelain"], { cwd: baseDir });
-    const raw = porcelainStatusResult.stdout;
-    return { isClean: raw.length === 0 };
+async function collectCleanliness(
+	baseDir: string,
+): Promise<{ isClean: boolean }> {
+	const porcelainStatusResult = await execPromise(
+		"git",
+		["status", "--porcelain"],
+		{ cwd: baseDir },
+	);
+	const raw = porcelainStatusResult.stdout;
+	return { isClean: raw.length === 0 };
 }
 
-async function collectIgnoredChanges(baseDir: string): Promise<{ ignoredChanges: string[]; raw: string }> {
-    const porcelainStatusResult = await execPromise("git", ["status", "--porcelain", "--ignored"], { cwd: baseDir });
-    const raw = porcelainStatusResult.stdout;
-    const ignored = raw
-        .trim()
-        .split("\n")
-        .filter(s => s.startsWith("!"))
-        .map(s => s.substring(3));
-    return {
-        raw,
-        ignoredChanges: ignored,
-    };
+async function collectIgnoredChanges(
+	baseDir: string,
+): Promise<{ ignoredChanges: string[]; raw: string }> {
+	const porcelainStatusResult = await execPromise(
+		"git",
+		["status", "--porcelain", "--ignored"],
+		{ cwd: baseDir },
+	);
+	const raw = porcelainStatusResult.stdout;
+	const ignored = raw
+		.trim()
+		.split("\n")
+		.filter(s => s.startsWith("!"))
+		.map(s => s.substring(3));
+	return {
+		raw,
+		ignoredChanges: ignored,
+	};
 }
 
-async function collectFullSha(baseDir: string, commit = "HEAD"): Promise<{ sha: string }> {
-    const result = await execPromise("git", ["rev-list", "-1", commit, "--"], { cwd: baseDir });
-    return {
-        sha: result.stdout.trim(),
-    };
+async function collectFullSha(
+	baseDir: string,
+	commit = "HEAD",
+): Promise<{ sha: string }> {
+	const result = await execPromise("git", ["rev-list", "-1", commit, "--"], {
+		cwd: baseDir,
+	});
+	return {
+		sha: result.stdout.trim(),
+	};
 }
 
 async function collectUpstream(
-    baseDir: string,
-    branch: string,
+	baseDir: string,
+	branch: string,
 ): Promise<{ upstream?: { branch: string; inSync: boolean } }> {
-    const branchArgs = ["for-each-ref", "--format", "%(upstream:short) %(upstream:trackshort)", `refs/heads/${branch}`];
-    const branchResult = await execPromise("git", branchArgs, { cwd: baseDir });
-    const branchResultParts = branchResult.stdout.trim().split(" ");
-    const upstream =
-        branchResultParts.length > 0
-            ? { branch: branchResultParts[0], inSync: branchResultParts[1] === "=" }
-            : undefined;
-    return { upstream };
+	const branchArgs = [
+		"for-each-ref",
+		"--format",
+		"%(upstream:short) %(upstream:trackshort)",
+		`refs/heads/${branch}`,
+	];
+	const branchResult = await execPromise("git", branchArgs, { cwd: baseDir });
+	const branchResultParts = branchResult.stdout.trim().split(" ");
+	const upstream =
+		branchResultParts.length > 0
+			? { branch: branchResultParts[0], inSync: branchResultParts[1] === "=" }
+			: undefined;
+	return { upstream };
 }

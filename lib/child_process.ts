@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-import { SpawnOptions, SpawnSyncOptions, SpawnSyncReturns } from "child_process";
+import {
+	SpawnOptions,
+	SpawnSyncOptions,
+	SpawnSyncReturns,
+} from "child_process";
 import * as process from "process";
 import { debug, error, warn } from "./log";
 
@@ -25,10 +29,17 @@ import { debug, error, warn } from "./log";
  * @param args Arguments to command.
  * @param opts Standard child_process.SpawnOptions.
  */
-export function childProcessString(cmd: string, args: string[] = [], opts: SpawnOptions = {}): string {
-    return (
-        (opts.cwd ? opts.cwd : process.cwd()) + " ==> " + cmd + (args.length > 0 ? " '" + args.join("' '") + "'" : "")
-    );
+export function childProcessString(
+	cmd: string,
+	args: string[] = [],
+	opts: SpawnOptions = {},
+): string {
+	return (
+		(opts.cwd ? opts.cwd : process.cwd()) +
+		" ==> " +
+		cmd +
+		(args.length > 0 ? " '" + args.join("' '") + "'" : "")
+	);
 }
 
 /**
@@ -40,10 +51,10 @@ export function childProcessString(cmd: string, args: string[] = [], opts: Spawn
  * @param signal optional signal name or number, Node.js default is used if not provided
  */
 export function killProcess(pid: number, signal?: string | number): void {
-    const sig = signal ? `signal ${signal}` : "default signal";
-    debug(`Calling tree-kill on child process ${pid} with ${sig}`);
-    // Lazy import
-    require("tree-kill")(pid, signal); // eslint-disable-line @typescript-eslint/no-var-requires
+	const sig = signal ? `signal ${signal}` : "default signal";
+	debug(`Calling tree-kill on child process ${pid} with ${sig}`);
+	// Lazy import
+	require("tree-kill")(pid, signal); // eslint-disable-line @typescript-eslint/no-var-requires
 }
 
 /**
@@ -51,20 +62,20 @@ export function killProcess(pid: number, signal?: string | number): void {
  * the log.
  */
 export interface WritableLog {
-    /**
-     * The content already written to the log.  This is optional as
-     * some implementations may choose to not expose their log as a
-     * string as it could be too long.
-     */
-    log?: string;
-    /**
-     * Set to true if ANSI escape characters should be stripped from
-     * the data before writing to log.
-     */
-    stripAnsi?: boolean;
+	/**
+	 * The content already written to the log.  This is optional as
+	 * some implementations may choose to not expose their log as a
+	 * string as it could be too long.
+	 */
+	log?: string;
+	/**
+	 * Set to true if ANSI escape characters should be stripped from
+	 * the data before writing to log.
+	 */
+	stripAnsi?: boolean;
 
-    /** Function that appends to the log. */
-    write(what: string): void;
+	/** Function that appends to the log. */
+	write(what: string): void;
 }
 
 /**
@@ -73,20 +84,20 @@ export interface WritableLog {
  * otherwise.
  */
 export interface SpawnPromiseOptions extends SpawnSyncOptions {
-    /**
-     * Optional logger to write stdout and stderr to.  If this is
-     * provided, the encoding for it is taken from the `encoding`
-     * option property and that property is set to "bufffer".  If no
-     * `encoding` is defined, the default encoding for the log is
-     * "utf8".
-     */
-    log?: WritableLog;
-    /**
-     * Set to true if you want the command line sent to the
-     * Writablelog provided to spawnPromise.  Set to false if the
-     * command or its arguments contain sensitive information.
-     */
-    logCommand?: boolean;
+	/**
+	 * Optional logger to write stdout and stderr to.  If this is
+	 * provided, the encoding for it is taken from the `encoding`
+	 * option property and that property is set to "bufffer".  If no
+	 * `encoding` is defined, the default encoding for the log is
+	 * "utf8".
+	 */
+	log?: WritableLog;
+	/**
+	 * Set to true if you want the command line sent to the
+	 * Writablelog provided to spawnPromise.  Set to false if the
+	 * command or its arguments contain sensitive information.
+	 */
+	logCommand?: boolean;
 }
 
 /**
@@ -95,15 +106,15 @@ export interface SpawnPromiseOptions extends SpawnSyncOptions {
  * @param timer A timer that may not be set.
  */
 function clearTimer(timer: NodeJS.Timer | undefined): undefined {
-    if (timer) {
-        clearTimeout(timer);
-    }
-    return undefined;
+	if (timer) {
+		clearTimeout(timer);
+	}
+	return undefined;
 }
 
 export interface SpawnPromiseReturns extends SpawnSyncReturns<string> {
-    /** Stringified command. */
-    cmdString: string;
+	/** Stringified command. */
+	cmdString: string;
 }
 
 /**
@@ -124,104 +135,117 @@ export interface SpawnPromiseReturns extends SpawnSyncReturns<string> {
  *         of [[SpawnPromiseReturns]] will be populated.
  */
 export async function spawnPromise(
-    cmd: string,
-    args: string[] = [],
-    opts: SpawnPromiseOptions = {},
+	cmd: string,
+	args: string[] = [],
+	opts: SpawnPromiseOptions = {},
 ): Promise<SpawnPromiseReturns> {
-    // Lazy import
-    const spawn = await import("cross-spawn");
-    return new Promise<SpawnPromiseReturns>(resolve => {
-        const optsToUse: SpawnPromiseOptions = {
-            logCommand: true,
-            ...opts,
-        };
-        const cmdString = childProcessString(cmd, args, optsToUse);
-        let logEncoding = "utf8";
-        if (!optsToUse.encoding) {
-            if (optsToUse.log) {
-                optsToUse.encoding = "buffer";
-            } else {
-                optsToUse.encoding = "utf8";
-            }
-        } else if (optsToUse.log && optsToUse.encoding !== "buffer") {
-            logEncoding = optsToUse.encoding;
-            optsToUse.encoding = "buffer";
-        }
+	// Lazy import
+	const spawn = await import("cross-spawn");
+	return new Promise<SpawnPromiseReturns>(resolve => {
+		const optsToUse: SpawnPromiseOptions = {
+			logCommand: true,
+			...opts,
+		};
+		const cmdString = childProcessString(cmd, args, optsToUse);
+		let logEncoding = "utf8";
+		if (!optsToUse.encoding) {
+			if (optsToUse.log) {
+				optsToUse.encoding = "buffer";
+			} else {
+				optsToUse.encoding = "utf8";
+			}
+		} else if (optsToUse.log && optsToUse.encoding !== "buffer") {
+			logEncoding = optsToUse.encoding;
+			optsToUse.encoding = "buffer";
+		}
 
-        function pLog(data: string): void {
-            const formatted = optsToUse.log && optsToUse.log.stripAnsi ? require("strip-ansi")(data) : data; // eslint-disable-line @typescript-eslint/no-var-requires
-            optsToUse.log.write(formatted);
-        }
+		function pLog(data: string): void {
+			const formatted =
+				optsToUse.log && optsToUse.log.stripAnsi
+					? require("strip-ansi")(data)
+					: data; // eslint-disable-line @typescript-eslint/no-var-requires
+			optsToUse.log.write(formatted);
+		}
 
-        function commandLog(data: string, l: (message: string, ...optionalParams: any[]) => void = debug): void {
-            if (optsToUse.log && optsToUse.logCommand) {
-                const terminated = data.endsWith("\n") ? data : data + "\n";
-                pLog(terminated);
-            } else {
-                l(data);
-            }
-        }
+		function commandLog(
+			data: string,
+			l: (message: string, ...optionalParams: any[]) => void = debug,
+		): void {
+			if (optsToUse.log && optsToUse.logCommand) {
+				const terminated = data.endsWith("\n") ? data : data + "\n";
+				pLog(terminated);
+			} else {
+				l(data);
+			}
+		}
 
-        debug(`Spawning: ${cmdString}`);
-        const childProcess = spawn(cmd, args, optsToUse);
-        commandLog(`Spawned: ${cmdString} (PID ${childProcess.pid})`);
+		debug(`Spawning: ${cmdString}`);
+		const childProcess = spawn(cmd, args, optsToUse);
+		commandLog(`Spawned: ${cmdString} (PID ${childProcess.pid})`);
 
-        let timer: NodeJS.Timer;
-        if (optsToUse.timeout) {
-            timer = setTimeout(() => {
-                commandLog(`Child process timeout expired, killing command: ${cmdString}`, warn);
-                killProcess(childProcess.pid, optsToUse.killSignal);
-            }, optsToUse.timeout);
-        }
-        let stderr = "";
-        let stdout = "";
-        if (optsToUse.log) {
-            const logData = (data: Buffer): void => {
-                pLog(data.toString(logEncoding));
-            };
-            childProcess.stderr.on("data", logData);
-            childProcess.stdout.on("data", logData);
-            stderr = stdout = "See log\n";
-        } else {
-            childProcess.stderr.on("data", (data: string) => (stderr += data));
-            childProcess.stdout.on("data", (data: string) => (stdout += data));
-        }
-        childProcess.on("exit", (code, signal) => {
-            timer = clearTimer(timer);
-            debug(`Child process exit with code ${code} and signal ${signal}: ${cmdString}`);
-        });
-        /* tslint:disable:no-null-keyword */
-        childProcess.on("close", (code, signal) => {
-            timer = clearTimer(timer);
-            commandLog(`Child process close with code ${code} and signal ${signal}: ${cmdString}`);
-            resolve({
-                cmdString,
-                pid: childProcess.pid,
-                output: [null, stdout, stderr],
-                stdout,
-                stderr,
-                status: code,
-                signal,
-                error: null,
-            });
-        });
-        childProcess.on("error", err => {
-            timer = clearTimer(timer);
-            err.message = `Failed to run command: ${cmdString}: ${err.message}`;
-            commandLog(err.message, error);
-            resolve({
-                cmdString,
-                pid: childProcess.pid,
-                output: [null, stdout, stderr],
-                stdout,
-                stderr,
-                status: null,
-                signal: null,
-                error: err,
-            });
-        });
-        /* tslint:enable:no-null-keyword */
-    });
+		let timer: NodeJS.Timer;
+		if (optsToUse.timeout) {
+			timer = setTimeout(() => {
+				commandLog(
+					`Child process timeout expired, killing command: ${cmdString}`,
+					warn,
+				);
+				killProcess(childProcess.pid, optsToUse.killSignal);
+			}, optsToUse.timeout);
+		}
+		let stderr = "";
+		let stdout = "";
+		if (optsToUse.log) {
+			const logData = (data: Buffer): void => {
+				pLog(data.toString(logEncoding));
+			};
+			childProcess.stderr.on("data", logData);
+			childProcess.stdout.on("data", logData);
+			stderr = stdout = "See log\n";
+		} else {
+			childProcess.stderr.on("data", (data: string) => (stderr += data));
+			childProcess.stdout.on("data", (data: string) => (stdout += data));
+		}
+		childProcess.on("exit", (code, signal) => {
+			timer = clearTimer(timer);
+			debug(
+				`Child process exit with code ${code} and signal ${signal}: ${cmdString}`,
+			);
+		});
+		/* tslint:disable:no-null-keyword */
+		childProcess.on("close", (code, signal) => {
+			timer = clearTimer(timer);
+			commandLog(
+				`Child process close with code ${code} and signal ${signal}: ${cmdString}`,
+			);
+			resolve({
+				cmdString,
+				pid: childProcess.pid,
+				output: [null, stdout, stderr],
+				stdout,
+				stderr,
+				status: code,
+				signal,
+				error: null,
+			});
+		});
+		childProcess.on("error", err => {
+			timer = clearTimer(timer);
+			err.message = `Failed to run command: ${cmdString}: ${err.message}`;
+			commandLog(err.message, error);
+			resolve({
+				cmdString,
+				pid: childProcess.pid,
+				output: [null, stdout, stderr],
+				stdout,
+				stderr,
+				status: null,
+				signal: null,
+				error: err,
+			});
+		});
+		/* tslint:enable:no-null-keyword */
+	});
 }
 
 /**
@@ -231,10 +255,10 @@ export async function spawnPromise(
  * with a status of 0.
  */
 export interface ExecPromiseResult {
-    /** Child process standard output. */
-    stdout: string;
-    /** Child process standard error. */
-    stderr: string;
+	/** Child process standard output. */
+	stdout: string;
+	/** Child process standard error. */
+	stderr: string;
 }
 
 /**
@@ -242,30 +266,40 @@ export interface ExecPromiseResult {
  * killed by a signal, or returns a non-zero exit status.
  */
 export class ExecPromiseError extends Error implements ExecPromiseResult {
-    /** Create an ExecError from a SpawnSyncReturns<string> */
-    public static fromSpawnReturns(r: SpawnSyncReturns<string>): ExecPromiseError {
-        return new ExecPromiseError(r.error.message, r.pid, r.output, r.stdout, r.stderr, r.status, r.signal);
-    }
+	/** Create an ExecError from a SpawnSyncReturns<string> */
+	public static fromSpawnReturns(
+		r: SpawnSyncReturns<string>,
+	): ExecPromiseError {
+		return new ExecPromiseError(
+			r.error.message,
+			r.pid,
+			r.output,
+			r.stdout,
+			r.stderr,
+			r.status,
+			r.signal,
+		);
+	}
 
-    constructor(
-        /** Message describing reason for failure. */
-        public message: string,
-        /** Command PID. */
-        public pid: number,
-        /** stdio */
-        public output: string[],
-        /** Child process standard output. */
-        public stdout: string,
-        /** Child process standard error. */
-        public stderr: string,
-        /** Child process exit status. */
-        public status: number,
-        /** Signal that killed the process, if any. */
-        public signal: string,
-    ) {
-        super(message);
-        Object.setPrototypeOf(this, new.target.prototype);
-    }
+	constructor(
+		/** Message describing reason for failure. */
+		public message: string,
+		/** Command PID. */
+		public pid: number,
+		/** stdio */
+		public output: string[],
+		/** Child process standard output. */
+		public stdout: string,
+		/** Child process standard error. */
+		public stderr: string,
+		/** Child process exit status. */
+		public status: number,
+		/** Signal that killed the process, if any. */
+		public signal: string,
+	) {
+		super(message);
+		Object.setPrototypeOf(this, new.target.prototype);
+	}
 }
 
 /**
@@ -287,53 +321,53 @@ export class ExecPromiseError extends Error implements ExecPromiseResult {
  *         Promise is rejected with an [[ExecPromiseError]].
  */
 export async function execPromise(
-    cmd: string,
-    args: string[] = [],
-    opts: SpawnSyncOptions = {},
+	cmd: string,
+	args: string[] = [],
+	opts: SpawnSyncOptions = {},
 ): Promise<ExecPromiseResult> {
-    opts.stdio = ["pipe", "pipe", "pipe"];
-    if (!opts.encoding) {
-        opts.encoding = "utf8";
-    }
-    const result = await spawnPromise(cmd, args, opts);
-    if (result.error) {
-        throw ExecPromiseError.fromSpawnReturns(result);
-    }
-    if (result.status) {
-        const msg = `Child process ${result.pid} exited with non-zero status ${result.status}: ${result.cmdString}\n${result.stderr}`;
-        error(msg);
-        result.error = new Error(msg);
-        throw ExecPromiseError.fromSpawnReturns(result);
-    }
-    if (result.signal) {
-        const msg = `Child process ${result.pid} received signal ${result.signal}: ${result.cmdString}\n${result.stderr}`;
-        error(msg);
-        result.error = new Error(msg);
-        throw ExecPromiseError.fromSpawnReturns(result);
-    }
-    return { stdout: result.stdout, stderr: result.stderr };
+	opts.stdio = ["pipe", "pipe", "pipe"];
+	if (!opts.encoding) {
+		opts.encoding = "utf8";
+	}
+	const result = await spawnPromise(cmd, args, opts);
+	if (result.error) {
+		throw ExecPromiseError.fromSpawnReturns(result);
+	}
+	if (result.status) {
+		const msg = `Child process ${result.pid} exited with non-zero status ${result.status}: ${result.cmdString}\n${result.stderr}`;
+		error(msg);
+		result.error = new Error(msg);
+		throw ExecPromiseError.fromSpawnReturns(result);
+	}
+	if (result.signal) {
+		const msg = `Child process ${result.pid} received signal ${result.signal}: ${result.cmdString}\n${result.stderr}`;
+		error(msg);
+		result.error = new Error(msg);
+		throw ExecPromiseError.fromSpawnReturns(result);
+	}
+	return { stdout: result.stdout, stderr: result.stderr };
 }
 
 export const ConsoleLog: WritableLog = {
-    write: (what: string) => {
-        debug(what);
-    },
+	write: (what: string) => {
+		debug(what);
+	},
 };
 
 export function captureLog(): WritableLog & { log: string } {
-    const logLines = [];
-    return {
-        write: (msg): void => {
-            let line = msg;
-            if (line.endsWith("\n")) {
-                line = line.slice(0, -1);
-            }
-            const lines = line.split("\n");
-            lines.forEach(l => debug(l.trimRight()));
-            logLines.push(msg);
-        },
-        get log() {
-            return logLines.join("");
-        },
-    };
+	const logLines = [];
+	return {
+		write: (msg): void => {
+			let line = msg;
+			if (line.endsWith("\n")) {
+				line = line.slice(0, -1);
+			}
+			const lines = line.split("\n");
+			lines.forEach(l => debug(l.trimRight()));
+			logLines.push(msg);
+		},
+		get log() {
+			return logLines.join("");
+		},
+	};
 }

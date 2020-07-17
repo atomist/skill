@@ -18,17 +18,17 @@ import * as assert from "power-assert";
 import { truncateText } from "../../lib/github/check";
 
 describe("check", () => {
-    describe("truncateText", () => {
-        it("should truncate text", () => {
-            const text = "The quick brown fox jumps over the lazy dog";
-            const result = truncateText(text, 21);
-            assert.deepStrictEqual(result.length, 21);
-        });
+	describe("truncateText", () => {
+		it("should truncate text", () => {
+			const text = "The quick brown fox jumps over the lazy dog";
+			const result = truncateText(text, 21);
+			assert.deepStrictEqual(result.length, 21);
+		});
 
-        it("should not truncate text", () => {
-            const text = "The quick brown fox jumps over the lazy dog";
-            const result = truncateText(text);
-            assert.deepStrictEqual(result, text);
-        });
-    });
+		it("should not truncate text", () => {
+			const text = "The quick brown fox jumps over the lazy dog";
+			const result = truncateText(text);
+			assert.deepStrictEqual(result, text);
+		});
+	});
 });

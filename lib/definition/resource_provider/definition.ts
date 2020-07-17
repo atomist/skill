@@ -20,78 +20,128 @@ import { ResourceProvider } from "../skill";
  * Create a ResourceProvider instance to use in Skill resourceProvider definitions
  */
 export function resourceProvider(options: ResourceProvider): ResourceProvider {
-    return {
-        typeName: options.typeName,
-        displayName: options.displayName,
-        description: options.description || options.displayName,
-        minRequired: options?.minRequired !== undefined ? options.minRequired : 0,
-        maxAllowed: options?.maxAllowed,
-    };
+	return {
+		typeName: options.typeName,
+		displayName: options.displayName,
+		description: options.description || options.displayName,
+		minRequired: options?.minRequired !== undefined ? options.minRequired : 0,
+		maxAllowed: options?.maxAllowed,
+	};
 }
 
 /**
  * Create an ChatProvider to use in Skill resourceProvider definitions
  */
-export function chat(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Chat", typeName: "ChatProvider", ...options });
+export function chat(
+	options: Omit<ResourceProvider, "typeName"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "Chat",
+		typeName: "ChatProvider",
+		...options,
+	});
 }
 
 /**
  * Create an SlackResourceProvider to use in Skill resourceProvider definitions
  */
-export function slack(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Slack", typeName: "SlackResourceProvider", ...options });
+export function slack(
+	options: Omit<ResourceProvider, "typeName"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "Slack",
+		typeName: "SlackResourceProvider",
+		...options,
+	});
 }
 
 /**
  * Create an MicrosoftTeamsResourceProvider to use in Skill resourceProvider definitions
  */
-export function msteams(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Microsoft Teams", typeName: "MicrosoftTeamsResourceProvider", ...options });
+export function msteams(
+	options: Omit<ResourceProvider, "typeName"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "Microsoft Teams",
+		typeName: "MicrosoftTeamsResourceProvider",
+		...options,
+	});
 }
 
 /**
  * Create an GitHubAppResourceProvider to use in Skill resourceProvider definitions
  */
-export function gitHub(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "GitHub", typeName: "GitHubAppResourceProvider", ...options });
+export function gitHub(
+	options: Omit<ResourceProvider, "typeName"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "GitHub",
+		typeName: "GitHubAppResourceProvider",
+		...options,
+	});
 }
 
 /**
  * Create an KubernetesClusterProvider to use in Skill resourceProvider definitions
  */
-export function kubernetes(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Kubernetes Cluster", typeName: "KubernetesClusterProvider", ...options });
+export function kubernetes(
+	options: Omit<ResourceProvider, "typeName"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "Kubernetes Cluster",
+		typeName: "KubernetesClusterProvider",
+		...options,
+	});
 }
 
 /**
  * Create a GoogleCloudPlatformProvider to use in Skill resourceProvider definitions
  */
-export function gcp(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({
-        displayName: "Google Cloud Platform",
-        typeName: "GoogleCloudPlatformProvider",
-        ...options,
-    });
+export function gcp(
+	options: Omit<ResourceProvider, "typeName"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "Google Cloud Platform",
+		typeName: "GoogleCloudPlatformProvider",
+		...options,
+	});
 }
 
 /**
  * Create an DockerRegistryProvider to use in Skill resourceProvider definitions
  */
-export function dockerRegistry(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Docker Registry", typeName: "DockerRegistry", ...options });
+export function dockerRegistry(
+	options: Omit<ResourceProvider, "typeName"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "Docker Registry",
+		typeName: "DockerRegistry",
+		...options,
+	});
 }
 
 /**
  * Create an MavenRepositoryProvider to use in Skill resourceProvider definitions
  */
-export function mavenRepository(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "Maven Repository", typeName: "MavenRepositoryProvider", ...options });
+export function mavenRepository(
+	options: Omit<ResourceProvider, "typeName"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "Maven Repository",
+		typeName: "MavenRepositoryProvider",
+		...options,
+	});
 }
 
 /**
  * Create an NpmJSRegistryProvider to use in Skill resourceProvider definitions
  */
-export function npmJSRegistry(options: Omit<ResourceProvider, "typeName"> = {}): ResourceProvider {
-    return resourceProvider({ displayName: "npmjs.com Registry", typeName: "NpmJSRegistryProvider", ...options });
+export function npmJSRegistry(
+	options: Omit<ResourceProvider, "typeName"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "npmjs.com Registry",
+		typeName: "NpmJSRegistryProvider",
+		...options,
+	});
 }

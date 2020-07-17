@@ -22,66 +22,78 @@ import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 const DefaultGitHubApiUrl = "https://api.github.com/";
 
 export function api(
-    id: Pick<AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>, "credential" | "apiUrl">,
+	id: Pick<
+		AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
+		"credential" | "apiUrl"
+	>,
 ): Octokit {
-    const url = id.apiUrl || DefaultGitHubApiUrl;
+	const url = id.apiUrl || DefaultGitHubApiUrl;
 
-    const { Octokit } = require("@octokit/rest"); // eslint-disable-line @typescript-eslint/no-var-requires
-    const { throttling } = require("@octokit/plugin-throttling"); // eslint-disable-line @typescript-eslint/no-var-requires
-    const { retry } = require("@octokit/plugin-retry"); // eslint-disable-line @typescript-eslint/no-var-requires
-    const ConfiguredOctokit = Octokit.plugin(throttling, retry);
+	const { Octokit } = require("@octokit/rest"); // eslint-disable-line @typescript-eslint/no-var-requires
+	const { throttling } = require("@octokit/plugin-throttling"); // eslint-disable-line @typescript-eslint/no-var-requires
+	const { retry } = require("@octokit/plugin-retry"); // eslint-disable-line @typescript-eslint/no-var-requires
+	const ConfiguredOctokit = Octokit.plugin(throttling, retry);
 
-    return new ConfiguredOctokit({
-        auth: `token ${id.credential.token}`,
-        baseUrl: url.endsWith("/") ? url.slice(0, -1) : url,
-        throttle: {
-            onRateLimit: (retryAfter: any, options: any): boolean => {
-                console.warn(`Request quota exhausted for request '${options.method} ${options.url}'`);
+	return new ConfiguredOctokit({
+		auth: `token ${id.credential.token}`,
+		baseUrl: url.endsWith("/") ? url.slice(0, -1) : url,
+		throttle: {
+			onRateLimit: (retryAfter: any, options: any): boolean => {
+				console.warn(
+					`Request quota exhausted for request '${options.method} ${options.url}'`,
+				);
 
-                if (options.request.retryCount === 0) {
-                    // only retries once
-                    console.debug(`Retrying after ${retryAfter} seconds!`);
-                    return true;
-                }
-                return false;
-            },
-            onAbuseLimit: (retryAfter: any, options: any): void => {
-                console.warn(`Abuse detected for request '${options.method} ${options.url}'`);
-            },
-        },
-    });
+				if (options.request.retryCount === 0) {
+					// only retries once
+					console.debug(`Retrying after ${retryAfter} seconds!`);
+					return true;
+				}
+				return false;
+			},
+			onAbuseLimit: (retryAfter: any, options: any): void => {
+				console.warn(
+					`Abuse detected for request '${options.method} ${options.url}'`,
+				);
+			},
+		},
+	});
 }
 
-export function formatMarkers(ctx: Contextual<any, any>, ...tags: string[]): string {
-    return `
+export function formatMarkers(
+	ctx: Contextual<any, any>,
+	...tags: string[]
+): string {
+	return `
 <!--
   [atomist:generated]
   [atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]
-  [atomist-correlation-id:${ctx.correlationId}]${tags.length > 0 ? "\n" : ""}${tags.map(t => `  [${t}]`).join("\n")}
+  [atomist-correlation-id:${ctx.correlationId}]${
+		tags.length > 0 ? "\n" : ""
+	}${tags.map(t => `  [${t}]`).join("\n")}
 -->`;
 }
 
 export async function convergeLabel(
-    id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
-    name: string,
-    color: string,
-    description?: string,
+	id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
+	name: string,
+	color: string,
+	description?: string,
 ): Promise<void> {
-    try {
-        await api(id).issues.updateLabel({
-            name,
-            color,
-            description,
-            repo: id.repo,
-            owner: id.owner,
-        });
-    } catch (err) {
-        await api(id).issues.createLabel({
-            name,
-            color,
-            description,
-            repo: id.repo,
-            owner: id.owner,
-        });
-    }
+	try {
+		await api(id).issues.updateLabel({
+			name,
+			color,
+			description,
+			repo: id.repo,
+			owner: id.owner,
+		});
+	} catch (err) {
+		await api(id).issues.createLabel({
+			name,
+			color,
+			description,
+			repo: id.repo,
+			owner: id.owner,
+		});
+	}
 }

@@ -17,29 +17,37 @@
 import { Contextual } from "../handler";
 
 export function matchesFilter(
-    repoId: string,
-    orgId: string,
-    configurationName: string,
-    parameterName: string,
-    ctx: Contextual<any, any>,
+	repoId: string,
+	orgId: string,
+	configurationName: string,
+	parameterName: string,
+	ctx: Contextual<any, any>,
 ): boolean {
-    const cfg = ctx.configuration.find(c => c.name === configurationName);
-    const repoFilter = cfg.parameters[parameterName];
-    if (repoFilter) {
-        const excludes = repoFilter.excludes || [];
-        const includes = repoFilter.includes || [];
-        if (includes.length === 0 && excludes.length === 0) {
-            return true;
-        } else if (excludes.some(e => (e.repoIds || []).includes(repoId))) {
-            return false;
-        } else if (includes.some(i => (i.repoIds || []).includes(repoId))) {
-            return true;
-        } else if (excludes.some(e => e.ownerId === orgId && (!e.repoIds || e.repoIds.length === 0))) {
-            return false;
-        } else if (includes.some(i => i.ownerId === orgId && (!i.repoIds || i.repoIds.length === 0))) {
-            return true;
-        }
-        return false;
-    }
-    return true;
+	const cfg = ctx.configuration.find(c => c.name === configurationName);
+	const repoFilter = cfg.parameters[parameterName];
+	if (repoFilter) {
+		const excludes = repoFilter.excludes || [];
+		const includes = repoFilter.includes || [];
+		if (includes.length === 0 && excludes.length === 0) {
+			return true;
+		} else if (excludes.some(e => (e.repoIds || []).includes(repoId))) {
+			return false;
+		} else if (includes.some(i => (i.repoIds || []).includes(repoId))) {
+			return true;
+		} else if (
+			excludes.some(
+				e => e.ownerId === orgId && (!e.repoIds || e.repoIds.length === 0),
+			)
+		) {
+			return false;
+		} else if (
+			includes.some(
+				i => i.ownerId === orgId && (!i.repoIds || i.repoIds.length === 0),
+			)
+		) {
+			return true;
+		}
+		return false;
+	}
+	return true;
 }

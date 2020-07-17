@@ -121,15 +121,18 @@ fragment TypeRef on __Type {
 }
 `;
 
-export async function fetchGql(cwd: string, workspaceId?: string): Promise<void> {
-    process.env.ATOMIST_LOG_LEVEL = "info";
-    const w = await wid(workspaceId);
-    info(`Fetching GraphQL schema for workspace '${w}'`);
-    const graphqlClient = createGraphQLClient(await apiKey(), w);
-    const schema = await graphqlClient.query(IntrospectionQuery);
+export async function fetchGql(
+	cwd: string,
+	workspaceId?: string,
+): Promise<void> {
+	process.env.ATOMIST_LOG_LEVEL = "info";
+	const w = await wid(workspaceId);
+	info(`Fetching GraphQL schema for workspace '${w}'`);
+	const graphqlClient = createGraphQLClient(await apiKey(), w);
+	const schema = await graphqlClient.query(IntrospectionQuery);
 
-    const schemaFile = path.join(cwd, "graphql", "schema.json");
-    await fs.ensureDir(path.dirname(schemaFile));
-    await fs.writeJson(schemaFile, schema, { spaces: 2 });
-    info(`Written GraphQL schema to '${schemaFile}'`);
+	const schemaFile = path.join(cwd, "graphql", "schema.json");
+	await fs.ensureDir(path.dirname(schemaFile));
+	await fs.writeJson(schemaFile, schema, { spaces: 2 });
+	info(`Written GraphQL schema to '${schemaFile}'`);
 }

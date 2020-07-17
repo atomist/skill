@@ -15,7 +15,11 @@
  */
 
 import { isCommandIncoming } from "../payload";
-import { CredentialResolver, GitHubAppCredential, GitHubCredential } from "./provider";
+import {
+	CredentialResolver,
+	GitHubAppCredential,
+	GitHubCredential,
+} from "./provider";
 
 const ResourceUserQuery = `query ResourceUser($id: String!) {
   ChatId(userId: $id) {
@@ -33,36 +37,39 @@ const ResourceUserQuery = `query ResourceUser($id: String!) {
 `;
 
 interface ResourceUserResponse {
-    ChatId: Array<{
-        person: {
-            gitHubId: {
-                credential: {
-                    scopes: string[];
-                    secret: string;
-                };
-            };
-        };
-    }>;
+	ChatId: Array<{
+		person: {
+			gitHubId: {
+				credential: {
+					scopes: string[];
+					secret: string;
+				};
+			};
+		};
+	}>;
 }
 
 export function gitHubUserToken(): CredentialResolver<GitHubCredential> {
-    return async (graph, payload): Promise<GitHubCredential> => {
-        if (isCommandIncoming(payload)) {
-            const chatId = payload.source?.slack?.user?.id;
-            if (chatId) {
-                const response = await graph.query<ResourceUserResponse>(ResourceUserQuery, { id: chatId });
-                const credential = response?.ChatId[0]?.person?.gitHubId?.credential;
+	return async (graph, payload): Promise<GitHubCredential> => {
+		if (isCommandIncoming(payload)) {
+			const chatId = payload.source?.slack?.user?.id;
+			if (chatId) {
+				const response = await graph.query<ResourceUserResponse>(
+					ResourceUserQuery,
+					{ id: chatId },
+				);
+				const credential = response?.ChatId[0]?.person?.gitHubId?.credential;
 
-                if (credential) {
-                    return {
-                        scopes: credential.scopes,
-                        token: credential.secret,
-                    };
-                }
-            }
-        }
-        return undefined;
-    };
+				if (credential) {
+					return {
+						scopes: credential.scopes,
+						token: credential.secret,
+					};
+				}
+			}
+		}
+		return undefined;
+	};
 }
 
 const ProviderQuery = `query Provider($owner: String, $repo: String, $apiUrl: String) {
@@ -88,13 +95,13 @@ const ProviderByRepoIdQuery = `query ProviderByRepoId($id: ID!) {
 `;
 
 interface ProviderResponse {
-    Repo: Array<{
-        org: {
-            provider: {
-                id: string;
-            };
-        };
-    }>;
+	Repo: Array<{
+		org: {
+			provider: {
+				id: string;
+			};
+		};
+	}>;
 }
 
 const GitHubAppTokenQuery = `query GitHubAppToken($id: ID!, $owner: String!) {
@@ -110,14 +117,14 @@ const GitHubAppTokenQuery = `query GitHubAppToken($id: ID!, $owner: String!) {
 `;
 
 interface GitHubAppTokenResponse {
-    GitHubAppResourceProvider: Array<{
-        gitHubAppInstallations: Array<{
-            token: {
-                permissions: string;
-                secret: string;
-            };
-        }>;
-    }>;
+	GitHubAppResourceProvider: Array<{
+		gitHubAppInstallations: Array<{
+			token: {
+				permissions: string;
+				secret: string;
+			};
+		}>;
+	}>;
 }
 
 const ScmProviderQuery = `query ScmProvider($id: ID!) {
@@ -130,59 +137,70 @@ const ScmProviderQuery = `query ScmProvider($id: ID!) {
 }`;
 
 interface ScmProviderResponse {
-    SCMProvider: Array<{
-        credential: {
-            secret: string;
-            scopes: string[];
-        };
-    }>;
+	SCMProvider: Array<{
+		credential: {
+			secret: string;
+			scopes: string[];
+		};
+	}>;
 }
 
 export function gitHubAppToken(
-    id: { owner: string; repo: string; apiUrl?: string } | string,
+	id: { owner: string; repo: string; apiUrl?: string } | string,
 ): CredentialResolver<GitHubAppCredential | GitHubCredential> {
-    return async (graph): Promise<GitHubAppCredential | GitHubCredential> => {
-        let repo;
-        let owner;
-        let apiUrl;
-        let providerId;
-        if (typeof id === "string") {
-            const provider = await graph.query<ProviderResponse>(ProviderByRepoIdQuery, { id });
-            providerId = provider?.Repo[0]?.org?.provider?.id;
-        } else {
-            repo = id.repo;
-            owner = id.owner;
-            apiUrl = id.apiUrl;
-            const provider = await graph.query<ProviderResponse>(ProviderQuery, {
-                apiUrl: apiUrl || "https://api.github.com/",
-                owner,
-                repo,
-            });
-            providerId = provider?.Repo[0]?.org?.provider?.id;
-        }
+	return async (graph): Promise<GitHubAppCredential | GitHubCredential> => {
+		let repo;
+		let owner;
+		let apiUrl;
+		let providerId;
+		if (typeof id === "string") {
+			const provider = await graph.query<ProviderResponse>(
+				ProviderByRepoIdQuery,
+				{ id },
+			);
+			providerId = provider?.Repo[0]?.org?.provider?.id;
+		} else {
+			repo = id.repo;
+			owner = id.owner;
+			apiUrl = id.apiUrl;
+			const provider = await graph.query<ProviderResponse>(ProviderQuery, {
+				apiUrl: apiUrl || "https://api.github.com/",
+				owner,
+				repo,
+			});
+			providerId = provider?.Repo[0]?.org?.provider?.id;
+		}
 
-        if (providerId) {
-            const installations = await graph.query<GitHubAppTokenResponse>(GitHubAppTokenQuery, {
-                id: providerId,
-                owner,
-            });
-            const token = installations?.GitHubAppResourceProvider[0]?.gitHubAppInstallations[0].token;
-            if (token) {
-                return {
-                    token: token.secret,
-                    permissions: JSON.parse(token.permissions || ""),
-                };
-            }
-            // Fallback to old SCMProvider for backwards compatibility
-            const scmProvider = await graph.query<ScmProviderResponse>(ScmProviderQuery, { id: providerId });
-            const credential = scmProvider?.SCMProvider[0]?.credential;
-            if (credential) {
-                return {
-                    token: credential.secret,
-                    scopes: credential.scopes,
-                };
-            }
-        }
-        return undefined;
-    };
+		if (providerId) {
+			const installations = await graph.query<GitHubAppTokenResponse>(
+				GitHubAppTokenQuery,
+				{
+					id: providerId,
+					owner,
+				},
+			);
+			const token =
+				installations?.GitHubAppResourceProvider[0]?.gitHubAppInstallations[0]
+					.token;
+			if (token) {
+				return {
+					token: token.secret,
+					permissions: JSON.parse(token.permissions || ""),
+				};
+			}
+			// Fallback to old SCMProvider for backwards compatibility
+			const scmProvider = await graph.query<ScmProviderResponse>(
+				ScmProviderQuery,
+				{ id: providerId },
+			);
+			const credential = scmProvider?.SCMProvider[0]?.credential;
+			if (credential) {
+				return {
+					token: credential.secret,
+					scopes: credential.scopes,
+				};
+			}
+		}
+		return undefined;
+	};
 }

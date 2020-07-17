@@ -18,28 +18,36 @@ import { CommandContext, Configuration } from "../handler";
 import { ParameterPromptObject } from "./prompt";
 
 export async function configurationWithParameters<PARAMS, C>(
-    ctx: CommandContext<C>,
-    parameters: ParameterPromptObject<PARAMS>,
+	ctx: CommandContext<C>,
+	parameters: ParameterPromptObject<PARAMS>,
 ): Promise<PARAMS & { configuration: Configuration<C> }> {
-    await ctx.audit.log("Checking configuration");
-    const cfgs = ctx.configuration;
-    const promptParameters: any = {
-        ...(parameters || {}),
-    };
+	await ctx.audit.log("Checking configuration");
+	const cfgs = ctx.configuration;
+	const promptParameters: any = {
+		...(parameters || {}),
+	};
 
-    if (cfgs.length > 1) {
-        promptParameters.configuration = {
-            description: "Please select a Skill configuration",
-            type: { kind: "single", options: cfgs.map(c => ({ value: c.name, description: c.name })) },
-        };
-    }
+	if (cfgs.length > 1) {
+		promptParameters.configuration = {
+			description: "Please select a Skill configuration",
+			type: {
+				kind: "single",
+				options: cfgs.map(c => ({ value: c.name, description: c.name })),
+			},
+		};
+	}
 
-    const params = await ctx.parameters.prompt<PARAMS & { configuration: string }>(promptParameters);
-    const configuration = cfgs.length === 1 ? cfgs[0] : cfgs.find(c => c.name === params.configuration);
-    await ctx.audit.log(`Configuration to invoke '${configuration.name}'`);
+	const params = await ctx.parameters.prompt<
+		PARAMS & { configuration: string }
+	>(promptParameters);
+	const configuration =
+		cfgs.length === 1
+			? cfgs[0]
+			: cfgs.find(c => c.name === params.configuration);
+	await ctx.audit.log(`Configuration to invoke '${configuration.name}'`);
 
-    return {
-        ...params,
-        configuration,
-    };
+	return {
+		...params,
+		configuration,
+	};
 }

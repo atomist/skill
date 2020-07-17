@@ -19,118 +19,136 @@ import { Contextual } from "../../lib/handler";
 import { matchesFilter } from "../../lib/repository/filter";
 
 describe("filter", () => {
-    it("should match repository with no repoFilter param", () => {
-        const ctx: Contextual<any, any> = {
-            configuration: [
-                {
-                    name: "test",
-                    parameters: {},
-                },
-            ],
-        } as any;
-        assert.deepStrictEqual(matchesFilter("foo", "bar", "test", "repos", ctx), true);
-    });
+	it("should match repository with no repoFilter param", () => {
+		const ctx: Contextual<any, any> = {
+			configuration: [
+				{
+					name: "test",
+					parameters: {},
+				},
+			],
+		} as any;
+		assert.deepStrictEqual(
+			matchesFilter("foo", "bar", "test", "repos", ctx),
+			true,
+		);
+	});
 
-    it("should match repository with repoFilter param for entire org", () => {
-        const ctx: Contextual<any, any> = {
-            configuration: [
-                {
-                    name: "test",
-                    parameters: {
-                        repos: {
-                            includes: [
-                                {
-                                    ownerId: "bar",
-                                },
-                            ],
-                        },
-                    },
-                },
-            ],
-        } as any;
-        assert.deepStrictEqual(matchesFilter("foo", "bar", "test", "repos", ctx), true);
-    });
+	it("should match repository with repoFilter param for entire org", () => {
+		const ctx: Contextual<any, any> = {
+			configuration: [
+				{
+					name: "test",
+					parameters: {
+						repos: {
+							includes: [
+								{
+									ownerId: "bar",
+								},
+							],
+						},
+					},
+				},
+			],
+		} as any;
+		assert.deepStrictEqual(
+			matchesFilter("foo", "bar", "test", "repos", ctx),
+			true,
+		);
+	});
 
-    it("should match repository with repoFilter param for entire org and empty repos", () => {
-        const ctx: Contextual<any, any> = {
-            configuration: [
-                {
-                    name: "test",
-                    parameters: {
-                        repos: {
-                            includes: [
-                                {
-                                    ownerId: "bar",
-                                    repoIds: [],
-                                },
-                            ],
-                        },
-                    },
-                },
-            ],
-        } as any;
-        assert.deepStrictEqual(matchesFilter("foo", "bar", "test", "repos", ctx), true);
-    });
+	it("should match repository with repoFilter param for entire org and empty repos", () => {
+		const ctx: Contextual<any, any> = {
+			configuration: [
+				{
+					name: "test",
+					parameters: {
+						repos: {
+							includes: [
+								{
+									ownerId: "bar",
+									repoIds: [],
+								},
+							],
+						},
+					},
+				},
+			],
+		} as any;
+		assert.deepStrictEqual(
+			matchesFilter("foo", "bar", "test", "repos", ctx),
+			true,
+		);
+	});
 
-    it("should not match repository with repoFilter param for entire org", () => {
-        const ctx: Contextual<any, any> = {
-            configuration: [
-                {
-                    name: "test",
-                    parameters: {
-                        repos: {
-                            includes: [
-                                {
-                                    ownerId: "otherOrg",
-                                },
-                            ],
-                        },
-                    },
-                },
-            ],
-        } as any;
-        assert.deepStrictEqual(matchesFilter("foo", "bar", "test", "repos", ctx), false);
-    });
+	it("should not match repository with repoFilter param for entire org", () => {
+		const ctx: Contextual<any, any> = {
+			configuration: [
+				{
+					name: "test",
+					parameters: {
+						repos: {
+							includes: [
+								{
+									ownerId: "otherOrg",
+								},
+							],
+						},
+					},
+				},
+			],
+		} as any;
+		assert.deepStrictEqual(
+			matchesFilter("foo", "bar", "test", "repos", ctx),
+			false,
+		);
+	});
 
-    it("should match repository with repoFilter param for specific repo", () => {
-        const ctx: Contextual<any, any> = {
-            configuration: [
-                {
-                    name: "test",
-                    parameters: {
-                        repos: {
-                            includes: [
-                                {
-                                    ownerId: "otherOrg",
-                                    repoIds: ["foo"],
-                                },
-                            ],
-                        },
-                    },
-                },
-            ],
-        } as any;
-        assert.deepStrictEqual(matchesFilter("foo", "bar", "test", "repos", ctx), true);
-    });
+	it("should match repository with repoFilter param for specific repo", () => {
+		const ctx: Contextual<any, any> = {
+			configuration: [
+				{
+					name: "test",
+					parameters: {
+						repos: {
+							includes: [
+								{
+									ownerId: "otherOrg",
+									repoIds: ["foo"],
+								},
+							],
+						},
+					},
+				},
+			],
+		} as any;
+		assert.deepStrictEqual(
+			matchesFilter("foo", "bar", "test", "repos", ctx),
+			true,
+		);
+	});
 
-    it("should not match repository with repoFilter param for specific repo", () => {
-        const ctx: Contextual<any, any> = {
-            configuration: [
-                {
-                    name: "test",
-                    parameters: {
-                        repos: {
-                            includes: [
-                                {
-                                    ownerId: "otherOrg",
-                                    repoIds: ["otherFoo"],
-                                },
-                            ],
-                        },
-                    },
-                },
-            ],
-        } as any;
-        assert.deepStrictEqual(matchesFilter("foo", "otherOrg", "test", "repos", ctx), false);
-    });
+	it("should not match repository with repoFilter param for specific repo", () => {
+		const ctx: Contextual<any, any> = {
+			configuration: [
+				{
+					name: "test",
+					parameters: {
+						repos: {
+							includes: [
+								{
+									ownerId: "otherOrg",
+									repoIds: ["otherFoo"],
+								},
+							],
+						},
+					},
+				},
+			],
+		} as any;
+		assert.deepStrictEqual(
+			matchesFilter("foo", "otherOrg", "test", "repos", ctx),
+			false,
+		);
+	});
 });
