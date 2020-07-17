@@ -78,10 +78,13 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
                     async l => l.completed(step, parameters, sr),
                 );
 
-                if (!!sr && sr.code !== 0) {
-                    await context.audit.log(`'${step.name}' errored with: ${sr.reason}`, Severity.ERROR);
+                if ((sr as any)?._abort) {
+                    await context.audit.log(`Completed '${step.name}' and exited`);
                     return sr;
-                } else if (!!sr && !!sr.reason) {
+                } else if (sr?.code !== 0) {
+                    await context.audit.log(`'${step.name}' errored with: ${sr.reason}`, Severity.Error);
+                    return sr;
+                } else if (sr?.reason) {
                     await context.audit.log(`Completed '${step.name}' with: ${sr.reason}`);
                 } else {
                     await context.audit.log(`Completed '${step.name}'`);
@@ -94,8 +97,8 @@ export async function runSteps<C extends EventContext | CommandContext>(options:
                 );
             }
         } catch (e) {
-            await context.audit.log(`'${step.name}' errored with: ${e.message}`, Severity.ERROR);
-            await context.audit.log(e.stack, Severity.ERROR);
+            await context.audit.log(`'${step.name}' errored with: ${e.message}`, Severity.Error);
+            await context.audit.log(e.stack, Severity.Error);
             await invokeListeners(
                 listeners.filter(l => !!l.failed),
                 async l => l.failed(step, parameters, e),

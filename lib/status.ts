@@ -17,10 +17,20 @@
 import { HandlerStatus } from "./handler";
 
 class BuildableHandlerStatus implements HandlerStatus {
-    constructor(public code: number, public reason?: string, public visibility?: undefined | "hidden") {}
+    constructor(
+        public code: number,
+        public reason?: string,
+        public visibility?: undefined | "hidden",
+        public _abort?: boolean,
+    ) {}
 
     public hidden(): this {
         this.visibility = "hidden";
+        return this;
+    }
+
+    public abort(): this {
+        this._abort = true;
         return this;
     }
 }
@@ -30,9 +40,9 @@ class BuildableHandlerStatus implements HandlerStatus {
  * reason text
  *
  * The return object exposes a hidden function that can be used to
- * set the status to visibility: hidden.
+ * set the status to visibility: hidden or abort the step processing early.
  */
-export function success(reason?: string): HandlerStatus & { hidden: () => HandlerStatus } {
+export function success(reason?: string): HandlerStatus & { hidden: () => HandlerStatus; abort: () => HandlerStatus } {
     return new BuildableHandlerStatus(0, reason);
 }
 
@@ -41,8 +51,8 @@ export function success(reason?: string): HandlerStatus & { hidden: () => Handle
  * reason text
  *
  * The return object exposes a hidden function that can be used to
- * set the status to visibility: hidden.
+ * set the status to visibility: hidden or abort the step processing early.
  */
-export function failure(reason?: string): HandlerStatus & { hidden: () => HandlerStatus } {
+export function failure(reason?: string): HandlerStatus & { hidden: () => HandlerStatus; abort: () => HandlerStatus } {
     return new BuildableHandlerStatus(1, reason);
 }
