@@ -23,14 +23,13 @@
   "rules": {
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-floating-promises": ["error"],
-    "@typescript-eslint/no-use-before-define": "off",
     "prettier/prettier": [
       "error",
       {
         "arrowParens": "avoid",
+        "quoteProps": "consistent",
         "trailingComma": "all",
-        "tabWidth": 4,
-        "printWidth": 120
+        "useTabs": true
       }
     ]
   }
