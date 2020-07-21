@@ -114,7 +114,10 @@ async function collectUpstream(
 	const branchResultParts = branchResult.stdout.trim().split(" ");
 	const upstream =
 		branchResultParts.length > 0
-			? { branch: branchResultParts[0], inSync: branchResultParts[1] === "=" }
+			? {
+					branch: branchResultParts[0],
+					inSync: branchResultParts[1] === "=",
+			  }
 			: undefined;
 	return { upstream };
 }

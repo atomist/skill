@@ -36,13 +36,17 @@ export function matchesFilter(
 			return true;
 		} else if (
 			excludes.some(
-				e => e.ownerId === orgId && (!e.repoIds || e.repoIds.length === 0),
+				e =>
+					e.ownerId === orgId &&
+					(!e.repoIds || e.repoIds.length === 0),
 			)
 		) {
 			return false;
 		} else if (
 			includes.some(
-				i => i.ownerId === orgId && (!i.repoIds || i.repoIds.length === 0),
+				i =>
+					i.ownerId === orgId &&
+					(!i.repoIds || i.repoIds.length === 0),
 			)
 		) {
 			return true;

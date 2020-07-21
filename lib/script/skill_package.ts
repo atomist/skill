@@ -34,7 +34,9 @@ export async function packageSkill(
 	const ignoreFile = ".atomistignore";
 	if (await fs.pathExists(path.join(cwd, ignoreFile))) {
 		ignores.push(
-			...(await (await fs.readFile(path.join(cwd, ignoreFile))).toString())
+			...(
+				await (await fs.readFile(path.join(cwd, ignoreFile))).toString()
+			)
 				.trim()
 				.split("\n"),
 		);
@@ -59,13 +61,12 @@ export async function packageSkill(
 	}
 
 	await new Promise<string>(resolve => {
-		zip
-			.generateNodeStream({
-				type: "nodebuffer",
-				streamFiles: true,
-				compression: "DEFLATE",
-				compressionOptions: { level: 6 },
-			})
+		zip.generateNodeStream({
+			type: "nodebuffer",
+			streamFiles: true,
+			compression: "DEFLATE",
+			compressionOptions: { level: 6 },
+		})
 			.pipe(fs.createWriteStream(fileName))
 			.on("finish", () => {
 				resolve(fileName);

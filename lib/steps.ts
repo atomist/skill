@@ -94,7 +94,9 @@ export async function runSteps<
 				);
 
 				if ((sr as any)?._abort) {
-					await context.audit.log(`Completed '${step.name}' and exited`);
+					await context.audit.log(
+						`Completed '${step.name}' and exited`,
+					);
 					return sr;
 				} else if (sr?.code !== 0) {
 					await context.audit.log(

@@ -67,7 +67,8 @@ export const bundle = async (
 
 	if (isEventIncoming(payload)) {
 		return processEvent(payload, context, async () => {
-			const loader = HandlerRegistry.events[payload.extensions.operationName];
+			const loader =
+				HandlerRegistry.events[payload.extensions.operationName];
 			if (loader) {
 				return loader();
 			} else {

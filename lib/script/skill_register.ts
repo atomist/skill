@@ -216,7 +216,11 @@ async function register(
 export async function wid(workspaceId?: string): Promise<string> {
 	let w = workspaceId || process.env.ATOMIST_WORKSPACE_ID;
 	if (!w) {
-		const cfgPath = path.join(os.homedir(), ".atomist", "client.config.json");
+		const cfgPath = path.join(
+			os.homedir(),
+			".atomist",
+			"client.config.json",
+		);
 		if (await fs.pathExists(cfgPath)) {
 			const cfg = await fs.readJson(cfgPath);
 			w = cfg.workspaceIds[0];
@@ -233,7 +237,11 @@ export async function wid(workspaceId?: string): Promise<string> {
 export async function apiKey(key?: string): Promise<string> {
 	let apiKey = key || process.env.ATOMIST_API_KEY;
 	if (!apiKey) {
-		const cfgPath = path.join(os.homedir(), ".atomist", "client.config.json");
+		const cfgPath = path.join(
+			os.homedir(),
+			".atomist",
+			"client.config.json",
+		);
 		if (await fs.pathExists(cfgPath)) {
 			const cfg = await fs.readJson(cfgPath);
 			apiKey = cfg.apiKey;

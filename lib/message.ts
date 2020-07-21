@@ -153,7 +153,10 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 		destinations: Destinations,
 		options: RequiredMessageOptions,
 	): Promise<void> {
-		return this.doSend(undefined, destinations, { ...options, delete: true });
+		return this.doSend(undefined, destinations, {
+			...options,
+			delete: true,
+		});
 	}
 
 	protected async doSend(
@@ -499,7 +502,10 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
 			debug(`Sending message: ${JSON.stringify(message, replacer)}`);
 			if (topicName) {
 				const topic = this.pubsub.topic(topicName);
-				const messageBuffer = Buffer.from(JSON.stringify(message), "utf8");
+				const messageBuffer = Buffer.from(
+					JSON.stringify(message),
+					"utf8",
+				);
 				await topic.publish(messageBuffer);
 			}
 		} catch (err) {
@@ -560,7 +566,10 @@ export class PubSubEventMessageClient extends AbstractPubSubMessageClient
 		super(
 			request,
 			request.extensions.correlation_id,
-			{ id: request.extensions.team_id, name: request.extensions.team_name },
+			{
+				id: request.extensions.team_id,
+				name: request.extensions.team_name,
+			},
 			undefined,
 			request.extensions.team_id,
 			graphClient,

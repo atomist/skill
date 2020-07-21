@@ -55,5 +55,7 @@ export async function withGlobMatches<T>(
 }
 
 export function cwd(projectOrCwd: Project | string): string {
-	return typeof projectOrCwd === "string" ? projectOrCwd : projectOrCwd.path();
+	return typeof projectOrCwd === "string"
+		? projectOrCwd
+		: projectOrCwd.path();
 }

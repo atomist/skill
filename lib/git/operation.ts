@@ -92,7 +92,9 @@ export async function checkout(
 	projectOrCwd: Project | string,
 	ref: string,
 ): Promise<void> {
-	await execPromise("git", ["checkout", ref, "--"], { cwd: cwd(projectOrCwd) });
+	await execPromise("git", ["checkout", ref, "--"], {
+		cwd: cwd(projectOrCwd),
+	});
 }
 
 /**
@@ -100,7 +102,9 @@ export async function checkout(
  */
 export async function revert(projectOrCwd: Project | string): Promise<void> {
 	await execPromise("git", ["clean", "-dfx"], { cwd: cwd(projectOrCwd) });
-	await execPromise("git", ["checkout", "--", "."], { cwd: cwd(projectOrCwd) });
+	await execPromise("git", ["checkout", "--", "."], {
+		cwd: cwd(projectOrCwd),
+	});
 }
 
 /**

@@ -40,7 +40,9 @@ export async function bundleSkill(
 			cwd,
 			["events/*.js", "lib/events/*.js"],
 			async file => {
-				const content = (await fs.readFile(path.join(cwd, file))).toString();
+				const content = (
+					await fs.readFile(path.join(cwd, file))
+				).toString();
 				if (/exports\.handler\s*=/.test(content)) {
 					const name = path.basename(file).replace(/\.js/, "");
 					const fileName = file.replace(/\.js/, "");
@@ -53,7 +55,9 @@ export async function bundleSkill(
 			cwd,
 			["commands/*.js", "lib/commands/*.js"],
 			async file => {
-				const content = (await fs.readFile(path.join(cwd, file))).toString();
+				const content = (
+					await fs.readFile(path.join(cwd, file))
+				).toString();
 				if (/exports\.handler\s*=/.test(content)) {
 					const name = path.basename(file).replace(/\.js/, "");
 					const fileName = file.replace(/\.js/, "");
