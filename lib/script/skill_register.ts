@@ -77,7 +77,7 @@ export async function registerSkill(
 	).toString();
 	const atomistYaml: { skill: AtomistSkillInput } = yaml.safeLoad(content);
 
-	if (atomistYaml?.skill?.artifacts?.gcf[0]) {
+	if (atomistYaml?.skill?.artifacts?.gcf?.[0]) {
 		atomistYaml.skill.artifacts.gcf[0].url = url;
 	}
 
