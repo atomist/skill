@@ -295,5 +295,6 @@ yargs
 			}
 		},
 	)
+	.version(false)
 	.strict()
 	.help().argv;
