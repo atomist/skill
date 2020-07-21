@@ -35,7 +35,9 @@ yargs
 				},
 			}),
 		async argv => {
-			return (await import("../lib/script/skill_run")).runSkill(argv.skill);
+			return (await import("../lib/script/skill_run")).runSkill(
+				argv.skill,
+			);
 		},
 	)
 	.command(
@@ -64,11 +66,17 @@ yargs
 					description: "Id of workspace",
 					demandOption: false,
 				},
-				apiKey: { type: "string", description: "API Key", demandOption: false },
+				apiKey: {
+					type: "string",
+					description: "API Key",
+					demandOption: false,
+				},
 			}),
 		async argv => {
 			try {
-				await (await import("../lib/script/skill_invoke")).invokeSkill(argv);
+				await (await import("../lib/script/skill_invoke")).invokeSkill(
+					argv,
+				);
 				return 0;
 			} catch (e) {
 				error(e.message);
@@ -172,10 +180,9 @@ yargs
 			}),
 		async argv => {
 			try {
-				await (await import("../lib/script/skill_package")).packageSkill(
-					argv.cwd,
-					argv.verbose,
-				);
+				await (
+					await import("../lib/script/skill_package")
+				).packageSkill(argv.cwd, argv.verbose);
 				return 0;
 			} catch (e) {
 				error(e.message);
@@ -203,7 +210,9 @@ yargs
 			}),
 		async argv => {
 			try {
-				await (await import("../lib/script/skill_clean")).cleanSkill(argv.cwd);
+				await (await import("../lib/script/skill_clean")).cleanSkill(
+					argv.cwd,
+				);
 				return 0;
 			} catch (e) {
 				error(e.message);
@@ -241,7 +250,9 @@ yargs
 			}),
 		async argv => {
 			try {
-				await (await import("../lib/script/skill_register")).registerSkill(
+				await (
+					await import("../lib/script/skill_register")
+				).registerSkill(
 					argv.cwd,
 					argv.workspace,
 					argv.version,

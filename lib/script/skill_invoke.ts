@@ -86,7 +86,10 @@ export async function invokeSkill(options: {
 			merge(payload, metadata),
 			{ eventId: metadata.correlation_id },
 			async () => {
-				return handlerLoader(`commands/${payload.command}`, options.cwd);
+				return handlerLoader(
+					`commands/${payload.command}`,
+					options.cwd,
+				);
 			},
 		);
 	}

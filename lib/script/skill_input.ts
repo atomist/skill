@@ -350,7 +350,9 @@ export async function createJavaScriptSkillInput(
 				entryPoint: is.runtime?.entryPoint || "entryPoint",
 				memory: is.runtime?.memory || 256,
 				timeout: is.runtime?.timeout || 60,
-				runtime: (is.runtime?.platform as any) || AtomistSkillRuntime.Nodejs10,
+				runtime:
+					(is.runtime?.platform as any) ||
+					AtomistSkillRuntime.Nodejs10,
 				name: "gcf",
 				url: undefined,
 			},
@@ -461,7 +463,9 @@ export async function validateSkillInput(
 
 	// Check technologies against schema
 	for (const technology of s.technologies || []) {
-		if (!Object.values(AtomistSkillTechnology).includes(technology as any)) {
+		if (
+			!Object.values(AtomistSkillTechnology).includes(technology as any)
+		) {
 			errors.push(`Technology '${technology}' invalid`);
 		}
 	}
@@ -473,7 +477,9 @@ export async function validateSkillInput(
 				async () => {
 					const p = await handlerLoader(`commands/${command.name}`);
 					if (!p) {
-						errors.push(`Registered command '${command.name}' can't be found`);
+						errors.push(
+							`Registered command '${command.name}' can't be found`,
+						);
 					}
 				},
 				err => {
@@ -491,7 +497,9 @@ export async function validateSkillInput(
 				const operationName = match[1];
 				await handleError(
 					async () => {
-						const p = await handlerLoader(`events/${operationName}`);
+						const p = await handlerLoader(
+							`events/${operationName}`,
+						);
 						if (!p) {
 							errors.push(
 								`Registered event handler '${operationName}' can't be found`,

@@ -24,7 +24,8 @@ export function resourceProvider(options: ResourceProvider): ResourceProvider {
 		typeName: options.typeName,
 		displayName: options.displayName,
 		description: options.description || options.displayName,
-		minRequired: options?.minRequired !== undefined ? options.minRequired : 0,
+		minRequired:
+			options?.minRequired !== undefined ? options.minRequired : 0,
 		maxAllowed: options?.maxAllowed,
 	};
 }

@@ -32,7 +32,10 @@ export async function configurationWithParameters<PARAMS, C>(
 			description: "Please select a Skill configuration",
 			type: {
 				kind: "single",
-				options: cfgs.map(c => ({ value: c.name, description: c.name })),
+				options: cfgs.map(c => ({
+					value: c.name,
+					description: c.name,
+				})),
 			},
 		};
 	}

@@ -49,7 +49,8 @@ export async function persistChanges(
 		email: push.author.email,
 	};
 	const commitMsg =
-		commit.message || `Updates from ${ctx.skill.namespace}/${ctx.skill.name}`;
+		commit.message ||
+		`Updates from ${ctx.skill.namespace}/${ctx.skill.name}`;
 	const prBranch =
 		pullRequest.branch ||
 		`atomist/${ctx.skill.name.toLowerCase()}-${Date.now()}`;
@@ -67,7 +68,11 @@ export async function persistChanges(
 			.map(f => f.trim())
 			.filter(f => !!f && f.length > 0);
 		const untrackedFiles = (
-			await project.exec("git", ["ls-files", "--exclude-standard", "--others"])
+			await project.exec("git", [
+				"ls-files",
+				"--exclude-standard",
+				"--others",
+			])
 		).stdout
 			.split("\n")
 			.map(f => f.trim())

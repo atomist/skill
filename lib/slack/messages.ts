@@ -230,9 +230,11 @@ export function progressMessage(
 				title,
 				title_link: ctx.audit.url,
 				text,
-				thumb_url: `https://badge.atomist.com/v2/progress/${progress.state}/${
-					progress.count
-				}/${progress.total}${params.length > 0 ? `?${params.join("&")}` : ""}`,
+				thumb_url: `https://badge.atomist.com/v2/progress/${
+					progress.state
+				}/${progress.count}/${progress.total}${
+					params.length > 0 ? `?${params.join("&")}` : ""
+				}`,
 				color,
 				footer: footer(ctx),
 				footer_icon:

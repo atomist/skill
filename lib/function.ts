@@ -111,7 +111,10 @@ export async function processCommand(
 				prepareStatus({ code: 0 }, context),
 			);
 		} else {
-			await context.audit.log(`Error occurred: ${e.stack}`, Severity.Error);
+			await context.audit.log(
+				`Error occurred: ${e.stack}`,
+				Severity.Error,
+			);
 			await ((context.message as any) as StatusPublisher).publish(
 				prepareStatus(e, context),
 			);

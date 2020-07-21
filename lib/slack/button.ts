@@ -35,7 +35,9 @@ export function buttonForCommand(
 ): Action {
 	const params = mergeParameters(command, parameters);
 	const id = command.toLocaleLowerCase();
-	const action = chatButtonFrom(buttonSpec, { id }) as CommandReferencingAction;
+	const action = chatButtonFrom(buttonSpec, {
+		id,
+	}) as CommandReferencingAction;
 	action.command = {
 		id,
 		name: command,

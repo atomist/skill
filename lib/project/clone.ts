@@ -77,9 +77,9 @@ export async function doClone(
 	options: CloneOptions = {},
 ): Promise<string> {
 	debug(
-		`Cloning repository '${id.owner}/${id.repo}', branch '${id.branch}', sha '${
-			id.sha
-		}' and options '${JSON.stringify(options)}'`,
+		`Cloning repository '${id.owner}/${id.repo}', branch '${
+			id.branch
+		}', sha '${id.sha}' and options '${JSON.stringify(options)}'`,
 	);
 	const sha = id.sha || "HEAD";
 	const repoDir = options.path || path.join(ClonePath, guid());
@@ -101,7 +101,9 @@ export async function doClone(
 		// the cloneOptions let us ask for more commits than that
 		cloneArgs.push(
 			"--depth",
-			(options.depth && options.depth > 0 ? options.depth : 1).toString(10),
+			(options.depth && options.depth > 0 ? options.depth : 1).toString(
+				10,
+			),
 		);
 		if (cloneBranch) {
 			// if not cloning deeply, be sure we clone the right branch
@@ -126,12 +128,18 @@ export async function doClone(
 	await pRetry(() => execPromise("git", cloneArgs), retryOptions);
 
 	try {
-		await execPromise("git", ["checkout", checkoutRef, "--"], { cwd: repoDir });
+		await execPromise("git", ["checkout", checkoutRef, "--"], {
+			cwd: repoDir,
+		});
 	} catch (err) {
 		// When the head moved on and we only cloned with depth; we might have to do a full clone to get to the commit we want
-		debug(`Ref ${checkoutRef} not in cloned history. Attempting full clone`);
+		debug(
+			`Ref ${checkoutRef} not in cloned history. Attempting full clone`,
+		);
 		await execPromise("git", ["fetch", "--unshallow"], { cwd: repoDir });
-		await execPromise("git", ["checkout", checkoutRef, "--"], { cwd: repoDir });
+		await execPromise("git", ["checkout", checkoutRef, "--"], {
+			cwd: repoDir,
+		});
 	}
 	return repoDir;
 }

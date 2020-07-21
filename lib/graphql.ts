@@ -38,7 +38,10 @@ export interface GraphQLClient {
 }
 
 class NodeFetchGraphQLClient implements GraphQLClient {
-	constructor(private readonly apiKey: string, private readonly url: string) {}
+	constructor(
+		private readonly apiKey: string,
+		private readonly url: string,
+	) {}
 
 	public async query<T>(
 		query: QueryOrLocation,

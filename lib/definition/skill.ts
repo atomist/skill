@@ -226,7 +226,12 @@ export enum ParameterType {
 
 export type ParametersIndexType = string;
 export type ParametersType = {
-	[key in ParametersIndexType]?: number | boolean | string | number | string[];
+	[key in ParametersIndexType]?:
+		| number
+		| boolean
+		| string
+		| number
+		| string[];
 };
 
 export interface Configuration<PARAMS extends ParametersType = any> {
@@ -299,7 +304,9 @@ export function packageJson(path = "package.json"): Metadata {
 			technologies: pj.technologies,
 			homepageUrl: pj.homepage,
 			repositoryUrl:
-				typeof pj.repository === "string" ? pj.repository : pj.repository?.url,
+				typeof pj.repository === "string"
+					? pj.repository
+					: pj.repository?.url,
 			iconUrl: pj.icon ? pj.icon : "file://skill/icon.svg",
 		};
 	} catch (e) {
@@ -328,7 +335,9 @@ export async function skill<PARAMS = any>(
 	let skillYaml: any = {};
 	if (await fs.pathExists(skillYamlPath)) {
 		const yaml = await import("js-yaml");
-		skillYaml = yaml.safeLoad((await fs.readFile(skillYamlPath)).toString());
+		skillYaml = yaml.safeLoad(
+			(await fs.readFile(skillYamlPath)).toString(),
+		);
 		if (skillYaml.skill) {
 			skillYaml = skillYaml.skill;
 		}

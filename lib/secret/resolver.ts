@@ -58,7 +58,8 @@ export function gitHubUserToken(): CredentialResolver<GitHubCredential> {
 					ResourceUserQuery,
 					{ id: chatId },
 				);
-				const credential = response?.ChatId[0]?.person?.gitHubId?.credential;
+				const credential =
+					response?.ChatId[0]?.person?.gitHubId?.credential;
 
 				if (credential) {
 					return {
@@ -163,11 +164,14 @@ export function gitHubAppToken(
 			repo = id.repo;
 			owner = id.owner;
 			apiUrl = id.apiUrl;
-			const provider = await graph.query<ProviderResponse>(ProviderQuery, {
-				apiUrl: apiUrl || "https://api.github.com/",
-				owner,
-				repo,
-			});
+			const provider = await graph.query<ProviderResponse>(
+				ProviderQuery,
+				{
+					apiUrl: apiUrl || "https://api.github.com/",
+					owner,
+					repo,
+				},
+			);
 			providerId = provider?.Repo[0]?.org?.provider?.id;
 		}
 
@@ -180,8 +184,8 @@ export function gitHubAppToken(
 				},
 			);
 			const token =
-				installations?.GitHubAppResourceProvider[0]?.gitHubAppInstallations[0]
-					.token;
+				installations?.GitHubAppResourceProvider[0]
+					?.gitHubAppInstallations[0].token;
 			if (token) {
 				return {
 					token: token.secret,

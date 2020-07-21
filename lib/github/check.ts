@@ -84,7 +84,9 @@ export async function createCheck(
 			details_url: ctx.audit.url,
 			output: {
 				title: parameters.title,
-				summary: truncateText(`${parameters.body}\n${formatMarkers(ctx)}`),
+				summary: truncateText(
+					`${parameters.body}\n${formatMarkers(ctx)}`,
+				),
 			},
 		});
 	} else {
@@ -99,7 +101,9 @@ export async function createCheck(
 			status: "in_progress",
 			output: {
 				title: parameters.title,
-				summary: truncateText(`${parameters.body}\n${formatMarkers(ctx)}`),
+				summary: truncateText(
+					`${parameters.body}\n${formatMarkers(ctx)}`,
+				),
 			},
 		});
 	}
@@ -111,7 +115,9 @@ export async function createCheck(
 				repo: id.repo,
 				check_run_id: check.data.id,
 				conclusion: params.conclusion,
-				completed_at: params.conclusion ? new Date().toISOString() : undefined,
+				completed_at: params.conclusion
+					? new Date().toISOString()
+					: undefined,
 				status: params.conclusion ? "completed" : "in_progress",
 				output: {
 					title: check.data.output.title,
@@ -168,6 +174,8 @@ export function truncateText(text: string, length = 65535): string {
 		return text;
 	} else {
 		const partLength = Math.floor((length - ellipsis.length) / 2);
-		return text.slice(0, partLength) + ellipsis + text.slice(-1 * partLength);
+		return (
+			text.slice(0, partLength) + ellipsis + text.slice(-1 * partLength)
+		);
 	}
 }
