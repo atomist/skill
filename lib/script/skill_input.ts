@@ -102,6 +102,7 @@ export enum AtomistSkillRuntime {
 export enum AtomistSkillCategoryKey {
 	Build = "BUILD",
 	Chat = "CHAT",
+	CodeQuality = "CODE_QUALITY",
 	CodeReview = "CODE_REVIEW",
 	Dependencies = "DEPENDENCIES",
 	Deploy = "DEPLOY",
@@ -110,6 +111,7 @@ export enum AtomistSkillCategoryKey {
 	Issues = "ISSUES",
 	Monitor = "MONITOR",
 	Notifications = "NOTIFICATIONS",
+	ProjectManagement = "PROJECT_MANAGEMENT",
 	Security = "SECURITY",
 }
 
