@@ -50,7 +50,10 @@ export function incrementTag(
 		.sort((t1, t2) => {
 			return semver.compare(t2, t1);
 		});
-	const latestTag = sortedTags[0] || startTag;
+	if (sortedTags.length === 0) {
+		return startTag;
+	}
+	const latestTag = sortedTags[0];
 	const nextTag = semver.inc(latestTag, increment);
 	debug(`Calculated next tag '${nextTag}' from current tag '${latestTag}'`);
 	return nextTag;

@@ -24,6 +24,16 @@ describe("tags", () => {
 			assert.deepStrictEqual(tag, "0.1.0-2");
 		});
 
+		it("increment patch level tag by prerelease", () => {
+			const tag = incrementTag(["0.1.0"], "prerelease");
+			assert.deepStrictEqual(tag, "0.1.1-0");
+		});
+
+		it("increment from no tags", () => {
+			const tag = incrementTag([], "prerelease");
+			assert.deepStrictEqual(tag, "0.1.0-0");
+		});
+
 		it("increment patch level tag", () => {
 			const tag = incrementTag(["0.1.0-1", "0.1.1"], "patch");
 			assert.deepStrictEqual(tag, "0.1.2");
