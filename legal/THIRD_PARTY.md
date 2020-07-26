@@ -10,7 +10,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 
 | License                       | Count |
 | ----------------------------- | ----- |
-| [Apache-2.0](#apache-20)      | 37    |
+| [Apache-2.0](#apache-20)      | 32    |
 | [BSD-2-Clause](#bsd-2-clause) | 6     |
 | [BSD-3-Clause](#bsd-3-clause) | 16    |
 | [CC0-1.0](#cc0-10)            | 1     |
@@ -18,7 +18,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)            | 1     |
 | [ISC](#isc)                   | 32    |
 | [MIT AND Zlib](#mit-and-zlib) | 1     |
-| [MIT](#mit)                   | 227   |
+| [MIT](#mit)                   | 225   |
 
 #### Apache-2.0
 
@@ -29,17 +29,16 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 | `@atomist/skill-logging`              | `0.1.0-master.20200713114843` | Atomist            | [https://github.com/atomist-skills/skill-logging](https://github.com/atomist-skills/skill-logging)                               |
 | `@atomist/slack-messages`             | `1.1.1`                       | Atomist            | [https://github.com/atomist/slack-messages](https://github.com/atomist/slack-messages)                                           |
 | `@google-cloud/common`                | `2.4.0`                       | Google Inc.        | [https://github.com/googleapis/nodejs-common](https://github.com/googleapis/nodejs-common)                                       |
-| `@google-cloud/common`                | `3.3.1`                       | Google Inc.        | [https://github.com/googleapis/nodejs-common](https://github.com/googleapis/nodejs-common)                                       |
+| `@google-cloud/common`                | `3.3.2`                       | Google Inc.        | [https://github.com/googleapis/nodejs-common](https://github.com/googleapis/nodejs-common)                                       |
 | `@google-cloud/logging`               | `8.0.1`                       | Google Inc.        | [https://github.com/googleapis/nodejs-logging](https://github.com/googleapis/nodejs-logging)                                     |
 | `@google-cloud/paginator`             | `3.0.2`                       | Google Inc.        | [https://github.com/googleapis/nodejs-paginator](https://github.com/googleapis/nodejs-paginator)                                 |
-| `@google-cloud/precise-date`          | `2.0.2`                       | Google Inc.        | [https://github.com/googleapis/nodejs-precise-date](https://github.com/googleapis/nodejs-precise-date)                           |
+| `@google-cloud/precise-date`          | `2.0.3`                       | Google Inc.        | [https://github.com/googleapis/nodejs-precise-date](https://github.com/googleapis/nodejs-precise-date)                           |
 | `@google-cloud/projectify`            | `1.0.4`                       | Google Inc.        | [https://github.com/googleapis/nodejs-projectify](https://github.com/googleapis/nodejs-projectify)                               |
 | `@google-cloud/projectify`            | `2.0.1`                       | Google Inc.        | [https://github.com/googleapis/nodejs-projectify](https://github.com/googleapis/nodejs-projectify)                               |
 | `@google-cloud/promisify`             | `1.0.4`                       | Google Inc.        | [https://github.com/googleapis/nodejs-promisify](https://github.com/googleapis/nodejs-promisify)                                 |
-| `@google-cloud/promisify`             | `2.0.1`                       | Google Inc.        | [https://github.com/googleapis/nodejs-promisify](https://github.com/googleapis/nodejs-promisify)                                 |
 | `@google-cloud/promisify`             | `2.0.2`                       | Google Inc.        | [https://github.com/googleapis/nodejs-promisify](https://github.com/googleapis/nodejs-promisify)                                 |
-| `@google-cloud/pubsub`                | `2.2.0`                       | Google Inc.        | [https://github.com/googleapis/nodejs-pubsub](https://github.com/googleapis/nodejs-pubsub)                                       |
-| `@google-cloud/storage`               | `5.1.1`                       | Google Inc.        | [https://github.com/googleapis/nodejs-storage](https://github.com/googleapis/nodejs-storage)                                     |
+| `@google-cloud/pubsub`                | `2.3.0`                       | Google Inc.        | [https://github.com/googleapis/nodejs-pubsub](https://github.com/googleapis/nodejs-pubsub)                                       |
+| `@google-cloud/storage`               | `5.1.2`                       | Google Inc.        | [https://github.com/googleapis/nodejs-storage](https://github.com/googleapis/nodejs-storage)                                     |
 | `@grpc/grpc-js`                       | `1.1.2`                       | Google Inc.        | [https://github.com/grpc/grpc-node/tree/master/packages/grpc-js](https://github.com/grpc/grpc-node/tree/master/packages/grpc-js) |
 | `@grpc/proto-loader`                  | `0.5.4`                       | Google Inc.        | [https://github.com/grpc/grpc-node](https://github.com/grpc/grpc-node)                                                           |
 | `@opencensus/core`                    | `0.0.22`                      | Google Inc.        | [https://github.com/census-instrumentation/opencensus-node](https://github.com/census-instrumentation/opencensus-node)           |
@@ -49,14 +48,10 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 | `eventid`                             | `1.0.0`                       | Google Inc.        | [https://github.com/google/eventid-js](https://github.com/google/eventid-js)                                                     |
 | `fast-text-encoding`                  | `1.0.2`                       | Sam Thorogood      | [https://github.com/samthor/fast-text-encoding](https://github.com/samthor/fast-text-encoding)                                   |
 | `gaxios`                              | `2.3.4`                       | Google, LLC        | [https://github.com/googleapis/gaxios](https://github.com/googleapis/gaxios)                                                     |
-| `gaxios`                              | `3.0.3`                       | Google, LLC        | [https://github.com/googleapis/gaxios](https://github.com/googleapis/gaxios)                                                     |
 | `gaxios`                              | `3.0.4`                       | Google, LLC        | [https://github.com/googleapis/gaxios](https://github.com/googleapis/gaxios)                                                     |
 | `gcp-metadata`                        | `3.5.0`                       | Stephen Sawchuk    | [https://github.com/googleapis/gcp-metadata](https://github.com/googleapis/gcp-metadata)                                         |
-| `gcp-metadata`                        | `4.1.0`                       | Stephen Sawchuk    | [https://github.com/googleapis/gcp-metadata](https://github.com/googleapis/gcp-metadata)                                         |
 | `gcp-metadata`                        | `4.1.4`                       | Stephen Sawchuk    | [https://github.com/googleapis/gcp-metadata](https://github.com/googleapis/gcp-metadata)                                         |
 | `google-auth-library`                 | `5.10.1`                      | Google Inc.        | [https://github.com/googleapis/google-auth-library-nodejs](https://github.com/googleapis/google-auth-library-nodejs)             |
-| `google-auth-library`                 | `6.0.3`                       | Google Inc.        | [https://github.com/googleapis/google-auth-library-nodejs](https://github.com/googleapis/google-auth-library-nodejs)             |
-| `google-auth-library`                 | `6.0.4`                       | Google Inc.        | [https://github.com/googleapis/google-auth-library-nodejs](https://github.com/googleapis/google-auth-library-nodejs)             |
 | `google-auth-library`                 | `6.0.5`                       | Google Inc.        | [https://github.com/googleapis/google-auth-library-nodejs](https://github.com/googleapis/google-auth-library-nodejs)             |
 | `google-gax`                          | `2.6.3`                       | Google API Authors | [https://github.com/googleapis/gax-nodejs](https://github.com/googleapis/gax-nodejs)                                             |
 | `hex2dec`                             | `1.1.2`                       |                    | [https://github.com/donmccurdy/hex2dec](https://github.com/donmccurdy/hex2dec)                                                   |
@@ -257,16 +252,14 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `find-up`                               | `4.1.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/find-up](https://github.com/sindresorhus/find-up)                                                                                   |
 | `form-data`                             | `3.0.0`    | Felix Geisendörfer  | [https://github.com/form-data/form-data](https://github.com/form-data/form-data)                                                                                     |
 | `fs-extra`                              | `8.1.0`    | JP Richardson       | [https://github.com/jprichardson/node-fs-extra](https://github.com/jprichardson/node-fs-extra)                                                                       |
-| `gcs-resumable-upload`                  | `3.1.0`    | Stephen Sawchuk     | [https://github.com/googleapis/gcs-resumable-upload](https://github.com/googleapis/gcs-resumable-upload)                                                             |
+| `gcs-resumable-upload`                  | `3.1.1`    | Stephen Sawchuk     | [https://github.com/googleapis/gcs-resumable-upload](https://github.com/googleapis/gcs-resumable-upload)                                                             |
 | `get-stream`                            | `4.1.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/get-stream](https://github.com/sindresorhus/get-stream)                                                                             |
 | `git-up`                                | `4.0.1`    | Ionică Bizău        | [https://github.com/IonicaBizau/git-up](https://github.com/IonicaBizau/git-up)                                                                                       |
 | `git-url-parse`                         | `11.1.2`   | Ionică Bizău        | [https://github.com/IonicaBizau/git-url-parse](https://github.com/IonicaBizau/git-url-parse)                                                                         |
 | `glob-gitignore`                        | `1.0.14`   | kaelzhang           | [https://github.com/kaelzhang/node-glob-gitignore](https://github.com/kaelzhang/node-glob-gitignore)                                                                 |
 | `google-p12-pem`                        | `2.0.4`    | Ryan Seys           | [https://github.com/google/google-p12-pem](https://github.com/google/google-p12-pem)                                                                                 |
-| `google-p12-pem`                        | `3.0.1`    | Ryan Seys           | [https://github.com/google/google-p12-pem](https://github.com/google/google-p12-pem)                                                                                 |
 | `google-p12-pem`                        | `3.0.2`    | Ryan Seys           | [https://github.com/google/google-p12-pem](https://github.com/google/google-p12-pem)                                                                                 |
 | `gtoken`                                | `4.1.4`    | Google, LLC         | [https://github.com/google/node-gtoken](https://github.com/google/node-gtoken)                                                                                       |
-| `gtoken`                                | `5.0.1`    | Google, LLC         | [https://github.com/google/node-gtoken](https://github.com/google/node-gtoken)                                                                                       |
 | `gtoken`                                | `5.0.2`    | Google, LLC         | [https://github.com/google/node-gtoken](https://github.com/google/node-gtoken)                                                                                       |
 | `hash-stream-validation`                | `0.2.3`    | Stephen Sawchuk     | [https://github.com/stephenplusplus/hash-stream-validation](https://github.com/stephenplusplus/hash-stream-validation)                                               |
 | `http-proxy-agent`                      | `4.0.1`    | Nathan Rajlich      | [https://github.com/TooTallNate/node-http-proxy-agent](https://github.com/TooTallNate/node-http-proxy-agent)                                                         |
@@ -331,7 +324,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `p-defer`                               | `3.0.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-defer](https://github.com/sindresorhus/p-defer)                                                                                   |
 | `p-finally`                             | `1.0.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-finally](https://github.com/sindresorhus/p-finally)                                                                               |
 | `p-limit`                               | `2.3.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-limit](https://github.com/sindresorhus/p-limit)                                                                                   |
-| `p-limit`                               | `3.0.1`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-limit](https://github.com/sindresorhus/p-limit)                                                                                   |
+| `p-limit`                               | `3.0.2`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-limit](https://github.com/sindresorhus/p-limit)                                                                                   |
 | `p-locate`                              | `4.1.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-locate](https://github.com/sindresorhus/p-locate)                                                                                 |
 | `p-retry`                               | `4.2.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-retry](https://github.com/sindresorhus/p-retry)                                                                                   |
 | `p-try`                                 | `2.2.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-try](https://github.com/sindresorhus/p-try)                                                                                       |
