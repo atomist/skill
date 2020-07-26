@@ -45,15 +45,12 @@ export interface StepListener<
 	completed?(
 		step: Step<C>,
 		parameters: G,
-		result: undefined | HandlerStatus,
+		result: HandlerStatus,
 	): Promise<void>;
 
 	failed?(step: Step<C>, parameters: G, error: Error): Promise<void>;
 
-	done?(
-		parameters: G,
-		result: undefined | HandlerStatus,
-	): Promise<undefined | HandlerStatus>;
+	done?(parameters: G, result: HandlerStatus): Promise<HandlerStatus>;
 }
 
 /**
@@ -66,7 +63,7 @@ export async function runSteps<
 	steps: Step<C> | Array<Step<C>>;
 	listeners?: StepListener<C> | Array<StepListener<C>>;
 	parameters?: Record<string, any>;
-}): Promise<undefined | HandlerStatus> {
+}): Promise<HandlerStatus> {
 	const parameters: Record<string, any> = options.parameters || {};
 	const context = options.context;
 	const listeners = toArray(options.listeners) || [];
@@ -160,8 +157,8 @@ async function invokeListeners(
 async function invokeDone(
 	listeners: Array<StepListener<any>>,
 	parameters: any,
-	inputResult: undefined | HandlerStatus,
-): Promise<undefined | HandlerStatus> {
+	inputResult: HandlerStatus,
+): Promise<HandlerStatus> {
 	let result = inputResult;
 	for (const listener of listeners) {
 		try {
