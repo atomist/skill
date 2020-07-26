@@ -29,7 +29,7 @@ export interface Step<
 	/** Name of the step */
 	name: string;
 	/** Function that gets called when the step should execute */
-	run: (context: C, parameters: G) => Promise<undefined | HandlerStatus>;
+	run: (context: C, parameters: G) => Promise<HandlerStatus>;
 	/** Optional function to indicate if the step should runSkill */
 	runWhen?: (context: C, parameters: G) => Promise<boolean>;
 }
