@@ -16,9 +16,9 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
-import { AtomistSkillCategoryKey } from "../script/skill_input";
 
-export const Category = AtomistSkillCategoryKey;
+import { AtomistSkillCategoryKey as Category } from "../script/skill_input";
+export { Category };
 
 export enum Technology {
 	Java = "JAVA",
