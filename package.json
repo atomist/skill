@@ -42,7 +42,7 @@
     "@types/stack-trace": "0.0.29",
     "@types/yargs": "^15.0.4",
     "@zeit/ncc": "^0.22.3",
-    "cross-spawn": "^7.0.2",
+    "cross-spawn": "^7.0.3",
     "fast-glob": "^3.2.2",
     "flat": "^5.0.0",
     "fs-extra": "^8.1.0",
