@@ -17,19 +17,49 @@
 import * as fs from "fs-extra";
 import * as yaml from "js-yaml";
 import * as path from "path";
+import { spawnPromise } from "../child_process";
 import { info } from "../log";
 import { packageJson } from "../definition/skill";
-import { AtomistSkillInput, content, icon } from "./skill_input";
+import {
+	AtomistSkillInput,
+	AtomistSkillRuntime,
+	content,
+	icon,
+} from "./skill_input";
+
+async function defaults(cwd: string): Promise<Partial<AtomistSkillInput>> {
+	const originUrl = await spawnPromise(
+		"git",
+		["config", "--get", "remote.origin.url"],
+		{ cwd },
+	);
+	const giturl = (await import("git-url-parse"))(originUrl.stdout.trim());
+	// TODO cd better handling when there are actually values for readme etc
+	return {
+		name: giturl.name,
+		namespace: giturl.owner,
+		displayName: giturl.name,
+		author: giturl.owner,
+		description: `Atomist Skill registered from ${giturl.owner}/${giturl.name}`,
+		readme: `Atomist Skill registered from ${giturl.owner}/${giturl.name}`,
+		homepageUrl: `https://github.com/${giturl.owner}/${giturl.name}`,
+		iconUrl: `https://github.com/${giturl.owner}.png`,
+		license: "Apache-2.0",
+	};
+}
 
 export async function createYamlSkillInput(
 	cwd: string,
+	useDefaults: boolean,
 ): Promise<AtomistSkillInput> {
 	info(`Generating skill metadata...`);
 
 	const p = path.join(cwd, "skill.yaml");
 	const doc = yaml.safeLoad((await fs.readFile(p)).toString());
 	const is = {
-		...packageJson(path.join(cwd, "package.json")),
+		...(useDefaults
+			? await defaults(cwd)
+			: packageJson(path.join(cwd, "package.json"))),
 		...(doc.skill ? doc.skill : doc),
 	};
 
@@ -87,6 +117,22 @@ export async function createYamlSkillInput(
 
 	if (!y.longDescription) {
 		y.longDescription = y.description;
+	}
+
+	if (!y.artifacts?.docker) {
+		const gcf = y.artifacts?.gcf?.[0];
+		y.artifacts = {
+			gcf: [
+				{
+					entryPoint: gcf?.entryPoint || "entryPoint",
+					memory: gcf?.memory || 256,
+					timeout: gcf?.timeout || 60,
+					runtime: gcf?.runtime || AtomistSkillRuntime.Nodejs10,
+					name: "gcf",
+					url: undefined,
+				},
+			],
+		};
 	}
 
 	return y as any;
