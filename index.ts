@@ -42,6 +42,7 @@ export {
 } from "./lib/definition/skill";
 export * as parameter from "./lib/definition/parameter";
 export * as resourceProvider from "./lib/definition/resource_provider";
+export * as subscription from "./lib/definition/subscription";
 // lib/git
 export * as git from "./lib/git";
 // lib/github
