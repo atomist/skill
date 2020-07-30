@@ -29,7 +29,7 @@ export async function globFiles(
 		cwd: cwd(projectOrCwd),
 		onlyFiles: true,
 		dot: true,
-		ignore: [".git"],
+		ignore: [".git", "node_modules"],
 		...options,
 	});
 }

@@ -25,15 +25,14 @@ export async function bundleSkill(
 	minify: boolean,
 	sourceMap: boolean,
 	verbose: boolean,
+	file: string,
 ): Promise<void> {
 	if (!verbose) {
 		process.env.ATOMIST_LOG_LEVEL = "info";
 	}
 	info(`Creating skill bundle...`);
 
-	const skillEntryPointExists = await fs.pathExists(
-		path.join(cwd, "skill.bundle.js"),
-	);
+	const skillEntryPointExists = await fs.pathExists(path.join(cwd, file));
 
 	if (!skillEntryPointExists) {
 		const events = await withGlobMatches<string>(
@@ -80,7 +79,7 @@ ${commands.join("\n")}`,
 		);
 	}
 
-	const nccArgs = ["build", "skill.bundle.js", "-o", "bundle"];
+	const nccArgs = ["build", file, "-o", "bundle"];
 	if (minify) {
 		nccArgs.push("-m");
 	}
@@ -123,7 +122,7 @@ ${commands.join("\n")}`,
 	await fs.remove(path.join(cwd, "package-lock.json"));
 
 	if (!skillEntryPointExists) {
-		await fs.remove(path.join(cwd, "skill.bundle.js"));
+		await fs.remove(path.join(cwd, file));
 	}
 
 	info(`Skill bundle created at '${path.join(cwd, "bundle")}'`);
