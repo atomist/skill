@@ -14,21 +14,52 @@
  * limitations under the License.
  */
 
+import * as crypto from "crypto";
 import * as fs from "fs-extra";
 import * as yaml from "js-yaml";
 import * as path from "path";
+import { spawnPromise } from "../child_process";
 import { info } from "../log";
 import { packageJson } from "../definition/skill";
 import { AtomistSkillInput, content, icon } from "./skill_input";
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function hash(obj: any): string {
+	const hash = crypto.createHash("sha256");
+	hash.update(typeof obj === "string" ? obj : JSON.stringify(obj));
+	return hash.digest("hex");
+}
+
+async function defaults(cwd: string): Promise<Partial<AtomistSkillInput>> {
+	const originUrl = await spawnPromise(
+		"git",
+		["config", "--get", "remote.origin.url"],
+		{ cwd },
+	);
+	const giturl = (await import("git-url-parse"))(originUrl.stdout.trim());
+	return {
+		name: giturl.name,
+		namespace: giturl.owner,
+		displayName: giturl.name,
+		author: giturl.owner,
+		description: "",
+		longDescription: "",
+		homepageUrl: giturl.href,
+		iconUrl: `https://www.gravatar.com/avatar/${hash(giturl.href)}`,
+		license: "Apache-2.0",
+	};
+}
+
 export async function createYamlSkillInput(
 	cwd: string,
+	useDefaults: boolean,
 ): Promise<AtomistSkillInput> {
 	info(`Generating skill metadata...`);
 
 	const p = path.join(cwd, "skill.yaml");
 	const doc = yaml.safeLoad((await fs.readFile(p)).toString());
 	const is = {
+		...(useDefaults ? await defaults(cwd) : {}),
 		...packageJson(path.join(cwd, "package.json")),
 		...(doc.skill ? doc.skill : doc),
 	};
