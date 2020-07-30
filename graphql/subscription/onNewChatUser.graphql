@@ -1,0 +1,16 @@
+subscription onNewChatUser {
+  ChatId {
+    screenName
+    isBot
+    timezoneLabel
+    person {
+      name
+      emails {
+        address
+      }
+      scmId {
+        login
+      }
+    }
+  }
+}

@@ -16,6 +16,7 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
+import { named } from "../definition/subscription/named";
 import { error, info } from "../log";
 import { withGlobMatches } from "../project/util";
 import { Skill } from "../definition/skill";
@@ -525,6 +526,27 @@ ${errors.map(e => `        - ${e}`).join("\n")}`);
 	}
 }
 
+export async function generateSkill(
+	cwd: string,
+	validate: boolean,
+	useDefaults: boolean,
+): Promise<void> {
+	let s;
+	if (await fs.pathExists(path.join(cwd, "skill.js"))) {
+		s = await createJavaScriptSkillInput(cwd, "skill.js");
+		await validateSkillInput(cwd, s, { validateHandlers: validate });
+	} else if (await fs.pathExists(path.join(cwd, "index.js"))) {
+		s = await createJavaScriptSkillInput(cwd, "index.js");
+		await validateSkillInput(cwd, s, { validateHandlers: validate });
+	} else if (await fs.pathExists(path.join(cwd, "skill.yaml"))) {
+		s = await createYamlSkillInput(cwd, useDefaults);
+		await validateSkillInput(cwd, s, { validateHandlers: validate });
+	} else {
+		throw new Error(`No suitable skill input detected in '${cwd}'`);
+	}
+	await writeSkillYaml(cwd, s);
+}
+
 export async function writeSkillYaml(
 	cwd: string,
 	skill: AtomistSkillInput,
@@ -543,26 +565,6 @@ export async function writeSkillYaml(
 	info(`Written skill metadata to '${p}'`);
 }
 
-export async function generateSkill(
-	cwd: string,
-	validate: boolean,
-): Promise<void> {
-	let s;
-	if (await fs.pathExists(path.join(cwd, "skill.js"))) {
-		s = await createJavaScriptSkillInput(cwd, "skill.js");
-		await validateSkillInput(cwd, s, { validateHandlers: validate });
-	} else if (await fs.pathExists(path.join(cwd, "index.js"))) {
-		s = await createJavaScriptSkillInput(cwd, "index.js");
-		await validateSkillInput(cwd, s, { validateHandlers: validate });
-	} else if (await fs.pathExists(path.join(cwd, "skill.yaml"))) {
-		s = await createYamlSkillInput(cwd);
-		await validateSkillInput(cwd, s, { validateHandlers: validate });
-	} else {
-		throw new Error(`No suitable skill input detected in '${cwd}'`);
-	}
-	await writeSkillYaml(cwd, s);
-}
-
 export function content(cwd: string): (key: string) => Promise<string[]> {
 	return async (key: string): Promise<string[]> => {
 		if (!key) {
@@ -573,6 +575,8 @@ export function content(cwd: string): (key: string) => Promise<string[]> {
 			return withGlobMatches<string>(cwd, pattern, async file => {
 				return (await fs.readFile(path.join(cwd, file))).toString();
 			});
+		} else if (key.startsWith("@")) {
+			return [named(key)];
 		} else {
 			return [key];
 		}
