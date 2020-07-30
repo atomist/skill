@@ -107,6 +107,7 @@ yargs
 				await (await import("../lib/script/skill_input")).generateSkill(
 					argv.cwd,
 					argv.validate,
+					true,
 				);
 				return 0;
 			} catch (e) {
