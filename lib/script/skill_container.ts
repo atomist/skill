@@ -17,19 +17,42 @@
 import * as fs from "fs-extra";
 import * as yaml from "js-yaml";
 import * as path from "path";
+import { spawnPromise } from "../child_process";
 import { info } from "../log";
 import { packageJson } from "../definition/skill";
 import { AtomistSkillInput, content, icon } from "./skill_input";
 
+async function defaults(cwd: string): Promise<Partial<AtomistSkillInput>> {
+	const originUrl = await spawnPromise(
+		"git",
+		["config", "--get", "remote.origin.url"],
+		{ cwd },
+	);
+	const giturl = (await import("git-url-parse"))(originUrl.stdout.trim());
+	return {
+		name: giturl.name,
+		namespace: giturl.owner,
+		displayName: giturl.name,
+		author: giturl.owner,
+		description: `Atomist Skill registered from ${giturl.owner}/${giturl.name}`,
+		homepageUrl: giturl.href,
+		iconUrl: `https://github.com/${giturl.owner}.png`,
+		license: "Apache-2.0",
+	};
+}
+
 export async function createYamlSkillInput(
 	cwd: string,
+	useDefaults: boolean,
 ): Promise<AtomistSkillInput> {
 	info(`Generating skill metadata...`);
 
 	const p = path.join(cwd, "skill.yaml");
 	const doc = yaml.safeLoad((await fs.readFile(p)).toString());
 	const is = {
-		...packageJson(path.join(cwd, "package.json")),
+		...(useDefaults
+			? await defaults(cwd)
+			: packageJson(path.join(cwd, "package.json"))),
 		...(doc.skill ? doc.skill : doc),
 	};
 
