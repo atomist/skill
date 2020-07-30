@@ -17,21 +17,92 @@
 import * as fs from "fs-extra";
 import * as yaml from "js-yaml";
 import * as path from "path";
+import { spawnPromise } from "../child_process";
 import { info } from "../log";
 import { packageJson } from "../definition/skill";
-import { AtomistSkillInput, content, icon } from "./skill_input";
+import { globFiles } from "../project/util";
+import { AtomistSkillInput, AtomistSkillRuntime, content } from "./skill_input";
+
+async function defaults(cwd: string): Promise<Partial<AtomistSkillInput>> {
+	const originUrl = await spawnPromise(
+		"git",
+		["config", "--get", "remote.origin.url"],
+		{ cwd },
+	);
+	const giturl = (await import("git-url-parse"))(originUrl.stdout.trim());
+	let description = `Atomist Skill registered from ${giturl.owner}/${giturl.name}`;
+	let longDescription = description;
+	let readme = description;
+
+	if (await fs.pathExists(path.join(cwd, "README.md"))) {
+		const readmeContent = (
+			await fs.readFile(path.join(cwd, "README.md"))
+		).toString();
+		const descriptionRegexp = /<!---atomist-skill-description:start--->([\s\S]*)<!---atomist-skill-description:end--->/gm;
+		const descriptionMatch = descriptionRegexp.exec(readmeContent);
+		if (descriptionMatch) {
+			description = descriptionMatch[1].trim();
+			longDescription = description;
+		}
+		const longDescriptionRegexp = /<!---atomist-skill-long_description:start--->([\s\S]*)<!---atomist-skill-long_description:end--->/gm;
+		const longDescriptionMatch = longDescriptionRegexp.exec(readmeContent);
+		if (longDescriptionMatch) {
+			longDescription = longDescriptionMatch[1].trim();
+		}
+		const readmeRegexp = /<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
+		const readmeMatch = readmeRegexp.exec(readmeContent);
+		if (readmeMatch) {
+			readme = readmeMatch[1].trim();
+		}
+	}
+
+	let iconUrl = `https://github.com/${giturl.owner}.png`;
+	const icons = await globFiles(cwd, "**/icon.svg");
+	if (icons.length > 0) {
+		const iconFile = (await fs.readFile(path.join(cwd, icons[0]))).toString(
+			"base64",
+		);
+		iconUrl = `data:image/svg+xml;base64,${iconFile}`;
+	}
+
+	return {
+		name: giturl.name,
+		namespace: giturl.owner,
+		displayName: giturl.name,
+		author: giturl.owner,
+		description,
+		longDescription,
+		readme,
+		iconUrl,
+		homepageUrl: `https://github.com/${giturl.owner}/${giturl.name}`,
+		license: "Apache-2.0",
+	};
+}
 
 export async function createYamlSkillInput(
 	cwd: string,
 ): Promise<AtomistSkillInput> {
 	info(`Generating skill metadata...`);
 
-	const p = path.join(cwd, "skill.yaml");
-	const doc = yaml.safeLoad((await fs.readFile(p)).toString());
-	const is = {
-		...packageJson(path.join(cwd, "package.json")),
-		...(doc.skill ? doc.skill : doc),
-	};
+	let is = await defaults(cwd);
+
+	if (await fs.pathExists(path.join(cwd, "package.json"))) {
+		const pj: any = packageJson(path.join(cwd, "package.json"));
+		is = {
+			...is,
+			...pj,
+		};
+	}
+
+	if (await fs.pathExists(path.join(cwd, "skill.yaml"))) {
+		const doc = yaml.safeLoad(
+			(await fs.readFile(path.join(cwd, "skill.yaml"))).toString(),
+		);
+		is = {
+			...is,
+			...(doc.skill ? doc.skill : doc),
+		};
+	}
 
 	const rc = content(cwd);
 
@@ -46,47 +117,33 @@ export async function createYamlSkillInput(
 		signals.push(...(await rc(signal)));
 	}
 
-	let readme = (await rc(is.readme || "file://README.md"))[0];
-	let description = (
-		await rc(is.description || "file://skill/description.md")
-	)[0];
-	let longDescription = (
-		await rc(is.longDescription || "file://skill/long_description.md")
-	)[0];
-	if (readme) {
-		if (!description) {
-			const descriptionRegexp = /<!---atomist-skill-description:start--->([\s\S]*)<!---atomist-skill-description:end--->/gm;
-			const descriptionMatch = descriptionRegexp.exec(readme);
-			if (descriptionMatch) {
-				description = descriptionMatch[1].trim();
-			}
-		}
-		if (!longDescription) {
-			const longDescriptionRegexp = /<!---atomist-skill-long_description:start--->([\s\S]*)<!---atomist-skill-long_description:end--->/gm;
-			const longDescriptionMatch = longDescriptionRegexp.exec(readme);
-			if (longDescriptionMatch) {
-				longDescription = longDescriptionMatch[1].trim();
-			}
-		}
-		const readmeRegexp = /<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
-		const readmeMatch = readmeRegexp.exec(readme);
-		if (readmeMatch) {
-			readme = readmeMatch[1].trim();
-		}
-	}
-
 	const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> = {
-		...is,
-		description,
-		longDescription,
-		iconUrl: await icon(cwd, is.iconUrl || "file://skill/icon.svg"),
-		readme: readme ? Buffer.from(readme).toString("base64") : undefined,
+		...(is as any),
+		readme: is.readme
+			? Buffer.from(is.readme).toString("base64")
+			: undefined,
 		subscriptions,
 		signals,
 	};
 
 	if (!y.longDescription) {
 		y.longDescription = y.description;
+	}
+
+	if (!y.artifacts?.docker) {
+		const gcf = y.artifacts?.gcf?.[0];
+		y.artifacts = {
+			gcf: [
+				{
+					entryPoint: gcf?.entryPoint || "entryPoint",
+					memory: gcf?.memory || 256,
+					timeout: gcf?.timeout || 60,
+					runtime: gcf?.runtime || AtomistSkillRuntime.Nodejs10,
+					name: "gcf",
+					url: undefined,
+				},
+			],
+		};
 	}
 
 	return y as any;
