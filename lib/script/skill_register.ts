@@ -75,7 +75,9 @@ export async function registerSkill(
 	const content = (
 		await fs.readFile(path.join(cwd, ".atomist", "skill.yaml"))
 	).toString();
-	const atomistYaml: { skill: AtomistSkillInput } = yaml.safeLoad(content);
+	const atomistYaml: { skill: AtomistSkillInput } = yaml.safeLoad(
+		content,
+	) as any;
 
 	if (atomistYaml?.skill?.artifacts?.gcf?.[0]) {
 		atomistYaml.skill.artifacts.gcf[0].url = url;

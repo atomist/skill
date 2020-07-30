@@ -98,7 +98,6 @@ yargs
 				validate: {
 					type: "boolean",
 					description: "Validate metadata",
-					default: true,
 					demandOption: false,
 				},
 			}),
@@ -138,6 +137,12 @@ yargs
 					default: true,
 					demandOption: false,
 				},
+				file: {
+					type: "string",
+					description: "Name of entryPoint file",
+					default: "skill.bundle.js",
+					demandOption: false,
+				},
 				verbose: {
 					type: "boolean",
 					description: "Enable verbose logging",
@@ -152,6 +157,7 @@ yargs
 					argv.minify,
 					argv.sourceMap,
 					argv.verbose,
+					argv.file,
 				);
 				return 0;
 			} catch (e) {
