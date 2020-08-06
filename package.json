@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@atomist/skill-logging": "0.1.1-9",
-    "@atomist/slack-messages": "^1.1.1",
+    "@atomist/slack-messages": "1.2.0-master.20200806132057",
     "@google-cloud/pubsub": "^2.3.0",
     "@google-cloud/storage": "^5.1.2",
     "@octokit/plugin-retry": "^3.0.3",

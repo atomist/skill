@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-import { render, SlackMessage } from "@atomist/slack-messages";
+import {
+	ActionsBlock,
+	render,
+	SectionBlock,
+	SlackMessage,
+} from "@atomist/slack-messages";
 import { Action as SlackAction } from "@atomist/slack-messages/lib/SlackMessages";
 import { PubSub } from "@google-cloud/pubsub";
 import { GraphQLClient } from "./graphql";
@@ -256,16 +261,14 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 		if (isSlackMessage(msg)) {
 			const msgClone = cloneDeep(msg) as SlackMessage & { blocks: any };
 			const actions = mapActions(msgClone);
-
-			// special handling for blocks
-			if (Array.isArray(msgClone.blocks)) {
-				msgClone.text = msgClone.text || "fallback";
-				msgClone.blocks = JSON.stringify(msgClone.blocks);
-			}
-
+			const blockActions = mapBlockActions(msgClone);
 			response.content_type = MessageMimeTypes.SLACK_JSON;
 			response.body = render(msgClone, false);
-			response.actions = [...(actions || []), ...(options.actions || [])];
+			response.actions = [
+				...(actions || []),
+				...(blockActions || []),
+				...(options.actions || []),
+			];
 		} else if (isFileMessage(msg)) {
 			response.content_type = MessageMimeTypes.SLACK_FILE_JSON;
 			response.body = JSON.stringify({
@@ -378,6 +381,61 @@ export function mapActions(msg: SlackMessage): Action[] {
 					}
 				});
 			});
+	}
+	return actions;
+}
+
+export function mapBlockActions(msg: SlackMessage): Action[] {
+	const actions: Action[] = [];
+
+	let counter = 0;
+
+	const mapElement = (element: any) => {
+		if (element.command) {
+			const id = counter++;
+			const cra = element.command;
+			const action: Action = {
+				id: `${cra.name}-${id}`,
+				command: cra.name,
+				parameters: mapParameters(cra.parameters),
+				parameter_name: cra.parameterName,
+			};
+			actions.push(action);
+			delete element.command;
+			(element as any).action_id = `command::${action.id}`;
+		} else if (element.modal) {
+			const id = counter++;
+			const cra = element.modal;
+			const action: Action = {
+				id: `${cra.name}-${id}`,
+				command: cra.name,
+				parameters: [
+					{
+						name: "view",
+						value: JSON.stringify(cra.view),
+					},
+				],
+			};
+			actions.push(action);
+			delete element.modal;
+			(element as any).action_id = `modal::${action.id}`;
+		}
+	};
+
+	if (msg.blocks) {
+		msg.blocks.forEach(block => {
+			if (block.type === "section") {
+				const sectionBlock = block as SectionBlock;
+				if (sectionBlock.accessory) {
+					mapElement(sectionBlock.accessory);
+				}
+			} else if (block.type === "actions") {
+				const actionsBlock = block as ActionsBlock;
+				if (actionsBlock.elements?.length > 0) {
+					actionsBlock.elements.forEach(mapElement);
+				}
+			}
+		});
 	}
 	return actions;
 }
