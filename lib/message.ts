@@ -417,7 +417,7 @@ export function mapBlockActions(msg: SlackMessage): Action[] {
 				],
 			};
 			actions.push(action);
-			delete element.command;
+			delete element.modal;
 			(element as any).action_id = `modal::${action.id}`;
 		}
 	};
