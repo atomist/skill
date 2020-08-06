@@ -14,18 +14,35 @@
  * limitations under the License.
  */
 
-export * from "./messages";
-export {
-	menuForCommand,
-	buttonForCommand,
-	ParameterType,
-	ActionConfirmation,
-	ButtonSpecification,
-	DataSource,
-	MenuSpecification,
-	OptionGroup,
-	ParameterIndexType,
-	SelectOption,
-} from "./button";
-export * as block from "./block";
-export * from "@atomist/slack-messages";
+import { ButtonElement, Element, SlackModal } from "@atomist/slack-messages";
+import { ParameterType } from "./button";
+
+export function buttonForModal(
+	button: ButtonElement,
+	command: string,
+	modal: SlackModal,
+): ButtonElement {
+	return {
+		...button,
+		modal: {
+			name: command,
+			view: modal,
+		},
+	} as any;
+}
+
+export function elementForCommand<E extends Element>(
+	element: Element,
+	command: string,
+	parameters: ParameterType = {},
+	parameterName?: string,
+): E {
+	return {
+		...element,
+		command: {
+			name: command,
+			parameters,
+			parameterName,
+		},
+	} as any;
+}
