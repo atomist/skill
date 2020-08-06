@@ -14,12 +14,7 @@
  * limitations under the License.
  */
 
-import {
-	ButtonElement,
-	Element,
-	InputBlock,
-	SlackModal,
-} from "@atomist/slack-messages";
+import { ButtonElement, Element, SlackModal } from "@atomist/slack-messages";
 import { ParameterType } from "./button";
 
 export function buttonForModal(
@@ -51,75 +46,3 @@ export function elementForCommand<E extends Element>(
 		},
 	} as any;
 }
-
-const modal: SlackModal = {
-	type: "modal",
-	title: {
-		type: "plain_text",
-		text: "Greeting",
-	},
-	blocks: [
-		{
-			type: "input",
-			label: {
-				type: "plain_text",
-				text: "Message",
-			},
-			element: {
-				type: "plain_text_input",
-				placeholder: {
-					type: "plain_text",
-					text: "Your message",
-				},
-				multiline: true,
-			},
-		} as InputBlock,
-	],
-	close: {
-		type: "plain_text",
-		text: "Cancel",
-	},
-	submit: {
-		type: "plain_text",
-		text: "Send",
-	},
-};
-
-const msg = {
-	blocks: [
-		{
-			type: "section",
-			text: {
-				type: "mrkdwn",
-				text: ":wave: Hello World",
-			},
-		},
-		{
-			type: "actions",
-			elements: [
-				elementForCommand(
-					{
-						type: "button",
-						text: {
-							type: "plain_text",
-							text: "Say hi!",
-						},
-					} as ButtonElement,
-					"helloWorld",
-					{ response: "hi" },
-				),
-				buttonForModal(
-					{
-						type: "button",
-						text: {
-							type: "plain_text",
-							text: "Respond",
-						},
-					},
-					"helloWorld",
-					modal,
-				),
-			],
-		},
-	],
-};
