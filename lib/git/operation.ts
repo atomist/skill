@@ -190,3 +190,27 @@ export async function setUserConfig(
 	await project.exec("git", ["config", "user.name", name]);
 	await project.exec("git", ["config", "user.email", email]);
 }
+
+export async function changedFiles(
+	projectOrCwd: Project | string,
+): Promise<string[]> {
+	const changedFiles = (
+		await execPromise("git", ["diff", "--name-only"], {
+			cwd: cwd(projectOrCwd),
+		})
+	).stdout
+		.split("\n")
+		.map(f => f.trim())
+		.filter(f => !!f && f.length > 0);
+	const untrackedFiles = (
+		await execPromise(
+			"git",
+			["ls-files", "--exclude-standard", "--others"],
+			{ cwd: cwd(projectOrCwd) },
+		)
+	).stdout
+		.split("\n")
+		.map(f => f.trim())
+		.filter(f => !!f && f.length > 0);
+	return [...changedFiles, ...untrackedFiles].sort();
+}

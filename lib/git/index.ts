@@ -20,6 +20,7 @@ export {
 	push,
 	createBranch,
 	checkout,
+	changedFiles,
 	init,
 	revert,
 	hasBranch,
