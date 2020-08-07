@@ -68,7 +68,7 @@
   },
   "devDependencies": {
     "@atomist/npm-tools": "0.1.0-master.20200709090755",
-    "@google-cloud/functions-framework": "^1.6.0",
+    "@google-cloud/functions-framework": "^1.7.0",
     "@types/mocha": "^8.0.1",
     "@types/power-assert": "^1.5.3",
     "@types/yargs-parser": "^15.0.0",
