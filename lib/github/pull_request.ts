@@ -40,7 +40,8 @@ export async function persistChanges(
 	},
 	commit: { message: string },
 ): Promise<HandlerStatus> {
-	if ((await git.status(project)).isClean) {
+	const gitStatus = await git.status(project);
+	if (gitStatus.isClean) {
 		return status.success(`No changes to push`);
 	}
 
@@ -55,12 +56,31 @@ export async function persistChanges(
 		pullRequest.branch ||
 		`atomist/${ctx.skill.name.toLowerCase()}-${Date.now()}`;
 	const repoUrl = `https://github.com/${project.id.owner}/${project.id.repo}`;
+	const sha = gitStatus.sha;
 
 	if (
 		strategy === "pr" ||
 		(push.branch === push.defaultBranch &&
 			(strategy === "pr_default" || strategy === "pr_default_commit"))
 	) {
+		const gh = api(project.id);
+		try {
+			const branch = (
+				await gh.repos.getBranch({
+					owner: project.id.owner,
+					repo: project.id.repo,
+					branch: prBranch,
+				})
+			).data;
+			if (branch.commit?.parents?.some(p => p.sha === sha)) {
+				return status.success(
+					`Not pushed because of same commit in base branch`,
+				);
+			}
+		} catch (e) {
+			// Ignore when branch does not exist
+		}
+
 		const changedFiles = (
 			await project.exec("git", ["diff", "--name-only"])
 		).stdout
@@ -92,7 +112,7 @@ ${formatMarkers(ctx)}
 		await git.push(project, { force: true, branch: prBranch });
 
 		let pr;
-		const gh = api(project.id);
+
 		let newPr = true;
 		const openPrs = (
 			await gh.pulls.list({
