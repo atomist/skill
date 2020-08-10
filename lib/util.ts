@@ -19,6 +19,14 @@ import * as path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { error } from "./log";
 import { Arg } from "./payload";
+import * as crypto from "crypto";
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function hash(obj: any): string {
+	const hash = crypto.createHash("sha256");
+	hash.update(typeof obj === "string" ? obj : JSON.stringify(obj));
+	return hash.digest("hex");
+}
 
 export function toArray<T>(value: T | T[]): T[] {
 	if (value) {
