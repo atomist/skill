@@ -41,7 +41,7 @@
     "@types/stack-trace": "0.0.29",
     "@types/uuid": "^8.0.1",
     "@types/yargs": "^15.0.5",
-    "@zeit/ncc": "^0.22.3",
+    "@vercel/ncc": "^0.23.0",
     "cross-spawn": "^7.0.3",
     "fast-glob": "^3.2.4",
     "flat": "^5.0.2",
