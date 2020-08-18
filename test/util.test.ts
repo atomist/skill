@@ -15,7 +15,7 @@
  */
 
 import * as assert from "assert";
-import { extractParameters } from "../lib/util";
+import { extractParameters, guid } from "../lib/util";
 
 describe("util", () => {
 	describe("extractParameters", () => {
@@ -48,6 +48,13 @@ describe("util", () => {
 				{ name: "body", value: "This is a test" },
 				{ name: "title", value: "Test2" },
 			]);
+		});
+	});
+
+	describe("guid", () => {
+		it("generates uuid", () => {
+			const uuid = guid();
+			assert(!!uuid);
 		});
 	});
 });

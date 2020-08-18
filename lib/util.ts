@@ -16,7 +16,7 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
-import * as uuid from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 import { error } from "./log";
 import { Arg } from "./payload";
 
@@ -114,7 +114,7 @@ export function hideString(value: any): any {
 }
 
 export function guid(): string {
-	return uuid();
+	return uuidv4();
 }
 
 export async function handleError<T>(
