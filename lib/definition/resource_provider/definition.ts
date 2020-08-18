@@ -146,3 +146,17 @@ export function npmJSRegistry(
 		...options,
 	});
 }
+
+/**
+ * Create an SecretProvider to use in Skill resourceProvider definitions
+ */
+export function secretProvider(
+	options: Omit<ResourceProvider, "typeName" | "maxAllowed"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "Secrets",
+		typeName: "SecretProvider",
+		maxAllowed: 0,
+		...options,
+	});
+}
