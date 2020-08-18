@@ -42,6 +42,7 @@ export {
 } from "./lib/definition/skill";
 export * as parameter from "./lib/definition/parameter";
 export * as resourceProvider from "./lib/definition/resource_provider";
+export * as subscription from "./lib/definition/subscription";
 // lib/git
 export * as git from "./lib/git";
 // lib/github
@@ -63,6 +64,7 @@ export * as slack from "./lib/slack";
 export {} from "./lib/bundle";
 export * as childProcess from "./lib/child_process";
 export {} from "./lib/context";
+export { entryPoint } from "./lib/entry_point";
 export {} from "./lib/function";
 export { GraphQLClient, QueryOrLocation, Location } from "./lib/graphql";
 export {

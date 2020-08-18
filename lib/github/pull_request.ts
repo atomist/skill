@@ -139,7 +139,10 @@ ${formatMarkers(ctx)}
 				pullRequest.reviewers?.length > 0)
 		) {
 			const reviewers = [...(pullRequest.reviewers || [])];
-			if (pullRequest.assignReviewer !== false) {
+			if (
+				pullRequest.assignReviewer !== false &&
+				pr.user?.login !== push.author.login
+			) {
 				reviewers.push(push.author.login);
 			}
 			await gh.pulls.requestReviewers({

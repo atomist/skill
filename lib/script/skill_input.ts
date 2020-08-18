@@ -16,11 +16,12 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
+import { named } from "../definition/subscription/named";
 import { error, info } from "../log";
 import { withGlobMatches } from "../project/util";
 import { Skill } from "../definition/skill";
 import { handleError, handlerLoader } from "../util";
-import { createYamlSkillInput } from "./skill_container";
+import { createYamlSkillInput, defaults } from "./skill_container";
 import map = require("lodash.map");
 
 export type Maybe<T> = T | null;
@@ -297,13 +298,17 @@ export async function createJavaScriptSkillInput(
 ): Promise<AtomistSkillInput> {
 	const p = path.join(cwd, name);
 	info(`Generating skill metadata...`);
-	const is: Skill = await handleError<Skill>(
-		async () => await (await import(p)).Skill,
-		() => {
-			error(`Error loading '${p}'`);
-			return undefined;
-		},
-	);
+
+	const is: Skill = {
+		...((await defaults(cwd)) as any),
+		...(await handleError<Skill>(
+			async () => await (await import(p)).Skill,
+			() => {
+				error(`Error loading '${p}'`);
+				return undefined;
+			},
+		)),
+	};
 
 	if (!is) {
 		throw new Error(`Failed to load exported Skill constant from '${p}'`);
@@ -318,31 +323,6 @@ export async function createJavaScriptSkillInput(
 	const signals = [];
 	for (const signal of is.signals || []) {
 		signals.push(...(await rc(signal)));
-	}
-
-	let readme = (await rc(is.readme))[0];
-	let description = (await rc(is.description))[0];
-	let longDescription = (await rc(is.longDescription))[0];
-	if (readme) {
-		if (!description) {
-			const descriptionRegexp = /<!---atomist-skill-description:start--->([\s\S]*)<!---atomist-skill-description:end--->/gm;
-			const descriptionMatch = descriptionRegexp.exec(readme);
-			if (descriptionMatch) {
-				description = descriptionMatch[1].trim();
-			}
-		}
-		if (!longDescription) {
-			const longDescriptionRegexp = /<!---atomist-skill-long_description:start--->([\s\S]*)<!---atomist-skill-long_description:end--->/gm;
-			const longDescriptionMatch = longDescriptionRegexp.exec(readme);
-			if (longDescriptionMatch) {
-				longDescription = longDescriptionMatch[1].trim();
-			}
-		}
-		const readmeRegexp = /<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
-		const readmeMatch = readmeRegexp.exec(readme);
-		if (readmeMatch) {
-			readme = readmeMatch[1].trim();
-		}
 	}
 
 	const artifacts: any = {};
@@ -372,8 +352,8 @@ export async function createJavaScriptSkillInput(
 		displayName: is.displayName,
 		version: is.version,
 		author: is.author,
-		description,
-		longDescription,
+		description: is.description,
+		longDescription: is.longDescription,
 		license: is.license,
 		categories: is.categories as any,
 		technologies: is.technologies as any,
@@ -381,7 +361,9 @@ export async function createJavaScriptSkillInput(
 		iconUrl: await icon(cwd, is.iconUrl),
 		videoUrl: is.videoUrl,
 
-		readme: readme ? Buffer.from(readme).toString("base64") : undefined,
+		readme: is.readme
+			? Buffer.from(is.readme).toString("base64")
+			: undefined,
 
 		maxConfigurations: is.maxConfigurations,
 		dispatchStyle: is.dispatchStyle as any,
@@ -525,6 +507,25 @@ ${errors.map(e => `        - ${e}`).join("\n")}`);
 	}
 }
 
+export async function generateSkill(
+	cwd: string,
+	validate: boolean,
+): Promise<void> {
+	let s;
+	let forceValidate = validate;
+	if (forceValidate === undefined) {
+		forceValidate = await fs.pathExists(path.join(cwd, "package.json"));
+	}
+	if (await fs.pathExists(path.join(cwd, "skill.js"))) {
+		s = await createJavaScriptSkillInput(cwd, "skill.js");
+		await validateSkillInput(cwd, s, { validateHandlers: forceValidate });
+	} else {
+		s = await createYamlSkillInput(cwd);
+		await validateSkillInput(cwd, s, { validateHandlers: forceValidate });
+	}
+	await writeSkillYaml(cwd, s);
+}
+
 export async function writeSkillYaml(
 	cwd: string,
 	skill: AtomistSkillInput,
@@ -543,26 +544,6 @@ export async function writeSkillYaml(
 	info(`Written skill metadata to '${p}'`);
 }
 
-export async function generateSkill(
-	cwd: string,
-	validate: boolean,
-): Promise<void> {
-	let s;
-	if (await fs.pathExists(path.join(cwd, "skill.js"))) {
-		s = await createJavaScriptSkillInput(cwd, "skill.js");
-		await validateSkillInput(cwd, s, { validateHandlers: validate });
-	} else if (await fs.pathExists(path.join(cwd, "index.js"))) {
-		s = await createJavaScriptSkillInput(cwd, "index.js");
-		await validateSkillInput(cwd, s, { validateHandlers: validate });
-	} else if (await fs.pathExists(path.join(cwd, "skill.yaml"))) {
-		s = await createYamlSkillInput(cwd);
-		await validateSkillInput(cwd, s, { validateHandlers: validate });
-	} else {
-		throw new Error(`No suitable skill input detected in '${cwd}'`);
-	}
-	await writeSkillYaml(cwd, s);
-}
-
 export function content(cwd: string): (key: string) => Promise<string[]> {
 	return async (key: string): Promise<string[]> => {
 		if (!key) {
@@ -573,6 +554,8 @@ export function content(cwd: string): (key: string) => Promise<string[]> {
 			return withGlobMatches<string>(cwd, pattern, async file => {
 				return (await fs.readFile(path.join(cwd, file))).toString();
 			});
+		} else if (key.startsWith("@")) {
+			return [named(key)];
 		} else {
 			return [key];
 		}

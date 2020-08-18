@@ -272,7 +272,7 @@ export interface Operations {
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
 
-export function packageJson(path = "package.json"): Metadata {
+export function packageJson(path = "package.json"): Partial<Metadata> {
 	try {
 		const pj = require(path); // eslint-disable-line @typescript-eslint/no-var-requires
 		const name = pj.name?.split("/");
@@ -285,9 +285,6 @@ export function packageJson(path = "package.json"): Metadata {
 				: undefined,
 			displayName: pj.displayName || pj.description,
 			author: typeof pj.author === "string" ? pj.author : pj.author?.name,
-			description: "file://skill/description.md",
-			longDescription: "file://skill/long_description.md",
-			readme: "file://README.md",
 			license: pj.license,
 			categories: pj.categories || pj.keywords,
 			technologies: pj.technologies,
@@ -296,7 +293,7 @@ export function packageJson(path = "package.json"): Metadata {
 				typeof pj.repository === "string"
 					? pj.repository
 					: pj.repository?.url,
-			iconUrl: pj.icon ? pj.icon : "file://skill/icon.svg",
+			iconUrl: pj.icon ? pj.icon : undefined,
 		};
 	} catch (e) {
 		return {} as any;
