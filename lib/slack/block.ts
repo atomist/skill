@@ -14,16 +14,35 @@
  * limitations under the License.
  */
 
-export {
-	commit,
-	status,
-	push,
-	createBranch,
-	checkout,
-	changedFiles,
-	init,
-	revert,
-	hasBranch,
-	setUserConfig,
-	GitPushOptions,
-} from "./operation";
+import { ButtonElement, Element, SlackModal } from "@atomist/slack-messages";
+import { ParameterType } from "./button";
+
+export function buttonForModal(
+	button: ButtonElement,
+	command: string,
+	modal: SlackModal,
+): ButtonElement {
+	return {
+		...button,
+		modal: {
+			name: command,
+			view: modal,
+		},
+	} as any;
+}
+
+export function elementForCommand<E extends Element>(
+	element: Element,
+	command: string,
+	parameters: ParameterType = {},
+	parameterName?: string,
+): E {
+	return {
+		...element,
+		command: {
+			name: command,
+			parameters,
+			parameterName,
+		},
+	} as any;
+}

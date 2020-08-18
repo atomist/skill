@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-export {
-	commit,
-	status,
-	push,
-	createBranch,
-	checkout,
-	changedFiles,
-	init,
-	revert,
-	hasBranch,
-	setUserConfig,
-	GitPushOptions,
-} from "./operation";
+import * as fg from "fast-glob";
+import * as fs from "fs";
+import * as path from "path";
+
+export function match(
+	pattern: string | string[],
+	cwd: string = process.cwd(),
+): string[] {
+	const files = fg.sync(pattern, {
+		cwd,
+		onlyFiles: true,
+		dot: true,
+		ignore: [".git", "node_modules"],
+	});
+	return files.map(f => fs.readFileSync(path.join(cwd, f)).toString());
+}

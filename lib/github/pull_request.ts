@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+import * as fs from "fs-extra";
 import { PushStrategy } from "../definition/parameter/definition";
 import * as git from "../git/operation";
 import { Contextual, HandlerStatus } from "../handler";
 import { Project } from "../project/project";
 import * as status from "../status";
+import { hash } from "../util";
 import { api, formatMarkers } from "./operation";
 
 export async function persistChanges(
@@ -40,7 +42,8 @@ export async function persistChanges(
 	},
 	commit: { message: string },
 ): Promise<HandlerStatus> {
-	if ((await git.status(project)).isClean) {
+	const gitStatus = await git.status(project);
+	if (gitStatus.isClean) {
 		return status.success(`No changes to push`);
 	}
 
@@ -61,6 +64,8 @@ export async function persistChanges(
 		(push.branch === push.defaultBranch &&
 			(strategy === "pr_default" || strategy === "pr_default_commit"))
 	) {
+		const gh = api(project.id);
+
 		const changedFiles = (
 			await project.exec("git", ["diff", "--name-only"])
 		).stdout
@@ -78,22 +83,26 @@ export async function persistChanges(
 			.map(f => f.trim())
 			.filter(f => !!f && f.length > 0);
 		const files = [...changedFiles, ...untrackedFiles].sort();
+
+		const hashes: Array<{ path: string; hash: string }> = [];
+		for (const file of files) {
+			const content = (await fs.readFile(project.path(file))).toString(
+				"base64",
+			);
+			hashes.push({ path: file, hash: hash(content) });
+		}
+		const diffHash = hash(hashes);
+
 		const body = `${pullRequest.body.trim()}
+		
 
 ---
 
 ${files.length === 1 ? "File" : "Files"} changed:
 ${files.map(f => ` * \`${f}\``).join("\n")}
-${formatMarkers(ctx)}
+${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 `;
 
-		await git.createBranch(project, prBranch);
-		await git.commit(project, commitMsg, commitOptions);
-		await git.push(project, { force: true, branch: prBranch });
-
-		let pr;
-		const gh = api(project.id);
-		let newPr = true;
 		const openPrs = (
 			await gh.pulls.list({
 				owner: project.id.owner,
@@ -104,6 +113,25 @@ ${formatMarkers(ctx)}
 				per_page: 100,
 			})
 		).data;
+		if (openPrs.length === 1) {
+			const pr = openPrs[0];
+			const body = pr.body;
+			const diffRegexp = /\[atomist-diff:([^\]]*)\]/g;
+			const diffMatch = diffRegexp.exec(body);
+			if (diffMatch?.[1] === diffHash) {
+				return status.success(
+					`Not pushed changes to [${project.id.owner}/${project.id.repo}/${prBranch}](${repoUrl}) because [#${pr.number}](${pr.html_url}) is up to date`,
+				);
+			}
+		}
+
+		await git.createBranch(project, prBranch);
+		await git.commit(project, commitMsg, commitOptions);
+		await git.push(project, { force: true, branch: prBranch });
+
+		let pr;
+
+		let newPr = true;
 		if (openPrs.length === 1) {
 			newPr = false;
 			pr = openPrs[0];
@@ -139,7 +167,10 @@ ${formatMarkers(ctx)}
 				pullRequest.reviewers?.length > 0)
 		) {
 			const reviewers = [...(pullRequest.reviewers || [])];
-			if (pullRequest.assignReviewer !== false) {
+			if (
+				pullRequest.assignReviewer !== false &&
+				pr.user?.login !== push.author.login
+			) {
 				reviewers.push(push.author.login);
 			}
 			await gh.pulls.requestReviewers({

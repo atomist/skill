@@ -16,9 +16,17 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
-import * as uuid from "uuid/v4";
+import { v4 as uuidv4 } from "uuid";
 import { error } from "./log";
 import { Arg } from "./payload";
+import * as crypto from "crypto";
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function hash(obj: any): string {
+	const hash = crypto.createHash("sha256");
+	hash.update(typeof obj === "string" ? obj : JSON.stringify(obj));
+	return hash.digest("hex");
+}
 
 export function toArray<T>(value: T | T[]): T[] {
 	if (value) {
@@ -114,7 +122,7 @@ export function hideString(value: any): any {
 }
 
 export function guid(): string {
-	return uuid();
+	return uuidv4();
 }
 
 export async function handleError<T>(

@@ -14,16 +14,4 @@
  * limitations under the License.
  */
 
-export {
-	commit,
-	status,
-	push,
-	createBranch,
-	checkout,
-	changedFiles,
-	init,
-	revert,
-	hasBranch,
-	setUserConfig,
-	GitPushOptions,
-} from "./operation";
+export * from "./named";

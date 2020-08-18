@@ -14,16 +14,21 @@
  * limitations under the License.
  */
 
-export {
-	commit,
-	status,
-	push,
-	createBranch,
-	checkout,
-	changedFiles,
-	init,
-	revert,
-	hasBranch,
-	setUserConfig,
-	GitPushOptions,
-} from "./operation";
+import * as fs from "fs-extra";
+import * as path from "path";
+
+export function named(name: string): string {
+	const ix = name.lastIndexOf("/");
+	const module = name.slice(0, ix);
+	const file = name.slice(ix + 1);
+	const root = __dirname.includes("node_modules")
+		? path.join(__dirname.split("node_modules")[0], "node_modules", module)
+		: process.cwd();
+	const filePath = path.join(
+		root,
+		"graphql",
+		"subscription",
+		`${file}.graphql`,
+	);
+	return fs.readFileSync(filePath).toString();
+}
