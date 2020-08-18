@@ -4,12 +4,20 @@ subscription onNewChatUser {
     isBot
     timezoneLabel
     person {
+      forename
+      surname
       name
       emails {
         address
       }
-      scmId {
+      gitHubId {
         login
+      }
+      chatId {
+        screenName
+        chatTeam {
+          id
+        }
       }
     }
   }

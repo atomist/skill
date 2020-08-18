@@ -1,0 +1,46 @@
+subscription onStatus {
+  Status {
+    commit {
+      sha
+      message
+      statuses {
+        context
+        description
+        state
+      }
+      repo {
+        id
+        url
+        owner
+        name
+        org {
+          id
+          owner
+          ownerType
+          provider {
+            providerId
+            providerType
+            apiUrl
+            url
+          }
+        }
+        channels {
+          team {
+            id
+          }
+          name
+          id
+          channelId
+        }
+        defaultBranch
+      }
+      pushes {
+        branch
+      }
+    }
+    state
+    targetUrl
+    context
+    description
+  }
+}

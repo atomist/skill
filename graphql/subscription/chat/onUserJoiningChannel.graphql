@@ -1,0 +1,53 @@
+subscription onUserJoiningChannel {
+  UserJoinedChannel {
+    user @required {
+      screenName
+      person @required {
+        forename
+        surname
+        name
+        emails {
+          address
+        }
+        gitHubId {
+          login
+        }
+        chatId {
+          screenName
+          chatTeam {
+            id
+          }
+        }
+      }
+    }
+    channel {
+      name
+      repos {
+        id
+        url
+        owner
+        name
+        org {
+          id
+          owner
+          ownerType
+          provider {
+            providerId
+            providerType
+            apiUrl
+            url
+          }
+        }
+        channels {
+          team {
+            id
+          }
+          name
+          id
+          channelId
+        }
+        defaultBranch
+      }
+    }
+  }
+}

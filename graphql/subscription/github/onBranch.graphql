@@ -1,0 +1,77 @@
+subscription onBranch {
+  Branch {
+    id
+    commit {
+      sha
+      message
+      author {
+        login
+        person {
+          forename
+          surname
+          name
+          emails {
+            address
+          }
+          gitHubId {
+            login
+          }
+          chatId {
+            screenName
+            chatTeam {
+              id
+            }
+          }
+        }
+      }
+      committer {
+        login
+        person {
+          forename
+          surname
+          name
+          emails {
+            address
+          }
+          gitHubId {
+            login
+          }
+          chatId {
+            screenName
+            chatTeam {
+              id
+            }
+          }
+        }
+      }
+    }
+    name
+    repo {
+      id
+      url
+      owner
+      name
+      org {
+        id
+        owner
+        ownerType
+        provider {
+          providerId
+          providerType
+          apiUrl
+          url
+        }
+      }
+      channels {
+        team {
+          id
+        }
+        name
+        id
+        channelId
+      }
+      defaultBranch
+    }
+    timestamp
+  }
+}

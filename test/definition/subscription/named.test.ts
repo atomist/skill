@@ -5,7 +5,7 @@ import { named } from "../../../lib/definition/subscription/named";
 
 describe("named", () => {
 	it("should load onNewChatUser subscription", () => {
-		const subscription = named("@atomist/skill/onNewChatUser");
+		const subscription = named("@atomist/skill/chat/onNewChatUser");
 		assert.deepStrictEqual(
 			subscription,
 			fs
@@ -14,6 +14,7 @@ describe("named", () => {
 						process.cwd(),
 						"graphql",
 						"subscription",
+						"chat",
 						"onNewChatUser.graphql",
 					),
 				)

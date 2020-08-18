@@ -1,0 +1,7 @@
+subscription onNewRepo {
+  Repo {
+    owner
+    name
+    id
+  }
+}

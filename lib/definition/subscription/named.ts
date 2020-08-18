@@ -18,9 +18,16 @@ import * as fs from "fs-extra";
 import * as path from "path";
 
 export function named(name: string): string {
-	const ix = name.lastIndexOf("/");
-	const module = name.slice(0, ix);
-	const file = name.slice(ix + 1);
+	const segments = name.split("/");
+	let module;
+	let file;
+	if (segments[0].startsWith("@")) {
+		module = segments.slice(0, 2).join("/");
+		file = segments.slice(2).join("/");
+	} else {
+		module = segments[0];
+		file = segments.slice(1).join("/");
+	}
 	const root = __dirname.includes("node_modules")
 		? path.join(__dirname.split("node_modules")[0], "node_modules", module)
 		: process.cwd();

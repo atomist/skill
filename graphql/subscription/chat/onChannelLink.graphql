@@ -1,0 +1,37 @@
+subscription onChannelLink {
+  ChannelLink {
+    repo {
+      id
+      url
+      owner
+      name
+      org {
+        id
+        owner
+        ownerType
+        provider {
+          providerId
+          providerType
+          apiUrl
+          url
+        }
+      }
+      channels {
+        team {
+          id
+        }
+        name
+        id
+        channelId
+      }
+      defaultBranch
+    }
+    channel {
+      team {
+        id
+      }
+      name
+      id
+    }
+  }
+}

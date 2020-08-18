@@ -1,0 +1,214 @@
+subscription onReview {
+  Review {
+    body
+    state
+    by {
+      login
+      person {
+        forename
+        surname
+        name
+        emails {
+          address
+        }
+        chatId {
+          screenName
+          chatTeam {
+            id
+          }
+        }
+      }
+    }
+    pullRequest {
+      branch {
+        name
+      }
+      title
+      number
+      body
+      id
+      base {
+        sha
+        message
+        author {
+          login
+          person {
+            forename
+            surname
+            name
+            emails {
+              address
+            }
+            gitHubId {
+              login
+            }
+            chatId {
+              screenName
+              chatTeam {
+                id
+              }
+            }
+          }
+        }
+        committer {
+          login
+          person {
+            forename
+            surname
+            name
+            emails {
+              address
+            }
+            gitHubId {
+              login
+            }
+            chatId {
+              screenName
+              chatTeam {
+                id
+              }
+            }
+          }
+        }
+      }
+      action
+      createdAt
+      updatedAt
+      mergeStatus
+      author {
+        login
+        person {
+          forename
+          surname
+          name
+          emails {
+            address
+          }
+          gitHubId {
+            login
+          }
+          chatId {
+            screenName
+            chatTeam {
+              id
+            }
+          }
+        }
+      }
+      head {
+        sha
+        message
+        author {
+          login
+          person {
+            forename
+            surname
+            name
+            emails {
+              address
+            }
+            gitHubId {
+              login
+            }
+            chatId {
+              screenName
+              chatTeam {
+                id
+              }
+            }
+          }
+        }
+        committer {
+          login
+          person {
+            forename
+            surname
+            name
+            emails {
+              address
+            }
+            gitHubId {
+              login
+            }
+            chatId {
+              screenName
+              chatTeam {
+                id
+              }
+            }
+          }
+        }
+      }
+      labels {
+        name
+      }
+      reviewers {
+        login
+        person {
+          forename
+          surname
+          name
+          emails {
+            address
+          }
+          gitHubId {
+            login
+          }
+          chatId {
+            screenName
+            chatTeam {
+              id
+            }
+          }
+        }
+      }
+      reviews {
+        body
+        state
+        by {
+          login
+          person {
+            forename
+            surname
+            name
+            emails {
+              address
+            }
+            chatId {
+              screenName
+              chatTeam {
+                id
+              }
+            }
+          }
+        }
+      }
+      repo {
+        id
+        url
+        owner
+        name
+        org {
+          id
+          owner
+          ownerType
+          provider {
+            providerId
+            providerType
+            apiUrl
+            url
+          }
+        }
+        channels {
+          team {
+            id
+          }
+          name
+          id
+          channelId
+        }
+        defaultBranch
+      }
+    }
+  }
+}

@@ -1,0 +1,220 @@
+subscription onComment {
+  Comment {
+    gitHubId
+    timestamp
+    body
+    by {
+      login
+      name
+      person {
+        forename
+        surname
+        name
+        emails {
+          address
+        }
+        gitHubId {
+          login
+        }
+        chatId {
+          screenName
+          chatTeam {
+            id
+          }
+        }
+      }
+    }
+    pullRequest {
+      title
+      number
+      state
+      merged
+      repo {
+        id
+        url
+        owner
+        name
+        org {
+          id
+          owner
+          ownerType
+          provider {
+            providerId
+            providerType
+            apiUrl
+            url
+          }
+        }
+        channels {
+          team {
+            id
+          }
+          name
+          id
+          channelId
+        }
+        defaultBranch
+      }
+      author {
+        login
+        person {
+          forename
+          surname
+          name
+          emails {
+            address
+          }
+          chatId {
+            screenName
+            chatTeam {
+              id
+            }
+          }
+        }
+      }
+      assignees {
+        login
+        person {
+          forename
+          surname
+          name
+          emails {
+            address
+          }
+          chatId {
+            screenName
+            chatTeam {
+              id
+            }
+          }
+        }
+      }
+      reviewers {
+        login
+        person {
+          forename
+          surname
+          name
+          emails {
+            address
+          }
+          chatId {
+            screenName
+            chatTeam {
+              id
+            }
+          }
+        }
+      }
+      reviews {
+        body
+        state
+        by {
+          login
+          person {
+            forename
+            surname
+            name
+            emails {
+              address
+            }
+            chatId {
+              screenName
+              chatTeam {
+                id
+              }
+            }
+          }
+        }
+      }
+      labels {
+        name
+      }
+    }
+    issue {
+      title
+      number
+      state
+      repo {
+        id
+        url
+        owner
+        name
+        org {
+          id
+          owner
+          ownerType
+          provider {
+            providerId
+            providerType
+            apiUrl
+            url
+          }
+        }
+        channels {
+          team {
+            id
+          }
+          name
+          id
+          channelId
+        }
+        defaultBranch
+      }
+      openedBy {
+        login
+        person {
+          forename
+          surname
+          name
+          emails {
+            address
+          }
+          chatId {
+            screenName
+            chatTeam {
+              id
+            }
+          }
+        }
+      }
+      closedBy {
+        login
+        person {
+          forename
+          surname
+          name
+          emails {
+            address
+          }
+          chatId {
+            screenName
+            chatTeam {
+              id
+            }
+          }
+        }
+      }
+      assignees {
+        login
+        person {
+          forename
+          surname
+          name
+          emails {
+            address
+          }
+          chatId {
+            screenName
+            chatTeam {
+              id
+            }
+          }
+        }
+      }
+      labels {
+        name
+      }
+    }
+  }
+}

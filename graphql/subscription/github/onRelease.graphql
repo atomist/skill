@@ -1,0 +1,46 @@
+subscription onRelease {
+  Release {
+    id
+    name
+    tag {
+      name
+      description
+      timestamp
+      release {
+        name
+        id
+        timestamp
+      }
+      commit {
+        sha
+        message
+        repo {
+          id
+          url
+          owner
+          name
+          org {
+            id
+            owner
+            ownerType
+            provider {
+              providerId
+              providerType
+              apiUrl
+              url
+            }
+          }
+          channels {
+            team {
+              id
+            }
+            name
+            id
+            channelId
+          }
+          defaultBranch
+        }
+      }
+    }
+  }
+}
