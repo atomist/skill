@@ -7,21 +7,71 @@ subscription onPush {
       org {
         provider {
           apiUrl
-          gitUrl
-        }
-      }
-      channels {
-        name
-        team {
-          id
         }
       }
     }
     branch
+    timestamp
     after {
-      timestamp
-      sha
       url
+      sha
+      message
+      author {
+        login
+        person {
+          surname
+          forename
+          chatId {
+            screenName
+          }
+        }
+      }
+      committer {
+        login
+        person {
+          surname
+          forename
+          chatId {
+            screenName
+          }
+        }
+      }
+      tags {
+        name
+        release {
+          name
+        }
+      }
+      statuses {
+        context
+        description
+        targetUrl
+        state
+      }
+    }
+    commits {
+      sha
+      message
+      author {
+        login
+        person {
+          surname
+          forename
+          chatId {
+            screenName
+          }
+        }
+      }
+      committer {
+        login
+        person {
+          surname
+          forename
+          chatId {
+            screenName
+          }
+        }
+      }
     }
   }
 }
