@@ -23,6 +23,7 @@ import { Skill } from "../definition/skill";
 import { handleError, handlerLoader } from "../util";
 import { createYamlSkillInput, defaults } from "./skill_container";
 import map = require("lodash.map");
+import merge = require("lodash.merge");
 
 export type Maybe<T> = T | null;
 
@@ -299,16 +300,17 @@ export async function createJavaScriptSkillInput(
 	const p = path.join(cwd, name);
 	info(`Generating skill metadata...`);
 
-	const is: Skill = {
-		...((await defaults(cwd)) as any),
-		...(await handleError<Skill>(
+	const is: Skill = merge(
+		{},
+		await defaults(cwd),
+		await handleError<Skill>(
 			async () => await (await import(p)).Skill,
 			() => {
 				error(`Error loading '${p}'`);
-				return undefined;
+				return {} as any;
 			},
-		)),
-	};
+		),
+	);
 
 	if (!is) {
 		throw new Error(`Failed to load exported Skill constant from '${p}'`);
