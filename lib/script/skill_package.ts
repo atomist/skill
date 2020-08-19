@@ -30,7 +30,7 @@ export async function packageSkill(
 	const fileName = path.join(cwd, ".atomist", "skill.zip");
 	await fs.ensureDir(path.dirname(fileName));
 
-	const ignores = [".git", "node_modules"];
+	const ignores = [".git", "node_modules", ".npm"];
 	const ignoreFile = ".atomistignore";
 	if (await fs.pathExists(path.join(cwd, ignoreFile))) {
 		ignores.push(
