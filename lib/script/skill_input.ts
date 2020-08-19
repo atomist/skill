@@ -317,11 +317,13 @@ export async function createJavaScriptSkillInput(
 	const rc = content(cwd);
 
 	const subscriptions = [];
-	for (const subscription of is.subscriptions || []) {
+	for (const subscription of is.subscriptions || [
+		"file://**/graphql/subscription/*.graphql",
+	]) {
 		subscriptions.push(...(await rc(subscription)));
 	}
 	const signals = [];
-	for (const signal of is.signals || []) {
+	for (const signal of is.signals || ["file://**/graphql/signal/*.graphql"]) {
 		signals.push(...(await rc(signal)));
 	}
 
