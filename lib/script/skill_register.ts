@@ -23,7 +23,7 @@ import { spawnPromise } from "../child_process";
 import { createGraphQLClient, GraphQLClient } from "../graphql";
 import { error, info } from "../log";
 import * as git from "../git";
-import { GoogleCloudStorageProvider } from "../storage";
+import { GoogleCloudStorageProvider } from "../storage/provider";
 import { AtomistSkillInput } from "./skill_input";
 
 export async function registerSkill(

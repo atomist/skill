@@ -34,7 +34,7 @@ import { ClonePath } from "./project/clone";
 import { createProjectLoader } from "./project/loader";
 import { commandRequestParameterPromptFactory } from "./prompt/prompt";
 import { DefaultCredentialProvider } from "./secret/provider";
-import { createStorageProvider } from "./storage";
+import { createStorageProvider } from "./storage/provider";
 import { extractParameters } from "./util";
 
 export function createContext(

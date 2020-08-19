@@ -89,7 +89,8 @@ export {} from "./lib/payload";
 export * as state from "./lib/state";
 export * as status from "./lib/status";
 export { runSteps, Step, StepListener } from "./lib/steps";
-export { StorageProvider } from "./lib/storage";
+export * as cache from "./lib/storage/cache";
+export { StorageProvider } from "./lib/storage/provider";
 export {
 	guid,
 	handleError,
