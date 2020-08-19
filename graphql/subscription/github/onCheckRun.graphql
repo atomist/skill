@@ -19,46 +19,21 @@ subscription onCheckRun {
       timestamp
       status
       commit {
+        repo {
+          ...repoFields
+        }
         sha
         message
         author {
           login
           person {
-            forename
-            surname
-            name
-            emails {
-              address
-            }
-            gitHubId {
-              login
-            }
-            chatId {
-              screenName
-              chatTeam {
-                id
-              }
-            }
+            ...personFields
           }
         }
         committer {
           login
           person {
-            forename
-            surname
-            name
-            emails {
-              address
-            }
-            gitHubId {
-              login
-            }
-            chatId {
-              screenName
-              chatTeam {
-                id
-              }
-            }
+            ...personFields
           }
         }
       }

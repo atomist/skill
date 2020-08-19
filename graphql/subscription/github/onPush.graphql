@@ -1,14 +1,7 @@
 subscription onPush {
   Push {
     repo {
-      url
-      owner
-      name
-      org {
-        provider {
-          apiUrl
-        }
-      }
+      ...repoFields
     }
     branch
     timestamp
@@ -19,41 +12,13 @@ subscription onPush {
       author {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          gitHubId {
-            login
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       committer {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          gitHubId {
-            login
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       tags {
@@ -75,41 +40,13 @@ subscription onPush {
       author {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          gitHubId {
-            login
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       committer {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          gitHubId {
-            login
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
     }

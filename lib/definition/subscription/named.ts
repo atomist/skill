@@ -16,6 +16,7 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
+import { inlineFragments } from "./util";
 
 export function named(name: string): string {
 	const segments = name.split("/");
@@ -37,5 +38,14 @@ export function named(name: string): string {
 		"subscription",
 		`${file}.graphql`,
 	);
-	return fs.readFileSync(filePath).toString();
+
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const prettier = require("prettier");
+	return prettier.format(
+		inlineFragments(
+			fs.readFileSync(filePath).toString(),
+			path.join(root, "graphql"),
+		),
+		{ parser: "graphql" },
+	);
 }

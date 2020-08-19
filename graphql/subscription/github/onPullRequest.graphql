@@ -13,41 +13,13 @@ subscription onPullRequest {
       author {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          gitHubId {
-            login
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       committer {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          gitHubId {
-            login
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
     }
@@ -58,21 +30,7 @@ subscription onPullRequest {
     author {
       login
       person {
-        forename
-        surname
-        name
-        emails {
-          address
-        }
-        gitHubId {
-          login
-        }
-        chatId {
-          screenName
-          chatTeam {
-            id
-          }
-        }
+        ...personFields
       }
     }
     head {
@@ -81,41 +39,13 @@ subscription onPullRequest {
       author {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          gitHubId {
-            login
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       committer {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          gitHubId {
-            login
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
     }
@@ -125,21 +55,7 @@ subscription onPullRequest {
     reviewers {
       login
       person {
-        forename
-        surname
-        name
-        emails {
-          address
-        }
-        gitHubId {
-          login
-        }
-        chatId {
-          screenName
-          chatTeam {
-            id
-          }
-        }
+        ...personFields
       }
     }
     reviews {
@@ -148,46 +64,12 @@ subscription onPullRequest {
       by {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
     }
     repo {
-      id
-      url
-      owner
-      name
-      org {
-        id
-        owner
-        ownerType
-        provider {
-          providerId
-          providerType
-          apiUrl
-          url
-        }
-      }
-      channels {
-        team {
-          id
-        }
-        name
-        id
-        channelId
-      }
-      defaultBranch
+      ...repoFields
     }
   }
 }

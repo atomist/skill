@@ -7,70 +7,19 @@ subscription onDeletedBranch {
       author {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          gitHubId {
-            login
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       committer {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          gitHubId {
-            login
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
     }
     name
     repo {
-      id
-      url
-      owner
-      name
-      org {
-        id
-        owner
-        ownerType
-        provider {
-          providerId
-          providerType
-          apiUrl
-          url
-        }
-      }
-      channels {
-        team {
-          id
-        }
-        name
-        id
-        channelId
-      }
-      defaultBranch
+      ...repoFields
     }
     timestamp
   }

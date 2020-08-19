@@ -7,21 +7,7 @@ subscription onComment {
       login
       name
       person {
-        forename
-        surname
-        name
-        emails {
-          address
-        }
-        gitHubId {
-          login
-        }
-        chatId {
-          screenName
-          chatTeam {
-            id
-          }
-        }
+        ...personFields
       }
     }
     pullRequest {
@@ -58,52 +44,19 @@ subscription onComment {
       author {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       assignees {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       reviewers {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       reviews {
@@ -112,18 +65,7 @@ subscription onComment {
         by {
           login
           person {
-            forename
-            surname
-            name
-            emails {
-              address
-            }
-            chatId {
-              screenName
-              chatTeam {
-                id
-              }
-            }
+            ...personFields
           }
         }
       }
@@ -136,80 +78,24 @@ subscription onComment {
       number
       state
       repo {
-        id
-        url
-        owner
-        name
-        org {
-          id
-          owner
-          ownerType
-          provider {
-            providerId
-            providerType
-            apiUrl
-            url
-          }
-        }
-        channels {
-          team {
-            id
-          }
-          name
-          id
-          channelId
-        }
-        defaultBranch
+        ...repoFields
       }
       openedBy {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       closedBy {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       assignees {
         login
         person {
-          forename
-          surname
-          name
-          emails {
-            address
-          }
-          chatId {
-            screenName
-            chatTeam {
-              id
-            }
-          }
+          ...personFields
         }
       }
       labels {
