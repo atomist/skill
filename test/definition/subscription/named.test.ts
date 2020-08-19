@@ -15,8 +15,6 @@
  */
 
 import * as assert from "assert";
-import * as fs from "fs";
-import * as path from "path";
 import { named } from "../../../lib/definition/subscription/named";
 
 describe("named", () => {
@@ -24,17 +22,31 @@ describe("named", () => {
 		const subscription = named("@atomist/skill/chat/onNewUser");
 		assert.deepStrictEqual(
 			subscription,
-			fs
-				.readFileSync(
-					path.join(
-						process.cwd(),
-						"graphql",
-						"subscription",
-						"chat",
-						"onNewUser.graphql",
-					),
-				)
-				.toString(),
+			`subscription onNewUser {
+  ChatId {
+    screenName
+    isBot
+    timezoneLabel
+    person {
+      forename
+      surname
+      name
+      emails {
+        address
+      }
+      gitHubId {
+        login
+      }
+      chatId {
+        screenName
+        chatTeam {
+          id
+        }
+      }
+    }
+  }
+}
+`,
 		);
 	});
 });
