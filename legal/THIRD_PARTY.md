@@ -18,7 +18,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)            | 1     |
 | [ISC](#isc)                   | 32    |
 | [MIT AND Zlib](#mit-and-zlib) | 1     |
-| [MIT](#mit)                   | 209   |
+| [MIT](#mit)                   | 207   |
 
 #### Apache-2.0
 
@@ -38,7 +38,7 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 | `@google-cloud/promisify`             | `1.0.4`                       | Google Inc.           | [https://github.com/googleapis/nodejs-promisify](https://github.com/googleapis/nodejs-promisify)                                 |
 | `@google-cloud/promisify`             | `2.0.2`                       | Google Inc.           | [https://github.com/googleapis/nodejs-promisify](https://github.com/googleapis/nodejs-promisify)                                 |
 | `@google-cloud/pubsub`                | `2.5.0`                       | Google Inc.           | [https://github.com/googleapis/nodejs-pubsub](https://github.com/googleapis/nodejs-pubsub)                                       |
-| `@google-cloud/storage`               | `5.2.0`                       | Google Inc.           | [https://github.com/googleapis/nodejs-storage](https://github.com/googleapis/nodejs-storage)                                     |
+| `@google-cloud/storage`               | `5.3.0`                       | Google Inc.           | [https://github.com/googleapis/nodejs-storage](https://github.com/googleapis/nodejs-storage)                                     |
 | `@grpc/grpc-js`                       | `1.1.2`                       | Google Inc.           | [https://github.com/grpc/grpc-node/tree/master/packages/grpc-js](https://github.com/grpc/grpc-node/tree/master/packages/grpc-js) |
 | `@grpc/proto-loader`                  | `0.5.4`                       | Google Inc.           | [https://github.com/grpc/grpc-node](https://github.com/grpc/grpc-node)                                                           |
 | `@opencensus/core`                    | `0.0.22`                      | Google Inc.           | [https://github.com/census-instrumentation/opencensus-node](https://github.com/census-instrumentation/opencensus-node)           |
@@ -178,17 +178,17 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `@octokit/auth-token`                   | `2.4.2`    |                     | [https://github.com/octokit/auth-token.js](https://github.com/octokit/auth-token.js)                                                           |
 | `@octokit/core`                         | `3.1.2`    |                     | [https://github.com/octokit/core.js](https://github.com/octokit/core.js)                                                                       |
 | `@octokit/endpoint`                     | `6.0.5`    |                     | [https://github.com/octokit/endpoint.js](https://github.com/octokit/endpoint.js)                                                               |
-| `@octokit/graphql`                      | `4.5.3`    |                     | [https://github.com/octokit/graphql.js](https://github.com/octokit/graphql.js)                                                                 |
-| `@octokit/plugin-paginate-rest`         | `2.3.0`    |                     | [https://github.com/octokit/plugin-paginate-rest.js](https://github.com/octokit/plugin-paginate-rest.js)                                       |
+| `@octokit/graphql`                      | `4.5.4`    |                     | [https://github.com/octokit/graphql.js](https://github.com/octokit/graphql.js)                                                                 |
+| `@octokit/plugin-paginate-rest`         | `2.3.1`    |                     | [https://github.com/octokit/plugin-paginate-rest.js](https://github.com/octokit/plugin-paginate-rest.js)                                       |
 | `@octokit/plugin-request-log`           | `1.0.0`    |                     | [https://github.com/octokit/plugin-request-log.js](https://github.com/octokit/plugin-request-log.js)                                           |
-| `@octokit/plugin-rest-endpoint-methods` | `4.1.2`    |                     | [https://github.com/octokit/plugin-rest-endpoint-methods.js](https://github.com/octokit/plugin-rest-endpoint-methods.js)                       |
+| `@octokit/plugin-rest-endpoint-methods` | `4.1.3`    |                     | [https://github.com/octokit/plugin-rest-endpoint-methods.js](https://github.com/octokit/plugin-rest-endpoint-methods.js)                       |
 | `@octokit/plugin-retry`                 | `3.0.3`    |                     | [https://github.com/octokit/plugin-retry.js](https://github.com/octokit/plugin-retry.js)                                                       |
 | `@octokit/plugin-throttling`            | `3.3.0`    |                     | [https://github.com/octokit/plugin-throttling.js](https://github.com/octokit/plugin-throttling.js)                                             |
 | `@octokit/request-error`                | `2.0.2`    |                     | [https://github.com/octokit/request-error.js](https://github.com/octokit/request-error.js)                                                     |
 | `@octokit/request`                      | `5.4.7`    |                     | [https://github.com/octokit/request.js](https://github.com/octokit/request.js)                                                                 |
-| `@octokit/rest`                         | `18.0.3`   |                     | [https://github.com/octokit/rest.js](https://github.com/octokit/rest.js)                                                                       |
+| `@octokit/rest`                         | `18.0.4`   |                     | [https://github.com/octokit/rest.js](https://github.com/octokit/rest.js)                                                                       |
 | `@octokit/types`                        | `5.0.1`    |                     | [https://github.com/octokit/types.ts](https://github.com/octokit/types.ts)                                                                     |
-| `@octokit/types`                        | `5.2.1`    |                     | [https://github.com/octokit/types.ts](https://github.com/octokit/types.ts)                                                                     |
+| `@octokit/types`                        | `5.4.1`    |                     | [https://github.com/octokit/types.ts](https://github.com/octokit/types.ts)                                                                     |
 | `@tootallnate/once`                     | `1.1.2`    | Nathan Rajlich      | [https://github.com/TooTallNate/once](https://github.com/TooTallNate/once)                                                                     |
 | `@types/color-name`                     | `1.1.1`    |                     | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                       |
 | `@types/cross-spawn`                    | `6.0.2`    |                     | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                       |
@@ -238,7 +238,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `cross-spawn`                           | `7.0.3`    | André Cruz          | [https://github.com/moxystudio/node-cross-spawn](https://github.com/moxystudio/node-cross-spawn)                                               |
 | `crypto-random-string`                  | `2.0.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/crypto-random-string](https://github.com/sindresorhus/crypto-random-string)                                   |
 | `d64`                                   | `1.0.0`    | Dominic Tarr        | [https://github.com/dominictarr/d64](https://github.com/dominictarr/d64)                                                                       |
-| `date-and-time`                         | `0.14.0`   | KNOWLEDGECODE       | [https://github.com/knowledgecode/date-and-time](https://github.com/knowledgecode/date-and-time)                                               |
+| `date-and-time`                         | `0.14.1`   | KNOWLEDGECODE       | [https://github.com/knowledgecode/date-and-time](https://github.com/knowledgecode/date-and-time)                                               |
 | `debug`                                 | `4.1.1`    | TJ Holowaychuk      | [https://github.com/visionmedia/debug](https://github.com/visionmedia/debug)                                                                   |
 | `decamelize`                            | `1.2.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/decamelize](https://github.com/sindresorhus/decamelize)                                                       |
 | `delayed-stream`                        | `1.0.0`    | Felix Geisendörfer  | [https://github.com/felixge/node-delayed-stream](https://github.com/felixge/node-delayed-stream)                                               |
@@ -267,7 +267,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `gtoken`                                | `4.1.4`    | Google, LLC         | [https://github.com/google/node-gtoken](https://github.com/google/node-gtoken)                                                                 |
 | `gtoken`                                | `5.0.2`    | Google, LLC         | [https://github.com/google/node-gtoken](https://github.com/google/node-gtoken)                                                                 |
 | `gtoken`                                | `5.0.3`    | Google, LLC         | [https://github.com/google/node-gtoken](https://github.com/google/node-gtoken)                                                                 |
-| `hash-stream-validation`                | `0.2.3`    | Stephen Sawchuk     | [https://github.com/stephenplusplus/hash-stream-validation](https://github.com/stephenplusplus/hash-stream-validation)                         |
+| `hash-stream-validation`                | `0.2.4`    | Stephen Sawchuk     | [https://github.com/stephenplusplus/hash-stream-validation](https://github.com/stephenplusplus/hash-stream-validation)                         |
 | `http-proxy-agent`                      | `4.0.1`    | Nathan Rajlich      | [https://github.com/TooTallNate/node-http-proxy-agent](https://github.com/TooTallNate/node-http-proxy-agent)                                   |
 | `https-proxy-agent`                     | `5.0.0`    | Nathan Rajlich      | [https://github.com/TooTallNate/node-https-proxy-agent](https://github.com/TooTallNate/node-https-proxy-agent)                                 |
 | `ignore`                                | `5.1.6`    | kael                | [https://github.com/kaelzhang/node-ignore](https://github.com/kaelzhang/node-ignore)                                                           |
@@ -319,7 +319,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `node-fetch`                            | `2.6.0`    | David Frank         | [https://github.com/bitinn/node-fetch](https://github.com/bitinn/node-fetch)                                                                   |
 | `normalize-url`                         | `3.3.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/normalize-url](https://github.com/sindresorhus/normalize-url)                                                 |
 | `on-finished`                           | `2.3.0`    |                     | [https://github.com/jshttp/on-finished](https://github.com/jshttp/on-finished)                                                                 |
-| `onetime`                               | `5.1.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/onetime](https://github.com/sindresorhus/onetime)                                                             |
+| `onetime`                               | `5.1.2`    | Sindre Sorhus       | [https://github.com/sindresorhus/onetime](https://github.com/sindresorhus/onetime)                                                             |
 | `p-defer`                               | `3.0.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-defer](https://github.com/sindresorhus/p-defer)                                                             |
 | `p-limit`                               | `2.3.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-limit](https://github.com/sindresorhus/p-limit)                                                             |
 | `p-limit`                               | `3.0.2`    | Sindre Sorhus       | [https://github.com/sindresorhus/p-limit](https://github.com/sindresorhus/p-limit)                                                             |
@@ -332,7 +332,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `path-is-absolute`                      | `1.0.1`    | Sindre Sorhus       | [https://github.com/sindresorhus/path-is-absolute](https://github.com/sindresorhus/path-is-absolute)                                           |
 | `path-key`                              | `3.1.1`    | Sindre Sorhus       | [https://github.com/sindresorhus/path-key](https://github.com/sindresorhus/path-key)                                                           |
 | `picomatch`                             | `2.2.2`    | Jon Schlinkert      | [https://github.com/micromatch/picomatch](https://github.com/micromatch/picomatch)                                                             |
-| `prettier`                              | `2.0.5`    | James Long          | [https://github.com/prettier/prettier](https://github.com/prettier/prettier)                                                                   |
+| `prettier`                              | `2.1.1`    | James Long          | [https://github.com/prettier/prettier](https://github.com/prettier/prettier)                                                                   |
 | `process-nextick-args`                  | `2.0.1`    |                     | [https://github.com/calvinmetcalf/process-nextick-args](https://github.com/calvinmetcalf/process-nextick-args)                                 |
 | `protocols`                             | `1.4.8`    | Ionică Bizău        | [https://github.com/IonicaBizau/protocols](https://github.com/IonicaBizau/protocols)                                                           |
 | `pump`                                  | `3.0.0`    | Mathias Buus Madsen | [https://github.com/mafintosh/pump](https://github.com/mafintosh/pump)                                                                         |
@@ -358,7 +358,6 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `string_decoder`                        | `1.1.1`    |                     | [https://github.com/nodejs/string_decoder](https://github.com/nodejs/string_decoder)                                                           |
 | `strip-ansi`                            | `6.0.0`    | Sindre Sorhus       | [https://github.com/chalk/strip-ansi](https://github.com/chalk/strip-ansi)                                                                     |
 | `stubs`                                 | `3.0.0`    | Stephen Sawchuk     | [https://github.com/stephenplusplus/stubs](https://github.com/stephenplusplus/stubs)                                                           |
-| `through2`                              | `2.0.5`    | Rod Vagg            | [https://github.com/rvagg/through2](https://github.com/rvagg/through2)                                                                         |
 | `through2`                              | `3.0.1`    | Rod Vagg            | [https://github.com/rvagg/through2](https://github.com/rvagg/through2)                                                                         |
 | `through2`                              | `4.0.2`    | Rod Vagg            | [https://github.com/rvagg/through2](https://github.com/rvagg/through2)                                                                         |
 | `to-no-case`                            | `1.0.2`    |                     | [https://github.com/ianstormtaylor/to-no-case](https://github.com/ianstormtaylor/to-no-case)                                                   |
@@ -379,7 +378,6 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `walkdir`                               | `0.4.1`    | Ryan Day            | [https://github.com/soldair/node-walkdir](https://github.com/soldair/node-walkdir)                                                             |
 | `wrap-ansi`                             | `6.2.0`    | Sindre Sorhus       | [https://github.com/chalk/wrap-ansi](https://github.com/chalk/wrap-ansi)                                                                       |
 | `xdg-basedir`                           | `4.0.0`    | Sindre Sorhus       | [https://github.com/sindresorhus/xdg-basedir](https://github.com/sindresorhus/xdg-basedir)                                                     |
-| `xtend`                                 | `4.0.2`    | Raynos              | [https://github.com/Raynos/xtend](https://github.com/Raynos/xtend)                                                                             |
 | `yargs`                                 | `15.4.1`   |                     | [https://github.com/yargs/yargs](https://github.com/yargs/yargs)                                                                               |
 
 #### MIT AND Zlib
