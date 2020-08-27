@@ -572,7 +572,8 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
 	}
 }
 
-export class PubSubCommandMessageClient extends AbstractPubSubMessageClient
+export class PubSubCommandMessageClient
+	extends AbstractPubSubMessageClient
 	implements StatusPublisher {
 	constructor(
 		protected readonly request: CommandIncoming,
@@ -615,7 +616,8 @@ export class PubSubCommandMessageClient extends AbstractPubSubMessageClient
 	}
 }
 
-export class PubSubEventMessageClient extends AbstractPubSubMessageClient
+export class PubSubEventMessageClient
+	extends AbstractPubSubMessageClient
 	implements StatusPublisher {
 	constructor(
 		protected readonly request: EventIncoming,
