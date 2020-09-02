@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sL https://deb.nodesource.com/setup_12.x  | bash - && \
     apt-get -y install nodejs
 
+# install the skill CLI
 RUN npm i -g @atomist/skill@branch-master
 
 WORKDIR "/skill"
