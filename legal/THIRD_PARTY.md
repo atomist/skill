@@ -18,7 +18,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)            | 1     |
 | [ISC](#isc)                   | 32    |
 | [MIT AND Zlib](#mit-and-zlib) | 1     |
-| [MIT](#mit)                   | 206   |
+| [MIT](#mit)                   | 207   |
 
 #### Apache-2.0
 
@@ -332,6 +332,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `path-is-absolute`                      | `1.0.1`    | Sindre Sorhus       | [https://github.com/sindresorhus/path-is-absolute](https://github.com/sindresorhus/path-is-absolute)                                           |
 | `path-key`                              | `3.1.1`    | Sindre Sorhus       | [https://github.com/sindresorhus/path-key](https://github.com/sindresorhus/path-key)                                                           |
 | `picomatch`                             | `2.2.2`    | Jon Schlinkert      | [https://github.com/micromatch/picomatch](https://github.com/micromatch/picomatch)                                                             |
+| `prettier`                              | `2.1.1`    | James Long          | [https://github.com/prettier/prettier](https://github.com/prettier/prettier)                                                                   |
 | `process-nextick-args`                  | `2.0.1`    |                     | [https://github.com/calvinmetcalf/process-nextick-args](https://github.com/calvinmetcalf/process-nextick-args)                                 |
 | `protocols`                             | `1.4.8`    | Ionică Bizău        | [https://github.com/IonicaBizau/protocols](https://github.com/IonicaBizau/protocols)                                                           |
 | `pump`                                  | `3.0.0`    | Mathias Buus Madsen | [https://github.com/mafintosh/pump](https://github.com/mafintosh/pump)                                                                         |
