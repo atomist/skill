@@ -67,13 +67,6 @@ documentation.
 $ npm run build
 ```
 
-### Release
-
-Releases are handled via the [Atomist SDM][atomist-sdm]. Just press
-the 'Approve' button in the Atomist dashboard or Slack.
-
-[atomist-sdm]: https://github.com/atomist/atomist-sdm "Atomist Software Delivery Machine"
-
 ---
 
 Created by [Atomist][atomist].
