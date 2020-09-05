@@ -58,7 +58,7 @@
     "lodash.map": "^4.6.0",
     "lodash.merge": "^4.6.2",
     "lodash.set": "^4.3.2",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "p-retry": "^4.2.0",
     "prettier": "^2.1.1",
     "semver": "^7.3.2",
