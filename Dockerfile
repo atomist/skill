@@ -1,6 +1,6 @@
 FROM ubuntu:focal
 
-# install some common packages
+# Install some common packages
 RUN apt-get update && apt-get install -y \
         curl \
         wget \
@@ -10,11 +10,11 @@ RUN apt-get update && apt-get install -y \
         rlwrap \
         && rm -rf /var/lib/apt/lists/*
 
-# install node and npm
+# Install node and npm
 RUN curl -sL https://deb.nodesource.com/setup_12.x  | bash - && \
     apt-get -y install nodejs
 
-# install the skill CLI
+# Install the Atomist Skill CLI
 RUN npm i -g @atomist/skill@branch-master
 
 WORKDIR "/skill"
