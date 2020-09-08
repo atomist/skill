@@ -18,6 +18,7 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import { debug } from "./log";
 import { replacer } from "./util";
+import * as findUp from "find-up";
 
 const GraphQLCache = new Map<string, string>();
 
@@ -106,30 +107,20 @@ class NodeFetchGraphQLClient implements GraphQLClient {
 			if (GraphQLCache.has(query)) {
 				return GraphQLCache.get(query);
 			} else if (q.endsWith(".graphql")) {
-				// Case for being installed into node_modules
-				const p = path.join(
-					__dirname,
-					"..",
-					"..",
-					"..",
-					"..",
-					"graphql",
-					prefix,
-					q,
-				);
-				if (await fs.pathExists(p)) {
+				const p = await findUp("graphql", {
+					cwd: __dirname,
+					type: "directory",
+				});
+				if (!p) {
+					throw new Error(
+						`No 'graphql' found up from '${__dirname}'`,
+					);
+				}
+				const gp = path.join(p, prefix, q);
+				if (await fs.pathExists(gp)) {
 					q = (await fs.readFile(p)).toString();
 				} else {
-					// Case for being bundled into one js file
-					const p = path.join(
-						__dirname,
-						"..",
-						"..",
-						"graphql",
-						prefix,
-						q,
-					);
-					q = (await fs.readFile(p)).toString();
+					throw new Error(`GraphQL file not found '${gp}'`);
 				}
 			}
 			q = q.replace(/\n/g, "");
