@@ -10,3 +10,4 @@ legal/
 docs/
 skill/
 /index.*
+.prettier*
