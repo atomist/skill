@@ -107,21 +107,7 @@ class NodeFetchGraphQLClient implements GraphQLClient {
 			if (GraphQLCache.has(query)) {
 				return GraphQLCache.get(query);
 			} else if (q.endsWith(".graphql")) {
-				const p = await findUp("graphql", {
-					cwd: __dirname,
-					type: "directory",
-				});
-				if (!p) {
-					throw new Error(
-						`No 'graphql' found up from '${__dirname}'`,
-					);
-				}
-				const gp = path.join(p, prefix, q);
-				if (await fs.pathExists(gp)) {
-					q = (await fs.readFile(gp)).toString();
-				} else {
-					throw new Error(`GraphQL file not found '${gp}'`);
-				}
+				q = await findGraphQLFile(q, prefix);
 			}
 			q = q.replace(/\n/g, "");
 			GraphQLCache.set(query, q);
@@ -150,4 +136,27 @@ export function createGraphQLClient(
 		"https://automation.atomist.com/graphql"
 	}/team/${wid}`;
 	return new NodeFetchGraphQLClient(apiKey, url);
+}
+
+export async function findGraphQLFile(
+	q: string,
+	prefix: string,
+): Promise<string> {
+	let cwd = __dirname;
+	while (cwd) {
+		const p = await findUp("graphql", {
+			cwd,
+			type: "directory",
+		});
+		if (!p) {
+			throw new Error(`No 'graphql' found up from '${cwd}'`);
+		}
+		const gp = path.join(p, prefix, q);
+		if (await fs.pathExists(gp)) {
+			return (await fs.readFile(gp)).toString();
+		} else {
+			cwd = cwd.split(path.sep).slice(0, -1).join(path.sep);
+		}
+	}
+	throw new Error(`GraphQL file not found '${prefix}/${q}'`);
 }
