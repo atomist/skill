@@ -108,7 +108,7 @@ export const handler: EventHandler<
 	}
 
 	try {
-		await project.spawn("npm", ["pack", `${pkgName}@${preReleaseVersion}`]);
+		await project.exec("npm", ["pack", `${pkgName}@${preReleaseVersion}`]);
 	} catch (e) {
 		const reason = `Failed to download ${pkgName}@${preReleaseVersion}: ${e.message}`;
 		await ctx.audit.log(reason);
@@ -119,7 +119,7 @@ export const handler: EventHandler<
 		.replace(/^@/, "")
 		.replace(/\//g, "-");
 	try {
-		await project.spawn("tar", ["-x", "-z", "-f", pkgTgz]);
+		await project.exec("tar", ["-x", "-z", "-f", pkgTgz]);
 	} catch (e) {
 		const reason = `Failed to unpack ${pkgTgz}: ${e.message}`;
 		await ctx.audit.log(reason);
@@ -127,7 +127,7 @@ export const handler: EventHandler<
 	}
 
 	try {
-		await project.spawn(
+		await project.exec(
 			"npm",
 			["version", "--no-git-tag-version", releaseVersion],
 			{
@@ -144,7 +144,7 @@ export const handler: EventHandler<
 		? "restricted"
 		: "public";
 	try {
-		await project.spawn("npm", [
+		await project.exec("npm", [
 			"publish",
 			"package",
 			`--access=${access}`,
