@@ -1,5 +1,15 @@
 {
-  "main": "node_modules/@atomist/skill/lib/function.js",
+  "name": "@atomist/npm-release-skill",
+  "author": {
+    "name": "Atomist",
+    "email": "oss@atomist.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/atomist-skills/npm-release-skill.git"
+  },
+  "homepage": "https://github.com/atomist-skills/npm-release-skill#readme",
+  "license": "Apache-2.0",
   "dependencies": {
     "@atomist/skill": "^0.1.1-106",
     "@types/fs-extra": "^9.0.1",
@@ -34,9 +44,10 @@
   "directories": {
     "test": "test"
   },
+  "main": "node_modules/@atomist/skill/lib/function.js",
   "scripts": {
     "autotest": "supervisor --watch index.ts,lib,test --extensions ts --no-restart-on exit --quiet --exec npm -- test",
-    "build": "run-s compile test lint doc",
+    "build": "run-s clean compile test lint doc",
     "clean": "run-p clean:compile clean:test clean:doc clean:run",
     "clean:compile": "rimraf git-info.json \"*.{d.ts,js}{,.map}\" \"{lib,test}/**/*.{d.ts,js}{,.map}\" lib/typings/types.ts",
     "clean:dist": "run-s clean clean:npm",
@@ -49,13 +60,16 @@
     "doc": "typedoc --mode modules --excludeExternals --ignoreCompilerErrors --exclude \"**/*.d.ts\" --out doc index.ts lib",
     "git:info": "atm-git-info",
     "gql:gen": "graphql-codegen",
-    "lint": "eslint --ext .ts .",
-    "lint:fix": "npm run lint -- --fix",
+    "lint": "run-p lint:eslint lint:prettier",
+    "lint:eslint": "eslint --ext .ts .",
+    "lint:prettier": "prettier --list-different \"**/*.{graphql,json,markdown,md,yaml,yml}\"",
+    "lint:fix": "run-p lint:eslint:fix lint:prettier:fix",
+    "lint:eslint:fix": "npm run lint:eslint -- --fix",
+    "lint:prettier:fix": "prettier --write \"**/*.{graphql,json,markdown,md,yaml,yml}\"",
     "start": "functions-framework --target=entryPoint --signature-type=event",
     "test": "mocha --require espower-typescript/guess \"test/**/*.test.ts\"",
     "test:one": "mocha --require espower-typescript/guess \"test/**/${TEST:-*.test.ts}\"",
-    "typedoc": "npm run doc",
-    "skill": "run-s compile test skill:generate",
+    "skill": "run-s compile test skill:generate skill:bundle skill:package",
     "skill:generate": "atm-skill generate",
     "skill:clean": "atm-skill clean",
     "skill:bundle": "atm-skill bundle --minify --source-map",
@@ -63,6 +77,10 @@
     "skill:register": "atm-skill register",
     "atm:lint:eslint": "eslint --fix",
     "atm:lint:prettier": "prettier --write"
+  },
+  "engines": {
+    "node": ">=8.2.0",
+    "npm": ">=5.0.0"
   },
   "husky": {
     "hooks": {

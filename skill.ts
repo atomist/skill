@@ -24,14 +24,8 @@ import {
 import { NpmReleaseConfiguration } from "./lib/configuration";
 
 export const Skill = skill<NpmReleaseConfiguration & { repos: any }>({
-	name: "npm-release-skill",
-	namespace: "atomist",
 	displayName: "npm Release",
-	author: "Atomist",
 	categories: [Category.Deploy, Category.DevOps],
-	license: "Apache-2.0",
-	homepageUrl: "https://github.com/atomist-skills/npm-release-skill",
-	repositoryUrl: "https://github.com/atomist-skills/npm-release-skill.git",
 	iconUrl: "file://docs/images/icon.svg",
 
 	resourceProviders: {
