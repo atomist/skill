@@ -118,7 +118,7 @@ class NodeFetchGraphQLClient implements GraphQLClient {
 				}
 				const gp = path.join(p, prefix, q);
 				if (await fs.pathExists(gp)) {
-					q = (await fs.readFile(p)).toString();
+					q = (await fs.readFile(gp)).toString();
 				} else {
 					throw new Error(`GraphQL file not found '${gp}'`);
 				}
