@@ -45,7 +45,7 @@ export const Skill = skill<NpmReleaseConfiguration & { repos: any }>({
 			type: ParameterType.Boolean,
 			displayName: "Restricted access",
 			description:
-				"Select to publish a private package, otherwise publish a public package",
+				"Select to publish a private package, otherwise package will be public",
 			required: false,
 		},
 		repos: parameter.repoFilter(),

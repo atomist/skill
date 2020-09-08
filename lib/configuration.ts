@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/** npm release skill parameters */
 export interface NpmReleaseConfiguration {
+	/** Set to true to publish private packages */
 	restricted?: boolean;
 }

@@ -140,11 +140,14 @@ export const handler: EventHandler<
 		return status.failure(reason);
 	}
 
+	const access = ctx.configuration?.[0]?.parameters?.restricted
+		? "restricted"
+		: "public";
 	try {
 		await project.spawn("npm", [
 			"publish",
 			"package",
-			"--access=public",
+			`--access=${access}`,
 			"--tag=latest",
 		]);
 	} catch (e) {
