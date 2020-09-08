@@ -31,7 +31,6 @@ export const Skill = skill<NpmReleaseConfiguration & { repos: any }>({
 	resourceProviders: {
 		github: resourceProvider.gitHub({ minRequired: 1 }),
 		npm: resourceProvider.npmJSRegistry({ minRequired: 1 }),
-		chat: resourceProvider.chat({ minRequired: 0 }),
 	},
 
 	parameters: {
