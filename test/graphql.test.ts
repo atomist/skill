@@ -16,6 +16,7 @@ describe("graphql", () => {
 				"subscription",
 			);
 			assert(result.includes("onTag"));
+			assert(!result.includes("...repoFields"));
 		});
 	});
 });

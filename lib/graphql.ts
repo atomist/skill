@@ -16,6 +16,7 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
+import { inlineFragments } from "./definition/subscription/util";
 import { debug } from "./log";
 import { replacer } from "./util";
 import * as findUp from "find-up";
@@ -153,7 +154,7 @@ export async function findGraphQLFile(
 		}
 		const gp = path.join(p, prefix, q);
 		if (await fs.pathExists(gp)) {
-			return (await fs.readFile(gp)).toString();
+			return inlineFragments((await fs.readFile(gp)).toString(), p);
 		} else {
 			cwd = cwd.split(path.sep).slice(0, -1).join(path.sep);
 		}
