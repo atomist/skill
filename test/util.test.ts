@@ -42,11 +42,11 @@ describe("util", () => {
 
 		it("should extract last parameter instance from multiple instances", () => {
 			const intent =
-				"create issue --title=Test1 --body='This is a test' --title=Test2";
+				"create issue --title=Test1 --body='This is a test' --title=Test2-test1";
 			const args = extractParameters(intent);
 			assert.deepStrictEqual(args, [
 				{ name: "body", value: "This is a test" },
-				{ name: "title", value: "Test2" },
+				{ name: "title", value: "Test2-test1" },
 			]);
 		});
 	});
