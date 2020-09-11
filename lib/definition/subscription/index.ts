@@ -15,3 +15,4 @@
  */
 
 export * from "./named";
+export * as types from "./typings/types";
