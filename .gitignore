@@ -19,3 +19,4 @@ node_modules/
 /lib/typings/
 git-info.json
 /.npm
+**/typings/types.ts

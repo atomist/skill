@@ -1,0 +1,7 @@
+schema: graphql/schema.json
+documents: graphql/**/*.graphql
+generates:
+  ./lib/definition/subscription/typings/types.ts:
+    plugins:
+      - typescript
+      - typescript-operations
