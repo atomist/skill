@@ -128,13 +128,13 @@ yargs
 				minify: {
 					type: "boolean",
 					description: "Minify bundled sources",
-					default: true,
+					default: false,
 					demandOption: false,
 				},
 				sourceMap: {
 					type: "boolean",
 					description: "Create source map",
-					default: true,
+					default: false,
 					demandOption: false,
 				},
 				file: {
