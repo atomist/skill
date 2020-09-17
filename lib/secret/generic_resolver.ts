@@ -43,8 +43,8 @@ export function genericSecret(name: string): CredentialResolver<GenericSecret> {
 			i.resourceProviders.find(rp => rp.name === name),
 		);
 		if (cfg) {
-			const id = cfg.resourceProviders.find(rp => rp.name === name)?.[0]
-				?.id;
+			const id = cfg.resourceProviders.find(rp => rp.name === name)
+				.selectedResourceProviders?.[0]?.id;
 			const provider = (await graph.query(SecretProviderQuery, { id }))
 				.SecretProvider?.[0];
 			return {
