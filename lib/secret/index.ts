@@ -21,3 +21,4 @@ export {
 	GitHubAppCredential,
 } from "./provider";
 export { gitHubUserToken, gitHubAppToken } from "./resolver";
+export { GenericSecret, genericSecret } from "./generic_resolver";
