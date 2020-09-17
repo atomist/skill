@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Make users and channels optional in Destinations. [d0eb283](https://github.com/atomist/skill/commit/d0eb283b368c371f5dcc8198333dd377ccad8537)
 -   Swap author and committer when user details are provided to git.commit. [1b556eb](https://github.com/atomist-skills/skill/commit/1b556eb3c1d673210c4e7e3aa2cfa7c45009e3da)
 -   Remove undefined return value from steps. [9dc52c3](https://github.com/atomist-skills/skill/commit/9dc52c3b827d692672dfa04d4367d4776d431d01)
+-   Consider increasing default runtime memory. [#67](https://github.com/atomist-skills/skill/issues/67)
 
 ### Fixed
 
