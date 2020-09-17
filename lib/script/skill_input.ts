@@ -334,7 +334,7 @@ export async function createJavaScriptSkillInput(
 		artifacts.gcf = [
 			{
 				entryPoint: is.runtime?.entryPoint || "entryPoint",
-				memory: is.runtime?.memory || 256,
+				memory: is.runtime?.memory || 512,
 				timeout: is.runtime?.timeout || 60,
 				runtime:
 					(is.runtime?.platform as any) ||
