@@ -18,6 +18,7 @@ import * as fs from "fs-extra";
 import { PushStrategy } from "../definition/parameter/definition";
 import * as git from "../git/operation";
 import { Contextual, HandlerStatus } from "../handler";
+import { debug } from "../log/console";
 import { Project } from "../project/project";
 import * as status from "../status";
 import { hash } from "../util";
@@ -46,6 +47,13 @@ export async function persistChanges(
 	if (gitStatus.isClean) {
 		return status.success(`No changes to push`);
 	}
+	debug(
+		`Attempting to persist changes with: ${JSON.stringify({
+			strategy,
+			pullRequest,
+			commit,
+		})}`,
+	);
 
 	const commitOptions = {
 		name: push.author.name,
@@ -58,6 +66,13 @@ export async function persistChanges(
 		pullRequest.branch ||
 		`atomist/${ctx.skill.name.toLowerCase()}-${Date.now()}`;
 	const repoUrl = `https://github.com/${project.id.owner}/${project.id.repo}`;
+
+	if (gitStatus.detached) {
+		// Make sure we are on a branch before committing the changes
+		await git.stash(project);
+		await git.checkout(project, push.branch);
+		await git.stashPop(project);
+	}
 
 	if (
 		strategy === "pr" ||

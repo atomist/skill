@@ -26,6 +26,7 @@ export interface Status {
 		branch: string;
 		inSync: boolean;
 	};
+	detached: boolean;
 }
 
 export function isFullyClean(gs: Status): boolean {
@@ -38,12 +39,14 @@ export async function runStatusIn(baseDir: string): Promise<Status> {
 	const shaData = await collectFullSha(baseDir);
 	const cleanlinessData = await collectCleanliness(baseDir);
 	const ignoredChangeData = await collectIgnoredChanges(baseDir);
+	const detached = await collectDetached(baseDir);
 	return {
 		branch,
 		...ignoredChangeData,
 		...cleanlinessData,
 		...shaData,
 		...upstreamData,
+		detached,
 	};
 }
 
@@ -120,4 +123,9 @@ async function collectUpstream(
 			  }
 			: undefined;
 	return { upstream };
+}
+
+async function collectDetached(baseDir: string): Promise<boolean> {
+	const statusResult = await execPromise("git", ["status"], { cwd: baseDir });
+	return statusResult.stdout.includes("HEAD detached at ");
 }
