@@ -67,22 +67,11 @@ export async function persistChanges(
 		`atomist/${ctx.skill.name.toLowerCase()}-${Date.now()}`;
 	const repoUrl = `https://github.com/${project.id.owner}/${project.id.repo}`;
 
-	const changedFiles = (
-		await project.exec("git", ["diff", "--name-only"])
-	).stdout
-		.split("\n")
-		.map(f => f.trim())
-		.filter(f => !!f && f.length > 0);
-
 	if (gitStatus.detached) {
 		// Make sure we are on a branch before committing the changes
-		if (changedFiles.length > 0) {
-			await git.stash(project);
-		}
+		await git.stash(project, { add: true });
 		await git.checkout(project, push.branch);
-		if (changedFiles.length > 0) {
-			await git.stashPop(project);
-		}
+		await git.stashPop(project);
 	}
 
 	if (
@@ -91,7 +80,12 @@ export async function persistChanges(
 			(strategy === "pr_default" || strategy === "pr_default_commit"))
 	) {
 		const gh = api(project.id);
-
+		const changedFiles = (
+			await project.exec("git", ["diff", "--name-only"])
+		).stdout
+			.split("\n")
+			.map(f => f.trim())
+			.filter(f => !!f && f.length > 0);
 		const untrackedFiles = (
 			await project.exec("git", [
 				"ls-files",

@@ -215,7 +215,13 @@ export async function changedFiles(
 	return [...changedFiles, ...untrackedFiles].sort();
 }
 
-export async function stash(projectOrCwd: Project | string): Promise<void> {
+export async function stash(
+	projectOrCwd: Project | string,
+	options?: { add: boolean },
+): Promise<void> {
+	if (options?.add) {
+		await execPromise("git", ["add", "."], { cwd: cwd(projectOrCwd) });
+	}
 	await execPromise("git", ["stash"], { cwd: cwd(projectOrCwd) });
 }
 
