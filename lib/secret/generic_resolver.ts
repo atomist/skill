@@ -37,28 +37,20 @@ const SecretProviderQuery = `query SecretProvider($id: ID) {
 	}
 }`;
 
-export function genericSecret(
-	name: string,
-): CredentialResolver<GenericSecret[]> {
-	return async (graph, payload): Promise<GenericSecret[]> => {
+export function genericSecret(name: string): CredentialResolver<GenericSecret> {
+	return async (graph, payload): Promise<GenericSecret> => {
 		const cfg = payload.skill.configuration.instances.find(i =>
 			i.resourceProviders.find(rp => rp.name === name),
 		);
 		if (cfg) {
-			const ids = cfg.resourceProviders
-				.find(rp => rp.name === name)
-				.selectedResourceProviders.map(srp => srp.id);
-			const secrets: GenericSecret[] = [];
-			for (const id of ids) {
-				const provider = (
-					await graph.query(SecretProviderQuery, { id })
-				).SecretProvider?.[0];
-				secrets.push({
-					name: provider.name,
-					secret: provider.credential?.secret,
-				});
-			}
-			return secrets;
+			const id = cfg.resourceProviders.find(rp => rp.name === name)?.[0]
+				?.id;
+			const provider = (await graph.query(SecretProviderQuery, { id }))
+				.SecretProvider?.[0];
+			return {
+				name: provider.name,
+				secret: provider.credential?.secret,
+			};
 		}
 		return undefined;
 	};
