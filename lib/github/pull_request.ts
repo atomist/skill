@@ -50,6 +50,7 @@ export async function persistChanges(
 	debug(
 		`Attempting to persist changes with: ${JSON.stringify({
 			strategy,
+			push,
 			pullRequest,
 			commit,
 		})}`,
