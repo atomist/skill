@@ -156,7 +156,7 @@ export function secretProvider(
 	return resourceProvider({
 		displayName: "Secrets",
 		typeName: "SecretProvider",
-		maxAllowed: 0,
+		maxAllowed: 1,
 		...options,
 	});
 }
