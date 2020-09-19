@@ -13198,6 +13198,130 @@
             ]
           },
           {
+            "name": "WebhookEvent",
+            "description": "Auto-generated query for WebhookEvent",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "WebhookEvent"
+              }
+            },
+            "args": [
+              {
+                "name": "id",
+                "description": "The ID of this WebhookEvent",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID"
+                }
+              },
+              {
+                "name": "_offset",
+                "description": "Paging offset (default 0)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "_first",
+                "description": "Return the first X results (default 10)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "_orderBy",
+                "description": "Name of property to sort on",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "_after",
+                "description": "Search only after this timestamp",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "_before",
+                "description": "Search only before this timestamp",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "_ordering",
+                "description": "Direction of ordering",
+                "defaultValue": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "_Ordering"
+                }
+              },
+              {
+                "name": "_search",
+                "description": "Elastic Search simple full text search syntax",
+                "defaultValue": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              },
+              {
+                "args": [],
+                "name": "data",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "directives": [],
+                "description": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "args": [],
+                "name": "event",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "directives": [],
+                "description": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "args": [],
+                "name": "ts",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "directives": [],
+                "description": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ]
+          },
+          {
             "name": "Card",
             "description": "Auto-generated query for Card",
             "type": {
@@ -54944,6 +55068,29 @@
             ]
           },
           {
+            "name": "ingestCustomWebhookEvent",
+            "description": "Auto-generated ingestion mutation for WebhookEvent",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "value",
+                "description": "The instance of WebhookEvent to ingest",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CustomWebhookEventInput"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "ingestCustomCard",
             "description": "Auto-generated ingestion mutation for Card",
             "type": {
@@ -55404,6 +55551,29 @@
             ]
           },
           {
+            "name": "deleteCustomWebhookEvent",
+            "description": "Auto-generated deletion mutation for WebhookEvent",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "value",
+                "description": "The instance of WebhookEvent to delete",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CustomWebhookEventInput"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "deleteCustomCard",
             "description": "Auto-generated deletion mutation for Card",
             "type": {
@@ -55852,6 +56022,29 @@
               {
                 "name": "id",
                 "description": "The id of the SkillOutput to delete",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteCustomWebhookEventById",
+            "description": "Auto-generated delete-by-id mutation for WebhookEvent",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "id",
+                "description": "The id of the WebhookEvent to delete",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -76765,6 +76958,59 @@
             ]
           },
           {
+            "name": "WebhookEvent",
+            "description": "Auto-generated subscription for WebhookEvent",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "WebhookEvent"
+              }
+            },
+            "args": [
+              {
+                "args": [],
+                "name": "data",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "directives": [],
+                "description": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "args": [],
+                "name": "event",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "directives": [],
+                "description": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              },
+              {
+                "args": [],
+                "name": "ts",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "directives": [],
+                "description": null,
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ]
+          },
+          {
             "name": "Card",
             "description": "Auto-generated subscription for Card",
             "type": {
@@ -81999,6 +82245,83 @@
       {
         "description": null,
         "interfaces": [],
+        "name": "WebhookEvent",
+        "fields": [
+          {
+            "args": [],
+            "name": "data",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "event",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "ts",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": "The ID of this WebhookEvent",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID"
+            },
+            "args": []
+          }
+        ],
+        "possibleTypes": null,
+        "kind": "OBJECT",
+        "enumValues": null,
+        "inputFields": null,
+        "directives": [
+          {
+            "args": [],
+            "name": "rootType"
+          }
+        ]
+      },
+      {
+        "description": null,
+        "interfaces": [],
         "name": "CardCorrelation",
         "fields": [
           {
@@ -87198,6 +87521,66 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "description": "Auto generated input for type WebhookEvent",
+        "interfaces": [],
+        "ofType": null,
+        "name": "CustomWebhookEventInput",
+        "fields": null,
+        "possibleTypes": null,
+        "kind": "INPUT_OBJECT",
+        "enumValues": null,
+        "inputFields": [
+          {
+            "name": "data",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "event",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "ts",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Int",
+                "ofType": null
+              }
             },
             "description": null,
             "isDeprecated": false,
