@@ -1,0 +1,8 @@
+subscription onWebhookEvent {
+  WebhookEvent {
+    data
+    event
+    id
+    ts
+  }
+}
