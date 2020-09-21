@@ -136,6 +136,7 @@ export function mavenRepository(
 
 /**
  * Create an NpmJSRegistryProvider to use in Skill resourceProvider definitions
+ * @deprecated use npmRegistry
  */
 export function npmJSRegistry(
 	options: Omit<ResourceProvider, "typeName"> = {},
@@ -143,6 +144,19 @@ export function npmJSRegistry(
 	return resourceProvider({
 		displayName: "npmjs.com Registry",
 		typeName: "NpmJSRegistryProvider",
+		...options,
+	});
+}
+
+/**
+ * Create an NpmRegistryProvider to use in Skill resourceProvider definitions
+ */
+export function npmRegistry(
+	options: Omit<ResourceProvider, "typeName"> = {},
+): ResourceProvider {
+	return resourceProvider({
+		displayName: "NPM Registry",
+		typeName: "NpmRegistryProvider",
 		...options,
 	});
 }
