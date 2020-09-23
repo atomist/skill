@@ -90,7 +90,7 @@ export async function persistChanges(
 		const gh = api(project.id);
 		await git.createBranch(project, prBranch);
 
-		for (const editor of commit.editors) {
+		for (const editor of commit.editors || []) {
 			const msg = await editor(project);
 			changedFiles.push(...(await git.changedFiles(project)));
 			if (msg && !(await git.status(project)).isClean) {
