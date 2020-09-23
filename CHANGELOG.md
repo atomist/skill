@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Allow for explicit abort of steps. [3a79edf](https://github.com/atomist-skills/skill/commit/3a79edfba893a804a8d57267c1b9d5dfb931bf1c)
 -   Add cache support for store and restore file caches. [fc4c69c](https://github.com/atomist-skills/skill/commit/fc4c69c321fdfc4d54e5fa993636710edebf3ecd)
 -   Export generated types for named triggers. [8ac07c7](https://github.com/atomist-skills/skill/commit/8ac07c77dbb4355bdde8114100c693ecff2156d2)
+-   Allow individual commits with persistChanges. [dfa359c](https://github.com/atomist-skills/skill/commit/dfa359c5d848d291babf05a8408f3c15305bcd63)
 
 ### Changed
 
