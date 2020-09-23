@@ -24,6 +24,8 @@ import * as status from "../status";
 import { hash } from "../util";
 import { api, formatMarkers } from "./operation";
 
+import uniq = require("lodash.uniq");
+
 export async function persistChanges(
 	ctx: Contextual<any, any>,
 	project: Project,
@@ -41,10 +43,13 @@ export async function persistChanges(
 		reviewers?: string[];
 		assignReviewer?: boolean;
 	},
-	commit: { message: string },
+	commit: {
+		message?: string;
+		editors?: Array<(project: Project) => Promise<string | undefined>>;
+	},
 ): Promise<HandlerStatus> {
 	const gitStatus = await git.status(project);
-	if (gitStatus.isClean) {
+	if (gitStatus.isClean && commit.message) {
 		return status.success(`No changes to push`);
 	}
 	debug(
@@ -80,24 +85,20 @@ export async function persistChanges(
 		(push.branch === push.defaultBranch &&
 			(strategy === "pr_default" || strategy === "pr_default_commit"))
 	) {
+		const changedFiles = await git.changedFiles(project);
+
 		const gh = api(project.id);
-		const changedFiles = (
-			await project.exec("git", ["diff", "--name-only"])
-		).stdout
-			.split("\n")
-			.map(f => f.trim())
-			.filter(f => !!f && f.length > 0);
-		const untrackedFiles = (
-			await project.exec("git", [
-				"ls-files",
-				"--exclude-standard",
-				"--others",
-			])
-		).stdout
-			.split("\n")
-			.map(f => f.trim())
-			.filter(f => !!f && f.length > 0);
-		const files = [...changedFiles, ...untrackedFiles].sort();
+		await git.createBranch(project, prBranch);
+
+		for (const editor of commit.editors) {
+			const msg = await editor(project);
+			changedFiles.push(...(await git.changedFiles(project)));
+			if (msg && !(await git.status(project)).isClean) {
+				await git.commit(project, msg, commitOptions);
+			}
+		}
+
+		const files = uniq(changedFiles).sort();
 
 		const hashes: Array<{ path: string; hash: string }> = [];
 		for (const file of files) {
@@ -140,8 +141,9 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 			}
 		}
 
-		await git.createBranch(project, prBranch);
-		await git.commit(project, commitMsg, commitOptions);
+		if (!commit.editors || commit.editors.length === 0) {
+			await git.commit(project, commitMsg, commitOptions);
+		}
 		await git.push(project, { force: true, branch: prBranch });
 
 		let pr;
@@ -207,7 +209,15 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 		(push.branch === push.defaultBranch && strategy === "commit_default") ||
 		(push.branch !== push.defaultBranch && strategy === "pr_default_commit")
 	) {
-		await git.commit(project, commitMsg, commitOptions);
+		for (const editor of commit.editors || []) {
+			const msg = await editor(project);
+			if (msg && !(await git.status(project)).isClean) {
+				await git.commit(project, msg, commitOptions);
+			}
+		}
+		if (!commit.editors || commit.editors.length === 0) {
+			await git.commit(project, commitMsg, commitOptions);
+		}
 		await git.push(project);
 		return status.success(
 			`Pushed changes to [${project.id.owner}/${project.id.repo}/${push.branch}](${repoUrl})`,
