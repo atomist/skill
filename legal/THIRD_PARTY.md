@@ -21,7 +21,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 46    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 526   |
+| [MIT](#mit)                     | 527   |
 | [Public Domain](#public-domain) | 1     |
 | [Unlicense](#unlicense)         | 1     |
 
@@ -595,6 +595,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `lodash.set`                                         | `4.3.2`        | John-David Dalton   | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
 | `lodash.snakecase`                                   | `4.1.1`        | John-David Dalton   | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
 | `lodash.union`                                       | `4.6.0`        | John-David Dalton   | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
+| `lodash.uniq`                                        | `4.5.0`        | John-David Dalton   | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
 | `lodash`                                             | `4.17.19`      | John-David Dalton   | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
 | `lodash`                                             | `4.17.20`      | John-David Dalton   | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
 | `log-symbols`                                        | `1.0.2`        | Sindre Sorhus       | [https://github.com/sindresorhus/log-symbols](https://github.com/sindresorhus/log-symbols)                                                                                                           |
