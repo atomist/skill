@@ -42,3 +42,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 -   Fix filtering of repos when different org/repos are configured. [d111c6a](https://github.com/atomist-skills/skill/commit/d111c6a4fb9147a3b648e87af3ae1d27f0340b6f)
+-   Don't fail on non existing fragments. [dbcb33b](https://github.com/atomist-skills/skill/commit/dbcb33bf2d2cdfc3fb024b51184f881cfe1d3e10)
