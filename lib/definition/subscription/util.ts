@@ -26,24 +26,26 @@ export function inlineFragments(q: string, cwd: string): string {
 
 	if (FragmentExpression.test(q)) {
 		// Load all fragments
-		const fragments = fs
-			.readdirSync(fragmentDir)
-			.filter(f => f.endsWith(".graphql"))
-			.map(f => {
-				const content = fs
-					.readFileSync(p.join(fragmentDir, f))
-					.toString();
-				const graphql = gql(content);
-				return {
-					name: (graphql.definitions[0] as any).name.value,
-					kind: graphql.definitions[0].kind,
-					body: content.slice(
-						content.indexOf("{") + 1,
-						content.lastIndexOf("}") - 1,
-					),
-				};
-			})
-			.filter(f => f.kind === "FragmentDefinition");
+		const fragments = fs.pathExistsSync(fragmentDir)
+			? fs
+					.readdirSync(fragmentDir)
+					.filter(f => f.endsWith(".graphql"))
+					.map(f => {
+						const content = fs
+							.readFileSync(p.join(fragmentDir, f))
+							.toString();
+						const graphql = gql(content);
+						return {
+							name: (graphql.definitions[0] as any).name.value,
+							kind: graphql.definitions[0].kind,
+							body: content.slice(
+								content.indexOf("{") + 1,
+								content.lastIndexOf("}") - 1,
+							),
+						};
+					})
+					.filter(f => f.kind === "FragmentDefinition")
+			: [];
 
 		FragmentExpression.lastIndex = 0;
 		let result;
