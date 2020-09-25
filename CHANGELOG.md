@@ -5,7 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/atomist/skill/tree/HEAD)
+## [Unreleased](https://github.com/atomist/skill/compare/0.1.0...HEAD)
+
+### Added
+
+-   Add cache support for store and restore file caches. [fc4c69c](https://github.com/atomist-skills/skill/commit/fc4c69c321fdfc4d54e5fa993636710edebf3ecd)
+-   Export generated types for named triggers. [8ac07c7](https://github.com/atomist-skills/skill/commit/8ac07c77dbb4355bdde8114100c693ecff2156d2)
+-   Allow individual commits with persistChanges. [dfa359c](https://github.com/atomist-skills/skill/commit/dfa359c5d848d291babf05a8408f3c15305bcd63)
+
+### Changed
+
+-   Remove undefined return value from steps. [9dc52c3](https://github.com/atomist-skills/skill/commit/9dc52c3b827d692672dfa04d4367d4776d431d01)
+-   Consider increasing default runtime memory. [#67](https://github.com/atomist-skills/skill/issues/67)
+
+### Fixed
+
+-   Don't fail on non existing fragments. [dbcb33b](https://github.com/atomist-skills/skill/commit/dbcb33bf2d2cdfc3fb024b51184f881cfe1d3e10)
+
+## [0.1.0](https://github.com/atomist/skill/tree/0.1.0)
 
 ### Added
 
@@ -27,19 +44,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add matchesFilter helper for repository filtering. [522afd6](https://github.com/atomist-skills/skill/commit/522afd6442ea7d5c6210505d9ad18fed28beed3d)
 -   Add state backed by storage bucket. [1d2cd72](https://github.com/atomist-skills/skill/commit/1d2cd724480409de71ee85e2024b540d4fc4c443)
 -   Allow for explicit abort of steps. [3a79edf](https://github.com/atomist-skills/skill/commit/3a79edfba893a804a8d57267c1b9d5dfb931bf1c)
--   Add cache support for store and restore file caches. [fc4c69c](https://github.com/atomist-skills/skill/commit/fc4c69c321fdfc4d54e5fa993636710edebf3ecd)
--   Export generated types for named triggers. [8ac07c7](https://github.com/atomist-skills/skill/commit/8ac07c77dbb4355bdde8114100c693ecff2156d2)
--   Allow individual commits with persistChanges. [dfa359c](https://github.com/atomist-skills/skill/commit/dfa359c5d848d291babf05a8408f3c15305bcd63)
 
 ### Changed
 
 -   Move to skill.ts from index.ts for skill definition. [#15](https://github.com/atomist/skill/issues/15)
 -   Make users and channels optional in Destinations. [d0eb283](https://github.com/atomist/skill/commit/d0eb283b368c371f5dcc8198333dd377ccad8537)
 -   Swap author and committer when user details are provided to git.commit. [1b556eb](https://github.com/atomist-skills/skill/commit/1b556eb3c1d673210c4e7e3aa2cfa7c45009e3da)
--   Remove undefined return value from steps. [9dc52c3](https://github.com/atomist-skills/skill/commit/9dc52c3b827d692672dfa04d4367d4776d431d01)
--   Consider increasing default runtime memory. [#67](https://github.com/atomist-skills/skill/issues/67)
 
 ### Fixed
 
 -   Fix filtering of repos when different org/repos are configured. [d111c6a](https://github.com/atomist-skills/skill/commit/d111c6a4fb9147a3b648e87af3ae1d27f0340b6f)
--   Don't fail on non existing fragments. [dbcb33b](https://github.com/atomist-skills/skill/commit/dbcb33bf2d2cdfc3fb024b51184f881cfe1d3e10)
