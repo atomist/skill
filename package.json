@@ -1,6 +1,7 @@
 {
   "name": "@atomist/skill",
   "description": "Atomist Skill API",
+  "version": "0.1.0",
   "author": {
     "name": "Atomist",
     "email": "support@atomist.com",
@@ -141,6 +142,5 @@
   "lint-staged": {
     "**/*.@(graphql|json|markdown|yaml|yml|md)": "npm run atm:lint:prettier",
     "**/*.ts": "npm run atm:lint:eslint"
-  },
-  "version": "0.2.0"
+  }
 }
