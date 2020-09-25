@@ -143,7 +143,11 @@ export async function findGraphQLFile(
 	q: string,
 	prefix: string,
 ): Promise<string> {
-	let cwd = __dirname;
+	const trace = await import("stack-trace");
+	const stack = trace
+		.get()
+		.find(s => !s.getFileName().includes("@atomist/skill"));
+	let cwd = path.dirname(stack.getFileName());
 	while (cwd) {
 		const p = await findUp("graphql", {
 			cwd,
