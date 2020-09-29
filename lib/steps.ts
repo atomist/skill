@@ -81,7 +81,10 @@ export async function runSteps<
 				const sr = await step.run(context, parameters);
 				if (sr) {
 					result = {
-						code: sr?.code ? sr.code : (result || {}).code,
+						code:
+							sr?.code !== undefined
+								? sr.code
+								: (result || {}).code,
 						reason: sr?.reason ? sr.reason : (result || {}).reason,
 						visibility: sr?.visibility
 							? sr.visibility
