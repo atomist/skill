@@ -107,7 +107,7 @@ export function createContext(
 			message: new PubSubEventMessageClient(payload, graphql),
 			project: createProjectLoader(),
 			trigger: payload,
-			...extractConfiguration(payload),
+			configuration: extractConfiguration(payload)?.configuration?.[0],
 			skill: payload.skill,
 			close,
 		};
