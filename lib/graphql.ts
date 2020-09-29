@@ -146,9 +146,11 @@ export async function findGraphQLFile(
 	const trace = await import("stack-trace");
 	const stack = trace.get();
 	debug(`Locating '${q}' from the following stack:\n${stack.join("\n")}`);
-	const callSite = trace
-		.get()
-		.find(s => !s.getFileName().includes("node_modules/@atomist/skill"));
+	const callSite = stack.find(
+		s =>
+			!s.getFileName().includes("node_modules/@atomist/skill") &&
+			s.getFileName().startsWith("/"),
+	);
 
 	if (callSite) {
 		// This only works for Node.js > 12
