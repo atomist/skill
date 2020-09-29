@@ -15,6 +15,7 @@
  */
 
 import { Contextual } from "../handler";
+import { toArray } from "../util";
 
 export function matchesFilter(
 	repoId: string,
@@ -23,7 +24,9 @@ export function matchesFilter(
 	parameterName: string,
 	ctx: Contextual<any, any>,
 ): boolean {
-	const cfg = ctx.configuration.find(c => c.name === configurationName);
+	const cfg = toArray(ctx.configuration).find(
+		c => c.name === configurationName,
+	);
 	const repoFilter = cfg.parameters[parameterName];
 	if (repoFilter) {
 		const excludes = repoFilter.excludes || [];
