@@ -324,10 +324,6 @@ export async function createJavaScriptSkillInput(
 	]) {
 		subscriptions.push(...(await rc(subscription)));
 	}
-	const signals = [];
-	for (const signal of is.signals || ["file://**/graphql/signal/*.graphql"]) {
-		signals.push(...(await rc(signal)));
-	}
 
 	const artifacts: any = {};
 	if (!is.containers) {
@@ -370,7 +366,6 @@ export async function createJavaScriptSkillInput(
 			: undefined,
 
 		maxConfigurations: is.maxConfigurations,
-		dispatchStyle: is.dispatchStyle as any,
 
 		artifacts,
 
@@ -402,13 +397,6 @@ export async function createJavaScriptSkillInput(
 		})),
 
 		subscriptions,
-
-		signals,
-		gates: map(is.gates || {}, (v, k) => ({
-			name: k,
-			and: v,
-		})),
-		gateSubscriptions: is.gateSubscriptions,
 	};
 
 	if (!y.longDescription) {

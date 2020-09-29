@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { extractConfiguration } from "../context";
 import { CredentialResolver } from "./provider";
 
 export interface GenericSecret {
@@ -39,12 +40,12 @@ const SecretProviderQuery = `query SecretProvider($id: ID) {
 
 export function genericSecret(name: string): CredentialResolver<GenericSecret> {
 	return async (graph, payload): Promise<GenericSecret> => {
-		const cfg = payload.skill.configuration.instances.find(i =>
-			i.resourceProviders.find(rp => rp.name === name),
+		const cfg = extractConfiguration(payload)?.configuration.find(
+			i => !!i.resourceProviders[name],
 		);
 		if (cfg) {
-			const id = cfg.resourceProviders.find(rp => rp.name === name)
-				.selectedResourceProviders?.[0]?.id;
+			const id =
+				cfg.resourceProviders[name].selectedResourceProviders?.[0]?.id;
 			const provider = (await graph.query(SecretProviderQuery, { id }))
 				.SecretProvider?.[0];
 			return {
