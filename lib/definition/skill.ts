@@ -157,6 +157,12 @@ export type RepoFilterParameter = Omit<
 	"defaultValue" | "visibility"
 >;
 
+export interface WebhookParameter
+	extends Omit<Parameter<ParameterType.Webhook>, "defaultValue"> {
+	maxAllowed?: number;
+	minRequired?: number;
+}
+
 export type ScheduleParameter = Parameter<ParameterType.Schedule, string>;
 
 export interface StringParameter
@@ -208,6 +214,7 @@ export enum ParameterType {
 	Schedule = "schedule",
 	String = "string",
 	StringArray = "stringArray",
+	Webhook = "webhook",
 }
 
 export type ParametersIndexType = string;
@@ -241,6 +248,7 @@ export interface Configuration<PARAMS extends ParametersType = any> {
 		| StringParameter
 		| StringArrayParameter
 		| ChatChannelsParameter
+		| WebhookParameter
 	>;
 
 	resourceProviders?: Record<string, ResourceProvider>;
