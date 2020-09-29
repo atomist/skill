@@ -149,20 +149,30 @@ export async function findGraphQLFile(
 	const callSite = trace
 		.get()
 		.find(s => !s.getFileName().includes("node_modules/@atomist/skill"));
-	let cwd = path.dirname(callSite.getFileName());
-	while (cwd) {
-		const p = await findUp("graphql", {
-			cwd,
-			type: "directory",
-		});
-		if (!p) {
-			throw new Error(`No 'graphql' found up from '${cwd}'`);
+
+	if (callSite) {
+		// This only works for Node.js > 12
+		let cwd = path.dirname(callSite.getFileName());
+		while (cwd) {
+			const p = await findUp("graphql", {
+				cwd,
+				type: "directory",
+			});
+			if (!p) {
+				throw new Error(`No 'graphql' found up from '${cwd}'`);
+			}
+			const gp = path.join(p, prefix, q);
+			if (await fs.pathExists(gp)) {
+				return inlineFragments((await fs.readFile(gp)).toString(), p);
+			} else {
+				cwd = cwd.split(path.sep).slice(0, -1).join(path.sep);
+			}
 		}
-		const gp = path.join(p, prefix, q);
+	} else {
+		const cwd = path.join(process.cwd(), "graphql");
+		const gp = path.join(cwd, prefix, q);
 		if (await fs.pathExists(gp)) {
-			return inlineFragments((await fs.readFile(gp)).toString(), p);
-		} else {
-			cwd = cwd.split(path.sep).slice(0, -1).join(path.sep);
+			return inlineFragments((await fs.readFile(gp)).toString(), cwd);
 		}
 	}
 	throw new Error(`GraphQL file not found '${prefix}/${q}'`);
