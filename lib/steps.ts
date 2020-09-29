@@ -67,7 +67,7 @@ export async function runSteps<
 	const parameters: Record<string, any> = options.parameters || {};
 	const context = options.context;
 	const listeners = toArray(options.listeners) || [];
-	let result;
+	let result: HandlerStatus;
 
 	for (const step of toArray(options.steps)) {
 		try {
@@ -81,8 +81,11 @@ export async function runSteps<
 				const sr = await step.run(context, parameters);
 				if (sr) {
 					result = {
-						...(result || {}),
-						...sr,
+						code: sr?.code ? sr.code : (result || {}).code,
+						reason: sr?.reason ? sr.reason : (result || {}).reason,
+						visibility: sr?.visibility
+							? sr.visibility
+							: (result || {}).visibility,
 					};
 				}
 				await invokeListeners(
