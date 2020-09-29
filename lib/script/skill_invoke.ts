@@ -15,82 +15,22 @@
  */
 
 import * as fs from "fs-extra";
-import * as path from "path";
 import { processCommand, processEvent } from "../function";
-import {
-	CommandIncoming,
-	EventIncoming,
-	isCommandIncoming,
-	isEventIncoming,
-} from "../payload";
-import { guid, handlerLoader } from "../util";
-import { apiKey, wid } from "./skill_register";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const merge = require("lodash.merge");
+import { isCommandIncoming, isEventIncoming } from "../payload";
 
-export async function invokeSkill(options: {
-	cwd: string;
-	name?: string;
-	file: string;
-	workspace?: string;
-	apiKey?: string;
-}): Promise<void> {
-	const file = path.isAbsolute(options.file)
-		? options.file
-		: path.join(options.cwd, options.file);
-	const payload = await fs.readJson(file);
-	const workspaceId = await wid(options.workspace);
-	const key = await apiKey(options.apiKey);
-
+export async function invokeSkill(skill?: string): Promise<void> {
+	const payload = await fs.readJson(
+		process.env.ATOMIST_PAYLOAD || "/atm/payload.json",
+	);
 	if (isEventIncoming(payload)) {
-		const metadata: Partial<EventIncoming> = {
-			extensions: {
-				team_id: workspaceId,
-				team_name: workspaceId,
-				correlation_id: guid(),
-				operationName: options.name,
-			},
-			secrets: [
-				{
-					uri: "atomist://api-key",
-					value: key,
-				},
-			],
-		};
-		await processEvent(
-			merge(payload, metadata),
-			{ eventId: metadata.extensions.correlation_id },
-			async () => {
-				return handlerLoader(
-					`events/${payload.extensions.operationName}`,
-					options.cwd,
-				);
-			},
-		);
+		if (skill) {
+			payload.extensions.operationName = skill;
+		}
+		await processEvent(payload, {} as any);
 	} else if (isCommandIncoming(payload)) {
-		const metadata: Partial<CommandIncoming> = {
-			team: {
-				id: workspaceId,
-				name: workspaceId,
-			},
-			correlation_id: guid(),
-			command: options.name,
-			secrets: [
-				{
-					uri: "atomist://api-key",
-					value: key,
-				},
-			],
-		};
-		await processCommand(
-			merge(payload, metadata),
-			{ eventId: metadata.correlation_id },
-			async () => {
-				return handlerLoader(
-					`commands/${payload.command}`,
-					options.cwd,
-				);
-			},
-		);
+		if (skill) {
+			payload.command = skill;
+		}
+		await processCommand(payload, {} as any);
 	}
 }
