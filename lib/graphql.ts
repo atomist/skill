@@ -154,6 +154,7 @@ export async function findGraphQLFile(
 		// This only works for Node.js > 12
 		let cwd = path.dirname(callSite.getFileName());
 		while (cwd) {
+			debug(`Locating graphql folder from '${cwd}'`);
 			const p = await findUp("graphql", {
 				cwd,
 				type: "directory",
@@ -162,6 +163,7 @@ export async function findGraphQLFile(
 				throw new Error(`No 'graphql' found up from '${cwd}'`);
 			}
 			const gp = path.join(p, prefix, q);
+			debug(`Checking '${gp}'`);
 			if (await fs.pathExists(gp)) {
 				return inlineFragments((await fs.readFile(gp)).toString(), p);
 			} else {
