@@ -144,10 +144,12 @@ export async function findGraphQLFile(
 	prefix: string,
 ): Promise<string> {
 	const trace = await import("stack-trace");
-	const stack = trace
+	const stack = trace.get();
+	debug(`Locating '${q}' from the following stack:\n${stack.join("\n")}`);
+	const callSite = trace
 		.get()
-		.find(s => !s.getFileName().includes("@atomist/skill"));
-	let cwd = path.dirname(stack.getFileName());
+		.find(s => !s.getFileName().includes("node_modules/@atomist/skill"));
+	let cwd = path.dirname(callSite.getFileName());
 	while (cwd) {
 		const p = await findUp("graphql", {
 			cwd,
