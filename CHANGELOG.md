@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.2.1...HEAD)
 
+### Fixed
+
+-   Check that stack fileName exists. [f6b9b34](https://github.com/atomist-skills/skill/commit/f6b9b34d1589eb36e14844630d4e3f918ca76660)
+
 ## [0.2.1](https://github.com/atomist/skill/compare/0.2.0...0.2.1) - 2020-09-30
 
 ### Fixed
