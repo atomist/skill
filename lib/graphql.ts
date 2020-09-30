@@ -17,7 +17,7 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 import { inlineFragments } from "./definition/subscription/util";
-import { debug } from "./log";
+import { debug } from "./log/console";
 import { replacer } from "./util";
 import * as findUp from "find-up";
 
@@ -145,7 +145,6 @@ export async function findGraphQLFile(
 ): Promise<string> {
 	const trace = await import("stack-trace");
 	const stack = trace.get();
-	debug(`Locating '${q}' from the following stack:\n${stack.join("\n")}`);
 	const callSite = stack.find(
 		s =>
 			!s.getFileName().includes("node_modules/@atomist/skill") &&
@@ -156,7 +155,6 @@ export async function findGraphQLFile(
 		// This only works for Node.js > 12
 		let cwd = path.dirname(callSite.getFileName());
 		while (cwd) {
-			debug(`Locating graphql folder from '${cwd}'`);
 			const p = await findUp("graphql", {
 				cwd,
 				type: "directory",
@@ -165,7 +163,6 @@ export async function findGraphQLFile(
 				throw new Error(`No 'graphql' found up from '${cwd}'`);
 			}
 			const gp = path.join(p, prefix, q);
-			debug(`Checking '${gp}'`);
 			if (await fs.pathExists(gp)) {
 				return inlineFragments((await fs.readFile(gp)).toString(), p);
 			} else {
