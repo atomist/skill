@@ -16,19 +16,27 @@
 
 import * as fs from "fs-extra";
 import { createGraphQLClient } from "./graphql";
-import { CommandContext, Configuration, EventContext } from "./handler";
+import {
+	CommandContext,
+	Configuration,
+	EventContext,
+	WebhookContext,
+} from "./handler";
 import { createHttpClient } from "./http";
 import { wrapAuditLogger } from "./log/util";
 import {
 	PubSubCommandMessageClient,
 	PubSubEventMessageClient,
+	PubSubWebhookMessageClient,
 } from "./message";
 import {
 	CommandIncoming,
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	isWebhookIncoming,
 	SkillConfiguration,
+	WebhookIncoming,
 	workspaceId,
 } from "./payload";
 import { ClonePath } from "./project/clone";
@@ -39,9 +47,9 @@ import { createStorageProvider } from "./storage/provider";
 import { extractParameters } from "./util";
 
 export function createContext(
-	payload: CommandIncoming | EventIncoming,
+	payload: CommandIncoming | EventIncoming | WebhookIncoming,
 	ctx: { eventId: string },
-): EventContext | CommandContext {
+): CommandContext | EventContext | WebhookContext {
 	const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")
 		?.value;
 	const wid = workspaceId(payload);
@@ -82,7 +90,7 @@ export function createContext(
 			...extractConfiguration(payload),
 			skill: payload.skill,
 			close,
-		};
+		} as CommandContext;
 	} else if (isEventIncoming(payload)) {
 		return {
 			data: payload.data,
@@ -110,13 +118,46 @@ export function createContext(
 			configuration: extractConfiguration(payload)?.configuration?.[0],
 			skill: payload.skill,
 			close,
-		};
+		} as EventContext;
+	} else if (isWebhookIncoming(payload)) {
+		return {
+			name: payload.webhook.name,
+			body: payload.webhook.body,
+			get json() {
+				return JSON.parse((payload as any).webhook.body);
+			},
+			headers: payload.webhook.headers,
+			url: payload.webhook.url,
+			correlationId: payload.correlation_id,
+			executionId: ctx.eventId,
+			workspaceId: wid,
+			credential,
+			graphql,
+			http: createHttpClient(),
+			audit: wrapAuditLogger(
+				{
+					eventId: ctx.eventId,
+					correlationId: payload.correlation_id,
+					workspaceId: wid,
+				},
+				{
+					name: payload.webhook.name,
+				},
+			),
+			storage,
+			message: new PubSubWebhookMessageClient(payload, graphql),
+			project: createProjectLoader(),
+			trigger: payload,
+			configuration: extractConfiguration(payload)?.configuration?.[0],
+			skill: payload.skill,
+			close,
+		} as WebhookContext;
 	}
 	return undefined;
 }
 
 export function extractConfiguration(
-	payload: CommandIncoming | EventIncoming,
+	payload: CommandIncoming | EventIncoming | WebhookIncoming,
 ): { configuration: Array<Configuration<any>> } {
 	const cfgs: SkillConfiguration[] = [];
 	if ((payload.skill?.configuration as any)?.instances) {
