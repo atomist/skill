@@ -25,6 +25,8 @@ import {
 	EventContext,
 	EventHandler,
 	HandlerStatus,
+	WebhookContext,
+	WebhookHandler,
 } from "./handler";
 import { debug, info } from "./log";
 import { prepareStatus, StatusPublisher } from "./message";
@@ -33,6 +35,8 @@ import {
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	isWebhookIncoming,
+	WebhookIncoming,
 } from "./payload";
 import { CommandListenerExecutionInterruptError } from "./prompt/prompt";
 import { handlerLoader, replacer } from "./util";
@@ -63,6 +67,8 @@ export const entryPoint = async (
 		await processEvent(payload, context);
 	} else if (isCommandIncoming(payload)) {
 		await processCommand(payload, context);
+	} else if (isWebhookIncoming(payload)) {
+		await processWebhook(payload, context);
 	}
 };
 
@@ -123,4 +129,38 @@ export async function processCommand(
 		await context.close();
 	}
 	debug(`Completed command handler '${context.name}'`);
+}
+
+export async function processWebhook(
+	event: WebhookIncoming,
+	ctx: { eventId: string },
+	loader: (name: string) => Promise<WebhookHandler> = handlerLoader,
+): Promise<void> {
+	const context = createContext(event, ctx) as WebhookContext;
+	try {
+		debug(`Invoking command handler '${context.name}'`);
+		const result = (await (await loader(`webhooks/${context.name}`))(
+			context,
+		)) as HandlerStatus;
+		await ((context.message as any) as StatusPublisher).publish(
+			prepareStatus(result || { code: 0 }, context),
+		);
+	} catch (e) {
+		if (e instanceof CommandListenerExecutionInterruptError) {
+			await ((context.message as any) as StatusPublisher).publish(
+				prepareStatus({ code: 0 }, context),
+			);
+		} else {
+			await context.audit.log(
+				`Error occurred: ${e.stack}`,
+				Severity.Error,
+			);
+			await ((context.message as any) as StatusPublisher).publish(
+				prepareStatus(e, context),
+			);
+		}
+	} finally {
+		await context.close();
+	}
+	debug(`Completed webhook handler '${context.name}'`);
 }

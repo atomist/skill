@@ -24,13 +24,20 @@ export function isEventIncoming(event: any): event is EventIncoming {
 	return !!event.data;
 }
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function isWebhookIncoming(event: any): event is WebhookIncoming {
+	return !!event.webhook;
+}
+
 export function workspaceId(
-	event: CommandIncoming | EventIncoming,
+	event: CommandIncoming | EventIncoming | WebhookIncoming,
 ): string | undefined {
 	if (isCommandIncoming(event)) {
 		return event.team.id;
 	} else if (isEventIncoming(event)) {
 		return event.extensions.team_id;
+	} else if (isWebhookIncoming(event)) {
+		return event.team_id;
 	}
 	return undefined;
 }
@@ -79,6 +86,20 @@ export interface Skill {
 				instances: SkillConfiguration[];
 		  }
 		| SkillConfiguration;
+}
+
+export interface WebhookIncoming {
+	correlation_id: string;
+	type: string;
+	team_id: string;
+	skill: Skill;
+	secrets: Secret[];
+	webhook: {
+		name: string;
+		url: string;
+		headers: Record<string, string>;
+		body: string;
+	};
 }
 
 export interface EventIncoming {

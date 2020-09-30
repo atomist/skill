@@ -14,20 +14,28 @@
  * limitations under the License.
  */
 
-import { processCommand, processEvent, PubSubMessage } from "./function";
-import { CommandHandler, EventHandler } from "./handler";
+import {
+	processCommand,
+	processEvent,
+	processWebhook,
+	PubSubMessage,
+} from "./function";
+import { CommandHandler, EventHandler, WebhookHandler } from "./handler";
 import { debug, info } from "./log";
 import {
 	CommandIncoming,
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	isWebhookIncoming,
+	WebhookIncoming,
 } from "./payload";
 import { replacer } from "./util";
 
 const HandlerRegistry = {
 	events: {},
 	commands: {},
+	webhooks: {},
 };
 
 /**
@@ -50,6 +58,16 @@ export function registerEvent(
 	HandlerRegistry.events[name] = loader;
 }
 
+/**
+ * Register a webhook handler with a certain name
+ */
+export function registerWebhook(
+	name: string,
+	loader: () => Promise<WebhookHandler>,
+): void {
+	HandlerRegistry.webhooks[name] = loader;
+}
+
 export const bundle = async (
 	pubSubEvent: PubSubMessage,
 	context: { eventId: string },
@@ -60,7 +78,10 @@ export const bundle = async (
 	};
 	debug(`atm:attributes=${JSON.stringify(attributes)}`);
 
-	const payload: CommandIncoming | EventIncoming = JSON.parse(
+	const payload:
+		| CommandIncoming
+		| EventIncoming
+		| WebhookIncoming = JSON.parse(
 		Buffer.from(pubSubEvent.data, "base64").toString(),
 	);
 	info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
@@ -85,6 +106,17 @@ export const bundle = async (
 			} else {
 				throw new Error(
 					`Command handler with name '${payload.command}' not registered`,
+				);
+			}
+		});
+	} else if (isWebhookIncoming(payload)) {
+		return processWebhook(payload, context, async () => {
+			const loader = HandlerRegistry.webhooks[payload.webhook.name];
+			if (loader) {
+				return loader();
+			} else {
+				throw new Error(
+					`Command handler with name '${payload.webhook.name}' not registered`,
 				);
 			}
 		});

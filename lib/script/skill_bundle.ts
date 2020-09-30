@@ -65,6 +65,21 @@ export async function bundleSkill(
 				return undefined;
 			},
 		);
+		const webhooks = await withGlobMatches<string>(
+			cwd,
+			["webhooks/*.js", "lib/webhooks/*.js"],
+			async file => {
+				const content = (
+					await fs.readFile(path.join(cwd, file))
+				).toString();
+				if (/exports\.handler\s*=/.test(content)) {
+					const name = path.basename(file).replace(/\.js/, "");
+					const fileName = file.replace(/\.js/, "");
+					return `bundle.registerWebhook("${name}", async () => (await Promise.resolve().then(() => require("./${fileName}"))).handler);`;
+				}
+				return undefined;
+			},
+		);
 
 		const skillTs = [
 			`exports.entryPoint = require("@atomist/skill/lib/bundle").bundle;`,
@@ -75,6 +90,7 @@ export async function bundleSkill(
 			path.join(cwd, "skill.bundle.js"),
 			`${skillTs.join("\n")}
 ${events.join("\n")}
+${webhooks.join("\n")}
 ${commands.join("\n")}`,
 		);
 	}
