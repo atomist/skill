@@ -35,6 +35,16 @@ export function workspaceId(
 	return undefined;
 }
 
+export interface SkillConfiguration {
+	name: string;
+	parameters: Array<{ name: string; value: any }>;
+	resourceProviders: Array<{
+		name: string;
+		typeName: string;
+		selectedResourceProviders: Array<{ id: string }>;
+	}>;
+}
+
 /**
  * Extension to EventIncoming and CommandIncoming capturing
  * skill specific information
@@ -64,17 +74,11 @@ export interface Skill {
 		};
 	}>;
 
-	configuration: {
-		instances: Array<{
-			name: string;
-			parameters: Array<{ name: string; value: any }>;
-			resourceProviders: Array<{
-				name: string;
-				typeName: string;
-				selectedResourceProviders: Array<{ id: string }>;
-			}>;
-		}>;
-	};
+	configuration:
+		| {
+				instances: SkillConfiguration[];
+		  }
+		| SkillConfiguration;
 }
 
 export interface EventIncoming {

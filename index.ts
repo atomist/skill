@@ -26,7 +26,6 @@ export {
 	ChatChannelParameterValue,
 	ChatChannelsParameter,
 	Command,
-	DispatchStyle,
 	FloatParameter,
 	IntParameter,
 	LineStyle,
