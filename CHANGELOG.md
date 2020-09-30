@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.2.0...HEAD)
 
+### Fixed
+
+-   Remove debug logs. [8b8d0b5](https://github.com/atomist-skills/skill/commit/8b8d0b595b64e02a9c04073b8ddeb8a4fdbe78cc)
+
 ## [0.2.0](https://github.com/atomist/skill/compare/0.1.0...0.2.0) - 2020-09-26
 
 ### Added
