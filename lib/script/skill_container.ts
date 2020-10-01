@@ -140,7 +140,7 @@ export async function createYamlSkillInput(
 					entryPoint: gcf?.entryPoint || "entryPoint",
 					memory: gcf?.memory || 256,
 					timeout: gcf?.timeout || 60,
-					runtime: gcf?.runtime || AtomistSkillRuntime.Nodejs10,
+					runtime: gcf?.runtime || AtomistSkillRuntime.Nodejs12,
 					name: "gcf",
 					url: undefined,
 				},

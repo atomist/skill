@@ -97,6 +97,7 @@ export type AtomistGcfSkillArtifactInput = {
 
 export enum AtomistSkillRuntime {
 	Nodejs10 = "nodejs10",
+	Nodejs12 = "nodejs12",
 	Python37 = "python37",
 	Go113 = "go113",
 }
@@ -338,7 +339,7 @@ export async function createJavaScriptSkillInput(
 				timeout: is.runtime?.timeout || 60,
 				runtime:
 					(is.runtime?.platform as any) ||
-					AtomistSkillRuntime.Nodejs10,
+					AtomistSkillRuntime.Nodejs12,
 				name: "gcf",
 				url: undefined,
 			},

@@ -38,6 +38,7 @@ export enum DispatchStyle {
 
 export enum Platform {
 	NodeJs10 = "nodejs10",
+	NodeJs12 = "nodejs12",
 	Python37 = "python37",
 	Go113 = "go113",
 }
