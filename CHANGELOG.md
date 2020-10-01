@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.2.2...HEAD)
 
+### Added
+
+-   Add support for nodejs12 runtime. [a375d6f](https://github.com/atomist-skills/skill/commit/a375d6fc0b5f67b4f96f3a25a993fa40f8cd1edd)
+
 ## [0.2.2](https://github.com/atomist/skill/compare/0.2.1...0.2.2) - 2020-09-30
 
 ### Fixed
