@@ -16,7 +16,7 @@
 
 import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types";
 import { Endpoints } from "@octokit/types";
-import { Contextual } from "../handler";
+import { ClosableContext, Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 import { api, formatMarkers } from "./operation";
@@ -62,6 +62,7 @@ export async function createCheck(
 	id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
 	parameters: CreateCheck,
 ): Promise<Check> {
+	let terminated = false;
 	// Check if there is a check open with that name
 	const openChecks = (
 		await api(id).checks.listForRef({
@@ -73,6 +74,19 @@ export async function createCheck(
 			filter: "latest",
 		})
 	).data;
+
+	((ctx as any) as ClosableContext).registerClosable(async () => {
+		if (!terminated) {
+			await api(id).checks.update({
+				owner: id.owner,
+				repo: id.repo,
+				check_run_id: openChecks.check_runs[0].id,
+				conclusion: "failure",
+				completed_at: new Date().toISOString(),
+				status: "completed",
+			});
+		}
+	});
 
 	let check: RestEndpointMethodTypes["checks"]["create"]["response"];
 	if (openChecks.total_count === 1) {
@@ -110,6 +124,9 @@ export async function createCheck(
 	return {
 		data: check.data,
 		update: async params => {
+			if (params.conclusion) {
+				terminated = true;
+			}
 			await api(id).checks.update({
 				owner: id.owner,
 				repo: id.repo,

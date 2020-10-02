@@ -16,7 +16,12 @@
 
 import * as fs from "fs-extra";
 import { createGraphQLClient } from "./graphql";
-import { CommandContext, Configuration, EventContext } from "./handler";
+import {
+	ClosableContext,
+	CommandContext,
+	Configuration,
+	EventContext,
+} from "./handler";
 import { createHttpClient } from "./http";
 import { wrapAuditLogger } from "./log/util";
 import {
@@ -35,18 +40,29 @@ import { createProjectLoader } from "./project/loader";
 import { commandRequestParameterPromptFactory } from "./prompt/prompt";
 import { DefaultCredentialProvider } from "./secret/provider";
 import { createStorageProvider } from "./storage/provider";
-import { extractParameters } from "./util";
+import { extractParameters, handleError } from "./util";
 
 export function createContext(
 	payload: CommandIncoming | EventIncoming,
 	ctx: { eventId: string },
-): EventContext | CommandContext {
+): (EventContext | CommandContext) & ClosableContext {
 	const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")
 		?.value;
 	const wid = workspaceId(payload);
 	const graphql = createGraphQLClient(apiKey, wid);
 	const storage = createStorageProvider(wid);
 	const credential = new DefaultCredentialProvider(graphql, payload);
+
+	const closeables = [() => fs.remove(ClonePath)];
+	const registerClosable = closable => {
+		closeables.push(closable);
+	};
+	const close = async () => {
+		for (const closable of closeables) {
+			await handleError(closable());
+		}
+	};
+
 	if (isCommandIncoming(payload)) {
 		if (payload.raw_message) {
 			const parameters = extractParameters(payload.raw_message);
@@ -81,6 +97,7 @@ export function createContext(
 			...extractConfiguration(payload),
 			skill: payload.skill,
 			close,
+			registerClosable,
 		};
 	} else if (isEventIncoming(payload)) {
 		return {
@@ -109,6 +126,7 @@ export function createContext(
 			...extractConfiguration(payload),
 			skill: payload.skill,
 			close,
+			registerClosable,
 		};
 	}
 	return undefined;
@@ -159,9 +177,4 @@ function extractConfigurationResourceProviders(
 			}),
 	);
 	return resourceProviders;
-}
-
-async function close(): Promise<void> {
-	// Remove our project clone directory
-	await fs.remove(ClonePath);
 }

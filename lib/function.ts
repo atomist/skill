@@ -20,6 +20,7 @@ import "source-map-support/register";
 import { Severity } from "@atomist/skill-logging";
 import { createContext } from "./context";
 import {
+	ClosableContext,
 	CommandContext,
 	CommandHandler,
 	EventContext,
@@ -71,7 +72,8 @@ export async function processEvent(
 	ctx: { eventId: string },
 	loader: (name: string) => Promise<EventHandler> = handlerLoader,
 ): Promise<void> {
-	const context = createContext(event, ctx) as EventContext<any>;
+	const context = createContext(event, ctx) as EventContext<any> &
+		ClosableContext;
 	try {
 		debug(`Invoking event handler '${context.name}'`);
 		const result = (await (await loader(`events/${context.name}`))(
@@ -96,7 +98,8 @@ export async function processCommand(
 	ctx: { eventId: string },
 	loader: (name: string) => Promise<CommandHandler> = handlerLoader,
 ): Promise<void> {
-	const context = createContext(event, ctx) as CommandContext;
+	const context = createContext(event, ctx) as CommandContext &
+		ClosableContext;
 	try {
 		debug(`Invoking command handler '${context.name}'`);
 		const result = (await (await loader(`commands/${context.name}`))(

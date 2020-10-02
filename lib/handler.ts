@@ -58,7 +58,10 @@ export interface Contextual<T, C> {
 		namespace: string;
 		version: string;
 	};
+}
 
+export interface ClosableContext {
+	registerClosable: (closable: () => Promise<void>) => void;
 	close: () => Promise<void>;
 }
 
