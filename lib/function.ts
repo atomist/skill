@@ -20,9 +20,9 @@ import "source-map-support/register";
 import { Severity } from "@atomist/skill-logging";
 import { createContext } from "./context";
 import {
-	ContextualLifecylce,
 	CommandContext,
 	CommandHandler,
+	ContextualLifecycle,
 	EventContext,
 	EventHandler,
 	HandlerStatus,
@@ -73,7 +73,7 @@ export async function processEvent(
 	loader: (name: string) => Promise<EventHandler> = handlerLoader,
 ): Promise<void> {
 	const context = createContext(event, ctx) as EventContext<any> &
-		ContextualLifecylce;
+		ContextualLifecycle;
 	try {
 		debug(`Invoking event handler '${context.name}'`);
 		const result = (await (await loader(`events/${context.name}`))(
@@ -99,7 +99,7 @@ export async function processCommand(
 	loader: (name: string) => Promise<CommandHandler> = handlerLoader,
 ): Promise<void> {
 	const context = createContext(event, ctx) as CommandContext &
-		ContextualLifecylce;
+		ContextualLifecycle;
 	try {
 		debug(`Invoking command handler '${context.name}'`);
 		const result = (await (await loader(`commands/${context.name}`))(
