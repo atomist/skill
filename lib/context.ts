@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import * as fs from "fs-extra";
 import { createGraphQLClient } from "./graphql";
 import {
-	ClosableContext,
 	CommandContext,
 	Configuration,
+	ContextualLifecycle,
 	EventContext,
 } from "./handler";
 import { createHttpClient } from "./http";
@@ -35,7 +34,6 @@ import {
 	isEventIncoming,
 	workspaceId,
 } from "./payload";
-import { ClonePath } from "./project/clone";
 import { createProjectLoader } from "./project/loader";
 import { commandRequestParameterPromptFactory } from "./prompt/prompt";
 import { DefaultCredentialProvider } from "./secret/provider";
@@ -45,7 +43,7 @@ import { extractParameters, handleError } from "./util";
 export function createContext(
 	payload: CommandIncoming | EventIncoming,
 	ctx: { eventId: string },
-): (EventContext | CommandContext) & ClosableContext {
+): (EventContext | CommandContext) & ContextualLifecycle {
 	const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")
 		?.value;
 	const wid = workspaceId(payload);
@@ -53,13 +51,15 @@ export function createContext(
 	const storage = createStorageProvider(wid);
 	const credential = new DefaultCredentialProvider(graphql, payload);
 
-	const closeables = [() => fs.remove(ClonePath)];
-	const registerClosable = closable => {
-		closeables.push(closable);
+	const completeCallbacks = [];
+	const onComplete = closable => {
+		completeCallbacks.push(closable);
 	};
 	const close = async () => {
-		for (const closable of closeables) {
-			await handleError(closable());
+		let callback = completeCallbacks.pop();
+		while (callback) {
+			await handleError(callback);
+			callback = completeCallbacks.pop();
 		}
 	};
 
@@ -92,12 +92,12 @@ export function createContext(
 			),
 			storage,
 			message,
-			project: createProjectLoader(),
+			project: createProjectLoader({ onComplete }),
 			trigger: payload,
 			...extractConfiguration(payload),
 			skill: payload.skill,
 			close,
-			registerClosable,
+			onComplete,
 		};
 	} else if (isEventIncoming(payload)) {
 		return {
@@ -121,15 +121,15 @@ export function createContext(
 			),
 			storage,
 			message: new PubSubEventMessageClient(payload, graphql),
-			project: createProjectLoader(),
+			project: createProjectLoader({ onComplete }),
 			trigger: payload,
 			...extractConfiguration(payload),
 			skill: payload.skill,
 			close,
-			registerClosable,
+			onComplete,
 		};
 	}
-	return undefined;
+	throw new Error("Unknown payload");
 }
 
 function extractConfiguration(

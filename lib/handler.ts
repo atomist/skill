@@ -58,10 +58,16 @@ export interface Contextual<T, C> {
 		namespace: string;
 		version: string;
 	};
+
+	/** Register a callback that gets executed when the skill execution is complete */
+	onComplete: (callback: () => Promise<void>) => void;
 }
 
-export interface ClosableContext {
-	registerClosable: (closable: () => Promise<void>) => void;
+/**
+ * Internal extension to the Contextual interface providing
+ * lifecycle methods
+ */
+export interface ContextualLifecycle {
 	close: () => Promise<void>;
 }
 

@@ -16,7 +16,7 @@
 
 import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types";
 import { Endpoints } from "@octokit/types";
-import { ClosableContext, Contextual } from "../handler";
+import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 import { api, formatMarkers } from "./operation";
@@ -75,7 +75,7 @@ export async function createCheck(
 		})
 	).data;
 
-	((ctx as any) as ClosableContext).registerClosable(async () => {
+	ctx.onComplete(async () => {
 		if (!terminated) {
 			await api(id).checks.update({
 				owner: id.owner,
@@ -85,6 +85,7 @@ export async function createCheck(
 				completed_at: new Date().toISOString(),
 				status: "completed",
 			});
+			terminated = true;
 		}
 	});
 

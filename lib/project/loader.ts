@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import * as fs from "fs-extra";
+import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { CloneOptions } from "./clone";
 import { clone, load, Project } from "./project";
@@ -30,11 +32,17 @@ export interface ProjectLoader {
 	): Promise<Project<C>>;
 }
 
-export function createProjectLoader(): ProjectLoader {
-	return new DefaultProjectLoader();
+export function createProjectLoader(
+	ctx?: Pick<Contextual<any, any>, "onComplete">,
+): ProjectLoader {
+	return new DefaultProjectLoader(ctx);
 }
 
 export class DefaultProjectLoader implements ProjectLoader {
+	constructor(
+		private readonly ctx?: Pick<Contextual<any, any>, "onComplete">,
+	) {}
+
 	public async load(
 		id: AuthenticatedRepositoryId<any>,
 		baseDir: string,
@@ -46,6 +54,10 @@ export class DefaultProjectLoader implements ProjectLoader {
 		id: AuthenticatedRepositoryId<any>,
 		options?: CloneOptions,
 	): Promise<Project> {
-		return clone(id, options);
+		const p = await clone(id, options);
+		if (this.ctx) {
+			this.ctx.onComplete(() => fs.remove(p.path()));
+		}
+		return p;
 	}
 }
