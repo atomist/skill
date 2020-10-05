@@ -1,13 +1,22 @@
 apiVersion: 1
 skill:
-  namespace: atomist
+  namespace: atomist-playground
   name: echo-skill
+  displayName: Echo Skill
+  author: cd
+
+  parameters:
+    - webhook:
+        name: echo
+        description: Post echo payloads to this endpoint
+        required: true
+
   artifacts:
     docker:
       - name: echo
-        image: ubuntu:latest
+        image: jiapantw/alpine-jq
         command:
           - /bin/sh
         args:
           - -c
-          - "cat $ATOMIST_PAYLOAD"
+          - "cat $ATOMIST_PAYLOAD | jq .webhook.body | jq 'fromjson | .name'"

@@ -20,3 +20,4 @@ node_modules/
 git-info.json
 /.npm
 **/typings/types.ts
+/test/github/pull_request.test.ts

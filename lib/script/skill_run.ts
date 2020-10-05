@@ -11,7 +11,11 @@ export async function runSkill(options: {
 	repo?: string;
 	event?: string;
 	skill: string;
+	verbose?: boolean;
 }): Promise<void> {
+	if (!options.verbose) {
+		process.env.ATOMIST_LOG_LEVEL = "info";
+	}
 	const content = (
 		await fs.readFile(path.join(options.cwd, options.skill))
 	).toString();
@@ -88,6 +92,6 @@ export async function runSkill(options: {
 
 	await spawnPromise("docker", args, {
 		logCommand: false,
-		log: captureLog(),
+		log: captureLog(msg => console.log(msg)),
 	});
 }

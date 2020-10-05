@@ -354,7 +354,9 @@ export const ConsoleLog: WritableLog = {
 	},
 };
 
-export function captureLog(): WritableLog & { log: string } {
+export function captureLog(
+	callback: (msg: string) => void = debug,
+): WritableLog & { log: string } {
 	const logLines = [];
 	return {
 		write: (msg): void => {
@@ -363,7 +365,7 @@ export function captureLog(): WritableLog & { log: string } {
 				line = line.slice(0, -1);
 			}
 			const lines = line.split("\n");
-			lines.forEach(l => debug(l.trimRight()));
+			lines.forEach(l => callback(l.trimRight()));
 			logLines.push(msg);
 		},
 		get log() {

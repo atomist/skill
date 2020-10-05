@@ -54,9 +54,61 @@ yargs
 					demandOption: false,
 					defaultValue: "skill.yaml",
 				},
+				verbose: {
+					type: "boolean",
+					description: "Enable verbose logging",
+					default: false,
+					demandOption: false,
+				},
 			}),
 		async argv => {
 			return (await import("../lib/script/skill_run")).runSkill(argv);
+		},
+	)
+	.command(
+		"push",
+		"Push a skill",
+		args =>
+			args.options({
+				cwd: {
+					alias: "c",
+					type: "string",
+					description: "Set working directory",
+					default: process.cwd(),
+					demandOption: false,
+				},
+				repo: {
+					alias: "r",
+					type: "string",
+					description: "Path to repository to mount into container",
+					demandOption: false,
+				},
+				skill: {
+					alias: "s",
+					type: "string",
+					description: "Name of skill.yaml file run",
+					demandOption: false,
+					defaultValue: "skill.yaml",
+				},
+				workspace: {
+					type: "string",
+					description: "Id of workspace",
+					demandOption: false,
+				},
+				apiKey: {
+					type: "string",
+					description: "API key",
+					demandOption: false,
+				},
+				verbose: {
+					type: "boolean",
+					description: "Enable verbose logging",
+					default: false,
+					demandOption: false,
+				},
+			}),
+		async argv => {
+			return (await import("../lib/script/skill_push")).pushSkill(argv);
 		},
 	)
 	.command(
