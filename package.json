@@ -1,7 +1,7 @@
 {
   "name": "@atomist/skill",
   "description": "Atomist Skill API",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": {
     "name": "Atomist",
     "email": "support@atomist.com",
