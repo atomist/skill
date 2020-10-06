@@ -51,7 +51,7 @@ export interface Contextual<T, C> {
 
 	trigger: T;
 
-	configuration: Array<Configuration<C>>;
+	configuration: C;
 	skill: {
 		id: string;
 		name: string;
@@ -72,12 +72,12 @@ export interface ContextualLifecycle {
 }
 
 export interface EventContext<E = any, C = any>
-	extends Contextual<EventIncoming, C> {
+	extends Contextual<EventIncoming, Configuration<C>> {
 	data: E;
 }
 
 export interface CommandContext<C = any>
-	extends Contextual<CommandIncoming, C> {
+	extends Contextual<CommandIncoming, Array<Configuration<C>>> {
 	parameters: {
 		prompt<PARAMS = any>(
 			parameters: ParameterPromptObject<PARAMS>,

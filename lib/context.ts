@@ -32,6 +32,7 @@ import {
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	SkillConfiguration,
 	workspaceId,
 } from "./payload";
 import { createProjectLoader } from "./project/loader";
@@ -123,7 +124,7 @@ export function createContext(
 			message: new PubSubEventMessageClient(payload, graphql),
 			project: createProjectLoader({ onComplete }),
 			trigger: payload,
-			...extractConfiguration(payload),
+			configuration: extractConfiguration(payload)?.configuration?.[0],
 			skill: payload.skill,
 			close,
 			onComplete,
@@ -132,22 +133,26 @@ export function createContext(
 	throw new Error("Unknown payload");
 }
 
-function extractConfiguration(
+export function extractConfiguration(
 	payload: CommandIncoming | EventIncoming,
 ): { configuration: Array<Configuration<any>> } {
+	const cfgs: SkillConfiguration[] = [];
+	if ((payload.skill?.configuration as any)?.instances) {
+		cfgs.push(...(payload.skill.configuration as any).instances);
+	} else {
+		cfgs.push(payload.skill.configuration as SkillConfiguration);
+	}
 	return {
-		configuration: payload.skill?.configuration?.instances?.map(c => ({
+		configuration: cfgs.map(c => ({
 			name: c.name,
 			parameters: extractConfigurationParameters(c.parameters),
 			resourceProviders: extractConfigurationResourceProviders(
 				c.resourceProviders,
 			),
-			url: `https://go.atomist.${
-				(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
-					? "services"
-					: "com"
-			}/manage/${workspaceId(payload)}/skills/configure/${
-				payload.skill.id
+			url: `https://go.atomist.com/${workspaceId(
+				payload,
+			)}/manage/skills/configure/edit/${payload.skill.namespace}/${
+				payload.skill.name
 			}/${encodeURIComponent(c.name)}`,
 		})),
 	};
