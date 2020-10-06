@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.2.3...HEAD)
 
+### Added
+
+-   Remove single dispatch and add support for webhooks. [#82](https://github.com/atomist-skills/skill/issues/82)
+
 ## [0.2.3](https://github.com/atomist/skill/compare/0.2.2...0.2.3) - 2020-10-05
 
 ### Added
