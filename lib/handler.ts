@@ -18,7 +18,7 @@ import { Logger } from "@atomist/skill-logging/lib/logging";
 import { GraphQLClient } from "./graphql";
 import { HttpClient } from "./http";
 import { CommandMessageClient, MessageClient } from "./message";
-import { CommandIncoming, EventIncoming } from "./payload";
+import { CommandIncoming, EventIncoming, WebhookIncoming } from "./payload";
 import { ProjectLoader } from "./project";
 import { ParameterPromptObject, ParameterPromptOptions } from "./prompt/prompt";
 import { CredentialProvider } from "./secret/provider";
@@ -51,7 +51,7 @@ export interface Contextual<T, C> {
 
 	trigger: T;
 
-	configuration: Array<Configuration<C>>;
+	configuration: C;
 	skill: {
 		id: string;
 		name: string;
@@ -72,12 +72,12 @@ export interface ContextualLifecycle {
 }
 
 export interface EventContext<E = any, C = any>
-	extends Contextual<EventIncoming, C> {
+	extends Contextual<EventIncoming, Configuration<C>> {
 	data: E;
 }
 
 export interface CommandContext<C = any>
-	extends Contextual<CommandIncoming, C> {
+	extends Contextual<CommandIncoming, Array<Configuration<C>>> {
 	parameters: {
 		prompt<PARAMS = any>(
 			parameters: ParameterPromptObject<PARAMS>,
@@ -86,6 +86,15 @@ export interface CommandContext<C = any>
 	};
 
 	message: CommandMessageClient;
+}
+
+export interface WebhookContext<B = any, C = any>
+	extends Contextual<WebhookIncoming, Configuration<C>> {
+	headers: Record<string, string>;
+	body: string;
+	json: B;
+	url: string;
+	name: string;
 }
 
 export interface HandlerStatus {
@@ -100,4 +109,8 @@ export type CommandHandler<C = any> = (
 
 export type EventHandler<E = any, C = any> = (
 	context: EventContext<E, C>,
+) => Promise<void | HandlerStatus>;
+
+export type WebhookHandler<B = any, C = any> = (
+	context: WebhookContext<B, C>,
 ) => Promise<void | HandlerStatus>;

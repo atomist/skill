@@ -17,21 +17,26 @@
 import { createGraphQLClient } from "./graphql";
 import {
 	CommandContext,
-	Configuration,
 	ContextualLifecycle,
 	EventContext,
+	WebhookContext,
+	Configuration,
 } from "./handler";
 import { createHttpClient } from "./http";
 import { wrapAuditLogger } from "./log/util";
 import {
 	PubSubCommandMessageClient,
 	PubSubEventMessageClient,
+	PubSubWebhookMessageClient,
 } from "./message";
 import {
 	CommandIncoming,
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	isWebhookIncoming,
+	SkillConfiguration,
+	WebhookIncoming,
 	workspaceId,
 } from "./payload";
 import { createProjectLoader } from "./project/loader";
@@ -41,9 +46,9 @@ import { createStorageProvider } from "./storage/provider";
 import { extractParameters, handleError } from "./util";
 
 export function createContext(
-	payload: CommandIncoming | EventIncoming,
+	payload: CommandIncoming | EventIncoming | WebhookIncoming,
 	ctx: { eventId: string },
-): (EventContext | CommandContext) & ContextualLifecycle {
+): (CommandContext | EventContext | WebhookContext) & ContextualLifecycle {
 	const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")
 		?.value;
 	const wid = workspaceId(payload);
@@ -123,7 +128,41 @@ export function createContext(
 			message: new PubSubEventMessageClient(payload, graphql),
 			project: createProjectLoader({ onComplete }),
 			trigger: payload,
-			...extractConfiguration(payload),
+			configuration: extractConfiguration(payload)?.configuration?.[0],
+			skill: payload.skill,
+			close,
+			onComplete,
+		};
+	} else if (isWebhookIncoming(payload)) {
+		return {
+			name: payload.webhook.name,
+			body: payload.webhook.body,
+			get json() {
+				return JSON.parse((payload as any).webhook.body);
+			},
+			headers: payload.webhook.headers,
+			url: payload.webhook.url,
+			correlationId: payload.correlation_id,
+			executionId: ctx.eventId,
+			workspaceId: wid,
+			credential,
+			graphql,
+			http: createHttpClient(),
+			audit: wrapAuditLogger(
+				{
+					eventId: ctx.eventId,
+					correlationId: payload.correlation_id,
+					workspaceId: wid,
+				},
+				{
+					name: payload.webhook.name,
+				},
+			),
+			storage,
+			message: new PubSubWebhookMessageClient(payload, graphql),
+			project: createProjectLoader(),
+			trigger: payload,
+			configuration: extractConfiguration(payload)?.configuration?.[0],
 			skill: payload.skill,
 			close,
 			onComplete,
@@ -132,22 +171,26 @@ export function createContext(
 	throw new Error("Unknown payload");
 }
 
-function extractConfiguration(
-	payload: CommandIncoming | EventIncoming,
+export function extractConfiguration(
+	payload: CommandIncoming | EventIncoming | WebhookIncoming,
 ): { configuration: Array<Configuration<any>> } {
+	const cfgs: SkillConfiguration[] = [];
+	if ((payload.skill?.configuration as any)?.instances) {
+		cfgs.push(...(payload.skill.configuration as any).instances);
+	} else if (payload.skill?.configuration) {
+		cfgs.push(payload.skill.configuration as SkillConfiguration);
+	}
 	return {
-		configuration: payload.skill?.configuration?.instances?.map(c => ({
+		configuration: cfgs.map(c => ({
 			name: c.name,
 			parameters: extractConfigurationParameters(c.parameters),
 			resourceProviders: extractConfigurationResourceProviders(
 				c.resourceProviders,
 			),
-			url: `https://go.atomist.${
-				(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
-					? "services"
-					: "com"
-			}/manage/${workspaceId(payload)}/skills/configure/${
-				payload.skill.id
+			url: `https://go.atomist.com/${workspaceId(
+				payload,
+			)}/manage/skills/configure/edit/${payload.skill.namespace}/${
+				payload.skill.name
 			}/${encodeURIComponent(c.name)}`,
 		})),
 	};

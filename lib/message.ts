@@ -23,7 +23,12 @@ import {
 import { Action as SlackAction } from "@atomist/slack-messages/lib/SlackMessages";
 import { PubSub } from "@google-cloud/pubsub";
 import { GraphQLClient } from "./graphql";
-import { CommandContext, EventContext, HandlerStatus } from "./handler";
+import {
+	CommandContext,
+	EventContext,
+	HandlerStatus,
+	WebhookContext,
+} from "./handler";
 import { debug, error } from "./log";
 import {
 	CommandIncoming,
@@ -32,6 +37,7 @@ import {
 	isEventIncoming,
 	Skill,
 	Source,
+	WebhookIncoming,
 } from "./payload";
 import { replacer, toArray } from "./util";
 import cloneDeep = require("lodash.clonedeep");
@@ -145,7 +151,10 @@ export abstract class MessageClientSupport
 
 export abstract class AbstractMessageClient extends MessageClientSupport {
 	constructor(
-		protected readonly request: CommandIncoming | EventIncoming,
+		protected readonly request:
+			| CommandIncoming
+			| EventIncoming
+			| WebhookIncoming,
 		protected readonly correlationId: string,
 		protected readonly team: { id: string; name?: string },
 		protected readonly source: Source,
@@ -541,7 +550,10 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
 	private readonly pubsub: PubSub;
 
 	constructor(
-		protected readonly request: CommandIncoming | EventIncoming,
+		protected readonly request:
+			| CommandIncoming
+			| EventIncoming
+			| WebhookIncoming,
 		protected readonly correlationId: string,
 		protected readonly team: { id: string; name?: string },
 		protected readonly source: Source,
@@ -660,9 +672,52 @@ export class PubSubEventMessageClient
 	}
 }
 
+export class PubSubWebhookMessageClient
+	extends AbstractPubSubMessageClient
+	implements StatusPublisher {
+	constructor(
+		protected readonly request: WebhookIncoming,
+		protected readonly graphClient: GraphQLClient,
+	) {
+		super(
+			request,
+			request.correlation_id,
+			{
+				id: request.team_id,
+				name: undefined,
+			},
+			undefined,
+			request.team_id,
+			graphClient,
+		);
+	}
+
+	protected async doSend(
+		msg: string | SlackMessage,
+		destinations: Destinations,
+		options: MessageOptions = {},
+	): Promise<any> {
+		return super.doSend(msg, destinations, options);
+	}
+
+	public async publish(status: HandlerResponse["status"]): Promise<void> {
+		const response: HandlerResponse = {
+			api_version: "1",
+			correlation_id: this.request.correlation_id,
+			team: {
+				id: this.request.team_id,
+				name: undefined,
+			},
+			status,
+			skill: this.request.skill,
+		};
+		return this.sendResponse(response);
+	}
+}
+
 export function prepareStatus(
 	status: HandlerStatus | Error,
-	context: EventContext | CommandContext,
+	context: EventContext | CommandContext | WebhookContext,
 ): HandlerResponse["status"] {
 	if (status instanceof Error) {
 		return {

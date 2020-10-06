@@ -31,16 +31,13 @@ export enum Technology {
 	Kubernetes = "KUBERNETES",
 }
 
-export enum DispatchStyle {
-	Single = "single",
-	Multiple = "multiple",
-}
-
 export enum Platform {
 	NodeJs10 = "nodejs10",
 	NodeJs12 = "nodejs12",
 	Python37 = "python37",
+	Python38 = "python38",
 	Go113 = "go113",
+	Java11 = "java11",
 }
 
 export interface SkillRuntime {
@@ -161,6 +158,12 @@ export type RepoFilterParameter = Omit<
 	"defaultValue" | "visibility"
 >;
 
+export interface WebhookParameter
+	extends Omit<Parameter<ParameterType.Webhook>, "defaultValue"> {
+	maxAllowed?: number;
+	minRequired?: number;
+}
+
 export type ScheduleParameter = Parameter<ParameterType.Schedule, string>;
 
 export interface StringParameter
@@ -212,6 +215,7 @@ export enum ParameterType {
 	Schedule = "schedule",
 	String = "string",
 	StringArray = "stringArray",
+	Webhook = "webhook",
 }
 
 export type ParametersIndexType = string;
@@ -225,8 +229,6 @@ export type ParametersType = {
 };
 
 export interface Configuration<PARAMS extends ParametersType = any> {
-	dispatchStyle?: DispatchStyle;
-
 	maxConfigurations?: number;
 
 	runtime?: SkillRuntime;
@@ -247,6 +249,7 @@ export interface Configuration<PARAMS extends ParametersType = any> {
 		| StringParameter
 		| StringArrayParameter
 		| ChatChannelsParameter
+		| WebhookParameter
 	>;
 
 	resourceProviders?: Record<string, ResourceProvider>;
@@ -263,12 +266,6 @@ export interface Operations {
 	commands?: Command[];
 
 	subscriptions?: string[];
-
-	signals?: string[];
-
-	gates?: Record<string, Named[]>;
-
-	gateSubscriptions?: Named[];
 }
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
