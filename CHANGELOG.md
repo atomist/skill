@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Remove single dispatch and add support for webhooks. [#82](https://github.com/atomist-skills/skill/issues/82)
 
+### Removed
+
+-   Remove support for single dispatch. [#77](https://github.com/atomist-skills/skill/issues/77)
+
 ## [0.2.3](https://github.com/atomist/skill/compare/0.2.2...0.2.3) - 2020-10-05
 
 ### Added
