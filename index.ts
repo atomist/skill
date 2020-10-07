@@ -74,6 +74,8 @@ export {
 	EventContext,
 	EventHandler,
 	HandlerStatus,
+	WebhookHandler,
+	WebhookContext,
 } from "./lib/handler";
 export { HttpClient } from "./lib/http";
 export {
