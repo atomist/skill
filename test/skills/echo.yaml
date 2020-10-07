@@ -33,4 +33,4 @@ skill:
           - /bin/sh
         args:
           - -c
-          - "cat $ATOMIST_PAYLOAD | jq .webhook.body | jq 'fromjson | .name'"
+          - "echo Hello World, cheers $(cat $ATOMIST_PAYLOAD | jq .webhook.body | jq -r 'fromjson | .name')"
