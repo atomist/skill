@@ -79,7 +79,7 @@ export async function runSkill(options: {
 		args.push("-e", `${e.name}='${e.value}'`),
 	);
 
-	args.push("-e", "ATOMIST_HOME=atm/home");
+	args.push("-e", "ATOMIST_HOME=/atm/home");
 	args.push("-e", "ATOMIST_PAYLOAD=/atm/payload.json");
 	args.push("-e", "ATOMIST_INPUT_DIR=/atm/input");
 	args.push("-e", "ATOMIST_OUTPUT_DIR=/atm/output");
