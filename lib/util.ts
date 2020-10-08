@@ -40,13 +40,19 @@ export function toArray<T>(value: T | T[]): T[] {
 	}
 }
 
-export async function handlerLoader<T>(name: string, cwd?: string): Promise<T> {
-	const path = await requirePath(name, cwd);
-	// eslint-disable-next-line @typescript-eslint/no-var-requires
-	return require(path).handler as T;
+export function handlerLoader<T>(type: string) {
+	return async (name: string, cwd?: string) => {
+		const path = await requirePath(type, name, cwd);
+		// eslint-disable-next-line @typescript-eslint/no-var-requires
+		return require(path).handler as T;
+	};
 }
 
-export async function requirePath(file: string, cwd?: string): Promise<string> {
+export async function requirePath(
+	type: string,
+	file: string,
+	cwd?: string,
+): Promise<string> {
 	const p = cwd || __dirname.split("/node_modules/")[0];
 	const rp = path.join(p, file);
 	const lp = path.join(p, "lib", file);
@@ -55,6 +61,16 @@ export async function requirePath(file: string, cwd?: string): Promise<string> {
 	} else if (await fs.pathExists(lp + ".js")) {
 		return lp;
 	}
+
+	// Test the fallback
+	const f = path.join(p, type);
+	const fl = path.join(p, "lib", type);
+	if (await fs.pathExists(f + ".js")) {
+		return f;
+	} else if (await fs.pathExists(fl + ".js")) {
+		return fl;
+	}
+
 	throw new Error(`'${file}' not found in '${p}' or '${p}/lib'`);
 }
 

@@ -61,8 +61,6 @@ export const entryPoint = async (
 		Buffer.from(pubSubEvent.data, "base64").toString(),
 	);
 	info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
-	// debug(`Incoming message context: ${JSON.stringify(context, replacer)}`);
-	// debug(`Incoming mskill.tsessage: ${JSON.stringify(pubSubEvent, replacer)}`);
 
 	if (isEventIncoming(payload)) {
 		await processEvent(payload, context);
@@ -76,13 +74,13 @@ export const entryPoint = async (
 export async function processEvent(
 	event: EventIncoming,
 	ctx: { eventId: string },
-	loader: (name: string) => Promise<EventHandler> = handlerLoader,
+	loader: (name: string) => Promise<EventHandler> = handlerLoader("events"),
 ): Promise<void> {
 	const context = createContext(event, ctx) as EventContext<any> &
 		ContextualLifecycle;
 	try {
 		debug(`Invoking event handler '${context.name}'`);
-		const result = (await (await loader(`events/${context.name}`))(
+		const result = (await (await loader(context.name))(
 			context,
 		)) as HandlerStatus;
 		await ((context.message as any) as StatusPublisher).publish(
@@ -102,13 +100,15 @@ export async function processEvent(
 export async function processCommand(
 	event: CommandIncoming,
 	ctx: { eventId: string },
-	loader: (name: string) => Promise<CommandHandler> = handlerLoader,
+	loader: (name: string) => Promise<CommandHandler> = handlerLoader(
+		"commands",
+	),
 ): Promise<void> {
 	const context = createContext(event, ctx) as CommandContext &
 		ContextualLifecycle;
 	try {
 		debug(`Invoking command handler '${context.name}'`);
-		const result = (await (await loader(`commands/${context.name}`))(
+		const result = (await (await loader(context.name))(
 			context,
 		)) as HandlerStatus;
 		await ((context.message as any) as StatusPublisher).publish(
@@ -137,13 +137,15 @@ export async function processCommand(
 export async function processWebhook(
 	event: WebhookIncoming,
 	ctx: { eventId: string },
-	loader: (name: string) => Promise<WebhookHandler> = handlerLoader,
+	loader: (name: string) => Promise<WebhookHandler> = handlerLoader(
+		"webhooks",
+	),
 ): Promise<void> {
 	const context = createContext(event, ctx) as WebhookContext &
 		ContextualLifecycle;
 	try {
-		debug(`Invoking command handler '${context.name}'`);
-		const result = (await (await loader(`webhooks/${context.name}`))(
+		debug(`Invoking webhook handler '${context.name}'`);
+		const result = (await (await loader(context.name))(
 			context,
 		)) as HandlerStatus;
 		await ((context.message as any) as StatusPublisher).publish(

@@ -15,8 +15,12 @@
  */
 
 import * as fs from "fs-extra";
-import { processCommand, processEvent } from "../function";
-import { isCommandIncoming, isEventIncoming } from "../payload";
+import { processCommand, processEvent, processWebhook } from "../function";
+import {
+	isCommandIncoming,
+	isEventIncoming,
+	isWebhookIncoming,
+} from "../payload";
 
 export async function runSkill(skill?: string): Promise<void> {
 	const payload = await fs.readJson(
@@ -32,5 +36,7 @@ export async function runSkill(skill?: string): Promise<void> {
 			payload.command = skill;
 		}
 		await processCommand(payload, {} as any);
+	} else if (isWebhookIncoming(payload)) {
+		await processWebhook(payload, {} as any);
 	}
 }

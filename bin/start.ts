@@ -41,50 +41,6 @@ yargs
 		},
 	)
 	.command(
-		["invoke", "test"],
-		"Invoke a skill",
-		args =>
-			args.option({
-				file: {
-					type: "string",
-					description: "Path to JSON file with test data",
-					demandOption: true,
-				},
-				cwd: {
-					type: "string",
-					description: "Set working directory",
-					default: process.cwd(),
-					demandOption: false,
-				},
-				name: {
-					type: "string",
-					description: "Name of handler to invoke",
-					demandOption: false,
-				},
-				workspace: {
-					type: "string",
-					description: "Id of workspace",
-					demandOption: false,
-				},
-				apiKey: {
-					type: "string",
-					description: "API Key",
-					demandOption: false,
-				},
-			}),
-		async argv => {
-			try {
-				await (await import("../lib/script/skill_invoke")).invokeSkill(
-					argv,
-				);
-				return 0;
-			} catch (e) {
-				error(e.message);
-				process.exit(1);
-			}
-		},
-	)
-	.command(
 		["generate", "gen"],
 		"Generate skill metadata",
 		args =>
