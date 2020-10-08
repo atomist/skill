@@ -54,8 +54,8 @@ export async function requirePath(
 	cwd?: string,
 ): Promise<string> {
 	const p = cwd || __dirname.split("/node_modules/")[0];
-	const rp = path.join(p, file);
-	const lp = path.join(p, "lib", file);
+	const rp = path.join(p, type, file);
+	const lp = path.join(p, "lib", type, file);
 	if (await fs.pathExists(rp + ".js")) {
 		return rp;
 	} else if (await fs.pathExists(lp + ".js")) {
