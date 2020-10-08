@@ -76,11 +76,11 @@ export async function createCheck(
 	).data;
 
 	ctx.onComplete(async () => {
-		if (!terminated) {
+		if (!terminated && check) {
 			await api(id).checks.update({
 				owner: id.owner,
 				repo: id.repo,
-				check_run_id: openChecks.check_runs[0].id,
+				check_run_id: check.data.id,
 				conclusion: "failure",
 				completed_at: new Date().toISOString(),
 				status: "completed",
