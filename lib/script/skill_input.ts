@@ -109,7 +109,6 @@ export enum AtomistSkillCategoryKey {
 	CodeReview = "CODE_REVIEW",
 	Dependencies = "DEPENDENCIES",
 	Deploy = "DEPLOY",
-	DevEx = "DEVEX",
 	DevOps = "DEVOPS",
 	Issues = "ISSUES",
 	Monitor = "MONITOR",
