@@ -20,10 +20,12 @@ import { RepositoryId, RepositoryProviderType } from "./id";
 const LinkedRepositoriesQuery = `query LinkedRepositories($id: String!) {
   ChatChannel(channelId: $id) {
     repos {
+      id
       name
       owner
       defaultBranch
       org {
+        id
         provider {
           apiUrl
         }
@@ -39,7 +41,7 @@ const LinkedRepositoriesQuery = `query LinkedRepositories($id: String!) {
  */
 export async function linkedRepositories(
 	ctx: CommandContext,
-): Promise<RepositoryId[]> {
+): Promise<Array<RepositoryId & { repoId: string; ownerId: string }>> {
 	const channelId = ctx.trigger.source?.slack?.channel?.id;
 	if (!channelId) {
 		return [];
@@ -48,10 +50,11 @@ export async function linkedRepositories(
 	const channel = await ctx.graphql.query<{
 		ChatChannel: Array<{
 			repos: Array<{
+				id: string;
 				name: string;
 				owner: string;
 				defaultBranch: string;
-				org: { provider: { apiUrl: string } };
+				org: { id: string; provider: { apiUrl: string } };
 			}>;
 		}>;
 	}>(LinkedRepositoriesQuery, {
@@ -68,6 +71,8 @@ export async function linkedRepositories(
 			apiUrl: r.org?.provider?.apiUrl,
 			branch: r.defaultBranch,
 			type: RepositoryProviderType.GitHubCom,
+			repoId: r.id,
+			ownerId: r.org?.id,
 		}));
 	}
 
@@ -76,7 +81,7 @@ export async function linkedRepositories(
 
 export async function linkedRepository(
 	ctx: CommandContext,
-): Promise<RepositoryId> {
+): Promise<RepositoryId & { repoId: string; ownerId: string }> {
 	const repositories = await linkedRepositories(ctx);
 	if (repositories?.length === 1) {
 		return repositories[0];
