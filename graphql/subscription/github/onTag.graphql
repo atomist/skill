@@ -10,6 +10,9 @@ subscription onTag {
       timestamp
     }
     commit {
+      repo {
+        ...repoFields
+      }
       url
       sha
       message
