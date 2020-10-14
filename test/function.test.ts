@@ -148,10 +148,7 @@ describe("function", () => {
 				payload as any,
 				{ eventId: "654321" },
 				async name => {
-					assert.deepStrictEqual(
-						name,
-						`webhooks/${payload.webhook.name}`,
-					);
+					assert.deepStrictEqual(name, `${payload.webhook.name}`);
 					return async ctx => {
 						(ctx.message as any).publish = publish;
 						assert.deepStrictEqual(ctx.json, {
