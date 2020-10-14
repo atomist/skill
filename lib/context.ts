@@ -48,7 +48,9 @@ import { extractParameters, handleError } from "./util";
 export function createContext(
 	payload: CommandIncoming | EventIncoming | WebhookIncoming,
 	ctx: { eventId: string },
-): (CommandContext | EventContext | WebhookContext) & ContextualLifecycle {
+):
+	| ((CommandContext | EventContext | WebhookContext) & ContextualLifecycle)
+	| undefined {
 	const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")
 		?.value;
 	const wid = workspaceId(payload);
