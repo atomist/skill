@@ -168,7 +168,7 @@ export function createContext(
 			onComplete,
 		};
 	}
-	throw new Error("Unknown payload");
+	return undefined;
 }
 
 export function extractConfiguration(
