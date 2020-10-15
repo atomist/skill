@@ -156,6 +156,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 				owner: project.id.owner,
 				repo: project.id.repo,
 				pull_number: pr.number,
+				title: pullRequest.title,
 				body,
 			});
 		} else {
@@ -169,14 +170,14 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 					head: prBranch,
 				})
 			).data;
-			if (pullRequest.labels?.length > 0) {
-				await gh.issues.update({
-					owner: project.id.owner,
-					repo: project.id.repo,
-					issue_number: pr.number,
-					labels: pullRequest.labels,
-				});
-			}
+		}
+		if (pullRequest.labels?.length > 0) {
+			await gh.issues.update({
+				owner: project.id.owner,
+				repo: project.id.repo,
+				issue_number: pr.number,
+				labels: pullRequest.labels,
+			});
 		}
 		if (
 			!pullRequest.labels?.includes("auto-merge:on-check-success") &&
