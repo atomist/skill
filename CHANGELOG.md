@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.3.0...HEAD)
 
+### Changed
+
+-   Update title for existing PRs. [2958170](https://github.com/atomist-skills/skill/commit/29581709cf01a5e5e7dfa62dbc43224aae857a99)
+
 ## [0.3.0](https://github.com/atomist/skill/compare/0.2.3...0.3.0) - 2020-10-15
 
 ### Added
