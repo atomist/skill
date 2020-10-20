@@ -27,6 +27,7 @@ import {
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	isSubscriptionIncoming,
 	isWebhookIncoming,
 	WebhookIncoming,
 } from "./payload";
@@ -95,6 +96,17 @@ export const bundle = async (
 			} else {
 				throw new Error(
 					`Event handler with name '${payload.extensions.operationName}' not registered`,
+				);
+			}
+		});
+	} else if (isSubscriptionIncoming(payload)) {
+		return processEvent(payload, context, async () => {
+			const loader = HandlerRegistry.events[payload.subscription.name];
+			if (loader) {
+				return loader();
+			} else {
+				throw new Error(
+					`Event handler with name '${payload.subscription.name}' not registered`,
 				);
 			}
 		});

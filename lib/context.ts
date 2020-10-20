@@ -34,8 +34,10 @@ import {
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	isSubscriptionIncoming,
 	isWebhookIncoming,
 	SkillConfiguration,
+	SubscriptionIncoming,
 	WebhookIncoming,
 	workspaceId,
 } from "./payload";
@@ -46,7 +48,11 @@ import { createStorageProvider } from "./storage/provider";
 import { extractParameters, handleError } from "./util";
 
 export function createContext(
-	payload: CommandIncoming | EventIncoming | WebhookIncoming,
+	payload:
+		| CommandIncoming
+		| EventIncoming
+		| WebhookIncoming
+		| SubscriptionIncoming,
 	ctx: { eventId: string },
 ):
 	| ((CommandContext | EventContext | WebhookContext) & ContextualLifecycle)
@@ -127,7 +133,50 @@ export function createContext(
 				},
 			),
 			storage,
-			message: new PubSubEventMessageClient(payload, graphql),
+			message: new PubSubEventMessageClient(
+				payload,
+				graphql,
+				payload.extensions.team_id,
+				payload.extensions.team_name,
+				payload.extensions.operationName,
+				payload.extensions.correlation_id,
+			),
+			project: createProjectLoader({ onComplete }),
+			trigger: payload,
+			configuration: extractConfiguration(payload)?.configuration?.[0],
+			skill: payload.skill,
+			close,
+			onComplete,
+		};
+	} else if (isSubscriptionIncoming(payload)) {
+		return {
+			data: payload.subscription?.result,
+			name: payload.subscription?.name,
+			correlationId: payload.correlation_id,
+			executionId: ctx.eventId,
+			workspaceId: wid,
+			credential,
+			graphql,
+			http: createHttpClient(),
+			audit: wrapAuditLogger(
+				{
+					eventId: ctx.eventId,
+					correlationId: payload.correlation_id,
+					workspaceId: wid,
+				},
+				{
+					name: payload.subscription?.name,
+				},
+			),
+			storage,
+			message: new PubSubEventMessageClient(
+				payload,
+				graphql,
+				payload.team_id,
+				payload.team_id,
+				payload.subscription?.name,
+				payload.correlation_id,
+			),
 			project: createProjectLoader({ onComplete }),
 			trigger: payload,
 			configuration: extractConfiguration(payload)?.configuration?.[0],
@@ -174,7 +223,11 @@ export function createContext(
 }
 
 export function extractConfiguration(
-	payload: CommandIncoming | EventIncoming | WebhookIncoming,
+	payload:
+		| CommandIncoming
+		| EventIncoming
+		| WebhookIncoming
+		| SubscriptionIncoming,
 ): { configuration: Array<Configuration<any>> } {
 	const cfgs: SkillConfiguration[] = [];
 	if ((payload.skill?.configuration as any)?.instances) {
