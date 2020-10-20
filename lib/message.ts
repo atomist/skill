@@ -28,6 +28,7 @@ import {
 	EventContext,
 	HandlerStatus,
 	WebhookContext,
+	SubscriptionContext,
 } from "./handler";
 import { debug, error } from "./log";
 import {
@@ -764,7 +765,11 @@ export class PubSubWebhookMessageClient
 
 export function prepareStatus(
 	status: HandlerStatus | Error,
-	context: EventContext | CommandContext | WebhookContext,
+	context:
+		| EventContext
+		| CommandContext
+		| WebhookContext
+		| SubscriptionContext,
 ): HandlerResponse["status"] {
 	if (status instanceof Error) {
 		return {

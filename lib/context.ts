@@ -180,7 +180,6 @@ export function createContext(
 		};
 	} else if (isSubscriptionIncoming(payload)) {
 		return {
-			data: payload.subscription.result,
 			name: payload.subscription.name,
 			correlationId: payload.correlation_id,
 			executionId: ctx.eventId,
@@ -198,6 +197,7 @@ export function createContext(
 					name: payload.subscription.name,
 				},
 			),
+			subscription: payload.subscription,
 			storage,
 			message: new PubSubSubscriptionMessageClient(payload, graphql),
 			project: createProjectLoader({ onComplete }),
