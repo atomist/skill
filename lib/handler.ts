@@ -18,7 +18,12 @@ import { Logger } from "@atomist/skill-logging/lib/logging";
 import { GraphQLClient } from "./graphql";
 import { HttpClient } from "./http";
 import { CommandMessageClient, MessageClient } from "./message";
-import { CommandIncoming, EventIncoming, WebhookIncoming } from "./payload";
+import {
+	CommandIncoming,
+	EventIncoming,
+	SubscriptionIncoming,
+	WebhookIncoming,
+} from "./payload";
 import { ProjectLoader } from "./project";
 import { ParameterPromptObject, ParameterPromptOptions } from "./prompt/prompt";
 import { CredentialProvider } from "./secret/provider";
@@ -71,8 +76,11 @@ export interface ContextualLifecycle {
 	close: () => Promise<void>;
 }
 
-export interface EventContext<E = any, C = any>
-	extends Contextual<EventIncoming, Configuration<C>> {
+export interface EventContext<
+	E = any,
+	C = any,
+	P = EventIncoming | SubscriptionIncoming
+> extends Contextual<P, Configuration<C>> {
 	data: E;
 }
 
