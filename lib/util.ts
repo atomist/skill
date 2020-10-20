@@ -44,7 +44,12 @@ export function handlerLoader<T>(type: string) {
 	return async (name: string, cwd?: string): Promise<T> => {
 		const path = await requirePath(type, name, cwd);
 		// eslint-disable-next-line @typescript-eslint/no-var-requires
-		return require(path).handler as T;
+		const f = require(path);
+		if (f[name]) {
+			return f[name] as T;
+		} else {
+			return f.handler as T;
+		}
 	};
 }
 
