@@ -20,6 +20,7 @@ import {
 	ContextualLifecycle,
 	EventContext,
 	WebhookContext,
+	SubscriptionContext,
 	Configuration,
 } from "./handler";
 import { createHttpClient } from "./http";
@@ -28,14 +29,17 @@ import {
 	PubSubCommandMessageClient,
 	PubSubEventMessageClient,
 	PubSubWebhookMessageClient,
+	PubSubSubscriptionMessageClient,
 } from "./message";
 import {
 	CommandIncoming,
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	isSubscriptionIncoming,
 	isWebhookIncoming,
 	SkillConfiguration,
+	SubscriptionIncoming,
 	WebhookIncoming,
 	workspaceId,
 } from "./payload";
@@ -46,10 +50,15 @@ import { createStorageProvider } from "./storage/provider";
 import { extractParameters, handleError } from "./util";
 
 export function createContext(
-	payload: CommandIncoming | EventIncoming | WebhookIncoming,
+	payload:
+		| CommandIncoming
+		| EventIncoming
+		| WebhookIncoming
+		| SubscriptionIncoming,
 	ctx: { eventId: string },
 ):
-	| ((CommandContext | EventContext | WebhookContext) & ContextualLifecycle)
+	| ((CommandContext | EventContext | WebhookContext | SubscriptionContext) &
+			ContextualLifecycle)
 	| undefined {
 	const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")
 		?.value;
@@ -169,12 +178,45 @@ export function createContext(
 			close,
 			onComplete,
 		};
+	} else if (isSubscriptionIncoming(payload)) {
+		return {
+			data: payload.subscription.result,
+			name: payload.subscription.name,
+			correlationId: payload.correlation_id,
+			executionId: ctx.eventId,
+			workspaceId: wid,
+			credential,
+			graphql,
+			http: createHttpClient(),
+			audit: wrapAuditLogger(
+				{
+					eventId: ctx.eventId,
+					correlationId: payload.correlation_id,
+					workspaceId: wid,
+				},
+				{
+					name: payload.subscription.name,
+				},
+			),
+			storage,
+			message: new PubSubSubscriptionMessageClient(payload, graphql),
+			project: createProjectLoader({ onComplete }),
+			trigger: payload,
+			configuration: extractConfiguration(payload)?.configuration?.[0],
+			skill: payload.skill,
+			close,
+			onComplete,
+		};
 	}
 	return undefined;
 }
 
 export function extractConfiguration(
-	payload: CommandIncoming | EventIncoming | WebhookIncoming,
+	payload:
+		| CommandIncoming
+		| EventIncoming
+		| WebhookIncoming
+		| SubscriptionIncoming,
 ): { configuration: Array<Configuration<any>> } {
 	const cfgs: SkillConfiguration[] = [];
 	if ((payload.skill?.configuration as any)?.instances) {

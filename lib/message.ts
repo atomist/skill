@@ -37,6 +37,7 @@ import {
 	isEventIncoming,
 	Skill,
 	Source,
+	SubscriptionIncoming,
 	WebhookIncoming,
 } from "./payload";
 import { replacer, toArray } from "./util";
@@ -154,7 +155,8 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 		protected readonly request:
 			| CommandIncoming
 			| EventIncoming
-			| WebhookIncoming,
+			| WebhookIncoming
+			| SubscriptionIncoming,
 		protected readonly correlationId: string,
 		protected readonly team: { id: string; name?: string },
 		protected readonly source: Source,
@@ -553,7 +555,8 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
 		protected readonly request:
 			| CommandIncoming
 			| EventIncoming
-			| WebhookIncoming,
+			| WebhookIncoming
+			| SubscriptionIncoming,
 		protected readonly correlationId: string,
 		protected readonly team: { id: string; name?: string },
 		protected readonly source: Source,
@@ -665,6 +668,50 @@ export class PubSubEventMessageClient
 				name: this.request.extensions.team_name,
 			},
 			event: this.request.extensions.operationName,
+			status,
+			skill: this.request.skill,
+		};
+		return this.sendResponse(response);
+	}
+}
+
+export class PubSubSubscriptionMessageClient
+	extends AbstractPubSubMessageClient
+	implements StatusPublisher {
+	constructor(
+		protected readonly request: SubscriptionIncoming,
+		protected readonly graphClient: GraphQLClient,
+	) {
+		super(
+			request,
+			request.correlation_id,
+			{
+				id: request.team_id,
+				name: "unknown",
+			},
+			undefined,
+			request.team_id,
+			graphClient,
+		);
+	}
+
+	protected async doSend(
+		msg: string | SlackMessage,
+		destinations: Destinations,
+		options: MessageOptions = {},
+	): Promise<any> {
+		return super.doSend(msg, destinations, options);
+	}
+
+	public async publish(status: HandlerResponse["status"]): Promise<void> {
+		const response: HandlerResponse = {
+			api_version: "1",
+			correlation_id: this.request.correlation_id,
+			team: {
+				id: this.request.team_id,
+				name: "unknown",
+			},
+			event: this.request.subscription.name,
 			status,
 			skill: this.request.skill,
 		};

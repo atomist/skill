@@ -18,7 +18,12 @@ import { Logger } from "@atomist/skill-logging/lib/logging";
 import { GraphQLClient } from "./graphql";
 import { HttpClient } from "./http";
 import { CommandMessageClient, MessageClient } from "./message";
-import { CommandIncoming, EventIncoming, WebhookIncoming } from "./payload";
+import {
+	CommandIncoming,
+	EventIncoming,
+	WebhookIncoming,
+	SubscriptionIncoming,
+} from "./payload";
 import { ProjectLoader } from "./project";
 import { ParameterPromptObject, ParameterPromptOptions } from "./prompt/prompt";
 import { CredentialProvider } from "./secret/provider";
@@ -97,6 +102,11 @@ export interface WebhookContext<B = any, C = any>
 	name: string;
 }
 
+export interface SubscriptionContext<B = any, C = any>
+	extends Contextual<SubscriptionIncoming, Configuration<C>> {
+	subscription: B;
+}
+
 export interface HandlerStatus {
 	visibility?: "hidden";
 	code?: number;
@@ -113,4 +123,8 @@ export type EventHandler<E = any, C = any> = (
 
 export type WebhookHandler<B = any, C = any> = (
 	context: WebhookContext<B, C>,
+) => Promise<void | HandlerStatus>;
+
+export type SubscriptionHandler<B = any, C = any> = (
+	context: SubscriptionContext<B, C>,
 ) => Promise<void | HandlerStatus>;
