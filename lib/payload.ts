@@ -30,6 +30,7 @@ export function isWebhookIncoming(event: any): event is WebhookIncoming {
 }
 
 export function isSubscriptionIncoming(
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	event: any,
 ): event is SubscriptionIncoming {
 	return !!event.subscription;
@@ -46,9 +47,7 @@ export function workspaceId(
 		return event.team.id;
 	} else if (isEventIncoming(event)) {
 		return event.extensions.team_id;
-	} else if (isWebhookIncoming(event)) {
-		return event.team_id;
-	} else if (isSubscriptionIncoming(event)) {
+	} else if (isWebhookIncoming(event) || isSubscriptionIncoming(event)) {
 		return event.team_id;
 	}
 	return undefined;

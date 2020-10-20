@@ -28,7 +28,6 @@ import {
 	EventContext,
 	HandlerStatus,
 	WebhookContext,
-	SubscriptionContext,
 } from "./handler";
 import { debug, error } from "./log";
 import {
@@ -636,18 +635,22 @@ export class PubSubEventMessageClient
 	extends AbstractPubSubMessageClient
 	implements StatusPublisher {
 	constructor(
-		protected readonly request: EventIncoming,
+		protected readonly request: EventIncoming | SubscriptionIncoming,
 		protected readonly graphClient: GraphQLClient,
+		protected readonly teamId: string,
+		protected readonly teamName: string,
+		protected readonly operationName: string,
+		protected readonly correlationId: string,
 	) {
 		super(
 			request,
-			request.extensions.correlation_id,
+			correlationId,
 			{
-				id: request.extensions.team_id,
-				name: request.extensions.team_name,
+				id: teamId,
+				name: teamName,
 			},
 			undefined,
-			request.extensions.team_id,
+			teamId,
 			graphClient,
 		);
 	}
@@ -663,56 +666,12 @@ export class PubSubEventMessageClient
 	public async publish(status: HandlerResponse["status"]): Promise<void> {
 		const response: HandlerResponse = {
 			api_version: "1",
-			correlation_id: this.request.extensions.correlation_id,
+			correlation_id: this.correlationId,
 			team: {
-				id: this.request.extensions.team_id,
-				name: this.request.extensions.team_name,
+				id: this.teamId,
+				name: this.teamName,
 			},
-			event: this.request.extensions.operationName,
-			status,
-			skill: this.request.skill,
-		};
-		return this.sendResponse(response);
-	}
-}
-
-export class PubSubSubscriptionMessageClient
-	extends AbstractPubSubMessageClient
-	implements StatusPublisher {
-	constructor(
-		protected readonly request: SubscriptionIncoming,
-		protected readonly graphClient: GraphQLClient,
-	) {
-		super(
-			request,
-			request.correlation_id,
-			{
-				id: request.team_id,
-				name: "unknown",
-			},
-			undefined,
-			request.team_id,
-			graphClient,
-		);
-	}
-
-	protected async doSend(
-		msg: string | SlackMessage,
-		destinations: Destinations,
-		options: MessageOptions = {},
-	): Promise<any> {
-		return super.doSend(msg, destinations, options);
-	}
-
-	public async publish(status: HandlerResponse["status"]): Promise<void> {
-		const response: HandlerResponse = {
-			api_version: "1",
-			correlation_id: this.request.correlation_id,
-			team: {
-				id: this.request.team_id,
-				name: "unknown",
-			},
-			event: this.request.subscription.name,
+			event: this.operationName,
 			status,
 			skill: this.request.skill,
 		};
@@ -765,11 +724,7 @@ export class PubSubWebhookMessageClient
 
 export function prepareStatus(
 	status: HandlerStatus | Error,
-	context:
-		| EventContext
-		| CommandContext
-		| WebhookContext
-		| SubscriptionContext,
+	context: EventContext | CommandContext | WebhookContext,
 ): HandlerResponse["status"] {
 	if (status instanceof Error) {
 		return {
@@ -779,7 +734,9 @@ export function prepareStatus(
 	} else {
 		const reason = `${
 			status?.code === 0 ? "Successfully" : "Unsuccessfully"
-		} invoked ${context.skill.namespace}/${context.skill.name}`;
+		} invoked ${context.skill.namespace}/${context.skill.name}@${
+			context.name
+		}`;
 		return {
 			visibility: status?.visibility,
 			code: status?.code || 0,

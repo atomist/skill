@@ -20,7 +20,6 @@ import {
 	ContextualLifecycle,
 	EventContext,
 	WebhookContext,
-	SubscriptionContext,
 	Configuration,
 } from "./handler";
 import { createHttpClient } from "./http";
@@ -29,7 +28,6 @@ import {
 	PubSubCommandMessageClient,
 	PubSubEventMessageClient,
 	PubSubWebhookMessageClient,
-	PubSubSubscriptionMessageClient,
 } from "./message";
 import {
 	CommandIncoming,
@@ -57,8 +55,7 @@ export function createContext(
 		| SubscriptionIncoming,
 	ctx: { eventId: string },
 ):
-	| ((CommandContext | EventContext | WebhookContext | SubscriptionContext) &
-			ContextualLifecycle)
+	| ((CommandContext | EventContext | WebhookContext) & ContextualLifecycle)
 	| undefined {
 	const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")
 		?.value;
@@ -136,7 +133,50 @@ export function createContext(
 				},
 			),
 			storage,
-			message: new PubSubEventMessageClient(payload, graphql),
+			message: new PubSubEventMessageClient(
+				payload,
+				graphql,
+				payload.extensions.team_id,
+				payload.extensions.team_name,
+				payload.extensions.operationName,
+				payload.extensions.correlation_id,
+			),
+			project: createProjectLoader({ onComplete }),
+			trigger: payload,
+			configuration: extractConfiguration(payload)?.configuration?.[0],
+			skill: payload.skill,
+			close,
+			onComplete,
+		};
+	} else if (isSubscriptionIncoming(payload)) {
+		return {
+			data: payload.subscription?.result,
+			name: payload.subscription?.name,
+			correlationId: payload.correlation_id,
+			executionId: ctx.eventId,
+			workspaceId: wid,
+			credential,
+			graphql,
+			http: createHttpClient(),
+			audit: wrapAuditLogger(
+				{
+					eventId: ctx.eventId,
+					correlationId: payload.correlation_id,
+					workspaceId: wid,
+				},
+				{
+					name: payload.subscription?.name,
+				},
+			),
+			storage,
+			message: new PubSubEventMessageClient(
+				payload,
+				graphql,
+				payload.team_id,
+				payload.team_id,
+				payload.subscription?.name,
+				payload.correlation_id,
+			),
 			project: createProjectLoader({ onComplete }),
 			trigger: payload,
 			configuration: extractConfiguration(payload)?.configuration?.[0],
@@ -172,35 +212,6 @@ export function createContext(
 			storage,
 			message: new PubSubWebhookMessageClient(payload, graphql),
 			project: createProjectLoader(),
-			trigger: payload,
-			configuration: extractConfiguration(payload)?.configuration?.[0],
-			skill: payload.skill,
-			close,
-			onComplete,
-		};
-	} else if (isSubscriptionIncoming(payload)) {
-		return {
-			name: payload.subscription.name,
-			correlationId: payload.correlation_id,
-			executionId: ctx.eventId,
-			workspaceId: wid,
-			credential,
-			graphql,
-			http: createHttpClient(),
-			audit: wrapAuditLogger(
-				{
-					eventId: ctx.eventId,
-					correlationId: payload.correlation_id,
-					workspaceId: wid,
-				},
-				{
-					name: payload.subscription.name,
-				},
-			),
-			subscription: payload.subscription,
-			storage,
-			message: new PubSubSubscriptionMessageClient(payload, graphql),
-			project: createProjectLoader({ onComplete }),
 			trigger: payload,
 			configuration: extractConfiguration(payload)?.configuration?.[0],
 			skill: payload.skill,

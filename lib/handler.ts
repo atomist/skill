@@ -21,8 +21,8 @@ import { CommandMessageClient, MessageClient } from "./message";
 import {
 	CommandIncoming,
 	EventIncoming,
-	WebhookIncoming,
 	SubscriptionIncoming,
+	WebhookIncoming,
 } from "./payload";
 import { ProjectLoader } from "./project";
 import { ParameterPromptObject, ParameterPromptOptions } from "./prompt/prompt";
@@ -76,8 +76,11 @@ export interface ContextualLifecycle {
 	close: () => Promise<void>;
 }
 
-export interface EventContext<E = any, C = any>
-	extends Contextual<EventIncoming, Configuration<C>> {
+export interface EventContext<
+	E = any,
+	C = any,
+	P = EventIncoming | SubscriptionIncoming
+> extends Contextual<P, Configuration<C>> {
 	data: E;
 }
 
@@ -102,11 +105,6 @@ export interface WebhookContext<B = any, C = any>
 	name: string;
 }
 
-export interface SubscriptionContext<B = any, C = any>
-	extends Contextual<SubscriptionIncoming, Configuration<C>> {
-	subscription: B;
-}
-
 export interface HandlerStatus {
 	visibility?: "hidden";
 	code?: number;
@@ -123,8 +121,4 @@ export type EventHandler<E = any, C = any> = (
 
 export type WebhookHandler<B = any, C = any> = (
 	context: WebhookContext<B, C>,
-) => Promise<void | HandlerStatus>;
-
-export type SubscriptionHandler<B = any, C = any> = (
-	context: SubscriptionContext<B, C>,
 ) => Promise<void | HandlerStatus>;
