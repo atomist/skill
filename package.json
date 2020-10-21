@@ -22,7 +22,7 @@
   "dependencies": {
     "@atomist/skill-logging": "^0.2.6",
     "@atomist/slack-messages": "1.2.0-master.20200806132057",
-    "@google-cloud/pubsub": "^2.5.0",
+    "@google-cloud/pubsub": "^2.6.0",
     "@google-cloud/storage": "^5.3.0",
     "@graphql-codegen/cli": "^1.18.0",
     "@graphql-codegen/typescript": "^1.17.11",
@@ -83,7 +83,7 @@
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "eslint": "^7.11.0",
-    "eslint-config-prettier": "^6.13.0",
+    "eslint-config-prettier": "^6.14.0",
     "eslint-plugin-prettier": "^3.1.4",
     "espower-typescript": "^9.0.2",
     "husky": "^4.3.0",
