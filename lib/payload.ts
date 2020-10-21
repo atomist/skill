@@ -29,14 +29,25 @@ export function isWebhookIncoming(event: any): event is WebhookIncoming {
 	return !!event.webhook;
 }
 
+export function isSubscriptionIncoming(
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	event: any,
+): event is SubscriptionIncoming {
+	return !!event.subscription;
+}
+
 export function workspaceId(
-	event: CommandIncoming | EventIncoming | WebhookIncoming,
+	event:
+		| CommandIncoming
+		| EventIncoming
+		| WebhookIncoming
+		| SubscriptionIncoming,
 ): string | undefined {
 	if (isCommandIncoming(event)) {
 		return event.team.id;
 	} else if (isEventIncoming(event)) {
 		return event.extensions.team_id;
-	} else if (isWebhookIncoming(event)) {
+	} else if (isWebhookIncoming(event) || isSubscriptionIncoming(event)) {
 		return event.team_id;
 	}
 	return undefined;
@@ -86,6 +97,18 @@ export interface Skill {
 				instances: SkillConfiguration[];
 		  }
 		| SkillConfiguration;
+}
+
+export interface SubscriptionIncoming {
+	correlation_id: string;
+	type: string;
+	team_id: string;
+	skill: Skill;
+	secrets: Secret[];
+	subscription: {
+		name: string;
+		result: any;
+	};
 }
 
 export interface WebhookIncoming {

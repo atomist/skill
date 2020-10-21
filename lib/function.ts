@@ -36,7 +36,9 @@ import {
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	isSubscriptionIncoming,
 	isWebhookIncoming,
+	SubscriptionIncoming,
 	WebhookIncoming,
 } from "./payload";
 import { CommandListenerExecutionInterruptError } from "./prompt/prompt";
@@ -62,7 +64,7 @@ export const entryPoint = async (
 	);
 	info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
 
-	if (isEventIncoming(payload)) {
+	if (isEventIncoming(payload) || isSubscriptionIncoming(payload)) {
 		await processEvent(payload, context);
 	} else if (isCommandIncoming(payload)) {
 		await processCommand(payload, context);
@@ -72,7 +74,7 @@ export const entryPoint = async (
 };
 
 export async function processEvent(
-	event: EventIncoming,
+	event: EventIncoming | SubscriptionIncoming,
 	ctx: { eventId: string },
 	loader: (name: string) => Promise<EventHandler> = handlerLoader("events"),
 ): Promise<void> {

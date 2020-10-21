@@ -15,11 +15,20 @@
  */
 
 import { GraphQLClient } from "../graphql";
-import { CommandIncoming, EventIncoming, WebhookIncoming } from "../payload";
+import {
+	CommandIncoming,
+	EventIncoming,
+	SubscriptionIncoming,
+	WebhookIncoming,
+} from "../payload";
 
 export type CredentialResolver<T> = (
 	graphClient: GraphQLClient,
-	payload: CommandIncoming | EventIncoming | WebhookIncoming,
+	payload:
+		| CommandIncoming
+		| EventIncoming
+		| WebhookIncoming
+		| SubscriptionIncoming,
 ) => Promise<T>;
 
 export interface GitHubCredential {
@@ -52,7 +61,8 @@ export class DefaultCredentialProvider implements CredentialProvider {
 		private readonly payload:
 			| CommandIncoming
 			| EventIncoming
-			| WebhookIncoming,
+			| WebhookIncoming
+			| SubscriptionIncoming,
 	) {}
 
 	public async resolve<T>(spec: CredentialResolver<T>): Promise<T> {

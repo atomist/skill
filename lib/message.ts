@@ -35,8 +35,10 @@ import {
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	isSubscriptionIncoming,
 	Skill,
 	Source,
+	SubscriptionIncoming,
 	WebhookIncoming,
 } from "./payload";
 import { replacer, toArray } from "./util";
@@ -154,7 +156,8 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 		protected readonly request:
 			| CommandIncoming
 			| EventIncoming
-			| WebhookIncoming,
+			| WebhookIncoming
+			| SubscriptionIncoming,
 		protected readonly correlationId: string,
 		protected readonly team: { id: string; name?: string },
 		protected readonly source: Source,
@@ -253,6 +256,8 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 				: undefined,
 			event: isEventIncoming(this.request)
 				? this.request.extensions.operationName
+				: isSubscriptionIncoming(this.request)
+				? this.request.subscription.name
 				: undefined,
 			destinations: responseDestinations,
 			id: options.id ? options.id : undefined,
@@ -553,7 +558,8 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
 		protected readonly request:
 			| CommandIncoming
 			| EventIncoming
-			| WebhookIncoming,
+			| WebhookIncoming
+			| SubscriptionIncoming,
 		protected readonly correlationId: string,
 		protected readonly team: { id: string; name?: string },
 		protected readonly source: Source,
@@ -632,18 +638,22 @@ export class PubSubEventMessageClient
 	extends AbstractPubSubMessageClient
 	implements StatusPublisher {
 	constructor(
-		protected readonly request: EventIncoming,
+		protected readonly request: EventIncoming | SubscriptionIncoming,
 		protected readonly graphClient: GraphQLClient,
+		protected readonly teamId: string,
+		protected readonly teamName: string,
+		protected readonly operationName: string,
+		protected readonly correlationId: string,
 	) {
 		super(
 			request,
-			request.extensions.correlation_id,
+			correlationId,
 			{
-				id: request.extensions.team_id,
-				name: request.extensions.team_name,
+				id: teamId,
+				name: teamName,
 			},
 			undefined,
-			request.extensions.team_id,
+			teamId,
 			graphClient,
 		);
 	}
@@ -659,12 +669,12 @@ export class PubSubEventMessageClient
 	public async publish(status: HandlerResponse["status"]): Promise<void> {
 		const response: HandlerResponse = {
 			api_version: "1",
-			correlation_id: this.request.extensions.correlation_id,
+			correlation_id: this.correlationId,
 			team: {
-				id: this.request.extensions.team_id,
-				name: this.request.extensions.team_name,
+				id: this.teamId,
+				name: this.teamName,
 			},
-			event: this.request.extensions.operationName,
+			event: this.operationName,
 			status,
 			skill: this.request.skill,
 		};
@@ -727,7 +737,9 @@ export function prepareStatus(
 	} else {
 		const reason = `${
 			status?.code === 0 ? "Successfully" : "Unsuccessfully"
-		} invoked ${context.skill.namespace}/${context.skill.name}`;
+		} invoked ${context.skill.namespace}/${context.skill.name}@${
+			context.name
+		}`;
 		return {
 			visibility: status?.visibility,
 			code: status?.code || 0,

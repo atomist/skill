@@ -15,10 +15,139 @@
  */
 
 import * as assert from "power-assert";
-import { processWebhook } from "../lib/function";
+import { processEvent, processWebhook } from "../lib/function";
 import { success } from "../lib/status";
+import { guid } from "../lib/util";
 
 describe("function", () => {
+	describe("processEvent", () => {
+		it("should execute datalog subscription handler", async () => {
+			const payload = {
+				correlation_id: guid(),
+				subscription: {
+					name: "check-complete",
+					result: {
+						"git.commit": "123456",
+					},
+				},
+				team_id: "123456",
+				type: "not sure what goes here",
+				secrets: [
+					{
+						uri: "atomist://api-key",
+						value: "123456",
+					},
+				],
+				skill: {
+					namespace: "atomist",
+					name: "container-run-skill",
+					id: "70b0b9cf-737b-4c61-b90c-c47f461d8615",
+					version: "2.1.9-75",
+					configuration: {
+						name: "sonarcloud",
+						enabled: true,
+						resourceProviders: [
+							{
+								name: "github",
+								typeName: "GitHubAppResourceProvider",
+								selectedResourceProviders: [
+									{
+										id:
+											"AK748NQC5_75b34148-c780-4cdb-a641-d4c34b74515e",
+									},
+								],
+							},
+							{
+								name: "secret",
+								typeName: "SecretProvider",
+								selectedResourceProviders: [
+									{
+										id:
+											"AK748NQC5_d35537a0-9c72-4b23-81ea-96de97d79d5e",
+									},
+								],
+							},
+						],
+						parameters: [
+							{
+								name: "env_map",
+								value:
+									'[{"name":"SONAR_TOKEN","secret":"AK748NQC5_d35537a0-9c72-4b23-81ea-96de97d79d5e"}]',
+							},
+							{
+								name: "subscription_filter",
+								value: ["onPush"],
+							},
+							{
+								name: "docker_image",
+								value: "sonarsource/sonar-scanner-cli:4.4",
+							},
+							{
+								name: "docker_command",
+								value:
+									"/usr/bin/entrypoint.sh sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${data.Push[0].repo.owner}:${data.Push[0].repo.name} -Dsonar.organization=sdm-org",
+							},
+							{
+								name: "docker_env",
+								value: [
+									"SONAR_USER_HOME=/atm/home/.sonar",
+									"SONAR_PROJECT_BASE_DIR=/atm/home",
+								],
+							},
+							{
+								name: "docker_cache",
+								value: [".scannerwork/**", ".sonar/**"],
+							},
+							{
+								name: "docker_check",
+								value: true,
+							},
+							{
+								name: "repos",
+								value: {
+									includes: [
+										{
+											providerId:
+												"AK748NQC5_75b34148-c780-4cdb-a641-d4c34b74515e",
+											ownerId:
+												"AK748NQC5_atomisthqa_AK748NQC5",
+											repoIds: [
+												"AK748NQC5_AK748NQC5_atomisthqa_242068264",
+											],
+										},
+									],
+									excludes: null,
+								},
+							},
+						],
+					},
+				},
+			};
+			const publish = async msg => {
+				assert.deepStrictEqual(msg.code, 0);
+			};
+
+			await processEvent(
+				payload as any,
+				{ eventId: "654321" },
+				async name => {
+					assert.deepStrictEqual(
+						name,
+						`${payload.subscription.name}`,
+					);
+					return async ctx => {
+						(ctx.message as any).publish = publish;
+						assert.deepStrictEqual(
+							ctx.data,
+							payload.subscription.result,
+						);
+						return success();
+					};
+				},
+			);
+		});
+	});
+
 	describe("processWebhook", () => {
 		it("should execute webhook handler", async () => {
 			const payload = {

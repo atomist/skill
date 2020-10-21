@@ -19,6 +19,7 @@ import { processCommand, processEvent, processWebhook } from "../function";
 import {
 	isCommandIncoming,
 	isEventIncoming,
+	isSubscriptionIncoming,
 	isWebhookIncoming,
 } from "../payload";
 
@@ -29,6 +30,11 @@ export async function runSkill(skill?: string): Promise<void> {
 	if (isEventIncoming(payload)) {
 		if (skill) {
 			payload.extensions.operationName = skill;
+		}
+		await processEvent(payload, {} as any);
+	} else if (isSubscriptionIncoming(payload)) {
+		if (skill) {
+			payload.subscription.name = skill;
 		}
 		await processEvent(payload, {} as any);
 	} else if (isCommandIncoming(payload)) {
