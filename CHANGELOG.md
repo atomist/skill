@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.4.0...HEAD)
 
+### Added
+
+-   Add support for datalogSubscriptions in skill definitions. [3e4ea81](https://github.com/atomist-skills/skill/commit/3e4ea8187cfbe589ff29e15a8d1b195762250f35)
+
 ## [0.4.0](https://github.com/atomist/skill/compare/0.3.1...0.4.0) - 2020-10-21
 
 ### Added
