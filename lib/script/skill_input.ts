@@ -62,9 +62,7 @@ export type AtomistSkillInput = {
 	technologies?: Maybe<Array<AtomistSkillTechnology>>;
 	version: Scalars["String"];
 	videoUrl?: Maybe<Scalars["String"]>;
-	gateSubscriptions?: Maybe<Array<AtomistGateRefInput>>;
-	gates?: Maybe<Array<AtomistGateInput>>;
-	signals?: Maybe<Array<Scalars["String"]>>;
+	datalogSubscriptions?: Maybe<Array<{ name: string; query: string }>>;
 };
 
 export type AtomistSkillArtifactsInput = {
@@ -318,6 +316,24 @@ export async function createJavaScriptSkillInput(
 		subscriptions.push(...(await rc(subscription)));
 	}
 
+	const datalogSubscriptions = [...(is.datalogSubscriptions || [])];
+	if (datalogSubscriptions.length === 0) {
+		datalogSubscriptions.push(
+			...(await withGlobMatches<{ name: string; query: string }>(
+				cwd,
+				"**/graphql/subscription/*.edn",
+				async file => {
+					return {
+						query: (
+							await fs.readFile(path.join(cwd, file))
+						).toString(),
+						name: file.slice(0, -4),
+					};
+				},
+			)),
+		);
+	}
+
 	const artifacts: any = {};
 	if (!is.containers) {
 		artifacts.gcf = [
@@ -390,6 +406,7 @@ export async function createJavaScriptSkillInput(
 		})),
 
 		subscriptions,
+		datalogSubscriptions,
 	};
 
 	if (!y.longDescription) {

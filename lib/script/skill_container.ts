@@ -20,8 +20,9 @@ import * as path from "path";
 import { spawnPromise } from "../child_process";
 import { info } from "../log";
 import { packageJson } from "../definition/skill";
-import { globFiles } from "../project/util";
+import { globFiles, withGlobMatches } from "../project/util";
 import { AtomistSkillInput, AtomistSkillRuntime, content } from "./skill_input";
+import merge = require("lodash.merge");
 
 export async function defaults(
 	cwd: string,
@@ -90,20 +91,14 @@ export async function createYamlSkillInput(
 
 	if (await fs.pathExists(path.join(cwd, "package.json"))) {
 		const pj: any = packageJson(path.join(cwd, "package.json"));
-		is = {
-			...is,
-			...pj,
-		};
+		is = merge({}, is, pj);
 	}
 
 	if (await fs.pathExists(path.join(cwd, "skill.yaml"))) {
 		const doc: any = yaml.safeLoad(
 			(await fs.readFile(path.join(cwd, "skill.yaml"))).toString(),
 		);
-		is = {
-			...is,
-			...(doc.skill ? doc.skill : doc),
-		};
+		is = merge({}, is, doc.skill ? doc.skill : doc);
 	}
 
 	const rc = content(cwd);
@@ -114,9 +109,23 @@ export async function createYamlSkillInput(
 	]) {
 		subscriptions.push(...(await rc(subscription)));
 	}
-	const signals = [];
-	for (const signal of is.signals || ["file://**/graphql/signal/*.graphql"]) {
-		signals.push(...(await rc(signal)));
+
+	const datalogSubscriptions = [...(is.datalogSubscriptions || [])];
+	if (datalogSubscriptions.length === 0) {
+		datalogSubscriptions.push(
+			...(await withGlobMatches<{ name: string; query: string }>(
+				cwd,
+				"**/graphql/subscription/*.edn",
+				async file => {
+					return {
+						query: (
+							await fs.readFile(path.join(cwd, file))
+						).toString(),
+						name: path.basename(file).slice(0, -4),
+					};
+				},
+			)),
+		);
 	}
 
 	const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> = {
@@ -125,7 +134,7 @@ export async function createYamlSkillInput(
 			? Buffer.from(is.readme).toString("base64")
 			: undefined,
 		subscriptions,
-		signals,
+		datalogSubscriptions,
 	};
 
 	if (!y.longDescription) {

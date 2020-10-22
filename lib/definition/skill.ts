@@ -266,6 +266,8 @@ export interface Operations {
 	commands?: Command[];
 
 	subscriptions?: string[];
+
+	datalogSubscriptions?: Array<{ name: string; query: string }>;
 }
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
