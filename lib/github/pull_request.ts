@@ -176,7 +176,10 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 				owner: project.id.owner,
 				repo: project.id.repo,
 				issue_number: pr.number,
-				labels: pullRequest.labels,
+				labels: [
+					...(pr.labels?.map(l => l.name) || []),
+					...pullRequest.labels,
+				],
 			});
 		}
 		if (
