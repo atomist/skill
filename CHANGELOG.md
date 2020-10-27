@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Add support for datalogSubscriptions in skill definitions. [3e4ea81](https://github.com/atomist-skills/skill/commit/3e4ea8187cfbe589ff29e15a8d1b195762250f35)
 
+### Changed
+
+-   Update GraphQL schema. [ce72b84](https://github.com/atomist-skills/skill/commit/ce72b8412b3a07edb7b7c540073f091eab95dbfd)
+
 ### Fixed
 
 -   Subsequent edits to managed pull requests remove existing labels. [#100](https://github.com/atomist-skills/skill/issues/100)
