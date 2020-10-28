@@ -201,7 +201,9 @@ async function qualifier(
 
 const RegisterSkillMutation = `mutation RegisterSkill($skill: AtomistSkillInput!) {
     registerSkill(skill: $skill) {
-        id
+		namespace
+		name
+		version
     }
 }
 `;
