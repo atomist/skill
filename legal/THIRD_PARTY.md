@@ -12,7 +12,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | ------------------------------- | ----- |
 | [0BSD](#0bsd)                   | 2     |
 | [AFLv2.1](#aflv21)              | 1     |
-| [Apache-2.0](#apache-20)        | 46    |
+| [Apache-2.0](#apache-20)        | 47    |
 | [BSD-2-Clause](#bsd-2-clause)   | 10    |
 | [BSD-3-Clause](#bsd-3-clause)   | 23    |
 | [BSD](#bsd)                     | 1     |
@@ -21,7 +21,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 47    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 551   |
+| [MIT](#mit)                     | 549   |
 | [Public Domain](#public-domain) | 1     |
 | [Unlicense](#unlicense)         | 1     |
 
@@ -55,7 +55,7 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 | `@google-cloud/projectify`            | `2.0.1`                       | Google Inc.           | [https://github.com/googleapis/nodejs-projectify](https://github.com/googleapis/nodejs-projectify)                               |
 | `@google-cloud/promisify`             | `2.0.3`                       | Google Inc.           | [https://github.com/googleapis/nodejs-promisify](https://github.com/googleapis/nodejs-promisify)                                 |
 | `@google-cloud/pubsub`                | `2.6.0`                       | Google Inc.           | [https://github.com/googleapis/nodejs-pubsub](https://github.com/googleapis/nodejs-pubsub)                                       |
-| `@google-cloud/storage`               | `5.3.0`                       | Google Inc.           | [https://github.com/googleapis/nodejs-storage](https://github.com/googleapis/nodejs-storage)                                     |
+| `@google-cloud/storage`               | `5.4.0`                       | Google Inc.           | [https://github.com/googleapis/nodejs-storage](https://github.com/googleapis/nodejs-storage)                                     |
 | `@grpc/grpc-js`                       | `1.1.7`                       | Google Inc.           | [https://github.com/grpc/grpc-node/tree/master/packages/grpc-js](https://github.com/grpc/grpc-node/tree/master/packages/grpc-js) |
 | `@grpc/proto-loader`                  | `0.5.5`                       | Google Inc.           | [https://github.com/grpc/grpc-node](https://github.com/grpc/grpc-node)                                                           |
 | `@grpc/proto-loader`                  | `0.6.0-pre9`                  | Google Inc.           | [https://github.com/grpc/grpc-node](https://github.com/grpc/grpc-node)                                                           |
@@ -77,6 +77,7 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 | `fb-watchman`                         | `2.0.1`                       | Wez Furlong           | [https://github.com/facebook/watchman](https://github.com/facebook/watchman)                                                     |
 | `forever-agent`                       | `0.6.1`                       | Mikeal Rogers         | [https://github.com/mikeal/forever-agent](https://github.com/mikeal/forever-agent)                                               |
 | `gaxios`                              | `3.2.0`                       | Google, LLC           | [https://github.com/googleapis/gaxios](https://github.com/googleapis/gaxios)                                                     |
+| `gaxios`                              | `4.0.1`                       | Google, LLC           | [https://github.com/googleapis/gaxios](https://github.com/googleapis/gaxios)                                                     |
 | `gcp-metadata`                        | `4.2.0`                       | Stephen Sawchuk       | [https://github.com/googleapis/gcp-metadata](https://github.com/googleapis/gcp-metadata)                                         |
 | `google-auth-library`                 | `6.1.2`                       | Google Inc.           | [https://github.com/googleapis/google-auth-library-nodejs](https://github.com/googleapis/google-auth-library-nodejs)             |
 | `google-gax`                          | `2.9.0`                       | Google API Authors    | [https://github.com/googleapis/gax-nodejs](https://github.com/googleapis/gax-nodejs)                                             |
@@ -421,7 +422,6 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `common-tags`                                        | `1.8.0`         | Declan de Wet        | [https://github.com/declandewet/common-tags](https://github.com/declandewet/common-tags)                                                                                                             |
 | `compressible`                                       | `2.0.18`        |                      | [https://github.com/jshttp/compressible](https://github.com/jshttp/compressible)                                                                                                                     |
 | `concat-map`                                         | `0.0.1`         | James Halliday       | [https://github.com/substack/node-concat-map](https://github.com/substack/node-concat-map)                                                                                                           |
-| `concat-stream`                                      | `2.0.0`         | Max Ogden            | [https://github.com/maxogden/concat-stream](https://github.com/maxogden/concat-stream)                                                                                                               |
 | `constant-case`                                      | `3.0.3`         | Blake Embrey         | [https://github.com/blakeembrey/change-case](https://github.com/blakeembrey/change-case)                                                                                                             |
 | `convert-source-map`                                 | `1.7.0`         | Thorsten Lorenz      | [https://github.com/thlorenz/convert-source-map](https://github.com/thlorenz/convert-source-map)                                                                                                     |
 | `core-js`                                            | `2.6.11`        |                      | [https://github.com/zloirock/core-js](https://github.com/zloirock/core-js)                                                                                                                           |
@@ -451,7 +451,6 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `dir-glob`                                           | `3.0.1`         | Kevin Mårtensson     | [https://github.com/kevva/dir-glob](https://github.com/kevva/dir-glob)                                                                                                                               |
 | `dot-case`                                           | `3.0.3`         | Blake Embrey         | [https://github.com/blakeembrey/change-case](https://github.com/blakeembrey/change-case)                                                                                                             |
 | `dot-prop`                                           | `5.3.0`         | Sindre Sorhus        | [https://github.com/sindresorhus/dot-prop](https://github.com/sindresorhus/dot-prop)                                                                                                                 |
-| `duplexify`                                          | `3.7.1`         | Mathias Buus         | [https://github.com/mafintosh/duplexify](https://github.com/mafintosh/duplexify)                                                                                                                     |
 | `duplexify`                                          | `4.1.1`         | Mathias Buus         | [https://github.com/mafintosh/duplexify](https://github.com/mafintosh/duplexify)                                                                                                                     |
 | `ecc-jsbn`                                           | `0.1.2`         | Jeremie Miller       | [https://github.com/quartzjer/ecc-jsbn](https://github.com/quartzjer/ecc-jsbn)                                                                                                                       |
 | `ee-first`                                           | `1.1.1`         | Jonathan Ong         | [https://github.com/jonathanong/ee-first](https://github.com/jonathanong/ee-first)                                                                                                                   |
@@ -492,6 +491,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `gensync`                                            | `1.0.0-beta.1`  | Logan Smyth          |                                                                                                                                                                                                      |
 | `get-stream`                                         | `4.1.0`         | Sindre Sorhus        | [https://github.com/sindresorhus/get-stream](https://github.com/sindresorhus/get-stream)                                                                                                             |
 | `get-stream`                                         | `5.2.0`         | Sindre Sorhus        | [https://github.com/sindresorhus/get-stream](https://github.com/sindresorhus/get-stream)                                                                                                             |
+| `get-stream`                                         | `6.0.0`         | Sindre Sorhus        | [https://github.com/sindresorhus/get-stream](https://github.com/sindresorhus/get-stream)                                                                                                             |
 | `getpass`                                            | `0.1.7`         | Alex Wilson          | [https://github.com/arekinath/node-getpass](https://github.com/arekinath/node-getpass)                                                                                                               |
 | `git-up`                                             | `4.0.2`         | Ionică Bizău         | [https://github.com/IonicaBizau/git-up](https://github.com/IonicaBizau/git-up)                                                                                                                       |
 | `git-url-parse`                                      | `11.4.0`        | Ionică Bizău         | [https://github.com/IonicaBizau/git-url-parse](https://github.com/IonicaBizau/git-url-parse)                                                                                                         |
@@ -757,7 +757,6 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `type-fest`                                          | `0.11.0`        | Sindre Sorhus        | [https://github.com/sindresorhus/type-fest](https://github.com/sindresorhus/type-fest)                                                                                                               |
 | `type-fest`                                          | `0.17.0`        | Sindre Sorhus        | [https://github.com/sindresorhus/type-fest](https://github.com/sindresorhus/type-fest)                                                                                                               |
 | `typedarray-to-buffer`                               | `3.1.5`         | Feross Aboukhadijeh  | [https://github.com/feross/typedarray-to-buffer](https://github.com/feross/typedarray-to-buffer)                                                                                                     |
-| `typedarray`                                         | `0.0.6`         | James Halliday       | [https://github.com/substack/typedarray](https://github.com/substack/typedarray)                                                                                                                     |
 | `ua-parser-js`                                       | `0.7.22`        | Faisal Salman        | [https://github.com/faisalman/ua-parser-js](https://github.com/faisalman/ua-parser-js)                                                                                                               |
 | `unc-path-regex`                                     | `0.1.2`         | Jon Schlinkert       | [https://github.com/regexhq/unc-path-regex](https://github.com/regexhq/unc-path-regex)                                                                                                               |
 | `unique-string`                                      | `2.0.0`         | Sindre Sorhus        | [https://github.com/sindresorhus/unique-string](https://github.com/sindresorhus/unique-string)                                                                                                       |
