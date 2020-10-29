@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Update schema. [59ee1b8](https://github.com/atomist-skills/skill/commit/59ee1b824443b2206fa1fc188571db2bea3444df)
 -   Update schema properly. [0237352](https://github.com/atomist-skills/skill/commit/0237352482115c8921c122aa7ab14466096c6ee2)
+-   Update schema. [161b4a9](https://github.com/atomist-skills/skill/commit/161b4a91880c556743ed760a34c871bee9bb7b1f)
 
 ## [0.4.1](https://github.com/atomist/skill/compare/0.4.0...0.4.1) - 2020-10-27
 
