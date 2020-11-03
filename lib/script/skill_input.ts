@@ -321,7 +321,7 @@ export async function createJavaScriptSkillInput(
 		datalogSubscriptions.push(
 			...(await withGlobMatches<{ name: string; query: string }>(
 				cwd,
-				"**/graphql/subscription/*.edn",
+				"**/datalog/subscription/*.edn",
 				async file => {
 					return {
 						query: (
