@@ -35,5 +35,10 @@ export async function generateGql(cwd: string): Promise<void> {
 		"codegen.yaml",
 	);
 
-	await spawnPromise(cli, ["--config", config]);
+	const result = await spawnPromise(cli, ["--config", config], {
+		log: { write: async msg => console.log(msg.trimRight()) },
+	});
+	if (result.status !== 0) {
+		throw result.error;
+	}
 }
