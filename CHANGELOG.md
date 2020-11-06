@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 -   Add schema package script. [b65c630](https://github.com/atomist-skills/skill/commit/b65c630f9f3315f6d2c406f19e4faca39e38ea30)
+-   Add atm-codegen command to remove code gen from skill projects. [f12243a](https://github.com/atomist-skills/skill/commit/f12243a4ba76ff1a817dd7006157ca4850c0ae81)
 
 ### Changed
 
