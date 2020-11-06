@@ -257,6 +257,30 @@ yargs
 			}
 		},
 	)
+	.command(
+		["gql-generate"],
+		"Generate types from GraphQL",
+		args =>
+			args.option({
+				cwd: {
+					type: "string",
+					description: "Set working directory",
+					default: process.cwd(),
+					demandOption: false,
+				},
+			}),
+		async argv => {
+			try {
+				await (await import("../lib/script/gql_generate")).generateGql(
+					argv.cwd,
+				);
+				return 0;
+			} catch (e) {
+				error(e.message);
+				process.exit(1);
+			}
+		},
+	)
 	.version(false)
 	.strict()
 	.help().argv;
