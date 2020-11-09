@@ -17,17 +17,12 @@ unacceptable behavior to code-of-conduct@atomist.com.
 
 ## Documentation
 
-Please see [docs.atomist.com][atomist-doc] for [developer][atomist-doc-sdm]
-documentation.
+Please see [docs.atomist.com][atomist-doc] for developer documentation.
 
--   API documentation for this project: [@atomist/sdm TypeDoc][typedoc]
--   List of third-party OSS licenses used in this project: [@atomist/sdm OSS
+-   List of third-party OSS licenses used in this project: [@atomist/skill OSS
     licenses][licenses]
 
-[atomist-doc-sdm]:
-    https://docs.atomist.com/developer/sdm/
-    "Atomist Documentation - SDM Developer"
-[typedoc]: https://atomist.github.io/sdm/ "@atomist/sdm TypeDoc"
+[atomist-doc]: https://docs.atomist.com "Atomist Documentation"
 [licenses]: legal/THIRD_PARTY.md "@atomist/sdm Third-Party Licenses"
 
 ## Connect
