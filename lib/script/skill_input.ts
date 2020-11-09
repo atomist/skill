@@ -327,7 +327,7 @@ export async function createJavaScriptSkillInput(
 						query: (
 							await fs.readFile(path.join(cwd, file))
 						).toString(),
-						name: file.slice(0, -4),
+						name: file.split(path.sep).slice(-1)[0].slice(0, -4),
 					};
 				},
 			)),
