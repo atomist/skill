@@ -268,11 +268,17 @@ yargs
 					default: process.cwd(),
 					demandOption: false,
 				},
+				config: {
+					type: "string",
+					alias: "c",
+					description: "Path to codegen.yaml configuration file",
+					demandOption: false,
+				},
 			}),
 		async argv => {
 			try {
 				await (await import("../lib/script/gql_generate")).generateGql(
-					argv.cwd,
+					argv,
 				);
 				return 0;
 			} catch (e) {

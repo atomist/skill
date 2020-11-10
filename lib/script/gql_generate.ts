@@ -17,23 +17,27 @@
 import * as path from "path";
 import { spawnPromise } from "../child_process";
 
-export async function generateGql(cwd: string): Promise<void> {
-	// node_modules/@graphql-codegen/cli/bin.js -c node_modules/@atomist/skill/graphql/codegen.yaml
+export async function generateGql(options: {
+	cwd: string;
+	config: string;
+}): Promise<void> {
 	const cli = path.join(
-		cwd,
+		options.cwd,
 		"node_modules",
 		"@graphql-codegen",
 		"cli",
 		"bin.js",
 	);
-	const config = path.join(
-		cwd,
-		"node_modules",
-		"@atomist",
-		"skill",
-		"graphql",
-		"codegen.yaml",
-	);
+	const config =
+		options.config ||
+		path.join(
+			options.cwd,
+			"node_modules",
+			"@atomist",
+			"skill",
+			"graphql",
+			"codegen.yaml",
+		);
 
 	const result = await spawnPromise(cli, ["--config", config], {
 		log: { write: async msg => console.log(msg.trimRight()) },
