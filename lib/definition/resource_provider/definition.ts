@@ -89,7 +89,7 @@ export function kubernetes(
 	options: Omit<ResourceProvider, "typeName"> = {},
 ): ResourceProvider {
 	return resourceProvider({
-		displayName: "Kubernetes Cluster",
+		displayName: "Kubernetes cluster",
 		typeName: "KubernetesClusterProvider",
 		...options,
 	});
@@ -115,7 +115,7 @@ export function dockerRegistry(
 	options: Omit<ResourceProvider, "typeName"> = {},
 ): ResourceProvider {
 	return resourceProvider({
-		displayName: "Docker Registry",
+		displayName: "Docker registry",
 		typeName: "DockerRegistry",
 		...options,
 	});
@@ -128,7 +128,7 @@ export function mavenRepository(
 	options: Omit<ResourceProvider, "typeName"> = {},
 ): ResourceProvider {
 	return resourceProvider({
-		displayName: "Maven Repository",
+		displayName: "Maven repository",
 		typeName: "MavenRepositoryProvider",
 		...options,
 	});
@@ -142,7 +142,7 @@ export function npmJSRegistry(
 	options: Omit<ResourceProvider, "typeName"> = {},
 ): ResourceProvider {
 	return resourceProvider({
-		displayName: "npmjs.com Registry",
+		displayName: "npmjs.com registry",
 		typeName: "NpmJSRegistryProvider",
 		...options,
 	});
@@ -155,7 +155,7 @@ export function npmRegistry(
 	options: Omit<ResourceProvider, "typeName"> = {},
 ): ResourceProvider {
 	return resourceProvider({
-		displayName: "NPM Registry",
+		displayName: "npm registry",
 		typeName: "NpmRegistryProvider",
 		...options,
 	});
