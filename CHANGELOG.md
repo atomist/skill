@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Update schema. [161b4a9](https://github.com/atomist-skills/skill/commit/161b4a91880c556743ed760a34c871bee9bb7b1f)
 
+### Fixed
+
+-   Fix case in provider display names. [cbc50da](https://github.com/atomist-skills/skill/commit/cbc50da4818c9aeb5b5e0b90a8704a52545c6052)
+
 ## [0.4.1](https://github.com/atomist/skill/compare/0.4.0...0.4.1) - 2020-10-27
 
 ### Added
