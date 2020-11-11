@@ -23,7 +23,7 @@
     "@atomist/skill-logging": "^0.2.6",
     "@atomist/slack-messages": "1.2.0-master.20200806132057",
     "@google-cloud/pubsub": "^2.6.0",
-    "@google-cloud/storage": "^5.4.0",
+    "@google-cloud/storage": "^5.5.0",
     "@graphql-codegen/cli": "^1.19.1",
     "@graphql-codegen/typescript": "^1.17.11",
     "@graphql-codegen/typescript-operations": "^1.17.9",
@@ -80,7 +80,7 @@
   "devDependencies": {
     "@atomist/npm-tools": "0.1.0-master.20200709090755",
     "@google-cloud/functions-framework": "^1.7.1",
-    "@types/mocha": "^8.0.3",
+    "@types/mocha": "^8.0.4",
     "@types/power-assert": "^1.5.3",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
