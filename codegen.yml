@@ -13,7 +13,10 @@
 # limitations under the License.
 
 schema: graphql/schema.json
-documents: graphql/**/*.graphql
+documents:
+  - "./lib/graphql/**/*.graphql"
+  - "./graphql/**/*.graphql"
+  - "./lib/**/!(*.d).{ts,tsx}"
 generates:
   ./lib/definition/subscription/typings/types.ts:
     plugins:
