@@ -16,11 +16,24 @@
 
 import * as path from "path";
 import { spawnPromise } from "../child_process";
+import { globFiles } from "../project/util";
+
+const GraphQLGlobs = [
+	"lib/graphql/**/*.graphql",
+	"graphql/**/*.graphql",
+	"lib/**/!(*.d).{ts,tsx}",
+];
 
 export async function generateGql(options: {
 	cwd: string;
 	config: string;
 }): Promise<void> {
+	// Fail gracefully when there are no files found
+	const files = await globFiles(options.cwd, GraphQLGlobs);
+	if (files.length === 0) {
+		return;
+	}
+
 	const cli = path.join(
 		options.cwd,
 		"node_modules",
@@ -40,9 +53,10 @@ export async function generateGql(options: {
 		);
 
 	const result = await spawnPromise(cli, ["--config", config], {
+		logCommand: false,
 		log: { write: async msg => console.log(msg.trimRight()) },
 	});
 	if (result.status !== 0) {
-		throw result.error;
+		throw new Error("Type generation failed");
 	}
 }
