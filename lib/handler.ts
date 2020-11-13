@@ -106,7 +106,7 @@ export interface WebhookContext<B = any, C = any>
 }
 
 export interface HandlerStatus {
-	visibility?: "hidden";
+	visibility?: "hidden" | "visible";
 	code?: number;
 	reason?: string;
 }
