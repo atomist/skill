@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.5.0...HEAD)
 
+### Added
+
+-   Add visible to visibility in HandlerStatus. [74f608b](https://github.com/atomist-skills/skill/commit/74f608b9a8c2b478b9ec8ddc5873723f314e9313)
+
 ## [0.5.0](https://github.com/atomist/skill/compare/0.4.1...0.5.0) - 2020-11-10
 
 ### Added
