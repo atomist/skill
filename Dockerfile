@@ -1,7 +1,7 @@
 FROM ubuntu:focal
 
 # Install some common packages
-RUN apt-get update && apt-get install --no-install-recommends -y \
+RUN apt-get update && apt-get install -y \
         curl \
         wget \
         gnupg \
@@ -12,10 +12,10 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 
 # Install node and npm
 RUN curl -sL https://deb.nodesource.com/setup_12.x  | bash - && \
-    apt-get -y --no-install-recommends install nodejs
+    apt-get -y install nodejs
 
 # Install the Atomist Skill CLI
-RUN npm i -g @atomist/skill@branch-master
+RUN npm i -g @atomist/skill@next
 
 WORKDIR "/skill"
 
