@@ -18,12 +18,14 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import { spawnPromise } from "../child_process";
 import { globFiles } from "../project/util";
-import { debug } from "../log";
+import { info } from "../log";
 
 export async function generateGql(options: {
 	cwd: string;
 	config: string;
 }): Promise<void> {
+	process.env.ATOMIST_LOG_LEVEL = "info";
+
 	// Load globs from the codegen.yaml
 	const yaml = await import("js-yaml");
 	const codegen: { documents: string[] } = yaml.safeLoad(
@@ -35,7 +37,7 @@ export async function generateGql(options: {
 	// Fail gracefully when there are no files found
 	const files = await globFiles(options.cwd, codegen.documents);
 	if (files.length === 0) {
-		debug("No graphql files found. Skipping type generation...");
+		info("No graphql files found. Skipping type generation...");
 		return;
 	}
 
@@ -59,7 +61,7 @@ export async function generateGql(options: {
 
 	const result = await spawnPromise(cli, ["--config", config], {
 		logCommand: false,
-		log: { write: async msg => console.log(msg.trimRight()) },
+		log: { write: async msg => info(msg.trimRight()) },
 	});
 	if (result.status !== 0) {
 		throw new Error("Type generation failed");
