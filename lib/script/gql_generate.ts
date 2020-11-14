@@ -61,7 +61,13 @@ export async function generateGql(options: {
 
 	const result = await spawnPromise(cli, ["--config", config], {
 		logCommand: false,
-		log: { write: async msg => info(msg.trimRight()) },
+		log: {
+			write: async msg =>
+				msg
+					.trimRight()
+					.split("\n")
+					.forEach(l => info(l.trimRight())),
+		},
 	});
 	if (result.status !== 0) {
 		throw new Error("Type generation failed");
