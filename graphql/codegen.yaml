@@ -16,7 +16,6 @@ schema: ./node_modules/@atomist/skill/graphql/schema.json
 documents:
   - "./lib/graphql/**/*.graphql"
   - "./graphql/**/*.graphql"
-  - "./lib/**/!(*.d).{ts,tsx}"
 generates:
   ./lib/typings/types.ts:
     plugins:

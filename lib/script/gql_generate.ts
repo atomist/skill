@@ -14,23 +14,28 @@
  * limitations under the License.
  */
 
+import * as fs from "fs-extra";
 import * as path from "path";
 import { spawnPromise } from "../child_process";
 import { globFiles } from "../project/util";
-
-const GraphQLGlobs = [
-	"lib/graphql/**/*.graphql",
-	"graphql/**/*.graphql",
-	"lib/**/!(*.d).{ts,tsx}",
-];
+import { debug } from "../log";
 
 export async function generateGql(options: {
 	cwd: string;
 	config: string;
 }): Promise<void> {
+	// Load globs from the codegen.yaml
+	const yaml = await import("js-yaml");
+	const codegen: { documents: string[] } = yaml.safeLoad(
+		await fs.readFile(
+			path.join(__dirname, "..", "..", "graphql", "codegen.yaml"),
+		),
+	) as any;
+
 	// Fail gracefully when there are no files found
-	const files = await globFiles(options.cwd, GraphQLGlobs);
+	const files = await globFiles(options.cwd, codegen.documents);
 	if (files.length === 0) {
+		debug("No graphql files found. Skipping type generation...");
 		return;
 	}
 
