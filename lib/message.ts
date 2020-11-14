@@ -485,7 +485,7 @@ export interface HandlerResponse {
 	event?: string;
 
 	status?: {
-		visibility?: "hidden";
+		visibility?: "hidden" | "visible";
 		code?: number;
 		reason: string;
 	};
