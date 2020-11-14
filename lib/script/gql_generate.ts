@@ -59,7 +59,7 @@ export async function generateGql(options: {
 			"codegen.yaml",
 		);
 
-	const result = await spawnPromise(cli, ["--config", config], {
+	const result = await spawnPromise(cli, ["--config", config, "-e"], {
 		logCommand: false,
 		log: {
 			write: async msg =>
@@ -71,5 +71,7 @@ export async function generateGql(options: {
 	});
 	if (result.status !== 0) {
 		throw new Error("Type generation failed");
+	} else {
+		info(`Successfully generated graphql types in 'lib/typings/types.ts'`);
 	}
 }
