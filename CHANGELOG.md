@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.5.1...HEAD)
 
+### Changed
+
+-   Merge default value into state. [50c1050](https://github.com/atomist-skills/skill/commit/50c1050709bec79b61a2f3aad312aef886530942)
+
 ## [0.5.1](https://github.com/atomist/skill/compare/0.5.0...0.5.1) - 2020-11-14
 
 ### Added
