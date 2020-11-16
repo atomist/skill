@@ -172,6 +172,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 			).data;
 		}
 		if (pullRequest.labels?.length > 0) {
+			// Remove prefixed labels that are getting set explicitly
 			const prefixes = uniq(
 				pullRequest.labels
 					.filter(p => p.includes(":"))
@@ -185,7 +186,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 				owner: project.id.owner,
 				repo: project.id.repo,
 				issue_number: pr.number,
-				labels: [...existingLabels, ...pullRequest.labels],
+				labels: uniq([...existingLabels, ...pullRequest.labels]),
 			});
 		}
 		if (
