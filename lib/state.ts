@@ -29,7 +29,11 @@ export async function hydrate<T>(
 	const key = stateKey(configurationName, ctx);
 	try {
 		const stateFile = await ctx.storage.retrieve(key);
-		return fs.readJson(stateFile);
+		const state = fs.readJson(stateFile);
+		return {
+			...(value || ({} as T)),
+			...state,
+		};
 	} catch (e) {
 		return value || ({} as T);
 	}
