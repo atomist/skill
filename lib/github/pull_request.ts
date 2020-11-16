@@ -172,14 +172,20 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 			).data;
 		}
 		if (pullRequest.labels?.length > 0) {
+			const prefixes = uniq(
+				pullRequest.labels
+					.filter(p => p.includes(":"))
+					.map(p => p.split(":")[0] + ":"),
+			);
+			const existingLabels = (pr.labels || [])
+				.map(l => l.name)
+				.filter(l => !prefixes.some(p => l.startsWith(p)));
+
 			await gh.issues.update({
 				owner: project.id.owner,
 				repo: project.id.repo,
 				issue_number: pr.number,
-				labels: [
-					...(pr.labels?.map(l => l.name) || []),
-					...pullRequest.labels,
-				],
+				labels: [...existingLabels, ...pullRequest.labels],
 			});
 		}
 		if (
