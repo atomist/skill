@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.5.1...HEAD)
 
+### Added
+
+-   Add retry on DNS issue to GraphQL client. [96556eb](https://github.com/atomist-skills/skill/commit/96556eb0bc168344aee93951730ea1f660615e81)
+
 ### Changed
 
 -   Merge default value into state. [50c1050](https://github.com/atomist-skills/skill/commit/50c1050709bec79b61a2f3aad312aef886530942)
