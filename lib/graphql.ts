@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
+import * as findUp from "find-up";
 import * as fs from "fs-extra";
+import { Response } from "node-fetch";
+import * as pRetry from "p-retry";
 import * as path from "path";
 import { inlineFragments } from "./definition/subscription/util";
-import { debug } from "./log/console";
+import { debug, warn } from "./log/console";
+import { retry } from "./retry";
 import { replacer } from "./util";
-import * as findUp from "find-up";
 
 const GraphQLCache = new Map<string, string>();
 
@@ -49,22 +52,12 @@ class NodeFetchGraphQLClient implements GraphQLClient {
 		query: QueryOrLocation,
 		variables?: Record<string, any>,
 	): Promise<T> {
-		const f = (await import("node-fetch")).default;
 		const body = JSON.stringify({
 			query: await this.graphql(query, "query"),
 			variables,
 		});
 		debug(`GraphQL query: ${body}`);
-		const result = await (
-			await f(this.url, {
-				method: "post",
-				body,
-				headers: {
-					"authorization": `bearer ${this.apiKey}`,
-					"content-type": "application/json",
-				},
-			})
-		).json();
+		const result = await this.fetch(body);
 		debug(`GraphQL result: ${JSON.stringify(result, replacer)}`);
 		if (result.errors) {
 			throw new Error(JSON.stringify(result.errors, undefined, 2));
@@ -76,22 +69,12 @@ class NodeFetchGraphQLClient implements GraphQLClient {
 		mutation: QueryOrLocation,
 		variables?: Record<string, any>,
 	): Promise<T> {
-		const f = (await import("node-fetch")).default;
 		const body = JSON.stringify({
 			query: await this.graphql(mutation, "mutation"),
 			variables,
 		});
 		debug(`GraphQL mutation: ${body}`);
-		const result = await (
-			await f(this.url, {
-				method: "post",
-				body,
-				headers: {
-					"authorization": `bearer ${this.apiKey}`,
-					"content-type": "application/json",
-				},
-			})
-		).json();
+		const result = await this.fetch(body);
 		debug(`GraphQL result: ${JSON.stringify(result, replacer)}`);
 		if (result.errors) {
 			throw new Error(JSON.stringify(result.errors, undefined, 2));
@@ -126,16 +109,47 @@ class NodeFetchGraphQLClient implements GraphQLClient {
 			}
 		}
 	}
+
+	private async fetch(body: string) {
+		const f = (await import("node-fetch")).default;
+		const result = await (
+			await retry<Response>(async () => {
+				try {
+					return await f(this.url, {
+						method: "post",
+						body,
+						headers: {
+							"authorization": `bearer ${this.apiKey}`,
+							"content-type": "application/json",
+						},
+					});
+				} catch (e) {
+					// Retry DNS issues
+					if (
+						e.message?.includes("EAI_AGAIN") &&
+						e.message?.includes("getaddrinfo")
+					) {
+						warn(
+							"Retrying GraphQL operation due to DNS lookup failure",
+						);
+						throw e;
+					} else {
+						throw new pRetry.AbortError(e);
+					}
+				}
+			})
+		).json();
+		return result;
+	}
 }
 
 export function createGraphQLClient(
 	apiKey: string,
 	wid: string,
+	endpoint: string = process.env.ATOMIST_GRAPHQL_ENDPOINT ||
+		"https://automation.atomist.com/graphql",
 ): GraphQLClient {
-	const url = `${
-		process.env.ATOMIST_GRAPHQL_ENDPOINT ||
-		"https://automation.atomist.com/graphql"
-	}/team/${wid}`;
+	const url = `${endpoint}/team/${wid}`;
 	return new NodeFetchGraphQLClient(apiKey, url);
 }
 
