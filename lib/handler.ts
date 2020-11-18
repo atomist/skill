@@ -28,6 +28,7 @@ import { ProjectLoader } from "./project";
 import { ParameterPromptObject, ParameterPromptOptions } from "./prompt/prompt";
 import { CredentialProvider } from "./secret/provider";
 import { StorageProvider } from "./storage/provider";
+import { Transact } from "./transact";
 
 export interface Configuration<C extends Record<string, any>> {
 	name: string;
@@ -50,6 +51,7 @@ export interface Contextual<T, C> {
 	graphql: GraphQLClient;
 	http: HttpClient;
 	message: MessageClient;
+	transact: Transact<any>;
 	project: ProjectLoader;
 	audit: Logger & { url: string };
 	storage: StorageProvider;
