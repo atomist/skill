@@ -202,6 +202,8 @@ export interface Metadata extends Required<Named> {
 	repositoryUrl: string;
 	iconUrl: string;
 	videoUrl?: string;
+
+	integration?: boolean;
 }
 
 export enum ParameterType {
