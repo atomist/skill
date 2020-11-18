@@ -45,6 +45,7 @@ import { createProjectLoader } from "./project/loader";
 import { commandRequestParameterPromptFactory } from "./prompt/prompt";
 import { DefaultCredentialProvider } from "./secret/provider";
 import { createStorageProvider } from "./storage/provider";
+import { createTransact } from "./transact";
 import { extractParameters, handleError } from "./util";
 
 export function createContext(
@@ -63,7 +64,6 @@ export function createContext(
 	const graphql = createGraphQLClient(apiKey, wid);
 	const storage = createStorageProvider(wid);
 	const credential = new DefaultCredentialProvider(graphql, payload);
-
 	const completeCallbacks = [];
 	const onComplete = closable => {
 		completeCallbacks.push(closable);
@@ -105,6 +105,7 @@ export function createContext(
 			),
 			storage,
 			message,
+			transact: createTransact(wid, payload.correlation_id),
 			project: createProjectLoader({ onComplete }),
 			trigger: payload,
 			...extractConfiguration(payload),
@@ -141,6 +142,7 @@ export function createContext(
 				payload.extensions.operationName,
 				payload.extensions.correlation_id,
 			),
+			transact: createTransact(wid, payload.extensions.correlation_id),
 			project: createProjectLoader({ onComplete }),
 			trigger: payload,
 			configuration: extractConfiguration(payload)?.configuration?.[0],
@@ -177,6 +179,7 @@ export function createContext(
 				payload.subscription?.name,
 				payload.correlation_id,
 			),
+			transact: createTransact(wid, payload.correlation_id),
 			project: createProjectLoader({ onComplete }),
 			trigger: payload,
 			configuration: extractConfiguration(payload)?.configuration?.[0],
@@ -211,6 +214,7 @@ export function createContext(
 			),
 			storage,
 			message: new PubSubWebhookMessageClient(payload, graphql),
+			transact: createTransact(wid, payload.correlation_id),
 			project: createProjectLoader(),
 			trigger: payload,
 			configuration: extractConfiguration(payload)?.configuration?.[0],
