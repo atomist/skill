@@ -9,6 +9,7 @@ describe("transact", () => {
 					image:
 						"gcr.io/atomist-container-registry/pochta:3ec0bb7bab4012119d168263c79677ddb3084c48",
 					sha: "3ec0bb7bab4012119d168263c79677ddb3084c48",
+					labels: "foo",
 				},
 			};
 			const result = flattenEntities(entity);
@@ -19,6 +20,7 @@ describe("transact", () => {
 						"gcr.io/atomist-container-registry/pochta:3ec0bb7bab4012119d168263c79677ddb3084c48",
 					"docker.image/sha":
 						"3ec0bb7bab4012119d168263c79677ddb3084c48",
+					"docker.image/labels": "foo",
 				},
 			]);
 		});
