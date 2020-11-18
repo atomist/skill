@@ -270,6 +270,8 @@ export interface Operations {
 	subscriptions?: string[];
 
 	datalogSubscriptions?: Array<{ name: string; query: string }>;
+
+	schemata: Array<{ name: string; schema: string }>;
 }
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;

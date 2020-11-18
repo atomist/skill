@@ -86,6 +86,7 @@
     "@types/yargs": "^15.0.10",
     "@vercel/ncc": "^0.23.0",
     "cross-spawn": "^7.0.3",
+    "edn-data": "^0.2.0",
     "fast-glob": "^3.2.4",
     "find-up": "^5.0.0",
     "flat": "^5.0.2",
