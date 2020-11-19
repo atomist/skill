@@ -45,7 +45,7 @@ import { createProjectLoader } from "./project/loader";
 import { commandRequestParameterPromptFactory } from "./prompt/prompt";
 import { DefaultCredentialProvider } from "./secret/provider";
 import { createStorageProvider } from "./storage/provider";
-import { createTransact } from "./transact";
+import { createTransact } from "./transact/transact";
 import { extractParameters, handleError } from "./util";
 
 export function createContext(

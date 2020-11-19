@@ -28,7 +28,7 @@ import { ProjectLoader } from "./project";
 import { ParameterPromptObject, ParameterPromptOptions } from "./prompt/prompt";
 import { CredentialProvider } from "./secret/provider";
 import { StorageProvider } from "./storage/provider";
-import { Transact } from "./transact";
+import { Transact } from "./transact/transact";
 
 export interface Configuration<C extends Record<string, any>> {
 	name: string;

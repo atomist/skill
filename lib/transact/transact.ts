@@ -16,8 +16,8 @@
 
 import { PubSub } from "@google-cloud/pubsub";
 import { toEDNStringFromSimpleObject } from "edn-data";
-import { debug, error } from "./log/console";
-import { replacer, toArray } from "./util";
+import { debug, error } from "../log/console";
+import { replacer, toArray } from "../util";
 
 export type Entity<E extends string> = Record<E, Record<string, any>>;
 export type Transact<E extends string> = (

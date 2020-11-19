@@ -77,6 +77,7 @@ export {
 	WebhookHandler,
 	WebhookContext,
 } from "./lib/handler";
+export * as transact from "./lib/transact";
 export { HttpClient } from "./lib/http";
 export {
 	CommandMessageClient,
