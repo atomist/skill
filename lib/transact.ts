@@ -47,7 +47,17 @@ export function flattenEntities(
 ): Record<string, any>[] {
 	// Flatten nested objects
 	const flattenedEntities = [...toArray(entities)];
+
 	let counter = 0;
+	const extractNested = (v: any) => {
+		const nestedEntityType = Object.keys(v)[0];
+		v["schema/entity"] = `${convertEntityType(
+			nestedEntityType,
+		)}-${counter++}`;
+		flattenedEntities.push(v);
+		return v["schema/entity"];
+	};
+
 	toArray(entities).forEach(e => {
 		const entityType = Object.keys(e)[0];
 		for (const key of Object.keys(e[entityType])) {
@@ -56,20 +66,14 @@ export function flattenEntities(
 				const newValue = [];
 				toArray(value).forEach(v => {
 					if (typeof v === "object") {
-						const nestedEntityType = Object.keys(v)[0];
-						v["schema/entity"] = `${nestedEntityType}-${counter++}`;
-						flattenedEntities.push(v);
-						newValue.push(v["schema/entity"]);
+						newValue.push(extractNested(v));
 					} else {
 						newValue.push(v);
 					}
 				});
 				e[entityType][key] = newValue;
 			} else if (typeof value === "object") {
-				const nestedEntityType = Object.keys(value)[0];
-				value["schema/entity"] = `${nestedEntityType}-${counter++}`;
-				flattenedEntities.push(value);
-				e[entityType][key] = value["schema/entity"];
+				e[entityType][key] = extractNested(value);
 			}
 		}
 	});
@@ -78,15 +82,27 @@ export function flattenEntities(
 		const entityType = Object.keys(e)[0];
 		const entityId = e["schema/entity"];
 		const entity: any = {
-			"schema/entity-type": entityType,
+			"schema/entity-type": convertEntityType(entityType),
 		};
 		if (entityId) {
 			entity["schema/entity"] = entityId;
 		}
 		for (const key of Object.keys(e[entityType])) {
-			entity[`${entityType.replace(/\//, ".")}/${key}`] =
-				e[entityType][key];
+			entity[
+				convertEntityType(`${entityType.replace(/\//, ".")}/${key}`)
+			] = e[entityType][key];
 		}
 		return entity;
 	});
+}
+
+function convertEntityType(type: string): string {
+	const parts = type.split("/").join(".").split(".");
+	if (parts.length > 1) {
+		const lastPart = parts.slice(-1)[0];
+		const firstParts = parts.slice(0, -1);
+		return `${firstParts.join(".")}/${lastPart}`;
+	} else {
+		return type;
+	}
 }

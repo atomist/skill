@@ -11,13 +11,13 @@ describe("transact", () => {
 					sha: "3ec0bb7bab4012119d168263c79677ddb3084c48",
 					labels: [
 						{
-							"docker.image/label": {
+							"docker/image/label": {
 								name: "author",
 								value: "Atomist",
 							},
 						},
 						{
-							"docker.image/label": {
+							"docker/image/label": {
 								name: "version",
 								value: "1.0.0",
 							},
