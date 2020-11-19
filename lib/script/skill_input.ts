@@ -16,6 +16,7 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
+import { toEDNStringFromSimpleObject } from "edn-data";
 import { named } from "../definition/subscription/named";
 import { error, info } from "../log";
 import { withGlobMatches } from "../project/util";
@@ -48,6 +49,7 @@ export type AtomistSkillInput = {
 	displayName?: Maybe<Scalars["String"]>;
 	homepageUrl: Scalars["String"];
 	iconUrl: Scalars["String"];
+	integration?: Maybe<Scalars["Boolean"]>;
 	ingesters?: Maybe<Array<Scalars["String"]>>;
 	license: Scalars["String"];
 	longDescription: Scalars["String"];
@@ -63,6 +65,7 @@ export type AtomistSkillInput = {
 	version: Scalars["String"];
 	videoUrl?: Maybe<Scalars["String"]>;
 	datalogSubscriptions?: Maybe<Array<{ name: string; query: string }>>;
+	schemata?: Maybe<Array<{ name: string; schema: string }>>;
 };
 
 export type AtomistSkillArtifactsInput = {
@@ -274,16 +277,6 @@ export enum AtomistSkillTechnology {
 	Kubernetes = "KUBERNETES",
 }
 
-export type AtomistGateRefInput = {
-	name: Scalars["String"];
-	namespace?: Maybe<Scalars["String"]>;
-};
-
-export type AtomistGateInput = {
-	and: Array<AtomistGateRefInput>;
-	name: Scalars["String"];
-};
-
 export async function createJavaScriptSkillInput(
 	cwd: string,
 	name = "index.js",
@@ -323,11 +316,40 @@ export async function createJavaScriptSkillInput(
 				cwd,
 				"**/datalog/subscription/*.edn",
 				async file => {
+					const filePath = path.join(cwd, file);
+					const fileName = path.basename(filePath);
+					const extName = path.extname(fileName);
 					return {
 						query: (
 							await fs.readFile(path.join(cwd, file))
 						).toString(),
-						name: file.split(path.sep).slice(-1)[0].slice(0, -4),
+						name: fileName.replace(extName, ""),
+					};
+				},
+			)),
+		);
+	}
+	const schemata = [...(is.schemata || [])];
+	if (schemata.length === 0) {
+		schemata.push(
+			...(await withGlobMatches<{ name: string; schema: string }>(
+				cwd,
+				"**/datalog/schema/*.{json,edn}",
+				async file => {
+					const filePath = path.join(cwd, file);
+					const fileName = path.basename(filePath);
+					const extName = path.extname(fileName);
+					let schema = (
+						await fs.readFile(path.join(cwd, file))
+					).toString();
+					if (file.endsWith(".json")) {
+						schema = toEDNStringFromSimpleObject(
+							JSON.parse(schema),
+						);
+					}
+					return {
+						schema,
+						name: fileName.replace(extName, ""),
 					};
 				},
 			)),
@@ -407,6 +429,7 @@ export async function createJavaScriptSkillInput(
 
 		subscriptions,
 		datalogSubscriptions,
+		schemata,
 	};
 
 	if (!y.longDescription) {

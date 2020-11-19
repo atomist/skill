@@ -202,6 +202,8 @@ export interface Metadata extends Required<Named> {
 	repositoryUrl: string;
 	iconUrl: string;
 	videoUrl?: string;
+
+	integration?: boolean;
 }
 
 export enum ParameterType {
@@ -268,6 +270,8 @@ export interface Operations {
 	subscriptions?: string[];
 
 	datalogSubscriptions?: Array<{ name: string; query: string }>;
+
+	schemata: Array<{ name: string; schema: string }>;
 }
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
