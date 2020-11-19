@@ -118,7 +118,8 @@ export interface WebhookIncoming {
 	skill: Skill;
 	secrets: Secret[];
 	webhook: {
-		name: string;
+		parameter_name: string;
+		parameter_name_value: string;
 		url: string;
 		headers: Record<string, string>;
 		body: string;

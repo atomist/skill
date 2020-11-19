@@ -189,7 +189,7 @@ export function createContext(
 		};
 	} else if (isWebhookIncoming(payload)) {
 		return {
-			name: payload.webhook.name,
+			name: payload.webhook.parameter_name,
 			body: payload.webhook.body,
 			get json() {
 				return JSON.parse((payload as any).webhook.body);
@@ -209,7 +209,7 @@ export function createContext(
 					workspaceId: wid,
 				},
 				{
-					name: payload.webhook.name,
+					name: payload.webhook.parameter_name,
 				},
 			),
 			storage,

@@ -240,7 +240,7 @@ describe("function", () => {
 					},
 				},
 				webhook: {
-					name: "sonarcloud-event-manual",
+					parameter_name: "sonarcloud-event-manual",
 					url:
 						"h********************************************************************************************3",
 					headers: {
@@ -277,7 +277,10 @@ describe("function", () => {
 				payload as any,
 				{ eventId: "654321" },
 				async name => {
-					assert.deepStrictEqual(name, `${payload.webhook.name}`);
+					assert.deepStrictEqual(
+						name,
+						`${payload.webhook.parameter_name}`,
+					);
 					return async ctx => {
 						(ctx.message as any).publish = publish;
 						assert.deepStrictEqual(ctx.json, {

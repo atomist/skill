@@ -59,6 +59,11 @@ export * as repository from "./lib/repository";
 export * as secret from "./lib/secret";
 // lib/slack
 export * as slack from "./lib/slack";
+// lib/storage
+export * as cache from "./lib/storage/cache";
+export { StorageProvider } from "./lib/storage/provider";
+// lib/transact
+export * as transact from "./lib/transact";
 // lib
 export {} from "./lib/bundle";
 export * as childProcess from "./lib/child_process";
@@ -77,7 +82,6 @@ export {
 	WebhookHandler,
 	WebhookContext,
 } from "./lib/handler";
-export * as transact from "./lib/transact";
 export { HttpClient } from "./lib/http";
 export {
 	CommandMessageClient,
@@ -91,8 +95,6 @@ export {} from "./lib/payload";
 export * as state from "./lib/state";
 export * as status from "./lib/status";
 export { runSteps, Step, StepListener } from "./lib/steps";
-export * as cache from "./lib/storage/cache";
-export { StorageProvider } from "./lib/storage/provider";
 export {
 	guid,
 	handleError,

@@ -123,12 +123,13 @@ export const bundle = async (
 		});
 	} else if (isWebhookIncoming(payload)) {
 		return processWebhook(payload, context, async () => {
-			const loader = HandlerRegistry.webhooks[payload.webhook.name];
+			const loader =
+				HandlerRegistry.webhooks[payload.webhook.parameter_name];
 			if (loader) {
 				return loader();
 			} else {
 				throw new Error(
-					`Command handler with name '${payload.webhook.name}' not registered`,
+					`Command handler with name '${payload.webhook.parameter_name}' not registered`,
 				);
 			}
 		});
