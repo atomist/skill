@@ -18,7 +18,7 @@
 import "source-map-support/register";
 
 import { Severity } from "@atomist/skill-logging";
-import { createContext } from "./context";
+import { ContextFactory, createContext } from "./context";
 import {
 	CommandContext,
 	CommandHandler,
@@ -77,8 +77,9 @@ export async function processEvent(
 	event: EventIncoming | SubscriptionIncoming,
 	ctx: { eventId: string },
 	loader: (name: string) => Promise<EventHandler> = handlerLoader("events"),
+	factory: ContextFactory = createContext,
 ): Promise<void> {
-	const context = createContext(event, ctx) as EventContext<any> &
+	const context = factory(event, ctx) as EventContext<any> &
 		ContextualLifecycle;
 	try {
 		debug(`Invoking event handler '${context.name}'`);
@@ -105,9 +106,9 @@ export async function processCommand(
 	loader: (name: string) => Promise<CommandHandler> = handlerLoader(
 		"commands",
 	),
+	factory: ContextFactory = createContext,
 ): Promise<void> {
-	const context = createContext(event, ctx) as CommandContext &
-		ContextualLifecycle;
+	const context = factory(event, ctx) as CommandContext & ContextualLifecycle;
 	try {
 		debug(`Invoking command handler '${context.name}'`);
 		const result = (await (await loader(context.name))(
@@ -142,9 +143,9 @@ export async function processWebhook(
 	loader: (name: string) => Promise<WebhookHandler> = handlerLoader(
 		"webhooks",
 	),
+	factory: ContextFactory = createContext,
 ): Promise<void> {
-	const context = createContext(event, ctx) as WebhookContext &
-		ContextualLifecycle;
+	const context = factory(event, ctx) as WebhookContext & ContextualLifecycle;
 	try {
 		debug(`Invoking webhook handler '${context.name}'`);
 		const result = (await (await loader(context.name))(

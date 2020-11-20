@@ -48,6 +48,17 @@ import { createStorageProvider } from "./storage/provider";
 import { createTransact } from "./transact/transact";
 import { extractParameters, handleError } from "./util";
 
+export type ContextFactory = (
+	payload:
+		| CommandIncoming
+		| EventIncoming
+		| WebhookIncoming
+		| SubscriptionIncoming,
+	ctx: { eventId: string },
+) =>
+	| ((CommandContext | EventContext | WebhookContext) & ContextualLifecycle)
+	| undefined;
+
 export function createContext(
 	payload:
 		| CommandIncoming
