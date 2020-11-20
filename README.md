@@ -2,7 +2,7 @@
 
 API to implement a JavaScript/TypeScript-based Atomist Skills.
 
-## Contributing
+## Contributing 
 
 Contributions to this project from community members are encouraged and
 appreciated. Please review the [Contributing Guidelines](CONTRIBUTING.md) for
