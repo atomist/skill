@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@atomist/skill-logging": "^0.2.6",
-    "@atomist/slack-messages": "1.2.0-master.20200806132057",
+    "@atomist/slack-messages": "^1.2.1",
     "@google-cloud/pubsub": "^2.6.0",
     "@google-cloud/storage": "^5.5.0",
     "@graphql-codegen/cli": "^1.19.2",
@@ -127,7 +127,7 @@
     "eslint-plugin-prettier": "^3.1.4",
     "espower-typescript": "^9.0.2",
     "husky": "^4.3.0",
-    "lint-staged": "^10.5.1",
+    "lint-staged": "^10.5.2",
     "mocha": "^8.2.1",
     "npm-run-all": "^4.1.5",
     "power-assert": "^1.6.1",
