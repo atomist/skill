@@ -32,7 +32,7 @@ import { guid, handlerLoader, replacer } from "../util";
 export async function assertSkill(
 	payload: CommandIncoming | EventIncoming | WebhookIncoming,
 	ctx: Partial<Contextual<any, any>> = {},
-): Promise<void | HandlerStatus> {
+): Promise<undefined | HandlerStatus> {
 	const apiKeySecret = payload.secrets.find(
 		s => s.uri === "atomist://api-key",
 	);
