@@ -25,7 +25,43 @@ import { error } from "../lib/log";
 yargs
 	.command(
 		"run",
-		"Start container skill",
+		"Run a container skill locally using docker",
+		args =>
+			args.options({
+				cwd: {
+					alias: "c",
+					type: "string",
+					description: "Set working directory",
+					default: process.cwd(),
+					demandOption: false,
+				},
+				event: {
+					alias: "e",
+					type: "string",
+					description: "Path to event payload",
+					demandOption: false,
+				},
+				repo: {
+					alias: "r",
+					type: "string",
+					description: "Path to repository to mount into container",
+					demandOption: false,
+				},
+				skill: {
+					alias: "s",
+					type: "string",
+					description: "Name of skill.yaml file run",
+					demandOption: false,
+					defaultValue: "skill.yaml",
+				},
+			}),
+		async argv => {
+			return (await import("../lib/script/skill_run")).runSkill(argv);
+		},
+	)
+	.command(
+		"invoke",
+		"Invoke container skill",
 		args =>
 			args.options({
 				skill: {
@@ -35,7 +71,7 @@ yargs
 				},
 			}),
 		async argv => {
-			return (await import("../lib/script/skill_run")).runSkill(
+			return (await import("../lib/script/skill_invoke")).invokeSkill(
 				argv.skill,
 			);
 		},
