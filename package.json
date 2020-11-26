@@ -62,7 +62,7 @@
     "@google-cloud/pubsub": "^2.6.0",
     "@google-cloud/storage": "^5.5.0",
     "@graphql-codegen/cli": "^1.19.2",
-    "@graphql-codegen/typescript": "^1.18.0",
+    "@graphql-codegen/typescript": "^1.18.1",
     "@graphql-codegen/typescript-operations": "^1.17.11",
     "@octokit/plugin-rest-endpoint-methods": "^4.2.1",
     "@octokit/plugin-retry": "^3.0.4",
