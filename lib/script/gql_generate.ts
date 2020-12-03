@@ -28,14 +28,35 @@ export async function generateGql(options: {
 
 	// Load globs from the codegen.yaml
 	const yaml = await import("js-yaml");
+	const localCodegenPath = path.join(options.cwd, "codegen.yml");
+	const graphqlCodegenPath = path.join(options.cwd, "graphql", "codegen.yml");
+	const npmCodegenPath = path.join(
+		options.cwd,
+		"node_modules",
+		"@atomist",
+		"skill",
+		"graphql",
+		"codegen.yaml",
+	);
+	const skillCodegenPath = path.join(
+		__dirname,
+		"..",
+		"..",
+		"graphql",
+		"codegen.yaml",
+	);
+	const config =
+		options.config ||
+		(fs.existsSync(localCodegenPath) && localCodegenPath) ||
+		(fs.existsSync(graphqlCodegenPath) && graphqlCodegenPath) ||
+		(fs.existsSync(npmCodegenPath) && npmCodegenPath) ||
+		skillCodegenPath;
+	info(`Using codegen configuration '${config}'`);
 	const codegen: { documents: string[] } = yaml.safeLoad(
-		await fs.readFile(
-			path.join(__dirname, "..", "..", "graphql", "codegen.yaml"),
-			"utf8",
-		),
+		await fs.readFile(config, "utf8"),
 	) as any;
 
-	// Fail gracefully when there are no files found
+	// Exit gracefully when there are no files found
 	const files = await globFiles(options.cwd, codegen.documents);
 	if (files.length === 0) {
 		info("No graphql files found. Skipping type generation...");
@@ -49,17 +70,6 @@ export async function generateGql(options: {
 		"cli",
 		"bin.js",
 	);
-	const config =
-		options.config ||
-		path.join(
-			options.cwd,
-			"node_modules",
-			"@atomist",
-			"skill",
-			"graphql",
-			"codegen.yaml",
-		);
-
 	const result = await spawnPromise(cli, ["--config", config, "-e"], {
 		logCommand: false,
 		log: {
