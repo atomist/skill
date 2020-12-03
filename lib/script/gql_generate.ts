@@ -31,6 +31,7 @@ export async function generateGql(options: {
 	const codegen: { documents: string[] } = yaml.safeLoad(
 		await fs.readFile(
 			path.join(__dirname, "..", "..", "graphql", "codegen.yaml"),
+			"utf8",
 		),
 	) as any;
 
