@@ -18,6 +18,7 @@ import { ContextFactory, createContext } from "../context";
 import { processCommand, processEvent, processWebhook } from "../function";
 import { Contextual, HandlerStatus } from "../handler";
 import { debug } from "../log/console";
+import { Destinations, HandlerResponse, MessageOptions } from "../message";
 import {
 	CommandIncoming,
 	EventIncoming,
@@ -40,20 +41,23 @@ export async function assertSkill(
 		apiKeySecret.value = await apiKey();
 	}
 
-	let status;
+	let status: HandlerResponse["status"];
 	const factory: ContextFactory = (p, c) => {
 		const context = createContext(p, c);
 		context.message = {
-			respond: async (msg, options) => {
+			respond: async (msg: any) => {
 				debug(`Sending message: ${JSON.stringify(msg, replacer)}`);
 			},
-			send: async (msg, destinations, options) => {
+			send: async (msg: any) => {
 				debug(`Sending message: ${JSON.stringify(msg, replacer)}`);
 			},
-			delete: async (destinations, options) => {
+			delete: async (
+				destinations: Destinations,
+				options: MessageOptions,
+			) => {
 				debug(`Deleting message: ${JSON.stringify(options, replacer)}`);
 			},
-			publish: async result => {
+			publish: async (result: HandlerResponse["status"]) => {
 				status = result;
 			},
 		} as any;
