@@ -18,6 +18,7 @@ import { Octokit } from "@octokit/rest"; // eslint-disable-line @typescript-esli
 import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
+import { toArray } from "../util";
 
 const DefaultGitHubApiUrl = "https://api.github.com/";
 
@@ -67,6 +68,10 @@ export function formatMarkers(
 <!--
   [atomist:generated]
   [atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]
+  [atomist-configuration:${toArray(ctx.configuration)
+		.map(c => c.name)
+		.join(",")}]
+  [atomist-workspace-id:${ctx.workspaceId}]
   [atomist-correlation-id:${ctx.correlationId}]${
 		tags.length > 0 ? "\n" : ""
 	}${tags.map(t => `  [${t}]`).join("\n")}
