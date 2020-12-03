@@ -15,7 +15,10 @@
  */
 
 import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types";
-import { Endpoints } from "@octokit/types";
+import {
+	ChecksUpdateResponseData,
+	ChecksCreateResponseData,
+} from "@octokit/types";
 import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
@@ -58,7 +61,7 @@ export interface UpdateCheck {
 }
 
 export interface Check {
-	data: Endpoints["POST /repos/:owner/:repo/check-runs"]["response"]["data"];
+	data: ChecksCreateResponseData | ChecksUpdateResponseData;
 	update: (parameters: UpdateCheck) => Promise<void>;
 }
 
@@ -94,7 +97,9 @@ export async function createCheck(
 		}
 	});
 
-	let check: RestEndpointMethodTypes["checks"]["create"]["response"];
+	let check:
+		| RestEndpointMethodTypes["checks"]["create"]["response"]
+		| RestEndpointMethodTypes["checks"]["update"]["response"];
 	if (openChecks.total_count === 1) {
 		check = await api(id).checks.update({
 			owner: id.owner,
@@ -128,7 +133,7 @@ export async function createCheck(
 		});
 	}
 	return {
-		data: check.data,
+		data: check.data as any,
 		update: async params => {
 			if (params.conclusion) {
 				terminated = true;
@@ -160,7 +165,9 @@ export async function createCheck(
 async function updateAnnotation(
 	ctx: Contextual<any, any>,
 	id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
-	check: Endpoints["POST /repos/:owner/:repo/check-runs"]["response"],
+	check:
+		| RestEndpointMethodTypes["checks"]["create"]["response"]
+		| RestEndpointMethodTypes["checks"]["update"]["response"],
 	parameters: UpdateCheck,
 ): Promise<void> {
 	const gh = api(id);
