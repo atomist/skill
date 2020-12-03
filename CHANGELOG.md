@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.6.0...HEAD)
 
+### Added
+
+-   Add config names and workspaceId to Git markers. [9e89243](https://github.com/atomist-skills/skill/commit/9e89243faa90a568472ac1118646fca8cd618b67)
+
 ## [0.6.0](https://github.com/atomist/skill/compare/0.5.1...0.6.0) - 2020-11-24
 
 ### Added
