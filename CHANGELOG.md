@@ -7,10 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.6.1...HEAD)
 
-## [0.6.1](https://github.com/atomist/skill/compare/v0.6.0...0.6.1) - 2020-12-03
+## [0.6.1](https://github.com/atomist/skill/compare/0.6.0...0.6.1) - 2020-12-03
 
 ### Added
 
+-   Add actions to check helper. [819d13a](https://github.com/atomist-skills/skill/commit/819d13a045a27db76654c7584b7454902af0999d)
 -   Add config names and workspaceId to Git markers. [9e89243](https://github.com/atomist-skills/skill/commit/9e89243faa90a568472ac1118646fca8cd618b67)
 
 ## [0.6.0](https://github.com/atomist/skill/compare/0.5.1...0.6.0) - 2020-11-24
