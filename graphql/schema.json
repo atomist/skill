@@ -10767,197 +10767,6 @@
             "deprecationReason": null
           },
           {
-            "name": "PodDeployment",
-            "description": "Auto-generated query for PodDeployment",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PodDeployment"
-              }
-            },
-            "args": [
-              {
-                "name": "id",
-                "description": "The ID of this PodDeployment",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "ID"
-                }
-              },
-              {
-                "name": "_offset",
-                "description": "Paging offset (default 0)",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_first",
-                "description": "Return the first X results (default 10)",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_orderBy",
-                "description": "Name of property to sort on",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_after",
-                "description": "Search only after this timestamp",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_before",
-                "description": "Search only before this timestamp",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_ordering",
-                "description": "Direction of ordering",
-                "defaultValue": null,
-                "type": {
-                  "kind": "ENUM",
-                  "name": "_Ordering"
-                }
-              },
-              {
-                "name": "_search",
-                "description": "Elastic Search simple full text search syntax",
-                "defaultValue": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String"
-                }
-              },
-              {
-                "args": [],
-                "name": "deploymentName",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "directives": [
-                  {
-                    "args": [],
-                    "name": "compositeId"
-                  }
-                ],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "environment",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "directives": [],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "imageTag",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "directives": [
-                  {
-                    "args": [],
-                    "name": "compositeId"
-                  }
-                ],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "previousSha",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "directives": [],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "sha",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "directives": [
-                  {
-                    "args": [],
-                    "name": "compositeId"
-                  }
-                ],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "targetReplicas",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "directives": [],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "timestamp",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "directives": [],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ]
-          },
-          {
             "name": "CommitIssueRelationship",
             "description": "Auto-generated query for CommitIssueRelationship",
             "type": {
@@ -13513,151 +13322,6 @@
             ]
           },
           {
-            "name": "AtomistAutomationSession",
-            "description": "Auto-generated query for AtomistAutomationSession",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "AtomistAutomationSession"
-              }
-            },
-            "args": [
-              {
-                "name": "id",
-                "description": "The ID of this AtomistAutomationSession",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "ID"
-                }
-              },
-              {
-                "name": "_offset",
-                "description": "Paging offset (default 0)",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_first",
-                "description": "Return the first X results (default 10)",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_orderBy",
-                "description": "Name of property to sort on",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_after",
-                "description": "Search only after this timestamp",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_before",
-                "description": "Search only before this timestamp",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_ordering",
-                "description": "Direction of ordering",
-                "defaultValue": null,
-                "type": {
-                  "kind": "ENUM",
-                  "name": "_Ordering"
-                }
-              },
-              {
-                "name": "_search",
-                "description": "Elastic Search simple full text search syntax",
-                "defaultValue": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String"
-                }
-              },
-              {
-                "name": "name",
-                "description": "The name of the automation session's registration",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "version",
-                "description": "The version of the automation session's registration",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "ipAddress",
-                "description": "The IP address of the automation session",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "registrationId",
-                "description": "The ID of the automation session's registration",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "registrationTimestamp",
-                "description": "The registration date of the automation session",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "Card",
             "description": "Auto-generated query for Card",
             "type": {
@@ -15912,6 +15576,30 @@
             "deprecationReason": null
           },
           {
+            "name": "maxAllowed",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "minRequired",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "name",
             "description": "",
             "args": [],
@@ -15958,10 +15646,44 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "scopes",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "AtomistSkillRequiredCapabilityScope",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "SCALAR",
+        "name": "Int",
+        "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
         "enumValues": null,
         "possibleTypes": null
       },
@@ -16774,16 +16496,6 @@
         "possibleTypes": null
       },
       {
-        "kind": "SCALAR",
-        "name": "Int",
-        "description": "The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.",
-        "fields": null,
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
         "kind": "OBJECT",
         "name": "AtomistChatCommand",
         "description": "",
@@ -17309,6 +17021,29 @@
       },
       {
         "kind": "ENUM",
+        "name": "AtomistSkillRequiredCapabilityScope",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "ingestion",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "configuration",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
         "name": "AtomistSkillParameterVisiblity",
         "description": "",
         "fields": null,
@@ -17425,6 +17160,26 @@
             "deprecationReason": null
           },
           {
+            "name": "capabilities",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "AtomistSkillCapabilityProviderValue",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "displayName",
             "description": "",
             "args": [],
@@ -17513,18 +17268,6 @@
             "deprecationReason": null
           },
           {
-            "name": "signals",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "OBJECT",
-              "name": "AtomistSkillSignalConfiguration",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "updatedAt",
             "description": "",
             "args": [],
@@ -17569,6 +17312,116 @@
           },
           {
             "name": "name",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AtomistSkillCapabilityProviderValue",
+        "description": "",
+        "fields": [
+          {
+            "name": "providers",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AtomistSkillCapabilityProviderDetails",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "spec",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AtomistSkillRequiredCapabilitySpec",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AtomistSkillCapabilityProviderDetails",
+        "description": "",
+        "fields": [
+          {
+            "name": "configurationName",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "namespace",
             "description": "",
             "args": [],
             "type": {
@@ -17798,184 +17651,6 @@
         "interfaces": [],
         "enumValues": null,
         "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "AtomistSkillSignalConfiguration",
-        "description": "",
-        "fields": [
-          {
-            "name": "subscriptions",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "AtomistSkillSignalConfigurationRef",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "variables",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "INTERFACE",
-                  "name": "AtomistSkillSignalVariable",
-                  "ofType": null
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "AtomistSkillSignalConfigurationRef",
-        "description": "",
-        "fields": [
-          {
-            "name": "and",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "AtomistSkillSignalRef",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "name",
-            "description": "Name of a gateSubscription in this skill",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "AtomistSkillSignalRef",
-        "description": "",
-        "fields": [
-          {
-            "name": "name",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "namespace",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INTERFACE",
-        "name": "AtomistSkillSignalVariable",
-        "description": "",
-        "fields": [
-          {
-            "name": "name",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": [
-          {
-            "kind": "OBJECT",
-            "name": "AtomistSkillSignalStringVariable",
-            "ofType": null
-          }
-        ]
       },
       {
         "kind": "OBJECT",
@@ -18218,6 +17893,53 @@
                     "ofType": null
                   }
                 }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "pagedLogs",
+            "description": "",
+            "args": [
+              {
+                "name": "filter",
+                "description": "",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "_AtomistSkillLogFilter",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "first",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "pageKey",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AtomistSkillLogsPage",
+                "ofType": null
               }
             },
             "isDeprecated": false,
@@ -18589,6 +18311,140 @@
                 "name": "String",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "_AtomistSkillLogFilter",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "category_in",
+            "description": "",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "AtomistSkillExecutionLogCategory",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "severity_in",
+            "description": "",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "AtomistSkillExecutionLogSeverity",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "timestamp_gt",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "timestamp_gte",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "timestamp_lt",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "timestamp_lte",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AtomistSkillLogsPage",
+        "description": "",
+        "fields": [
+          {
+            "name": "logs",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "OBJECT",
+                    "name": "AtomistSkillLog",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "nextPageKey",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -40006,11 +39862,11 @@
       {
         "kind": "OBJECT",
         "name": "Release",
-        "description": "Release-Node",
+        "description": "",
         "fields": [
           {
             "name": "_id",
-            "description": "internal node id",
+            "description": "",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -40022,7 +39878,7 @@
           },
           {
             "name": "url",
-            "description": "the URL of the Release",
+            "description": "",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -40034,7 +39890,7 @@
           },
           {
             "name": "id",
-            "description": "id of  Release",
+            "description": "",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -40062,7 +39918,7 @@
           },
           {
             "name": "name",
-            "description": "name of  Release",
+            "description": "",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -40074,7 +39930,7 @@
           },
           {
             "name": "timestamp",
-            "description": "timestamp of  Release",
+            "description": "",
             "args": [],
             "type": {
               "kind": "SCALAR",
@@ -40085,8 +39941,20 @@
             "deprecationReason": null
           },
           {
+            "name": "action",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "ReleaseAction",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "tag",
-            "description": "Release tag Tag",
+            "description": "",
             "args": [
               {
                 "name": "id",
@@ -40151,6 +40019,59 @@
         "inputFields": null,
         "interfaces": [],
         "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
+        "name": "ReleaseAction",
+        "description": "",
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "published",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "unpublished",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "created",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "edited",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "deleted",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "prereleased",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "released",
+            "description": "",
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
         "possibleTypes": null
       },
       {
@@ -56137,29 +56058,6 @@
             "deprecationReason": null
           },
           {
-            "name": "ingestCustomPodDeployment",
-            "description": "Auto-generated ingestion mutation for PodDeployment",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "value",
-                "description": "The instance of PodDeployment to ingest",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "CustomPodDeploymentInput"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "ingestCustomCommitIssueRelationship",
             "description": "Auto-generated ingestion mutation for CommitIssueRelationship",
             "type": {
@@ -56574,29 +56472,6 @@
             ]
           },
           {
-            "name": "ingestCustomAtomistAutomationSession",
-            "description": "Auto-generated ingestion mutation for AtomistAutomationSession",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "value",
-                "description": "The instance of AtomistAutomationSession to ingest",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "CustomAtomistAutomationSessionInput"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "ingestCustomCard",
             "description": "Auto-generated ingestion mutation for Card",
             "type": {
@@ -56660,29 +56535,6 @@
                   "ofType": {
                     "kind": "INPUT_OBJECT",
                     "name": "CustomAspectRegistrationInput"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "deleteCustomPodDeployment",
-            "description": "Auto-generated deletion mutation for PodDeployment",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "value",
-                "description": "The instance of PodDeployment to delete",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "CustomPodDeploymentInput"
                   }
                 }
               }
@@ -57103,29 +56955,6 @@
             ]
           },
           {
-            "name": "deleteCustomAtomistAutomationSession",
-            "description": "Auto-generated deletion mutation for AtomistAutomationSession",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "value",
-                "description": "The instance of AtomistAutomationSession to delete",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "CustomAtomistAutomationSessionInput"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "deleteCustomCard",
             "description": "Auto-generated deletion mutation for Card",
             "type": {
@@ -57189,29 +57018,6 @@
                   "ofType": {
                     "kind": "INPUT_OBJECT",
                     "name": "CustomAspectRegistrationInput"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "deleteCustomPodDeploymentById",
-            "description": "Auto-generated delete-by-id mutation for PodDeployment",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "description": "The id of the PodDeployment to delete",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "ID"
                   }
                 }
               }
@@ -57620,29 +57426,6 @@
               {
                 "name": "id",
                 "description": "The id of the WebhookEvent to delete",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "ID"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "deleteCustomAtomistAutomationSessionById",
-            "description": "Auto-generated delete-by-id mutation for AtomistAutomationSession",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "description": "The id of the AtomistAutomationSession to delete",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -58198,42 +57981,6 @@
             "defaultValue": null
           },
           {
-            "name": "gateSubscriptions",
-            "description": "",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "AtomistGateRefInput",
-                  "ofType": null
-                }
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "gates",
-            "description": "",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "AtomistGateInput",
-                  "ofType": null
-                }
-              }
-            },
-            "defaultValue": null
-          },
-          {
             "name": "homepageUrl",
             "description": "",
             "type": {
@@ -58437,24 +58184,6 @@
                 "ofType": {
                   "kind": "INPUT_OBJECT",
                   "name": "AtomistSkillIngestionSchemaInput",
-                  "ofType": null
-                }
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "signals",
-            "description": "",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "NON_NULL",
-                "name": null,
-                "ofType": {
-                  "kind": "SCALAR",
-                  "name": "String",
                   "ofType": null
                 }
               }
@@ -59061,6 +58790,26 @@
             "defaultValue": null
           },
           {
+            "name": "maxAllowed",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "minRequired",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "name",
             "description": "",
             "type": {
@@ -59081,6 +58830,28 @@
               "kind": "SCALAR",
               "name": "String",
               "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "scopes",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "AtomistSkillRequiredCapabilityScope",
+                    "ofType": null
+                  }
+                }
+              }
             },
             "defaultValue": null
           }
@@ -59174,88 +58945,6 @@
           },
           {
             "name": "query",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "AtomistGateRefInput",
-        "description": "Start: registration inputs",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "name",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "namespace",
-            "description": "",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "AtomistGateInput",
-        "description": "",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "and",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "AtomistGateRefInput",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "name",
             "description": "",
             "type": {
               "kind": "NON_NULL",
@@ -60762,7 +60451,7 @@
       {
         "kind": "INPUT_OBJECT",
         "name": "AtomistSkillIngestionSchemaInput",
-        "description": "",
+        "description": "Start: registration inputs",
         "fields": null,
         "inputFields": [
           {
@@ -60804,6 +60493,24 @@
         "description": "Configuration inputs",
         "fields": null,
         "inputFields": [
+          {
+            "name": "capabilities",
+            "description": "",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "AtomistSkillCapabilityProvidersInput",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null
+          },
           {
             "name": "displayName",
             "description": "",
@@ -60877,14 +60584,118 @@
               }
             },
             "defaultValue": null
-          },
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "AtomistSkillCapabilityProvidersInput",
+        "description": "",
+        "fields": null,
+        "inputFields": [
           {
-            "name": "signals",
+            "name": "name",
             "description": "",
             "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "AtomistSkillSignalConfigurationInput",
-              "ofType": null
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "namespace",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "providers",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "AtomistSkillCapabilityProviderInput",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "AtomistSkillCapabilityProviderInput",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "configurationName",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "name",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "namespace",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
             },
             "defaultValue": null
           }
@@ -61806,203 +61617,6 @@
         "inputFields": [
           {
             "name": "id",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "AtomistSkillSignalConfigurationInput",
-        "description": "",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "subscriptions",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "AtomistSkillSignalConfigurationRefInput",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "variables",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "AtomistSkillSignalVariableInput",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "AtomistSkillSignalConfigurationRefInput",
-        "description": "",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "and",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "LIST",
-                "name": null,
-                "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "AtomistSkillSignalRefInput",
-                    "ofType": null
-                  }
-                }
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "name",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "AtomistSkillSignalRefInput",
-        "description": "",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "name",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "namespace",
-            "description": "",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "AtomistSkillSignalVariableInput",
-        "description": "",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "string",
-            "description": "",
-            "type": {
-              "kind": "INPUT_OBJECT",
-              "name": "AtomistSkillSignalStringVariableInput",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "AtomistSkillSignalStringVariableInput",
-        "description": "",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "name",
-            "description": "",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "value",
             "description": "",
             "type": {
               "kind": "NON_NULL",
@@ -67061,55 +66675,6 @@
           {
             "kind": "INTERFACE",
             "name": "AtomistSkillParameterValue",
-            "ofType": null
-          }
-        ],
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "OBJECT",
-        "name": "AtomistSkillSignalStringVariable",
-        "description": "",
-        "fields": [
-          {
-            "name": "name",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "value",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
-        "inputFields": null,
-        "interfaces": [
-          {
-            "kind": "INTERFACE",
-            "name": "AtomistSkillSignalVariable",
             "ofType": null
           }
         ],
@@ -78364,126 +77929,6 @@
             "deprecationReason": null
           },
           {
-            "name": "PodDeployment",
-            "description": "Auto-generated subscription for PodDeployment",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "PodDeployment"
-              }
-            },
-            "args": [
-              {
-                "args": [],
-                "name": "deploymentName",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "directives": [
-                  {
-                    "args": [],
-                    "name": "compositeId"
-                  }
-                ],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "environment",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "directives": [],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "imageTag",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "directives": [
-                  {
-                    "args": [],
-                    "name": "compositeId"
-                  }
-                ],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "previousSha",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "directives": [],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "sha",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
-                },
-                "directives": [
-                  {
-                    "args": [],
-                    "name": "compositeId"
-                  }
-                ],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "targetReplicas",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "directives": [],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              },
-              {
-                "args": [],
-                "name": "timestamp",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
-                },
-                "directives": [],
-                "description": null,
-                "isDeprecated": false,
-                "deprecationReason": null
-              }
-            ]
-          },
-          {
             "name": "CommitIssueRelationship",
             "description": "Auto-generated subscription for CommitIssueRelationship",
             "type": {
@@ -79751,80 +79196,6 @@
             ]
           },
           {
-            "name": "AtomistAutomationSession",
-            "description": "Auto-generated subscription for AtomistAutomationSession",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "AtomistAutomationSession"
-              }
-            },
-            "args": [
-              {
-                "name": "name",
-                "description": "The name of the automation session's registration",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "version",
-                "description": "The version of the automation session's registration",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "ipAddress",
-                "description": "The IP address of the automation session",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "registrationId",
-                "description": "The ID of the automation session's registration",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "registrationTimestamp",
-                "description": "The registration date of the automation session",
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "Card",
             "description": "Auto-generated subscription for Card",
             "type": {
@@ -80223,166 +79594,6 @@
                 "name": "String"
               }
             }
-          }
-        ]
-      },
-      {
-        "description": null,
-        "interfaces": [],
-        "name": "PodDeployment",
-        "fields": [
-          {
-            "args": [],
-            "name": "deploymentName",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "directives": [
-              {
-                "args": [],
-                "name": "compositeId"
-              }
-            ],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "environment",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "imageTag",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "directives": [
-              {
-                "args": [],
-                "name": "compositeId"
-              }
-            ],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "previousSha",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "sha",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "directives": [
-              {
-                "args": [],
-                "name": "compositeId"
-              }
-            ],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "targetReplicas",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "timestamp",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": "The ID of this PodDeployment",
-            "type": {
-              "kind": "SCALAR",
-              "name": "ID"
-            },
-            "args": []
-          }
-        ],
-        "possibleTypes": null,
-        "kind": "OBJECT",
-        "enumValues": null,
-        "inputFields": null,
-        "directives": [
-          {
-            "args": [],
-            "name": "rootType"
           }
         ]
       },
@@ -85294,68 +84505,6 @@
         ]
       },
       {
-        "kind": "OBJECT",
-        "name": "AtomistAutomationSession",
-        "fields": [
-          {
-            "name": "name",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String"
-            },
-            "description": "The name of the automation session's registration",
-            "args": []
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String"
-            },
-            "description": "The version of the automation session's registration",
-            "args": []
-          },
-          {
-            "name": "ipAddress",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String"
-            },
-            "description": "The IP address of the automation session",
-            "args": []
-          },
-          {
-            "name": "registrationId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String"
-            },
-            "description": "The ID of the automation session's registration",
-            "args": []
-          },
-          {
-            "name": "registrationTimestamp",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String"
-            },
-            "description": "The registration date of the automation session",
-            "args": []
-          },
-          {
-            "name": "id",
-            "description": "The ID of this AtomistAutomationSession",
-            "type": {
-              "kind": "SCALAR",
-              "name": "ID"
-            },
-            "args": []
-          }
-        ],
-        "description": "Atomist automation session",
-        "interfaces": []
-      },
-      {
         "description": null,
         "interfaces": [],
         "name": "CardCorrelation",
@@ -87682,130 +86831,6 @@
             "description": "Ascending order",
             "isDeprecated": false,
             "deprecationReason": null
-          }
-        ]
-      },
-      {
-        "description": "Auto generated input for type PodDeployment",
-        "interfaces": [],
-        "ofType": null,
-        "name": "CustomPodDeploymentInput",
-        "fields": null,
-        "possibleTypes": null,
-        "kind": "INPUT_OBJECT",
-        "enumValues": null,
-        "inputFields": [
-          {
-            "name": "deploymentName",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "environment",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "imageTag",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "previousSha",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "sha",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "targetReplicas",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "timestamp",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "Int",
-                "ofType": null
-              }
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
           }
         ]
       },
@@ -90750,65 +89775,6 @@
         ]
       },
       {
-        "kind": "INPUT_OBJECT",
-        "name": "CustomAtomistAutomationSessionInput",
-        "description": "Auto generated input for type AtomistAutomationSession",
-        "inputFields": [
-          {
-            "name": "name",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": "The name of the automation session's registration",
-            "defaultValue": null
-          },
-          {
-            "name": "version",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": "The version of the automation session's registration",
-            "defaultValue": null
-          },
-          {
-            "name": "ipAddress",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": "The IP address of the automation session",
-            "defaultValue": null
-          },
-          {
-            "name": "registrationId",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": "The ID of the automation session's registration",
-            "defaultValue": null
-          },
-          {
-            "name": "registrationTimestamp",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": "The registration date of the automation session",
-            "defaultValue": null
-          }
-        ],
-        "fields": null,
-        "ofType": null
-      },
-      {
         "description": "Auto generated input for type CardCorrelation",
         "interfaces": [],
         "ofType": null,
@@ -93062,29 +92028,6 @@
           {
             "name": "re",
             "description": "Re to match with fields value (after .toString)",
-            "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
-                "ofType": null
-              }
-            },
-            "defaultValue": null
-          }
-        ]
-      },
-      {
-        "name": "var",
-        "description": "Used internally to mark fields as corresponding to a variable",
-        "locations": [
-          "FIELD"
-        ],
-        "args": [
-          {
-            "name": "name",
-            "description": "Name of the var on this field",
             "type": {
               "kind": "NON_NULL",
               "name": null,
