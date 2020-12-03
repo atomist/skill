@@ -50,6 +50,11 @@ export interface UpdateCheck {
 		message: string;
 		title?: string;
 	}>;
+	actions?: Array<{
+		label: string;
+		description: string;
+		identifier: string;
+	}>;
 }
 
 export interface Check {
@@ -145,6 +150,7 @@ export async function createCheck(
 							: check.data.output.summary,
 					),
 				},
+				actions: params.actions,
 			});
 			await updateAnnotation(ctx, id, check, params);
 		},
