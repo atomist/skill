@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.6.1...HEAD)
 
+### Added
+
+-   Add footer to check body. [7efd5c1](https://github.com/atomist-skills/skill/commit/7efd5c1901ea2152e6266c30732bb4ef3efffa1f)
+
 ## [0.6.1](https://github.com/atomist/skill/compare/0.6.0...0.6.1) - 2020-12-03
 
 ### Added
