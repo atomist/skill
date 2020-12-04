@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Add footer to check body. [7efd5c1](https://github.com/atomist-skills/skill/commit/7efd5c1901ea2152e6266c30732bb4ef3efffa1f)
 
+### Changed
+
+-   Use same config for globs and type generation. [#143](https://github.com/atomist-skills/skill/issues/143)
+
 ## [0.6.1](https://github.com/atomist/skill/compare/0.6.0...0.6.1) - 2020-12-03
 
 ### Added
