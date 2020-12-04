@@ -68,6 +68,7 @@ export function formatMarkers(
 <!--
   [atomist:generated]
   [atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]
+  [atomist-version:${ctx.skill.version}]
   [atomist-configuration:${toArray(ctx.configuration)
 		.map(c => c.name)
 		.join(",")}]
@@ -76,6 +77,17 @@ export function formatMarkers(
 		tags.length > 0 ? "\n" : ""
 	}${tags.map(t => `  [${t}]`).join("\n")}
 -->`;
+}
+
+export function formatFooter(ctx: Contextual<any, any>): string {
+	return `
+---
+
+${ctx.skill.namespace}/${ctx.skill.name} @ \`${
+		ctx.skill.version
+	}\` \u00B7 ${toArray(ctx.configuration)
+		.map(c => `[${c.name}](${c.url})`)
+		.join("\u00B7")}`;
 }
 
 export async function convergeLabel(

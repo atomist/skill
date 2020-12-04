@@ -15,6 +15,6 @@
  */
 
 export { UpdateCheck, CreateCheck, Check, createCheck } from "./check";
-export { api, formatMarkers, convergeLabel } from "./operation";
+export { api, formatMarkers, formatFooter, convergeLabel } from "./operation";
 export { persistChanges, closePullRequests } from "./pull_request";
 export { nextTag } from "./tag";

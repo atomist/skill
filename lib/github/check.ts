@@ -22,7 +22,7 @@ import {
 import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
-import { api, formatMarkers } from "./operation";
+import { api, formatFooter, formatMarkers } from "./operation";
 import chunk = require("lodash.chunk");
 
 export interface CreateCheck {
@@ -110,7 +110,9 @@ export async function createCheck(
 			output: {
 				title: parameters.title,
 				summary: truncateText(
-					`${parameters.body}\n${formatMarkers(ctx)}`,
+					`${parameters.body}\n${formatFooter(ctx)}\n${formatMarkers(
+						ctx,
+					)}`,
 				),
 			},
 		});
@@ -127,7 +129,9 @@ export async function createCheck(
 			output: {
 				title: parameters.title,
 				summary: truncateText(
-					`${parameters.body}\n${formatMarkers(ctx)}`,
+					`${parameters.body}\n${formatFooter(ctx)}\n${formatMarkers(
+						ctx,
+					)}`,
 				),
 			},
 		});
@@ -151,7 +155,9 @@ export async function createCheck(
 					title: check.data.output.title,
 					summary: truncateText(
 						params.body
-							? `${params.body}\n${formatMarkers(ctx)}`
+							? `${params.body}\n${formatFooter(
+									ctx,
+							  )}\n${formatMarkers(ctx)}`
 							: check.data.output.summary,
 					),
 				},
