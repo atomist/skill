@@ -14,10 +14,19 @@
  * limitations under the License.
  */
 
-import { Contextual } from "../handler";
+import {
+	OnPushSubscription,
+	OnTagSubscription,
+} from "../definition/subscription/typings/types";
+import { Contextual, EventContext } from "../handler";
 import { toArray } from "../util";
 
-export function matchesFilter(
+/**
+ * @deprecated use matchesRepoFilter
+ */
+export const matchesFilter = matchesRepoFilter;
+
+export function matchesRepoFilter(
 	repoId: string,
 	orgId: string,
 	configurationName: string,
@@ -55,6 +64,27 @@ export function matchesFilter(
 			return true;
 		}
 		return false;
+	}
+	return true;
+}
+
+export function matchesRefFilter(
+	parameterName: string,
+	ctx: EventContext<OnTagSubscription | OnPushSubscription>,
+): boolean {
+	const filter: string[] = ctx.configuration?.parameters?.[parameterName] || [
+		".*",
+	];
+	if (filter?.length > 0) {
+		const push = (ctx.data as OnPushSubscription).Push?.[0];
+		const tag = (ctx.data as OnTagSubscription).Tag?.[0];
+		let ref;
+		if (push) {
+			ref = push.branch;
+		} else if (tag) {
+			ref = tag.name;
+		}
+		return filter.some(f => new RegExp(f).test(ref));
 	}
 	return true;
 }

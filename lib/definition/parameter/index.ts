@@ -14,4 +14,9 @@
  * limitations under the License.
  */
 
-export { repoFilter, PushStrategy, pushStrategy } from "./definition";
+export {
+	repoFilter,
+	refFilter,
+	PushStrategy,
+	pushStrategy,
+} from "./definition";

@@ -18,6 +18,7 @@ import {
 	ParameterType,
 	RepoFilterParameter,
 	SingleChoiceParameter,
+	StringArrayParameter,
 } from "../skill";
 
 export function repoFilter(
@@ -28,6 +29,19 @@ export function repoFilter(
 		displayName: "Which repositories",
 		description: "",
 		required: options.required !== undefined ? options.required : true,
+	};
+}
+
+export function refFilter(
+	options: { required?: boolean; description?: string } = { required: true },
+): StringArrayParameter {
+	return {
+		type: ParameterType.StringArray,
+		displayName: "Git ref filter",
+		description: options.description
+			? options.description
+			: "Restrict skill execution to certain branches or tags (use regular expressions)",
+		required: options.required !== undefined ? options.required : false,
 	};
 }
 
