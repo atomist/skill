@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 -   Add footer to check body. [7efd5c1](https://github.com/atomist-skills/skill/commit/7efd5c1901ea2152e6266c30732bb4ef3efffa1f)
+-   Add tag and branch filter. [1f84115](https://github.com/atomist-skills/skill/commit/1f84115c83932d6d6fe31739bf2634d7a2e8424d)
 
 ### Changed
 
