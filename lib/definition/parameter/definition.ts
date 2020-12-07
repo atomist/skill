@@ -33,11 +33,11 @@ export function repoFilter(
 }
 
 export function refFilter(
-	options: { required?: boolean; description?: string } = { required: true },
+	options: { required?: boolean; description?: string } = { required: false },
 ): StringArrayParameter {
 	return {
 		type: ParameterType.StringArray,
-		displayName: "Git ref filter",
+		displayName: "Branch and tag filter",
 		description: options.description
 			? options.description
 			: "Restrict skill execution to certain branches or tags (use regular expressions)",
