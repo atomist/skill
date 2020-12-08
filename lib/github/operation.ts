@@ -83,12 +83,12 @@ export function formatFooter(ctx: Contextual<any, any>): string {
 	return `
 ---
 
-<sub>[\`${ctx.skill.namespace}/${ctx.skill.name}@${
+<sub>Skill: [\`${ctx.skill.namespace}/${ctx.skill.name}@${
 		ctx.skill.version
 	}\`](https://go.atomist.com/catalog/skills/${ctx.skill.namespace}/${
 		ctx.skill.name
-	}) \u00B7 ${toArray(ctx.configuration)
-		.map(c => `[${c.name}](${c.url})`)
+	}) \u00B7 Configuration: ${toArray(ctx.configuration)
+		.map(c => `[\`${c.name}\`](${c.url})`)
 		.join("\u00B7")}</sub>`;
 }
 
