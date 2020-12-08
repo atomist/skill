@@ -41,8 +41,6 @@
     "compile": "run-s gql:gen compile:ts",
     "compile:ts": "tsc --project .",
     "doc": "typedoc --mode modules --excludeExternals --ignoreCompilerErrors --exclude \"**/*.d.ts\" --out doc index.ts lib",
-    "fmt": "run-s fmt:gql",
-    "fmt:gql": "prettier --write \"graphql/**/*.graphql\"",
     "gql:gen": "graphql-codegen",
     "lint": "run-p lint:eslint lint:prettier",
     "lint:eslint": "eslint --ext .ts .",
@@ -53,8 +51,7 @@
     "prepack": "atm-npm-tools source-maps",
     "schema": "node ./bin/start.js gql-fetch",
     "test": "mocha --require espower-typescript/guess \"test/**/*.test.ts\"",
-    "test:one": "mocha --require espower-typescript/guess \"test/**/${TEST:-*.test.ts}\"",
-    "typedoc": "npm run doc"
+    "test:one": "mocha --require espower-typescript/guess \"test/**/${TEST:-*.test.ts}\""
   },
   "dependencies": {
     "@atomist/skill-logging": "^0.2.6",
