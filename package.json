@@ -111,7 +111,7 @@
     "stack-trace": "0.0.10",
     "strip-ansi": "^6.0.0",
     "tree-kill": "^1.2.2",
-    "uuid": "^8.3.1",
+    "uuid": "^8.3.2",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
