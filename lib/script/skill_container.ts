@@ -71,9 +71,9 @@ export async function defaults(
 
 	return {
 		name: giturl.name,
-		namespace: giturl.owner,
+		namespace: giturl.owner === "atomist-skills" ? "atomist" : giturl.owner,
 		displayName: giturl.name,
-		author: giturl.owner,
+		author: giturl.owner === "atomist-skills" ? "Atomist" : giturl.owner,
 		description,
 		longDescription,
 		readme,
@@ -85,6 +85,7 @@ export async function defaults(
 
 export async function createYamlSkillInput(
 	cwd: string,
+	artifacts: boolean,
 ): Promise<AtomistSkillInput> {
 	info(`Generating skill metadata...`);
 
@@ -172,20 +173,24 @@ export async function createYamlSkillInput(
 		y.longDescription = y.description;
 	}
 
-	if (!y.artifacts?.docker) {
-		const gcf = y.artifacts?.gcf?.[0];
-		y.artifacts = {
-			gcf: [
-				{
-					entryPoint: gcf?.entryPoint || "entryPoint",
-					memory: gcf?.memory || 256,
-					timeout: gcf?.timeout || 60,
-					runtime: gcf?.runtime || AtomistSkillRuntime.Nodejs12,
-					name: "gcf",
-					url: undefined,
-				},
-			],
-		};
+	if (artifacts) {
+		if (!y.artifacts?.docker) {
+			const gcf = y.artifacts?.gcf?.[0];
+			y.artifacts = {
+				gcf: [
+					{
+						entryPoint: gcf?.entryPoint || "entryPoint",
+						memory: gcf?.memory || 256,
+						timeout: gcf?.timeout || 60,
+						runtime: gcf?.runtime || AtomistSkillRuntime.Nodejs12,
+						name: "gcf",
+						url: undefined,
+					},
+				],
+			};
+		}
+	} else {
+		delete y.artifacts;
 	}
 
 	return y as any;

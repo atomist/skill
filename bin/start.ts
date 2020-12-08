@@ -56,12 +56,19 @@ yargs
 					description: "Validate metadata",
 					demandOption: false,
 				},
+				artifacts: {
+					type: "boolean",
+					description: "Generate artifacts in skill metadata",
+					default: true,
+					demandOption: false,
+				},
 			}),
 		async argv => {
 			try {
 				await (await import("../lib/script/skill_input")).generateSkill(
 					argv.cwd,
 					argv.validate,
+					argv.artifacts,
 				);
 				return 0;
 			} catch (e) {

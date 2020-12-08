@@ -279,6 +279,7 @@ export enum AtomistSkillTechnology {
 
 export async function createJavaScriptSkillInput(
 	cwd: string,
+	genArtifacts: boolean,
 	name = "index.js",
 ): Promise<AtomistSkillInput> {
 	const p = path.join(cwd, name);
@@ -357,24 +358,26 @@ export async function createJavaScriptSkillInput(
 	}
 
 	const artifacts: any = {};
-	if (!is.containers) {
-		artifacts.gcf = [
-			{
-				entryPoint: is.runtime?.entryPoint || "entryPoint",
-				memory: is.runtime?.memory || 512,
-				timeout: is.runtime?.timeout || 60,
-				runtime:
-					(is.runtime?.platform as any) ||
-					AtomistSkillRuntime.Nodejs12,
-				name: "gcf",
-				url: undefined,
-			},
-		];
-	} else {
-		artifacts.docker = map(is.containers, (v, k) => ({
-			name: k,
-			...v,
-		}));
+	if (genArtifacts) {
+		if (!is.containers) {
+			artifacts.gcf = [
+				{
+					entryPoint: is.runtime?.entryPoint || "entryPoint",
+					memory: is.runtime?.memory || 512,
+					timeout: is.runtime?.timeout || 60,
+					runtime:
+						(is.runtime?.platform as any) ||
+						AtomistSkillRuntime.Nodejs12,
+					name: "gcf",
+					url: undefined,
+				},
+			];
+		} else {
+			artifacts.docker = map(is.containers, (v, k) => ({
+				name: k,
+				...v,
+			}));
+		}
 	}
 
 	const y: Omit<AtomistSkillInput, "commitSha" | "branchId" | "repoId"> = {
@@ -535,6 +538,7 @@ ${errors.map(e => `        - ${e}`).join("\n")}`);
 export async function generateSkill(
 	cwd: string,
 	validate: boolean,
+	artifacts: boolean,
 ): Promise<void> {
 	let s;
 	let forceValidate = validate;
@@ -542,10 +546,10 @@ export async function generateSkill(
 		forceValidate = await fs.pathExists(path.join(cwd, "package.json"));
 	}
 	if (await fs.pathExists(path.join(cwd, "skill.js"))) {
-		s = await createJavaScriptSkillInput(cwd, "skill.js");
+		s = await createJavaScriptSkillInput(cwd, artifacts, "skill.js");
 		await validateSkillInput(cwd, s, { validateHandlers: forceValidate });
 	} else {
-		s = await createYamlSkillInput(cwd);
+		s = await createYamlSkillInput(cwd, artifacts);
 		await validateSkillInput(cwd, s, { validateHandlers: forceValidate });
 	}
 	await writeSkillYaml(cwd, s);
