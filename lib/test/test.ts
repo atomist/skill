@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { eventHandlerLoader } from "../action";
 import { ContextFactory, createContext } from "../context";
 import { processCommand, processEvent, processWebhook } from "../function";
 import { Contextual, HandlerStatus } from "../handler";
@@ -71,7 +72,7 @@ export async function assertSkill(
 		await processEvent(
 			payload,
 			{ eventId: guid() },
-			handlerLoader("events"),
+			eventHandlerLoader("events"),
 			factory,
 		);
 	} else if (isCommandIncoming(payload)) {

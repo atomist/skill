@@ -18,6 +18,7 @@
 import "source-map-support/register";
 
 import { Severity } from "@atomist/skill-logging";
+import { eventHandlerLoader } from "./action";
 import { ContextFactory, createContext } from "./context";
 import {
 	CommandContext,
@@ -76,7 +77,9 @@ export const entryPoint = async (
 export async function processEvent(
 	event: EventIncoming | SubscriptionIncoming,
 	ctx: { eventId: string },
-	loader: (name: string) => Promise<EventHandler> = handlerLoader("events"),
+	loader: (name: string) => Promise<EventHandler> = eventHandlerLoader(
+		"events",
+	),
 	factory: ContextFactory = createContext,
 ): Promise<void> {
 	const context = factory(event, ctx) as EventContext<any> &

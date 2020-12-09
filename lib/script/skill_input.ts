@@ -307,7 +307,12 @@ export async function createJavaScriptSkillInput(
 	for (const subscription of is.subscriptions || [
 		"file://**/graphql/subscription/*.graphql",
 	]) {
-		subscriptions.push(...(await rc(subscription)));
+		const subs = (await rc(subscription)).map(s =>
+			s
+				.replace(/\$\{namespace\}/g, is.namespace)
+				.replace(/\$\{name\}/g, is.name),
+		);
+		subscriptions.push(...subs);
 	}
 
 	const datalogSubscriptions = [...(is.datalogSubscriptions || [])];
