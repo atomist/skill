@@ -38,6 +38,7 @@ import {
 	isEventIncoming,
 	isSubscriptionIncoming,
 	Skill,
+	SkillConfiguration,
 	Source,
 	SubscriptionIncoming,
 	WebhookIncoming,
@@ -209,6 +210,10 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 				type,
 				identifier: JSON.stringify(identifier),
 				skill: `${this.request.skill.namespace}/${this.request.skill.name}`,
+				// TODO cd for commands we could end up with more then one configuration
+				configuration: (toArray(
+					this.request.skill.configuration,
+				)?.[0] as SkillConfiguration)?.name,
 				name,
 				ts,
 				body: JSON.stringify(attachment),
