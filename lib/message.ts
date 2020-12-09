@@ -16,6 +16,7 @@
 
 import {
 	ActionsBlock,
+	Attachment,
 	render,
 	SectionBlock,
 	SlackMessage,
@@ -59,6 +60,14 @@ export interface MessageClient {
 	delete?(
 		destinations: Destinations,
 		options: RequiredMessageOptions,
+	): Promise<void>;
+
+	attach?(
+		attachment: Attachment,
+		type: "push",
+		identifier: { sha: string; branch: string },
+		name: string,
+		ts: number,
 	): Promise<void>;
 }
 
@@ -143,6 +152,14 @@ export abstract class MessageClientSupport
 		options: RequiredMessageOptions,
 	): Promise<void>;
 
+	public abstract attach(
+		attachment: Attachment,
+		type: "push",
+		identifier: { sha: string; branch: string },
+		name: string,
+		ts: number,
+	): Promise<void>;
+
 	protected abstract doSend(
 		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 		msg: any,
@@ -150,6 +167,10 @@ export abstract class MessageClientSupport
 		options?: MessageOptions,
 	): Promise<any>;
 }
+
+const CreateLifecycleAttachmentMutation = `mutation createLifecycleAttachment($value: CustomLifecycleAttachmentInput!) {
+  ingestCustomLifecycleAttachment(value: $value)
+}`;
 
 export abstract class AbstractMessageClient extends MessageClientSupport {
 	constructor(
@@ -173,6 +194,26 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 		return this.doSend(undefined, destinations, {
 			...options,
 			delete: true,
+		});
+	}
+
+	public async attach(
+		attachment: Attachment,
+		type: "push",
+		identifier: { sha: string; branch: string },
+		name: string,
+		ts: number,
+	): Promise<void> {
+		await this.graphClient.mutate(CreateLifecycleAttachmentMutation, {
+			value: {
+				type,
+				identifier: JSON.stringify(identifier),
+				skill: `${this.request.skill.namespace}/${this.request.skill.name}`,
+				name,
+				ts,
+				body: JSON.stringify(attachment),
+				contentType: MessageMimeTypes.SLACK_JSON,
+			},
 		});
 	}
 
