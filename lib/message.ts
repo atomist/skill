@@ -52,7 +52,7 @@ export interface Destinations {
 }
 
 export enum AttachmentTarget {
-	push,
+	Push = "push",
 }
 
 export interface MessageClient {

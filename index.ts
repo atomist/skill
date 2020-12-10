@@ -90,6 +90,7 @@ export {
 	MessageOptions,
 	Destinations,
 	SlackFileMessage,
+	AttachmentTarget,
 } from "./lib/message";
 export {} from "./lib/payload";
 export * as state from "./lib/state";
