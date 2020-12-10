@@ -65,8 +65,7 @@ export interface MessageClient {
 
 	attach?(
 		attachment: Attachment,
-		type: "push",
-		identifier: { sha: string; branch: string },
+		identifier: string,
 		name: string,
 		ts: number,
 	): Promise<void>;
@@ -155,8 +154,7 @@ export abstract class MessageClientSupport
 
 	public abstract attach(
 		attachment: Attachment,
-		type: "push",
-		identifier: { sha: string; branch: string },
+		identifier: string,
 		name: string,
 		ts: number,
 	): Promise<void>;
@@ -200,15 +198,13 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 
 	public async attach(
 		attachment: Attachment,
-		type: "push",
-		identifier: { sha: string; branch: string },
+		identifier: string,
 		name: string,
 		ts: number,
 	): Promise<void> {
 		await this.graphClient.mutate(CreateLifecycleAttachmentMutation, {
 			value: {
-				type,
-				identifier: JSON.stringify(identifier),
+				identifier,
 				skill: `${this.request.skill.namespace}/${this.request.skill.name}`,
 				// TODO cd for commands we could end up with more then one configuration
 				configuration: (toArray(

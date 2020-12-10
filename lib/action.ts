@@ -18,6 +18,7 @@ import { OnAttachmentActionSubscription } from "./definition/subscription/typing
 import { processCommand } from "./function";
 import { EventHandler } from "./handler";
 import { CommandIncoming } from "./payload";
+import { success } from "./status";
 import { handlerLoader } from "./util";
 
 export function eventHandlerLoader<EventHandler>(type: string) {
@@ -48,6 +49,10 @@ const onAttachmentAction: EventHandler<
 		configuration: string;
 		payload: CommandIncoming;
 	} = JSON.parse(task.data);
+
+	if (data.configuration !== ctx.configuration.name) {
+		return success(`Not running command this configuration`).hidden();
+	}
 
 	const payload = data.payload;
 	payload.skill = trigger.skill;
