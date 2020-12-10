@@ -51,6 +51,10 @@ export interface Destinations {
 	channels?: string | string[];
 }
 
+export enum AttachmentTarget {
+	push,
+}
+
 export interface MessageClient {
 	send(
 		msg: any,
@@ -65,6 +69,7 @@ export interface MessageClient {
 
 	attach?(
 		attachment: Attachment,
+		target: AttachmentTarget,
 		identifier: string,
 		name: string,
 		ts: number,
@@ -154,6 +159,7 @@ export abstract class MessageClientSupport
 
 	public abstract attach(
 		attachment: Attachment,
+		target: AttachmentTarget,
 		identifier: string,
 		name: string,
 		ts: number,
@@ -198,12 +204,14 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 
 	public async attach(
 		attachment: Attachment,
+		target: AttachmentTarget,
 		identifier: string,
 		name: string,
 		ts: number,
 	): Promise<void> {
 		await this.graphClient.mutate(CreateLifecycleAttachmentMutation, {
 			value: {
+				type: target,
 				identifier,
 				skill: `${this.request.skill.namespace}/${this.request.skill.name}`,
 				// TODO cd for commands we could end up with more then one configuration
