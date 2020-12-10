@@ -21,7 +21,9 @@ import { CommandIncoming } from "./payload";
 import { success } from "./status";
 import { handlerLoader } from "./util";
 
-export function eventHandlerLoader<EventHandler>(type: string) {
+export function eventHandlerLoader<EventHandler>(
+	type: string,
+): (name: string, cwd?: string) => Promise<EventHandler> {
 	const hl = handlerLoader<EventHandler>(type);
 	return async (name: string, cwd?: string): Promise<EventHandler> => {
 		if (name === "onAttachmentAction") {
