@@ -15,12 +15,15 @@
  */
 
 import * as pRetry from "p-retry";
-import { execPromise } from "../child_process";
+import { execPromise, spawnPromise } from "../child_process";
 import { debug } from "../log/index";
-import { Status, runStatusIn } from "./status";
 import { Project } from "../project/project";
 import { cwd } from "../project/util";
+import { Status, runStatusIn } from "./status";
 import forOwn = require("lodash.forown");
+
+/** Default name of default git remote. */
+const origin = "origin";
 
 /**
  * Git push options.  See git-push(1) for more information.
@@ -49,6 +52,131 @@ export async function status(projectOrCwd: Project | string): Promise<Status> {
 	return runStatusIn(cwd(projectOrCwd));
 }
 
+/** Default retry options for git operations. */
+const retryOptions = {
+	retries: 4,
+	factor: 2,
+	minTimeout: 250,
+	maxTimeout: 1000,
+	randomize: true,
+};
+
+/** Argument to [[persistChanges]]. */
+export interface PersistChangesArgs {
+	/**
+	 * Project containing or path to cloned git repository.
+	 */
+	project: Project | string;
+	/**
+	 * Branch to commit to. If it does not exist, it is created. See
+	 * [[ensureBranch]] for details.
+	 */
+	branch: string;
+	/**
+	 * Function that makes changes to the project. If it returns a
+	 * string, that string is used as the commit message. If it
+	 * returned `undefined`, [[message]] is used as the commit
+	 * message.
+	 */
+	editor: (dir: string) => Promise<string | undefined>;
+	/**
+	 * Commit message. If [[editor]] returns a string, that takes
+	 * precedence as the commit message.
+	 */
+	message?: string;
+	/** Git commit author information. */
+	author?: { login?: string; email?: string };
+	/** Options to supply to `git push`. */
+	options?: GitPushOptions;
+}
+
+/**
+ * Execute changes on a project, commits, and then push the changes to
+ * the remote. Effort is made to ensure success. The git status should
+ * be clean, i.e., have no uncommited changes, when calling this
+ * function.
+ */
+export async function persistChange(args: PersistChangesArgs): Promise<void> {
+	if (!args.editor) {
+		throw new Error(`No project editor provided`);
+	}
+
+	const dir = cwd(args.project);
+	const stat = await status(dir);
+	if (!stat.isClean) {
+		throw new Error(`Git project is not clean`);
+	}
+
+	const branch = args.branch;
+	await ensureBranch(args.project, branch);
+
+	await pRetry(async () => {
+		await execPromise("git", ["fetch", origin, branch], { cwd: dir });
+		await execPromise("git", ["reset", "--hard", `${origin}/${branch}`], {
+			cwd: dir,
+		});
+
+		const message =
+			(await args.editor(dir)) ||
+			args.message ||
+			`Atomist skill commit\n\n[atomist:generated]`;
+
+		await commit(args.project, message, args.author);
+
+		await push(args.project, { ...args.options, branch });
+	}, retryOptions);
+}
+
+/** [[_ensureBranch]] with retry. */
+async function ensureBranch(
+	projectOrCwd: Project | string,
+	branch: string,
+): Promise<void> {
+	await pRetry(async () => _ensureBranch(projectOrCwd, branch), retryOptions);
+}
+
+/**
+ * Ensure a branch exists locally and remotely. If branch exists
+ * remotely, use it, resetting any local version to the remote. If it
+ * does not exist remotely but does exist locally, use the local
+ * branch and push it to the remote while setting the upstream. If it
+ * exists neither remotely nor locally, create it and push it, setting
+ * upstream.
+ */
+async function _ensureBranch(
+	projectOrCwd: Project | string,
+	branch: string,
+): Promise<void> {
+	const dir = cwd(projectOrCwd);
+	const localExists = hasBranch(projectOrCwd, branch);
+	const fetchResult = await spawnPromise("git", ["fetch", origin, branch], {
+		cwd: dir,
+	});
+	if (fetchResult.status === 0) {
+		// branch exists in remote, checkout and hard reset
+		await execPromise("git", ["checkout", branch], { cwd: dir });
+		await execPromise("git", ["reset", "--hard", `${origin}/${branch}`], {
+			cwd: dir,
+		});
+	} else {
+		if (
+			!fetchResult.stderr.includes(
+				`fatal: couldn't find remote ref ${branch}`,
+			)
+		) {
+			throw new Error(`Failed to fetch ${origin} ${branch}`);
+		}
+		// branch does not exist in remote
+		const checkoutArgs = localExists
+			? ["checkout", branch]
+			: ["checkout", "-b", branch];
+		await execPromise("git", checkoutArgs, { cwd: dir });
+		await execPromise("git", ["push", "--set-upstream", origin, branch], {
+			cwd: dir,
+		});
+	}
+}
+
 /**
  * `git add .` and `git commit -m MESSAGE`
  */
@@ -57,36 +185,24 @@ export async function commit(
 	message: string,
 	options: { name?: string; email?: string } = {},
 ): Promise<void> {
-	await execPromise("git", ["add", "."], { cwd: cwd(projectOrCwd) });
-	if (options.name && options.email) {
-		await execPromise("git", ["config", "user.name", options.name], {
-			cwd: cwd(projectOrCwd),
-		});
-		await execPromise("git", ["config", "user.email", options.email], {
-			cwd: cwd(projectOrCwd),
-		});
+	const dir = cwd(projectOrCwd);
+	await execPromise("git", ["add", "."], { cwd: dir });
+	const env = { ...process.env };
+	if (options.name) {
+		env.GIT_AUTHOR_NAME = options.name;
+	}
+	if (options.email) {
+		env.GIT_AUTHOR_EMAIL = options.email;
 	}
 	await execPromise("git", ["commit", "-m", message, "--no-verify"], {
-		cwd: cwd(projectOrCwd),
+		cwd: dir,
+		env,
 	});
-	if (options.name && options.email) {
-		await execPromise(
-			"git",
-			[
-				"commit",
-				"--amend",
-				`--author="Atomist Bot <bot@atomist.com>"`,
-				"--no-edit",
-			],
-			{
-				cwd: cwd(projectOrCwd),
-			},
-		);
-	}
 }
 
 /**
- * Check out a particular commit. We'll end in detached head state
+ * Check out a git ref. If checking out a commit SHA, the repo will be
+ * in a detached head state. The ref must already exist.
  */
 export async function checkout(
 	projectOrCwd: Project | string,
@@ -114,8 +230,17 @@ export async function push(
 	projectOrCwd: Project | string,
 	options?: GitPushOptions,
 ): Promise<void> {
+	await pRetry(async () => _push(projectOrCwd, options), retryOptions);
+}
+
+/** Internal push functionality without retry. See [[push]]. */
+async function _push(
+	projectOrCwd: Project | string,
+	options?: GitPushOptions,
+): Promise<void> {
 	const gitPushArgs = ["push"];
 	const branch = options?.branch;
+	const dir = cwd(projectOrCwd);
 
 	forOwn(options, (v, k) => {
 		if (k !== "branch") {
@@ -133,55 +258,46 @@ export async function push(
 	});
 
 	if (branch) {
-		gitPushArgs.push("--set-upstream", "origin", branch);
+		gitPushArgs.push("--set-upstream", origin, branch);
 	} else {
-		gitPushArgs.push("origin");
+		gitPushArgs.push(origin);
 	}
 
-	const retryOptions = {
-		retries: 4,
-		factor: 2,
-		minTimeout: 250,
-		maxTimeout: 1000,
-		randomize: false,
-	};
-	await pRetry(async () => {
-		try {
-			await execPromise("git", gitPushArgs, { cwd: cwd(projectOrCwd) });
-		} catch (e) {
-			debug("Push failed. Attempting rebase");
-			await execPromise("git", ["pull", "--rebase"], {
-				cwd: cwd(projectOrCwd),
-			});
-			await execPromise("git", gitPushArgs, { cwd: cwd(projectOrCwd) });
-		}
-	}, retryOptions);
+	try {
+		await execPromise("git", gitPushArgs, { cwd: dir });
+	} catch (e) {
+		debug("Push failed. Attempting pull and rebase");
+		await execPromise("git", ["pull", "--rebase"], { cwd: dir });
+		await execPromise("git", gitPushArgs, { cwd: dir });
+	}
 }
 
 /**
- * Create branch from current HEAD
+ * Create branch from current HEAD.
  */
 export async function createBranch(
 	projectOrCwd: Project | string,
 	name: string,
 ): Promise<void> {
-	await execPromise("git", ["branch", name], { cwd: cwd(projectOrCwd) });
-	await execPromise("git", ["checkout", name, "--"], {
+	await execPromise("git", ["checkout", "-b", name], {
 		cwd: cwd(projectOrCwd),
 	});
 }
 
 /**
- * Check if a branch exists
+ * Check if a branch exists.
  */
 export async function hasBranch(
 	projectOrCwd: Project | string,
 	name: string,
 ): Promise<boolean> {
-	const result = await execPromise("git", ["branch", "--list", name]);
-	return result.stdout.includes(name);
+	const result = await execPromise("git", ["branch", "--list", name], {
+		cwd: cwd(projectOrCwd),
+	});
+	return result.stdout.trim() === name;
 }
 
+/** Set git user name and email. */
 export async function setUserConfig(
 	project: Project,
 	name = "Atomist Bot",
@@ -191,6 +307,9 @@ export async function setUserConfig(
 	await project.exec("git", ["config", "user.email", email]);
 }
 
+/**
+ * Return changed files, including untracked file.
+ */
 export async function changedFiles(
 	projectOrCwd: Project | string,
 ): Promise<string[]> {
