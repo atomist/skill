@@ -1,5 +1,5 @@
 subscription onAttachmentAction {
-  AtmJobTask(owner: "${namespace}/${name}", state: created) {
+  AtmJobTask(owner: "${namespace}/${name}", state: running) {
     id
     data
     name
