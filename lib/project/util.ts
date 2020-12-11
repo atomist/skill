@@ -15,6 +15,7 @@
  */
 
 import { Options } from "fast-glob";
+
 import { Project } from "./project";
 
 /**

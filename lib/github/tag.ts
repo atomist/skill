@@ -15,6 +15,7 @@
  */
 
 import * as semver from "semver";
+
 import { debug } from "../log/console";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";

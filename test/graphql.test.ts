@@ -15,6 +15,7 @@
  */
 
 import * as assert from "assert";
+
 import { findGraphQLFile } from "../lib/graphql";
 
 describe("graphql", () => {

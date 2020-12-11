@@ -15,6 +15,7 @@
  */
 
 import * as assert from "power-assert";
+
 import { createContext } from "../lib/context";
 import { guid } from "../lib/util";
 

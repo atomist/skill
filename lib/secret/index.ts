@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-export {
-	CredentialResolver,
-	CredentialProvider,
-	GitHubCredential,
-	GitHubAppCredential,
-} from "./provider";
-export { gitHubUserToken, gitHubAppToken } from "./resolver";
 export { GenericSecret, genericSecret } from "./generic_resolver";
+export {
+	CredentialProvider,
+	CredentialResolver,
+	GitHubAppCredential,
+	GitHubCredential,
+} from "./provider";
+export { gitHubAppToken, gitHubUserToken } from "./resolver";

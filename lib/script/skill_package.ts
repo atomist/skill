@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import * as path from "path";
 import * as fs from "fs-extra";
+import * as path from "path";
+
 import { info } from "../log";
 
 export async function packageSkill(

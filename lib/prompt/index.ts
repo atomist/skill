@@ -15,16 +15,16 @@
  */
 
 export {
-	ParameterPrompt,
-	ParameterPromptStyle,
-	ParameterPromptOptions,
-	ParameterPromptObject,
-} from "./prompt";
-export {
-	ParameterObjectValue,
-	Options,
-	Option,
 	BaseParameter,
 	HasDefaultValue,
+	Option,
+	Options,
+	ParameterObjectValue,
 } from "./parameter";
+export {
+	ParameterPrompt,
+	ParameterPromptObject,
+	ParameterPromptOptions,
+	ParameterPromptStyle,
+} from "./prompt";
 export { configurationWithParameters } from "./util";

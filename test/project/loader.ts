@@ -16,6 +16,7 @@
 
 import * as assert from "assert";
 import * as fs from "fs-extra";
+
 import { createProjectLoader } from "../../lib/project/loader";
 import { gitHubComRepository } from "../../lib/repository/id";
 

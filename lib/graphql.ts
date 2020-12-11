@@ -19,6 +19,7 @@ import * as fs from "fs-extra";
 import { Response } from "node-fetch";
 import * as pRetry from "p-retry";
 import * as path from "path";
+
 import { inlineFragments } from "./definition/subscription/util";
 import { debug, warn } from "./log/console";
 import { retry } from "./retry";

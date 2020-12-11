@@ -15,6 +15,7 @@
  */
 
 import * as assert from "assert";
+
 import { named } from "../../../lib/definition/subscription/named";
 
 describe("named", () => {

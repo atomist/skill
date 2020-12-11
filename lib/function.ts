@@ -18,6 +18,7 @@
 import "source-map-support/register";
 
 import { Severity } from "@atomist/skill-logging";
+
 import { eventHandlerLoader } from "./action";
 import { ContextFactory, createContext } from "./context";
 import {

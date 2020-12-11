@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-export * from "./messages";
+export * as block from "./block";
 export {
-	menuForCommand,
-	buttonForCommand,
-	ParameterType,
 	ActionConfirmation,
+	buttonForCommand,
 	ButtonSpecification,
 	DataSource,
+	menuForCommand,
 	MenuSpecification,
 	OptionGroup,
 	ParameterIndexType,
+	ParameterType,
 	SelectOption,
 } from "./button";
-export * as block from "./block";
+export * from "./messages";
 export * from "@atomist/slack-messages";
