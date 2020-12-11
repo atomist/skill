@@ -15,15 +15,15 @@
  */
 
 export {
-	commit,
-	status,
-	push,
-	createBranch,
-	checkout,
 	changedFiles,
-	init,
-	revert,
-	hasBranch,
-	setUserConfig,
+	checkout,
+	commit,
+	createBranch,
 	GitPushOptions,
+	hasBranch,
+	init,
+	push,
+	revert,
+	setUserConfig,
+	status,
 } from "./operation";

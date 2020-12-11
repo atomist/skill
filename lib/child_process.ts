@@ -20,6 +20,7 @@ import {
 	SpawnSyncReturns,
 } from "child_process";
 import * as process from "process";
+
 import { debug, error, warn } from "./log";
 
 /**

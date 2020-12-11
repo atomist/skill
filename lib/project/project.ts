@@ -16,6 +16,7 @@
 
 import { SpawnSyncOptions } from "child_process";
 import * as path from "path";
+
 import {
 	execPromise,
 	ExecPromiseResult,
@@ -23,11 +24,11 @@ import {
 	SpawnPromiseOptions,
 	SpawnPromiseReturns,
 } from "../child_process";
+import { setUserConfig } from "../git";
 import { debug } from "../log";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { handleError } from "../util";
 import { CloneOptions, doClone } from "./clone";
-import { setUserConfig } from "../git";
 
 export type Spawn = (
 	cmd: string,

@@ -15,6 +15,7 @@
  */
 
 import * as assert from "power-assert";
+
 import { incrementTag } from "../../lib/github/tag";
 import * as log from "../../lib/log/console";
 

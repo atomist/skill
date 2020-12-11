@@ -15,8 +15,8 @@
  */
 
 export {
-	repoFilter,
-	refFilter,
 	PushStrategy,
 	pushStrategy,
+	refFilter,
+	repoFilter,
 } from "./definition";

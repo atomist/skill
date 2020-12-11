@@ -15,6 +15,7 @@
  */
 
 import * as fs from "fs-extra";
+
 import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { CloneOptions } from "./clone";

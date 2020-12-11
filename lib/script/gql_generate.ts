@@ -16,9 +16,10 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
+
 import { spawnPromise } from "../child_process";
-import { globFiles } from "../project/util";
 import { info } from "../log";
+import { globFiles } from "../project/util";
 
 export async function generateGql(options: {
 	cwd: string;

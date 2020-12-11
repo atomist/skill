@@ -18,9 +18,10 @@ import { toEDNStringFromSimpleObject } from "edn-data";
 import * as fs from "fs-extra";
 import * as yaml from "js-yaml";
 import * as path from "path";
+
 import { spawnPromise } from "../child_process";
-import { info } from "../log";
 import { packageJson } from "../definition/skill";
+import { info } from "../log";
 import { globFiles, withGlobMatches } from "../project/util";
 import { AtomistSkillInput, AtomistSkillRuntime, content } from "./skill_input";
 import merge = require("lodash.merge");

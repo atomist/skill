@@ -15,8 +15,8 @@
  */
 
 import { CommandMessageClient, HandlerResponse, Parameter } from "../message";
-import { ParameterObjectValue } from "./parameter";
 import { Arg, CommandIncoming } from "../payload";
+import { ParameterObjectValue } from "./parameter";
 import cloneDeep = require("lodash.clonedeep");
 import map = require("lodash.map");
 import set = require("lodash.set");

@@ -15,6 +15,7 @@
  */
 
 import { ButtonElement, Element, SlackModal } from "@atomist/slack-messages";
+
 import { ParameterType } from "./button";
 
 export function buttonForModal(

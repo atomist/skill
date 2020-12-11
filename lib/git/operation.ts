@@ -15,11 +15,12 @@
  */
 
 import * as pRetry from "p-retry";
+
 import { execPromise, spawnPromise } from "../child_process";
 import { debug } from "../log/index";
 import { Project } from "../project/project";
 import { cwd } from "../project/util";
-import { Status, runStatusIn } from "./status";
+import { runStatusIn, Status } from "./status";
 import forOwn = require("lodash.forown");
 
 /** Default name of default git remote. */

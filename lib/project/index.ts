@@ -15,5 +15,5 @@
  */
 
 export { ProjectLoader } from "./loader";
-export { withGlobMatches, cwd, globFiles } from "./util";
-export { Project, Spawn, Exec } from "./project";
+export { Exec, Project, Spawn } from "./project";
+export { cwd, globFiles, withGlobMatches } from "./util";

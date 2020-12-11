@@ -15,9 +15,9 @@
  */
 
 import * as fs from "fs-extra";
+import gql from "graphql-tag";
 import * as path from "path";
 import * as p from "path";
-import gql from "graphql-tag";
 
 const FragmentExpression = /\.\.\.\s*([_A-Za-z][_0-9A-Za-z]*)/gi;
 

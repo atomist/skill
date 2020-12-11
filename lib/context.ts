@@ -17,10 +17,10 @@
 import { createGraphQLClient } from "./graphql";
 import {
 	CommandContext,
+	Configuration,
 	ContextualLifecycle,
 	EventContext,
 	WebhookContext,
-	Configuration,
 } from "./handler";
 import { createHttpClient } from "./http";
 import { wrapAuditLogger } from "./log/util";

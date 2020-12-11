@@ -16,6 +16,7 @@
 
 import { PubSub } from "@google-cloud/pubsub";
 import { toEDNStringFromSimpleObject } from "edn-data";
+
 import { debug, error } from "../log/console";
 import { replacer, toArray } from "../util";
 

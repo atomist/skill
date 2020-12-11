@@ -15,6 +15,7 @@
  */
 
 import { Severity } from "@atomist/skill-logging";
+
 import { CommandContext, EventContext, HandlerStatus } from "./handler";
 import { warn } from "./log";
 import { toArray } from "./util";

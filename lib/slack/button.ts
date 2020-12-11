@@ -16,6 +16,7 @@
 
 import { Action } from "@atomist/slack-messages";
 import { flatten } from "flat";
+
 import { CommandReferencingAction } from "../message";
 import merge = require("lodash.merge");
 import forOwn = require("lodash.forown");

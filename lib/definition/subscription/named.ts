@@ -16,6 +16,7 @@
 
 import * as fs from "fs-extra";
 import * as path from "path";
+
 import { inlineFragments } from "./util";
 
 export function named(name: string): string {

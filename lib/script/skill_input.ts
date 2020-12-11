@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
+import { toEDNStringFromSimpleObject } from "edn-data";
 import * as fs from "fs-extra";
 import * as path from "path";
-import { toEDNStringFromSimpleObject } from "edn-data";
+
+import { Skill } from "../definition/skill";
 import { named } from "../definition/subscription/named";
 import { error, info } from "../log";
 import { withGlobMatches } from "../project/util";
-import { Skill } from "../definition/skill";
 import { handleError, handlerLoader } from "../util";
 import { createYamlSkillInput, defaults } from "./skill_container";
 import map = require("lodash.map");
