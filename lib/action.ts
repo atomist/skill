@@ -53,7 +53,7 @@ const onAttachmentAction: EventHandler<
 	} = JSON.parse(task.data);
 
 	if (data.configuration !== ctx.configuration.name) {
-		return success(`Not running command this configuration`).hidden();
+		return success(`Not running command for configuration`).hidden();
 	}
 
 	const payload = data.payload;
