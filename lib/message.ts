@@ -20,8 +20,8 @@ import {
 	render,
 	SectionBlock,
 	SlackMessage,
+	Action as SlackAction,
 } from "@atomist/slack-messages";
-import { Action as SlackAction } from "@atomist/slack-messages/lib/SlackMessages";
 import { PubSub } from "@google-cloud/pubsub";
 import { GraphQLClient } from "./graphql";
 import {
