@@ -16,6 +16,7 @@
 
 import * as assert from "assert";
 import * as path from "path";
+
 import { inlineFragments } from "../../../lib/definition/subscription/util";
 
 describe("util", () => {

@@ -16,6 +16,7 @@
 
 import * as assert from "assert";
 import * as path from "path";
+
 import { Project } from "../../lib/project/project";
 import { globFiles } from "../../lib/project/util";
 

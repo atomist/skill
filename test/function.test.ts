@@ -15,6 +15,7 @@
  */
 
 import * as assert from "power-assert";
+
 import { processEvent, processWebhook } from "../lib/function";
 import { success } from "../lib/status";
 import { guid } from "../lib/util";

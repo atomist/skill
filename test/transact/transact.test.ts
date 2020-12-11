@@ -15,6 +15,7 @@
  */
 
 import * as assert from "assert";
+
 import { Entity, flattenEntities } from "../../lib/transact/transact";
 
 describe("transact", () => {

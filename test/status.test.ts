@@ -15,6 +15,7 @@
  */
 
 import * as assert from "power-assert";
+
 import { failure, success } from "../lib/status";
 
 describe("status", () => {

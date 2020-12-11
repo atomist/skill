@@ -15,6 +15,7 @@
  */
 
 import * as assert from "power-assert";
+
 import { truncateText } from "../../lib/github/check";
 
 describe("check", () => {

@@ -15,6 +15,7 @@
  */
 
 import * as assert from "assert";
+
 import { extractParameters, guid } from "../lib/util";
 
 describe("util", () => {

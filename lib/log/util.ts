@@ -15,6 +15,7 @@
  */
 
 import { createLogger, Logger, Severity } from "@atomist/skill-logging";
+
 import { toArray } from "../util";
 import { error, info, warn } from "./console";
 

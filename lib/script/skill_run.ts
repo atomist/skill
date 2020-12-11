@@ -15,6 +15,7 @@
  */
 
 import * as fs from "fs-extra";
+
 import { processCommand, processEvent, processWebhook } from "../function";
 import {
 	isCommandIncoming,

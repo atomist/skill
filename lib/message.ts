@@ -15,14 +15,15 @@
  */
 
 import {
+	Action as SlackAction,
 	ActionsBlock,
 	Attachment,
 	render,
 	SectionBlock,
 	SlackMessage,
-	Action as SlackAction,
 } from "@atomist/slack-messages";
 import { PubSub } from "@google-cloud/pubsub";
+
 import { GraphQLClient } from "./graphql";
 import {
 	CommandContext,

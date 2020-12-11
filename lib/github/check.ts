@@ -16,9 +16,10 @@
 
 import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types";
 import {
-	ChecksUpdateResponseData,
 	ChecksCreateResponseData,
+	ChecksUpdateResponseData,
 } from "@octokit/types";
+
 import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
