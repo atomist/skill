@@ -41,6 +41,7 @@ export type Exec = (
 	opts?: SpawnSyncOptions,
 ) => Promise<ExecPromiseResult>;
 
+/** Git repository project */
 export interface Project<C = any> {
 	id: AuthenticatedRepositoryId<C>;
 
@@ -50,11 +51,12 @@ export interface Project<C = any> {
 	exec: Exec;
 }
 
+/** Create a [[Project]] from an existing local directory */
 export async function load<C>(
 	id: AuthenticatedRepositoryId<C>,
 	baseDir: string,
 ): Promise<Project<C>> {
-	const project = {
+	const project: Project<C> = {
 		id,
 		path: (...elements: string[]): string =>
 			path.join(baseDir, ...(elements || [])),
@@ -67,12 +69,13 @@ export async function load<C>(
 	return project;
 }
 
+/** Clone a repository to create a [[Project]] */
 export async function clone<C>(
 	id: AuthenticatedRepositoryId<C>,
 	options?: CloneOptions,
 ): Promise<Project<C>> {
 	const baseDir = await doClone(id, options);
-	const project = {
+	const project: Project<C> = {
 		id,
 		path: (...elements: string[]): string =>
 			path.join(baseDir, ...(elements || [])),
@@ -86,7 +89,7 @@ export async function clone<C>(
 }
 
 const log = {
-	write: (msg): void => {
+	write: (msg: string): void => {
 		let line = msg;
 		if (line.endsWith("\n")) {
 			line = line.slice(0, -1);

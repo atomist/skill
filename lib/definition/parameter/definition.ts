@@ -45,6 +45,17 @@ export function refFilter(
 	};
 }
 
+/**
+ * How to push changes back to a repository. The follow values are
+ * available:
+ *
+ * -   _`pr_default_commit`_: create a pull request if acting on default branch,
+ *     commit directly to non-default branch
+ * -   _`pr_default`_: create a pull request if acting on default branch
+ * -   _`pr`_: create a pull request
+ * -   _`commit_default`_: commit directly to default branch
+ * -   _`commit`_: commit directly to branch
+ */
 export type PushStrategy =
 	| "pr_default_commit"
 	| "pr_default"
