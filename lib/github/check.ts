@@ -140,9 +140,6 @@ export async function createCheck(
 	return {
 		data: check.data as any,
 		update: async params => {
-			if (params.conclusion) {
-				terminated = true;
-			}
 			await api(id).checks.update({
 				owner: id.owner,
 				repo: id.repo,
@@ -165,6 +162,9 @@ export async function createCheck(
 				actions: params.actions,
 			});
 			await updateAnnotation(ctx, id, check, params);
+			if (params.conclusion) {
+				terminated = true;
+			}
 		},
 	};
 }
