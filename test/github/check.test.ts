@@ -23,7 +23,7 @@ describe("check", () => {
 		it("should truncate text", () => {
 			const text = "The quick brown fox jumps over the lazy dog";
 			const result = truncateText(text, 21);
-			assert.deepStrictEqual(result.length, 21);
+			assert.deepStrictEqual(result, "The quic ... azy dog");
 		});
 
 		it("should not truncate text", () => {

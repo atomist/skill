@@ -207,13 +207,21 @@ async function updateAnnotation(
 }
 
 export function truncateText(text: string, length = 65535): string {
-	const ellipsis = " ... ";
-	if (text.length <= length) {
+	if (Buffer.byteLength(text) <= length) {
 		return text;
-	} else {
-		const partLength = Math.floor((length - ellipsis.length) / 2);
-		return (
-			text.slice(0, partLength) + ellipsis + text.slice(-1 * partLength)
-		);
 	}
+
+	const ellipsis = " ... ";
+	const middle = Math.floor((text.length - 2 - ellipsis.length) / 2);
+	const chunks = [
+		text.slice(0, middle).trim(),
+		text.slice(-1 * middle).trim(),
+	];
+
+	while (Buffer.byteLength(`${chunks[0]}${ellipsis}${chunks[1]}`) > length) {
+		chunks[0] = chunks[0].slice(0, chunks[0].length - 1).trim();
+		chunks[1] = chunks[1].slice(1).trim();
+	}
+
+	return `${chunks[0]}${ellipsis}${chunks[1]}`;
 }
