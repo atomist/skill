@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add labels to footer. [3bc7412](https://github.com/atomist-skills/skill/commit/3bc7412474e6d867b38a2a66c8704d8fcde830c9)
 -   Add git peristChange function. [#159](https://github.com/atomist-skills/skill/issues/159)
 
+### Changed
+
+-   Move text truncation to byte size. [7291c46](https://github.com/atomist-skills/skill/commit/7291c460aa12d24158b5a27a250f51bfedf978eb)
+
 ## [0.6.2](https://github.com/atomist/skill/compare/0.6.1...0.6.2) - 2020-12-07
 
 ### Added
