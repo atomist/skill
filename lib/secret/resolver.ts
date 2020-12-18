@@ -163,7 +163,11 @@ export function gitHubAppToken(
 		} else {
 			repo = id.repo;
 			owner = id.owner;
-			apiUrl = id.apiUrl;
+			apiUrl =
+				// This is helping during testing
+				id.apiUrl === "h*********************/"
+					? "https://api.github.com/"
+					: id.apiUrl;
 			const provider = await graph.query<ProviderResponse>(
 				ProviderQuery,
 				{
