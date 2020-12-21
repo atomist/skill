@@ -338,7 +338,22 @@ async function _push(
 		await execPromise("git", gitPushArgs, { cwd: dir });
 	} catch (e) {
 		debug("Push failed. Attempting pull and rebase");
-		await execPromise("git", ["pull", "--rebase"], { cwd: dir });
+		const fetchArgs = ["fetch", origin];
+		if (branch) {
+			fetchArgs.push(branch);
+		}
+		await execPromise("git", fetchArgs, { cwd: dir });
+		const rebaseArgs = ["rebase"];
+		if (branch) {
+			rebaseArgs.push(`${origin}/${branch}`);
+		}
+		try {
+			await execPromise("git", rebaseArgs, { cwd: dir });
+		} catch (er) {
+			debug("Rebase failed, aborting");
+			await execPromise("git", ["rebase", "--abort"], { cwd: dir });
+			throw er;
+		}
 		await execPromise("git", gitPushArgs, { cwd: dir });
 	}
 }
