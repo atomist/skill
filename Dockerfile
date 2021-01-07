@@ -24,3 +24,4 @@ COPY bin/start.bash .
 WORKDIR "/atm/home"
 
 ENTRYPOINT ["bash", "/skill/start.bash"]
+
