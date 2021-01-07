@@ -206,21 +206,32 @@ async function updateAnnotation(
 	}
 }
 
+/**
+ * Truncate the text to the desired number of bytes. Characters are
+ * removed from the middle of the text and replaced with an ellipsis.
+ */
 export function truncateText(text: string, length = 65535): string {
-	if (Buffer.byteLength(text) <= length) {
-		return text;
+	const trimmed = text.trim();
+	if (Buffer.byteLength(trimmed) <= length) {
+		return trimmed;
 	}
 
 	const ellipsis = " ... ";
-	const middle = Math.floor((text.length - 2 - ellipsis.length) / 2);
+	const retain = Math.floor((length - ellipsis.length) / 2);
 	const chunks = [
-		text.slice(0, middle).trim(),
-		text.slice(-1 * middle).trim(),
+		trimmed.slice(0, retain + 1).trim(),
+		trimmed.slice(-1 * retain).trim(),
 	];
 
+	let trimIndex = 1;
 	while (Buffer.byteLength(`${chunks[0]}${ellipsis}${chunks[1]}`) > length) {
-		chunks[0] = chunks[0].slice(0, chunks[0].length - 1).trim();
-		chunks[1] = chunks[1].slice(1).trim();
+		if (trimIndex === 0) {
+			chunks[0] = chunks[0].slice(0, chunks[0].length - 1).trim();
+			trimIndex = 1;
+		} else {
+			chunks[1] = chunks[1].slice(1).trim();
+			trimIndex = 0;
+		}
 	}
 
 	return `${chunks[0]}${ellipsis}${chunks[1]}`;
