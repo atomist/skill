@@ -179,7 +179,7 @@ async function updateAnnotation(
 ): Promise<void> {
 	const gh = api(id);
 	const chunks = chunk(parameters.annotations || [], 50);
-	for (const chunk of chunks) {
+	for (const ch of chunks) {
 		await gh.checks.update({
 			owner: id.owner,
 			repo: id.repo,
@@ -191,7 +191,7 @@ async function updateAnnotation(
 						? `${parameters.body}\n${formatMarkers(ctx)}`
 						: check.data.output.summary,
 				),
-				annotations: chunk.map(c => ({
+				annotations: ch.map(c => ({
 					annotation_level: c.annotationLevel,
 					title: c.title,
 					end_column: c.endColumn,
