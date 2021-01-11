@@ -5,7 +5,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased](https://github.com/atomist/skill/compare/0.6.2...HEAD)
+## [Unreleased](https://github.com/atomist/skill/compare/0.7.0...HEAD)
+
+## [0.7.0](https://github.com/atomist/skill/compare/0.6.2...0.7.0) - 2021-01-11
 
 ### Added
 
