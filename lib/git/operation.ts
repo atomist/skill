@@ -62,8 +62,12 @@ const retryOptions = {
 	randomize: true,
 };
 
-/** Argument to [[persistChange]]. */
-export interface PersistChangeArgs {
+export type CommitEditor = (
+	pd: Project | string,
+) => Promise<string | undefined>;
+
+/** Argument to [[persistChanges]]. */
+export interface PersistChangesArgs {
 	/**
 	 * Project containing or path to cloned git repository.
 	 */
@@ -74,15 +78,20 @@ export interface PersistChangeArgs {
 	 */
 	branch: string;
 	/**
-	 * Function that makes changes to the project. If it returns a
-	 * string, that string is used as the commit message. If it
-	 * returned `undefined`, [[message]] is used as the commit
-	 * message.
+	 * Functions that make changes to the project. If a function
+	 * returns a string, that string is used as the commit message for
+	 * the changes the function made. If a function returns
+	 * `undefined`, committing is deferred until a subsequent function
+	 * returns a string. If there are uncommitted changes when all
+	 * editors have been run, [[message]] is used as the commit
+	 * message for the remaining changes.
 	 */
-	editor: (dir: string) => Promise<string | undefined>;
+	editors: CommitEditor[];
 	/**
-	 * Commit message. If [[editor]] returns a string, that takes
-	 * precedence as the commit message.
+	 * If there are uncommitted changes after all [[editors]] have
+	 * run, this is used as the commit message. If [[message]] is not
+	 * provided and there are changes to commit, a default message is
+	 * used.
 	 */
 	message?: string;
 	/** Git commit author information. */
@@ -92,14 +101,14 @@ export interface PersistChangeArgs {
 }
 
 /**
- * Execute changes on a project, commits, and then push the changes to
+ * Execute editors on a project, commit, and then push the commit(s) to
  * the remote. Effort is made to ensure success. The git status should
  * be clean, i.e., have no uncommited changes, when calling this
  * function.
  */
-export async function persistChange(args: PersistChangeArgs): Promise<void> {
-	if (!args.editor) {
-		throw new Error(`No project editor provided`);
+export async function persistChanges(args: PersistChangesArgs): Promise<void> {
+	if (!args.editors || args.editors.length < 1) {
+		throw new Error(`No project editors provided`);
 	}
 
 	const dir = cwd(args.project);
@@ -109,7 +118,7 @@ export async function persistChange(args: PersistChangeArgs): Promise<void> {
 	}
 
 	const branch = args.branch;
-	await ensureBranch(args.project, branch);
+	await ensureBranch(args.project, branch, true);
 
 	await pRetry(async () => {
 		await execPromise("git", ["fetch", origin, branch], { cwd: dir });
@@ -117,65 +126,126 @@ export async function persistChange(args: PersistChangeArgs): Promise<void> {
 			cwd: dir,
 		});
 
-		const message =
-			(await args.editor(dir)) ||
-			args.message ||
-			`Atomist skill commit\n\n[atomist:generated]`;
-
-		await commit(args.project, message, args.author);
+		await editCommit(args.project, args.editors, args.message, args.author);
 
 		await push(args.project, { ...args.options, branch });
 	}, retryOptions);
 }
 
 /** [[_ensureBranch]] with retry. */
-async function ensureBranch(
+export async function ensureBranch(
 	projectOrCwd: Project | string,
 	branch: string,
+	sync: boolean,
 ): Promise<void> {
-	await pRetry(async () => _ensureBranch(projectOrCwd, branch), retryOptions);
+	await pRetry(
+		async () => _ensureBranch(projectOrCwd, branch, sync),
+		retryOptions,
+	);
 }
 
 /**
- * Ensure a branch exists locally and remotely. If branch exists
- * remotely, use it, resetting any local version to the remote. If it
- * does not exist remotely but does exist locally, use the local
- * branch and push it to the remote while setting the upstream. If it
- * exists neither remotely nor locally, create it and push it, setting
- * upstream.
+ *
+ * Ensure a branch exists locally. The behavior depends on the value
+ * of `sync`.
+ *
+ * If `sync` is `true`, the local branch will be reset to its remote
+ * counterpart, if it exists. If the remote branch does not exist, then the
+ * local branch, which may have just been created, is pushed to the remote.
+ *
+ * If `sync` is `false` and the branch exists locally, use it.
+ * If branch does not exist locally but exists remotely, create local
+ * branch using remote. If it exists neither remotely nor locally, create it
+ * locally.
+ *
+ * @param projectOrCwd local git repository clone
+ * @param branch branch to ensure exists
+ * @param sync ensure local branch and its remote are in sync
  */
 async function _ensureBranch(
 	projectOrCwd: Project | string,
 	branch: string,
+	sync: boolean,
 ): Promise<void> {
 	const dir = cwd(projectOrCwd);
 	const localExists = hasBranch(projectOrCwd, branch);
 	const fetchResult = await spawnPromise("git", ["fetch", origin, branch], {
 		cwd: dir,
 	});
-	if (fetchResult.status === 0) {
-		// branch exists in remote, checkout and hard reset
-		await execPromise("git", ["checkout", branch], { cwd: dir });
-		await execPromise("git", ["reset", "--hard", `${origin}/${branch}`], {
-			cwd: dir,
-		});
-	} else {
-		if (
-			!fetchResult.stderr.includes(
-				`fatal: couldn't find remote ref ${branch}`,
-			)
-		) {
-			throw new Error(`Failed to fetch ${origin} ${branch}`);
+	const remoteExists = fetchResult.status === 0;
+	if (
+		!remoteExists &&
+		!fetchResult.stderr.includes(
+			`fatal: couldn't find remote ref ${branch}`,
+		)
+	) {
+		throw new Error(`Failed to fetch ${origin} ${branch}`);
+	}
+
+	if (sync) {
+		if (remoteExists) {
+			await execPromise("git", ["checkout", branch], { cwd: dir });
+			await execPromise(
+				"git",
+				["reset", "--hard", `${origin}/${branch}`],
+				{ cwd: dir },
+			);
+		} else {
+			if (!localExists) {
+				await execPromise("git", ["checkout", "-b", branch], {
+					cwd: dir,
+				});
+			}
+			await execPromise(
+				"git",
+				["push", "--set-upstream", origin, branch],
+				{ cwd: dir },
+			);
 		}
-		// branch does not exist in remote
+	} else {
 		const checkoutArgs = localExists
 			? ["checkout", branch]
 			: ["checkout", "-b", branch];
 		await execPromise("git", checkoutArgs, { cwd: dir });
-		await execPromise("git", ["push", "--set-upstream", origin, branch], {
-			cwd: dir,
-		});
 	}
+}
+
+/**
+ * Run a series of project editing functions. If a function returns a
+ * string and there are uncommitted changes, the returned string is
+ * used as the commit message. If an edit function returns
+ * `undefined`, no commit is made prior to running the next edit
+ * function. If there are uncommitted changes after all editors are
+ * run, they are committed with `message` as the commit message, or a
+ * generic commit message if `message` is not provided.
+ *
+ * @param projectOrCwd project or directory of repository
+ * @param editors functions that make changes to the repository
+ * @param message commit message to use for uncommitted changes
+ * @param author commit author information
+ * @return list of changed files, a file may appear more than once if it is
+ *         changed by multiple editor functions
+ */
+export async function editCommit(
+	projectOrCwd: Project | string,
+	editors: CommitEditor[],
+	message?: string,
+	author?: { login?: string; email?: string },
+): Promise<string[]> {
+	const files: string[] = [];
+	for (const editor of editors || []) {
+		const msg = await editor(projectOrCwd);
+		files.push(...(await changedFiles(projectOrCwd)));
+		if (msg && !(await status(projectOrCwd)).isClean) {
+			await commit(projectOrCwd, msg, author);
+		}
+	}
+	if (!(await status(projectOrCwd)).isClean) {
+		const msg =
+			message || `Updates from Atomist skill\n\n[atomist:generated]`;
+		await commit(projectOrCwd, msg, author);
+	}
+	return files;
 }
 
 /**
@@ -268,7 +338,22 @@ async function _push(
 		await execPromise("git", gitPushArgs, { cwd: dir });
 	} catch (e) {
 		debug("Push failed. Attempting pull and rebase");
-		await execPromise("git", ["pull", "--rebase"], { cwd: dir });
+		const fetchArgs = ["fetch", origin];
+		if (branch) {
+			fetchArgs.push(branch);
+		}
+		await execPromise("git", fetchArgs, { cwd: dir });
+		const rebaseArgs = ["rebase"];
+		if (branch) {
+			rebaseArgs.push(`${origin}/${branch}`);
+		}
+		try {
+			await execPromise("git", rebaseArgs, { cwd: dir });
+		} catch (er) {
+			debug("Rebase failed, aborting");
+			await execPromise("git", ["rebase", "--abort"], { cwd: dir });
+			throw er;
+		}
 		await execPromise("git", gitPushArgs, { cwd: dir });
 	}
 }
