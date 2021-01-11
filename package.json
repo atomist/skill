@@ -1,6 +1,6 @@
 {
   "name": "@atomist/skill",
-  "version": "0.6.3",
+  "version": "0.7.1",
   "description": "Atomist Skill API",
   "keywords": [
     "DEV_EX"
@@ -141,7 +141,7 @@
     "npm": ">=5.0.0"
   },
   "bin": {
-    "atm-skill": "./bin/start.js"
+    "atm-skill": "bin/start.js"
   },
   "husky": {
     "hooks": {
