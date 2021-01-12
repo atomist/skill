@@ -12,7 +12,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | ------------------------------- | ----- |
 | [0BSD](#0bsd)                   | 2     |
 | [AFLv2.1](#aflv21)              | 1     |
-| [Apache-2.0](#apache-20)        | 47    |
+| [Apache-2.0](#apache-20)        | 46    |
 | [BSD-2-Clause](#bsd-2-clause)   | 10    |
 | [BSD-3-Clause](#bsd-3-clause)   | 25    |
 | [BSD](#bsd)                     | 1     |
@@ -56,7 +56,7 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 | `@google-cloud/projectify`            | `2.0.1`      | Google Inc.           | [https://github.com/googleapis/nodejs-projectify](https://github.com/googleapis/nodejs-projectify)                               |
 | `@google-cloud/promisify`             | `2.0.3`      | Google Inc.           | [https://github.com/googleapis/nodejs-promisify](https://github.com/googleapis/nodejs-promisify)                                 |
 | `@google-cloud/pubsub`                | `2.8.0`      | Google Inc.           | [https://github.com/googleapis/nodejs-pubsub](https://github.com/googleapis/nodejs-pubsub)                                       |
-| `@google-cloud/storage`               | `5.7.1`      | Google Inc.           | [https://github.com/googleapis/nodejs-storage](https://github.com/googleapis/nodejs-storage)                                     |
+| `@google-cloud/storage`               | `5.7.2`      | Google Inc.           | [https://github.com/googleapis/nodejs-storage](https://github.com/googleapis/nodejs-storage)                                     |
 | `@grpc/grpc-js`                       | `1.1.8`      | Google Inc.           | [https://github.com/grpc/grpc-node/tree/master/packages/grpc-js](https://github.com/grpc/grpc-node/tree/master/packages/grpc-js) |
 | `@grpc/proto-loader`                  | `0.5.5`      | Google Inc.           | [https://github.com/grpc/grpc-node](https://github.com/grpc/grpc-node)                                                           |
 | `@grpc/proto-loader`                  | `0.6.0-pre9` | Google Inc.           | [https://github.com/grpc/grpc-node](https://github.com/grpc/grpc-node)                                                           |
@@ -77,7 +77,6 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 | `fast-text-encoding`                  | `1.0.3`      | Sam Thorogood         | [https://github.com/samthor/fast-text-encoding](https://github.com/samthor/fast-text-encoding)                                   |
 | `fb-watchman`                         | `2.0.1`      | Wez Furlong           | [https://github.com/facebook/watchman](https://github.com/facebook/watchman)                                                     |
 | `forever-agent`                       | `0.6.1`      | Mikeal Rogers         | [https://github.com/mikeal/forever-agent](https://github.com/mikeal/forever-agent)                                               |
-| `gaxios`                              | `3.2.0`      | Google, LLC           | [https://github.com/googleapis/gaxios](https://github.com/googleapis/gaxios)                                                     |
 | `gaxios`                              | `4.0.1`      | Google, LLC           | [https://github.com/googleapis/gaxios](https://github.com/googleapis/gaxios)                                                     |
 | `gcp-metadata`                        | `4.2.1`      | Stephen Sawchuk       | [https://github.com/googleapis/gcp-metadata](https://github.com/googleapis/gcp-metadata)                                         |
 | `google-auth-library`                 | `6.1.3`      | Google Inc.           | [https://github.com/googleapis/google-auth-library-nodejs](https://github.com/googleapis/google-auth-library-nodejs)             |
@@ -508,7 +507,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `fs-extra`                                           | `9.0.1`         | JP Richardson                  | [https://github.com/jprichardson/node-fs-extra](https://github.com/jprichardson/node-fs-extra)                                                                                                       |
 | `fsevents`                                           | `2.1.3`         |                                | [https://github.com/fsevents/fsevents](https://github.com/fsevents/fsevents)                                                                                                                         |
 | `function-bind`                                      | `1.1.1`         | Raynos                         | [https://github.com/Raynos/function-bind](https://github.com/Raynos/function-bind)                                                                                                                   |
-| `gcs-resumable-upload`                               | `3.1.1`         | Stephen Sawchuk                | [https://github.com/googleapis/gcs-resumable-upload](https://github.com/googleapis/gcs-resumable-upload)                                                                                             |
+| `gcs-resumable-upload`                               | `3.1.2`         | Stephen Sawchuk                | [https://github.com/googleapis/gcs-resumable-upload](https://github.com/googleapis/gcs-resumable-upload)                                                                                             |
 | `gensync`                                            | `1.0.0-beta.2`  | Logan Smyth                    | [https://github.com/loganfsmyth/gensync](https://github.com/loganfsmyth/gensync)                                                                                                                     |
 | `get-intrinsic`                                      | `1.0.1`         | Jordan Harband                 | [https://github.com/ljharb/get-intrinsic](https://github.com/ljharb/get-intrinsic)                                                                                                                   |
 | `get-stream`                                         | `4.1.0`         | Sindre Sorhus                  | [https://github.com/sindresorhus/get-stream](https://github.com/sindresorhus/get-stream)                                                                                                             |
