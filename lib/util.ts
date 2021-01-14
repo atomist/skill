@@ -178,3 +178,10 @@ export const DefaultErrorHandler: (err: Error) => undefined = err => {
 	}
 	return undefined;
 };
+
+export function isStaging(): boolean {
+	return (
+		process.env.ATOMIST_GRAPHQL_ENDPOINT ||
+		"https://automation.atomist.com/graphql"
+	).includes(".services");
+}

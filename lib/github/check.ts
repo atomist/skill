@@ -23,6 +23,7 @@ import {
 import { Contextual } from "../handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
+import { isStaging } from "../util";
 import { api, formatFooter, formatMarkers } from "./operation";
 import chunk = require("lodash.chunk");
 
@@ -101,7 +102,13 @@ export async function createCheck(
 	let check:
 		| RestEndpointMethodTypes["checks"]["create"]["response"]
 		| RestEndpointMethodTypes["checks"]["update"]["response"];
-	if (openChecks.total_count === 1) {
+
+	// Work around issues with our staging bot trying to update checks from production
+	const app = isStaging() ? "atomista" : "atomist";
+	if (
+		openChecks.total_count === 1 &&
+		openChecks.check_runs?.[0]?.app?.slug === app
+	) {
 		check = await api(id).checks.update({
 			owner: id.owner,
 			repo: id.repo,
