@@ -173,15 +173,6 @@ async function _ensureBranch(
 		cwd: dir,
 	});
 	const remoteExists = fetchResult.status === 0;
-	if (
-		!remoteExists &&
-		!fetchResult.stderr.includes(
-			`fatal: couldn't find remote ref ${branch}`,
-		)
-	) {
-		throw new Error(`Failed to fetch ${origin} ${branch}`);
-	}
-
 	if (sync) {
 		if (remoteExists) {
 			await execPromise("git", ["checkout", branch], { cwd: dir });
@@ -203,10 +194,17 @@ async function _ensureBranch(
 			);
 		}
 	} else {
-		const checkoutArgs = localExists
-			? ["checkout", branch]
-			: ["checkout", "-b", branch];
-		await execPromise("git", checkoutArgs, { cwd: dir });
+		if (localExists) {
+			await execPromise("git", ["checkout", branch], { cwd: dir });
+		} else if (remoteExists) {
+			await execPromise(
+				"git",
+				["checkout", "-b", branch, `${origin}/${branch}`],
+				{ cwd: dir },
+			);
+		} else {
+			await execPromise("git", ["checkout", "-b", branch], { cwd: dir });
+		}
 	}
 }
 
