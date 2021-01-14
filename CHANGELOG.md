@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.7.0...HEAD)
 
+### Fixed
+
+-   Fix ensureBranch when branch does not exist. [ad7fd34](https://github.com/atomist-skills/skill/commit/ad7fd34dfc73ac57fc609e91911823f02116b929)
+
 ## [0.7.0](https://github.com/atomist/skill/compare/0.6.2...0.7.0) - 2021-01-11
 
 ### Added
