@@ -105,14 +105,12 @@ export async function createCheck(
 
 	// Work around issues with our staging bot trying to update checks from production
 	const app = isStaging() ? "atomista" : "atomist";
-	if (
-		openChecks.total_count === 1 &&
-		openChecks.check_runs?.[0]?.app?.slug === app
-	) {
+	const openCheck = openChecks?.check_runs?.find(cr => cr.app.slug === app);
+	if (openCheck) {
 		check = await api(id).checks.update({
 			owner: id.owner,
 			repo: id.repo,
-			check_run_id: openChecks.check_runs[0].id,
+			check_run_id: openCheck.id,
 			external_id: ctx.correlationId,
 			details_url: ctx.audit.url,
 			output: {
