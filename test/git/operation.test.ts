@@ -157,7 +157,13 @@ describe("operation", () => {
 			await execPromise("git", ["add", n], { cwd });
 			await execPromise(
 				"git",
-				["commit", "--no-gpg-sign", "-m", "Add local file"],
+				[
+					"commit",
+					"--no-gpg-sign",
+					"--no-verify",
+					"-m",
+					"Add local file",
+				],
 				{ cwd },
 			);
 			await checkout(cwd, defaultBranch);
@@ -222,7 +228,13 @@ describe("operation", () => {
 			await execPromise("git", ["add", n], { cwd });
 			await execPromise(
 				"git",
-				["commit", "--no-gpg-sign", "-m", "Add local file"],
+				[
+					"commit",
+					"--no-gpg-sign",
+					"--no-verify",
+					"-m",
+					"Add local file",
+				],
 				{ cwd },
 			);
 			await checkout(cwd, defaultBranch);
