@@ -68,7 +68,7 @@ describe("operation", () => {
 	describe("ensureBranch", function (this: Mocha.Suite): void {
 		this.timeout(20000);
 		before(function (this: Mocha.Context): void {
-			if (!process.env.ATOMIST_GRAPHQL_ENDPOINT) {
+			if (!process.env.SLOW_TESTS) {
 				this.skip();
 			}
 		});
