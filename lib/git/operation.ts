@@ -54,7 +54,7 @@ export async function status(projectOrCwd: Project | string): Promise<Status> {
 }
 
 /** Default retry options for git operations. */
-const retryOptions = {
+export const retryOptions = {
 	retries: 4,
 	factor: 2,
 	minTimeout: 250,
@@ -146,12 +146,13 @@ export async function ensureBranch(
 
 /**
  *
- * Ensure a branch exists locally. The behavior depends on the value
- * of `sync`.
+ * Ensure a branch exists locally and check it out. The behavior
+ * depends on the value of `sync`.
  *
  * If `sync` is `true`, the local branch will be reset to its remote
- * counterpart, if it exists. If the remote branch does not exist, then the
- * local branch, which may have just been created, is pushed to the remote.
+ * counterpart, if it exists. If the remote branch does not exist,
+ * then the local branch, which may have just been created, is pushed
+ * to the remote and set as the upstream.
  *
  * If `sync` is `false` and the branch exists locally, use it.
  * If branch does not exist locally but exists remotely, create local
@@ -168,42 +169,45 @@ async function _ensureBranch(
 	sync: boolean,
 ): Promise<void> {
 	const dir = cwd(projectOrCwd);
-	const localExists = hasBranch(projectOrCwd, branch);
-	const fetchResult = await spawnPromise("git", ["fetch", origin, branch], {
-		cwd: dir,
-	});
+	const localExists = await hasBranch(projectOrCwd, branch);
+	const opts = { cwd: dir };
+	const fetchResult = await spawnPromise(
+		"git",
+		["fetch", origin, branch],
+		opts,
+	);
 	const remoteExists = fetchResult.status === 0;
+	debug(
+		`Ensuring branch ${branch}: sync=${sync} ` +
+			`localExists=${localExists} remoteExists=${remoteExists}`,
+	);
+	const checkoutRemote = ["checkout", "-B", branch, `${origin}/${branch}`];
+	const checkoutLocal = ["checkout", branch];
+	const createLocal = ["checkout", "-b", branch];
 	if (sync) {
 		if (remoteExists) {
-			await execPromise("git", ["checkout", branch], { cwd: dir });
-			await execPromise(
-				"git",
-				["reset", "--hard", `${origin}/${branch}`],
-				{ cwd: dir },
-			);
+			await execPromise("git", checkoutRemote, opts);
 		} else {
-			if (!localExists) {
-				await execPromise("git", ["checkout", "-b", branch], {
-					cwd: dir,
-				});
+			if (localExists) {
+				await execPromise("git", checkoutLocal, opts);
+			} else {
+				await execPromise("git", createLocal, opts);
 			}
 			await execPromise(
 				"git",
 				["push", "--set-upstream", origin, branch],
-				{ cwd: dir },
+				{
+					cwd: dir,
+				},
 			);
 		}
 	} else {
 		if (localExists) {
-			await execPromise("git", ["checkout", branch], { cwd: dir });
+			await execPromise("git", checkoutLocal, opts);
 		} else if (remoteExists) {
-			await execPromise(
-				"git",
-				["checkout", "-b", branch, `${origin}/${branch}`],
-				{ cwd: dir },
-			);
+			await execPromise("git", checkoutRemote, opts);
 		} else {
-			await execPromise("git", ["checkout", "-b", branch], { cwd: dir });
+			await execPromise("git", createLocal, opts);
 		}
 	}
 }
@@ -378,7 +382,7 @@ export async function hasBranch(
 	const result = await execPromise("git", ["branch", "--list", name], {
 		cwd: cwd(projectOrCwd),
 	});
-	return result.stdout.trim() === name;
+	return result.stdout.replace("*", "").trim() === name;
 }
 
 /** Set git user name and email. */

@@ -50,7 +50,7 @@ export async function runStatusIn(baseDir: string): Promise<Status> {
 	};
 }
 
-async function determineBranch(baseDir: string): Promise<string> {
+export async function determineBranch(baseDir: string): Promise<string> {
 	const branchNameResult = await execPromise(
 		"git",
 		["rev-parse", "--abbrev-ref", "HEAD"],
