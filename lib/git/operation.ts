@@ -260,17 +260,31 @@ export async function commit(
 ): Promise<void> {
 	const dir = cwd(projectOrCwd);
 	await execPromise("git", ["add", "."], { cwd: dir });
-	const env = { ...process.env };
-	if (options.name) {
-		env.GIT_AUTHOR_NAME = options.name;
-	}
-	if (options.email) {
-		env.GIT_AUTHOR_EMAIL = options.email;
+	if (options.name && options.email) {
+		await execPromise("git", ["config", "user.name", options.name], {
+			cwd: cwd(projectOrCwd),
+		});
+		await execPromise("git", ["config", "user.email", options.email], {
+			cwd: cwd(projectOrCwd),
+		});
 	}
 	await execPromise("git", ["commit", "-m", message, "--no-verify"], {
-		cwd: dir,
-		env,
+		cwd: cwd(projectOrCwd),
 	});
+	if (options.name && options.email) {
+		await execPromise(
+			"git",
+			[
+				"commit",
+				"--amend",
+				`--author="Atomist Bot <bot@atomist.com>"`,
+				"--no-edit",
+			],
+			{
+				cwd: cwd(projectOrCwd),
+			},
+		);
+	}
 }
 
 /**
