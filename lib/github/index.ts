@@ -15,6 +15,7 @@
  */
 
 export { Check, CreateCheck, createCheck, UpdateCheck } from "./check";
+export { uploadCodeScanningResults } from "./code_scanning";
 export { api, convergeLabel, formatFooter, formatMarkers } from "./operation";
 export { closePullRequests, persistChanges } from "./pull_request";
 export { nextTag } from "./tag";

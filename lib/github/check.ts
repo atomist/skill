@@ -45,21 +45,23 @@ export interface UpdateCheck {
 		| "timed_out"
 		| "action_required";
 	body?: string;
-	annotations?: Array<{
-		path: string;
-		startLine: number;
-		endLine: number;
-		startColumn?: number;
-		endColumn?: number;
-		annotationLevel: "notice" | "warning" | "failure";
-		message: string;
-		title?: string;
-	}>;
+	annotations?: Annotation[];
 	actions?: Array<{
 		label: string;
 		description: string;
 		identifier: string;
 	}>;
+}
+
+export interface Annotation {
+	path: string;
+	startLine: number;
+	endLine: number;
+	startColumn?: number;
+	endColumn?: number;
+	annotationLevel: "notice" | "warning" | "failure";
+	message: string;
+	title?: string;
 }
 
 export interface Check {
