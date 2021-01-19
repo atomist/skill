@@ -439,7 +439,8 @@ export async function createJavaScriptSkillInput(
 		subscriptions,
 		datalogSubscriptions,
 		schemata,
-	};
+		capabilities: is.capabilities,
+	} as any;
 
 	if (!y.longDescription) {
 		y.longDescription = y.description;

@@ -264,6 +264,11 @@ export interface Command {
 	pattern: RegExp;
 }
 
+export enum CapabilityScope {
+	Ingestion = "ingestion",
+	Configuration = "configuration",
+}
+
 export interface Operations {
 	commands?: Command[];
 
@@ -272,6 +277,20 @@ export interface Operations {
 	datalogSubscriptions?: Array<{ name: string; query: string }>;
 
 	schemata?: Array<{ name: string; schema: string }>;
+
+	capabilities?: {
+		provides?: Array<{ name: string; namespace: string }>;
+		requires?: Array<{
+			description?: string;
+			displayName?: string;
+			maxAllowed?: number;
+			minRequired?: number;
+			name: string;
+			namespace?: string;
+			scopes: CapabilityScope[];
+			usage: string;
+		}>;
+	};
 }
 
 export type Skill<PARAMS = any> = Metadata & Configuration<PARAMS> & Operations;
