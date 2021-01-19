@@ -89,7 +89,7 @@
     "fast-glob": "^3.2.5",
     "find-up": "^5.0.0",
     "flat": "^5.0.2",
-    "fs-extra": "^9.0.1",
+    "fs-extra": "^9.1.0",
     "git-url-parse": "^11.4.3",
     "glob-gitignore": "^1.0.14",
     "graphql": "^15.4.0",
