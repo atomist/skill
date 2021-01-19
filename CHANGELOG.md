@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.7.1...HEAD)
 
+### Added
+
+-   Add capabilities to skill definition. [e47e128](https://github.com/atomist-skills/skill/commit/e47e1288a59a6403d55bb743d2b3a0da4e81aa5a)
+-   Add support for uploading code scanning results. [01e646a](https://github.com/atomist-skills/skill/commit/01e646a67b9c43c9024da6486bef794b8cbf9631)
+
 ## [0.7.1](https://github.com/atomist/skill/compare/0.7.0...0.7.1) - 2021-01-15
 
 ### Fixed
