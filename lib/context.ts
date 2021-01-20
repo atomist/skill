@@ -164,7 +164,9 @@ export function createContext(
 		};
 	} else if (isSubscriptionIncoming(payload)) {
 		return {
-			data: mapSubscription(payload.subscription?.result?.[0]),
+			data: Array.isArray(payload.subscription?.result)
+				? mapSubscription(payload.subscription?.result?.[0])
+				: mapSubscription(payload.subscription?.result),
 			name: payload.subscription?.name,
 			correlationId: payload.correlation_id,
 			executionId: ctx.eventId,
