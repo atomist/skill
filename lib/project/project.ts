@@ -15,6 +15,7 @@
  */
 
 import { SpawnSyncOptions } from "child_process";
+import * as fs from "fs-extra";
 import * as path from "path";
 
 import {
@@ -24,7 +25,7 @@ import {
 	SpawnPromiseOptions,
 	SpawnPromiseReturns,
 } from "../child_process";
-import { setUserConfig } from "../git";
+import { init, setUserConfig } from "../git";
 import { debug } from "../log";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { handleError } from "../util";
@@ -65,6 +66,9 @@ export async function load<C>(
 		exec: (cmd, args, opts): Promise<ExecPromiseResult> =>
 			execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
 	};
+	if (!(await fs.pathExists(path.join(baseDir, ".git")))) {
+		await init(baseDir);
+	}
 	await handleError(() => setUserConfig(project));
 	return project;
 }
