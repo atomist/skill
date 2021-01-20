@@ -25,6 +25,7 @@ import {
 	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
+	isSubscriptionIncoming,
 	isWebhookIncoming,
 	WebhookIncoming,
 } from "../payload";
@@ -68,7 +69,7 @@ export async function assertSkill(
 		} as any;
 	};
 
-	if (isEventIncoming(payload)) {
+	if (isEventIncoming(payload) || isSubscriptionIncoming(payload)) {
 		await processEvent(
 			payload,
 			{ eventId: guid() },
