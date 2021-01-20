@@ -45,7 +45,9 @@ export interface DockerImage {
 }
 
 export interface DockerRegistry {
-	type: string;
+	type: {
+		ident: string;
+	};
 	secret: string;
 	username: string;
 	serverUrl: string;
