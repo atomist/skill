@@ -105,9 +105,10 @@ export function flattenEntities(
 			entity["schema/entity"] = entityId;
 		}
 		for (const key of Object.keys(e[entityType])) {
-			entity[
-				convertEntityType(`${entityType.replace(/\//, ".")}/${key}`)
-			] = e[entityType][key];
+			const et = key.includes("/")
+				? key
+				: `${entityType.replace(/\//, ".")}/${key}`;
+			entity[convertEntityType(et)] = e[entityType][key];
 		}
 		return entity;
 	});
