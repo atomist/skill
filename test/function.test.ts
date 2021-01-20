@@ -28,7 +28,8 @@ describe("function", () => {
 				subscription: {
 					name: "check-complete",
 					result: {
-						"git.commit": "123456",
+						"schema/entity-type": "git/commit",
+						"git.commit/sha": "123456",
 					},
 				},
 				team_id: "123456",
@@ -138,10 +139,9 @@ describe("function", () => {
 					);
 					return async ctx => {
 						(ctx.message as any).publish = publish;
-						assert.deepStrictEqual(
-							ctx.data,
-							payload.subscription.result,
-						);
+						assert.deepStrictEqual(ctx.data, {
+							commit: { sha: "123456" },
+						});
 						return success();
 					};
 				},

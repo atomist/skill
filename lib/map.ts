@@ -15,11 +15,16 @@
  */
 
 import camelCase = require("lodash.camelcase");
+import { toArray } from "./util";
 
 /**
  * Map a Datalog subscription result to a JavaScript object
  */
 export function mapSubscription<T = any>(result: any[]): T {
+	if (!result) {
+		return undefined;
+	}
+
 	const mapped = {};
 
 	const mapper = (v: any) => {
@@ -36,7 +41,7 @@ export function mapSubscription<T = any>(result: any[]): T {
 		}
 	};
 
-	result.forEach(r => {
+	toArray(result).forEach(r => {
 		const value = {};
 		let key;
 		for (const k in r) {
