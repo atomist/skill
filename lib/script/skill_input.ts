@@ -19,7 +19,7 @@ import * as fs from "fs-extra";
 import * as path from "path";
 
 import { Skill } from "../definition/skill";
-import { named } from "../definition/subscription/named";
+import { namedDatalog, namedGraphQl } from "../definition/subscription/named";
 import { error, info } from "../log";
 import { withGlobMatches } from "../project/util";
 import { handleError, handlerLoader } from "../util";
@@ -336,6 +336,11 @@ export async function createJavaScriptSkillInput(
 			)),
 		);
 	}
+	datalogSubscriptions.forEach(dl => {
+		if (dl.query.startsWith("@")) {
+			dl.query = namedDatalog(dl.query);
+		}
+	});
 	const schemata = [...(is.schemata || [])];
 	if (schemata.length === 0) {
 		schemata.push(
@@ -591,7 +596,7 @@ export function content(cwd: string): (key: string) => Promise<string[]> {
 				return (await fs.readFile(path.join(cwd, file))).toString();
 			});
 		} else if (key.startsWith("@")) {
-			return [named(key)];
+			return [namedGraphQl(key)];
 		} else {
 			return [key];
 		}

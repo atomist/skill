@@ -21,6 +21,7 @@ import * as path from "path";
 
 import { spawnPromise } from "../child_process";
 import { packageJson } from "../definition/skill";
+import { namedDatalog } from "../definition/subscription/named";
 import { info } from "../log";
 import { globFiles, withGlobMatches } from "../project/util";
 import { AtomistSkillInput, AtomistSkillRuntime, content } from "./skill_input";
@@ -138,6 +139,11 @@ export async function createYamlSkillInput(
 			)),
 		);
 	}
+	datalogSubscriptions.forEach(dl => {
+		if (dl.query.startsWith("@")) {
+			dl.query = namedDatalog(dl.query);
+		}
+	});
 	const schemata = [...(is.schemata || [])];
 	if (schemata.length === 0) {
 		schemata.push(

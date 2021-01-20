@@ -24,6 +24,7 @@ import {
 } from "./handler";
 import { createHttpClient } from "./http";
 import { wrapAuditLogger } from "./log/util";
+import { mapSubscription } from "./map";
 import {
 	PubSubCommandMessageClient,
 	PubSubEventMessageClient,
@@ -163,7 +164,7 @@ export function createContext(
 		};
 	} else if (isSubscriptionIncoming(payload)) {
 		return {
-			data: payload.subscription?.result,
+			data: mapSubscription(payload.subscription?.result),
 			name: payload.subscription?.name,
 			correlationId: payload.correlation_id,
 			executionId: ctx.eventId,

@@ -15,12 +15,16 @@
  */
 
 import * as assert from "assert";
+import * as fs from "fs-extra";
 
-import { named } from "../../../lib/definition/subscription/named";
+import {
+	namedDatalog,
+	namedGraphQl,
+} from "../../../lib/definition/subscription/named";
 
 describe("named", () => {
 	it("should load onNewChatUser subscription", () => {
-		const subscription = named("@atomist/skill/chat/onNewUser");
+		const subscription = namedGraphQl("@atomist/skill/chat/onNewUser");
 		assert.deepStrictEqual(
 			subscription,
 			`subscription onNewUser {
@@ -48,6 +52,15 @@ describe("named", () => {
   }
 }
 `,
+		);
+	});
+	it("should load onDockerImage datalog subscription", () => {
+		const subscription = namedDatalog("@atomist/skill/onDockerImage");
+		assert.deepStrictEqual(
+			subscription,
+			fs
+				.readFileSync("datalog/subscription/onDockerImage.edn")
+				.toString(),
 		);
 	});
 });
