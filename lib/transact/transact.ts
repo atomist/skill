@@ -18,11 +18,10 @@ import { PubSub } from "@google-cloud/pubsub";
 import { toEDNStringFromSimpleObject } from "edn-data";
 
 import { debug, error } from "../log/console";
-import { replacer, toArray } from "../util";
+import { replacer } from "../util";
 
-export type Entity<E extends string> = Record<E, Record<string, any>>;
 export type Transact<E extends string> = (
-	entities: Entity<E> | Entity<E>[],
+	entities: any | any[],
 ) => Promise<void>;
 
 export function createTransact(
@@ -37,7 +36,10 @@ export function createTransact(
 				id: workspaceId,
 			},
 			type: "facts_ingestion",
-			entities: toEDNStringFromSimpleObject(flattenEntities(entities)),
+			entities: toEDNStringFromSimpleObject(entities).replace(
+				/":(.*?)"/gm,
+				":$1",
+			),
 		};
 
 		const topicName =
@@ -57,70 +59,4 @@ export function createTransact(
 			error(`Error occurred sending message: ${err.message}`);
 		}
 	};
-}
-
-export function flattenEntities(
-	entities: Entity<any> | Entity<any>[],
-): Record<string, any>[] {
-	// Flatten nested objects
-	const flattenedEntities = [...toArray(entities)];
-
-	let counter = 0;
-	const extractNested = (v: any) => {
-		const nestedEntityType = Object.keys(v)[0];
-		v["schema/entity"] = `${convertEntityType(
-			nestedEntityType,
-		)}-${counter++}`;
-		flattenedEntities.push(v);
-		return v["schema/entity"];
-	};
-
-	toArray(entities).forEach(e => {
-		const entityType = Object.keys(e)[0];
-		for (const key of Object.keys(e[entityType])) {
-			const value = e[entityType][key];
-			if (Array.isArray(value)) {
-				const newValue = [];
-				toArray(value).forEach(v => {
-					if (typeof v === "object") {
-						newValue.push(extractNested(v));
-					} else {
-						newValue.push(v);
-					}
-				});
-				e[entityType][key] = newValue;
-			} else if (typeof value === "object") {
-				e[entityType][key] = extractNested(value);
-			}
-		}
-	});
-
-	return toArray(flattenedEntities).map(e => {
-		const entityType = Object.keys(e)[0];
-		const entityId = e["schema/entity"];
-		const entity: any = {
-			"schema/entity-type": convertEntityType(entityType),
-		};
-		if (entityId) {
-			entity["schema/entity"] = entityId;
-		}
-		for (const key of Object.keys(e[entityType])) {
-			const et = key.includes("/")
-				? key
-				: `${entityType.replace(/\//, ".")}/${key}`;
-			entity[convertEntityType(et)] = e[entityType][key];
-		}
-		return entity;
-	});
-}
-
-function convertEntityType(type: string): string {
-	const parts = type.split(/\.|\//);
-	if (parts.length > 1) {
-		const lastPart = parts.slice(-1)[0];
-		const firstParts = parts.slice(0, -1);
-		return `${firstParts.join(".")}/${lastPart}`;
-	} else {
-		return type;
-	}
 }

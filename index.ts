@@ -63,7 +63,6 @@ export * as slack from "./lib/slack";
 export * as cache from "./lib/storage/cache";
 export { StorageProvider } from "./lib/storage/provider";
 // lib/transact
-export * as transact from "./lib/transact";
 // lib
 export {} from "./lib/bundle";
 export * as childProcess from "./lib/child_process";
