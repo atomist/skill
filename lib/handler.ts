@@ -52,7 +52,7 @@ export interface Contextual<T, C> {
 	graphql: GraphQLClient;
 	http: HttpClient;
 	message: MessageClient;
-	transact: Transact<any>;
+	transact: Transact;
 	project: ProjectLoader;
 	audit: Logger & { url: string };
 	storage: StorageProvider;

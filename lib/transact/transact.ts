@@ -20,14 +20,12 @@ import { toEDNStringFromSimpleObject } from "edn-data";
 import { debug, error } from "../log/console";
 import { replacer } from "../util";
 
-export type Transact<E extends string> = (
-	entities: any | any[],
-) => Promise<void>;
+export type Transact = (entities: any | any[]) => Promise<void>;
 
 export function createTransact(
 	workspaceId: string,
 	correlationId: string,
-): Transact<any> {
+): Transact {
 	return async entities => {
 		const message = {
 			api_version: "1",

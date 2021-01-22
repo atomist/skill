@@ -20,6 +20,7 @@ export interface Repo {
 		installationToken: string;
 		name: string;
 		url: string;
+		baseUrl: string;
 	};
 }
 
