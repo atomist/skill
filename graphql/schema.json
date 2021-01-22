@@ -55,6 +55,47 @@
             "deprecationReason": null
           },
           {
+            "name": "activeSkill",
+            "description": "",
+            "args": [
+              {
+                "name": "name",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "namespace",
+                "description": "",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": null
+              }
+            ],
+            "type": {
+              "kind": "OBJECT",
+              "name": "ConfiguredAtomistSkill",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "getSkill",
             "description": "",
             "args": [
@@ -634,6 +675,16 @@
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "filter",
+                "description": "",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "_IssueFilter",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -11103,235 +11154,6 @@
             ]
           },
           {
-            "name": "AspectRegistration",
-            "description": "Auto-generated query for AspectRegistration",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "AspectRegistration"
-              }
-            },
-            "args": [
-              {
-                "name": "id",
-                "description": "The ID of this AspectRegistration",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "ID"
-                }
-              },
-              {
-                "name": "_offset",
-                "description": "Paging offset (default 0)",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_first",
-                "description": "Return the first X results (default 10)",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_orderBy",
-                "description": "Name of property to sort on",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_after",
-                "description": "Search only after this timestamp",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_before",
-                "description": "Search only before this timestamp",
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "Int"
-                },
-                "defaultValue": null
-              },
-              {
-                "name": "_ordering",
-                "description": "Direction of ordering",
-                "defaultValue": null,
-                "type": {
-                  "kind": "ENUM",
-                  "name": "_Ordering"
-                }
-              },
-              {
-                "name": "_search",
-                "description": "Elastic Search simple full text search syntax",
-                "defaultValue": null,
-                "type": {
-                  "kind": "SCALAR",
-                  "name": "String"
-                }
-              },
-              {
-                "name": "category",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "description",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "displayName",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "endpoint",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "manageable",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Boolean"
-                  }
-                }
-              },
-              {
-                "name": "name",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "owner",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "shortName",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "state",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "ENUM",
-                    "name": "AspectRegistrationState"
-                  }
-                }
-              },
-              {
-                "name": "unit",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "url",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "uuid",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "CommitIssueRelationship",
             "description": "Auto-generated query for CommitIssueRelationship",
             "type": {
@@ -13653,6 +13475,18 @@
                 }
               },
               {
+                "name": "configuration",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
                 "name": "contentType",
                 "description": null,
                 "type": {
@@ -13721,6 +13555,235 @@
                   "ofType": {
                     "kind": "ENUM",
                     "name": "LifecycleAttachmentType"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "AspectRegistration",
+            "description": "Auto-generated query for AspectRegistration",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AspectRegistration"
+              }
+            },
+            "args": [
+              {
+                "name": "id",
+                "description": "The ID of this AspectRegistration",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID"
+                }
+              },
+              {
+                "name": "_offset",
+                "description": "Paging offset (default 0)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "_first",
+                "description": "Return the first X results (default 10)",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "_orderBy",
+                "description": "Name of property to sort on",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "_after",
+                "description": "Search only after this timestamp",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "_before",
+                "description": "Search only before this timestamp",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "Int"
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "_ordering",
+                "description": "Direction of ordering",
+                "defaultValue": null,
+                "type": {
+                  "kind": "ENUM",
+                  "name": "_Ordering"
+                }
+              },
+              {
+                "name": "_search",
+                "description": "Elastic Search simple full text search syntax",
+                "defaultValue": null,
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "String"
+                }
+              },
+              {
+                "name": "category",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "description",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "displayName",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "endpoint",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "manageable",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Boolean"
+                  }
+                }
+              },
+              {
+                "name": "name",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "owner",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "shortName",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "state",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "AspectRegistrationState"
+                  }
+                }
+              },
+              {
+                "name": "unit",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "url",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "uuid",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
                   }
                 }
               }
@@ -15510,6 +15573,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "usage",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -16679,6 +16758,11 @@
           },
           {
             "kind": "OBJECT",
+            "name": "AtomistSkillFileFilterParameterSpec",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
             "name": "AtomistSkillFloatParameterSpec",
             "ofType": null
           },
@@ -17138,6 +17222,22 @@
             "deprecationReason": null
           },
           {
+            "name": "id",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "ID",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "name",
             "description": "",
             "args": [],
@@ -17418,6 +17518,11 @@
           {
             "kind": "OBJECT",
             "name": "AtomistSkillChatChannelsParameterValue",
+            "ofType": null
+          },
+          {
+            "kind": "OBJECT",
+            "name": "AtomistSkillFileFilterParameterValue",
             "ofType": null
           },
           {
@@ -19095,6 +19200,16 @@
             "type": {
               "kind": "SCALAR",
               "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "showDerived",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
               "ofType": null
             },
             "defaultValue": null
@@ -43653,6 +43768,37 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "_IssueFilter",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "name",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "repo",
+            "description": "",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "_RepoFilter",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "_RepoFilter",
         "description": "",
         "fields": null,
@@ -43887,27 +44033,6 @@
           },
           {
             "name": "name_contains",
-            "description": "",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          }
-        ],
-        "interfaces": null,
-        "enumValues": null,
-        "possibleTypes": null
-      },
-      {
-        "kind": "INPUT_OBJECT",
-        "name": "_IssueFilter",
-        "description": "",
-        "fields": null,
-        "inputFields": [
-          {
-            "name": "name",
             "description": "",
             "type": {
               "kind": "SCALAR",
@@ -52143,16 +52268,22 @@
             "description": "",
             "args": [
               {
+                "name": "configurationId",
+                "description": "",
+                "type": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
                 "name": "configurationName",
                 "description": "",
                 "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "ID",
-                    "ofType": null
-                  }
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
                 },
                 "defaultValue": null
               },
@@ -55896,29 +56027,6 @@
             ]
           },
           {
-            "name": "ingestCustomAspectRegistration",
-            "description": "Auto-generated ingestion mutation for AspectRegistration",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "value",
-                "description": "The instance of AspectRegistration to ingest",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "CustomAspectRegistrationInput"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "ingestCustomCommitIssueRelationship",
             "description": "Auto-generated ingestion mutation for CommitIssueRelationship",
             "type": {
@@ -56310,6 +56418,29 @@
             ]
           },
           {
+            "name": "ingestCustomAspectRegistration",
+            "description": "Auto-generated ingestion mutation for AspectRegistration",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "value",
+                "description": "The instance of AspectRegistration to ingest",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CustomAspectRegistrationInput"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "deleteCustomCard",
             "description": "Auto-generated deletion mutation for Card",
             "type": {
@@ -56350,29 +56481,6 @@
                   "ofType": {
                     "kind": "INPUT_OBJECT",
                     "name": "CustomNotificationInput"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "deleteCustomAspectRegistration",
-            "description": "Auto-generated deletion mutation for AspectRegistration",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "value",
-                "description": "The instance of AspectRegistration to delete",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "INPUT_OBJECT",
-                    "name": "CustomAspectRegistrationInput"
                   }
                 }
               }
@@ -56770,6 +56878,29 @@
             ]
           },
           {
+            "name": "deleteCustomAspectRegistration",
+            "description": "Auto-generated deletion mutation for AspectRegistration",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "value",
+                "description": "The instance of AspectRegistration to delete",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CustomAspectRegistrationInput"
+                  }
+                }
+              }
+            ]
+          },
+          {
             "name": "deleteCustomCardById",
             "description": "Auto-generated delete-by-id mutation for Card",
             "type": {
@@ -56804,29 +56935,6 @@
               {
                 "name": "id",
                 "description": "The id of the Notification to delete",
-                "type": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "ID"
-                  }
-                }
-              }
-            ]
-          },
-          {
-            "name": "deleteCustomAspectRegistrationById",
-            "description": "Auto-generated delete-by-id mutation for AspectRegistration",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "args": [
-              {
-                "name": "id",
-                "description": "The id of the AspectRegistration to delete",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -57218,6 +57326,29 @@
               {
                 "name": "id",
                 "description": "The id of the LifecycleAttachment to delete",
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "ID"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "deleteCustomAspectRegistrationById",
+            "description": "Auto-generated delete-by-id mutation for AspectRegistration",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "args": [
+              {
+                "name": "id",
+                "description": "The id of the AspectRegistration to delete",
                 "type": {
                   "kind": "NON_NULL",
                   "name": null,
@@ -58577,6 +58708,20 @@
               }
             },
             "defaultValue": null
+          },
+          {
+            "name": "usage",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -58707,6 +58852,16 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "AtomistSkillChatChannelsParameterSpecInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "fileFilter",
+            "description": "",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "AtomistSkillFileFilterParameterSpecInput",
               "ofType": null
             },
             "defaultValue": null
@@ -58905,6 +59060,113 @@
         "description": "",
         "fields": null,
         "inputFields": [
+          {
+            "name": "description",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "displayName",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "maxAllowed",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "minRequired",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "name",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "required",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "visibility",
+            "description": "",
+            "type": {
+              "kind": "ENUM",
+              "name": "AtomistSkillParameterVisiblity",
+              "ofType": null
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "AtomistSkillFileFilterParameterSpecInput",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "defaultValue",
+            "description": "",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
           {
             "name": "description",
             "description": "",
@@ -59597,26 +59859,6 @@
             "defaultValue": null
           },
           {
-            "name": "pattern",
-            "description": "",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
-            "name": "placeHolder",
-            "description": "",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null
-          },
-          {
             "name": "required",
             "description": "",
             "type": {
@@ -60259,16 +60501,22 @@
             "defaultValue": null
           },
           {
+            "name": "id",
+            "description": "",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
             "name": "name",
             "description": "",
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "defaultValue": null
           },
@@ -60368,6 +60616,20 @@
               }
             },
             "defaultValue": null
+          },
+          {
+            "name": "usage",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
           }
         ],
         "interfaces": null,
@@ -60449,6 +60711,16 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "AtomistSkillChatChannelsInput",
+              "ofType": null
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "fileFilter",
+            "description": "",
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "AtomistSkillFileFilterInput",
               "ofType": null
             },
             "defaultValue": null
@@ -60698,6 +60970,53 @@
                 "kind": "SCALAR",
                 "name": "String",
                 "ofType": null
+              }
+            },
+            "defaultValue": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "AtomistSkillFileFilterInput",
+        "description": "",
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "name",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "defaultValue": null
+          },
+          {
+            "name": "value",
+            "description": "",
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
               }
             },
             "defaultValue": null
@@ -64797,19 +65116,15 @@
             "description": "",
             "args": [],
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String",
-                    "ofType": null
-                  }
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
                 }
               }
             },
@@ -64979,6 +65294,216 @@
         ],
         "inputFields": null,
         "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AtomistSkillFileFilterParameterSpec",
+        "description": "",
+        "fields": [
+          {
+            "name": "defaultValue",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "String",
+                  "ofType": null
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "description",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "displayName",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "maxAllowed",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "minRequired",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "required",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "visibility",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "ENUM",
+                "name": "AtomistSkillParameterVisiblity",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "AtomistSkillParameterSpec",
+            "ofType": null
+          }
+        ],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
+        "name": "AtomistSkillFileFilterParameterValue",
+        "description": "",
+        "fields": [
+          {
+            "name": "name",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "spec",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AtomistSkillFileFilterParameterSpec",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "value",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "LIST",
+                "name": null,
+                "ofType": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String",
+                    "ofType": null
+                  }
+                }
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [
+          {
+            "kind": "INTERFACE",
+            "name": "AtomistSkillParameterValue",
+            "ofType": null
+          }
+        ],
         "enumValues": null,
         "possibleTypes": null
       },
@@ -66267,30 +66792,6 @@
                 "name": "String",
                 "ofType": null
               }
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "pattern",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "placeHolder",
-            "description": "",
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null
@@ -68064,6 +68565,16 @@
                 "type": {
                   "kind": "SCALAR",
                   "name": "Int",
+                  "ofType": null
+                },
+                "defaultValue": null
+              },
+              {
+                "name": "filter",
+                "description": "",
+                "type": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "_IssueFilter",
                   "ofType": null
                 },
                 "defaultValue": null
@@ -77846,164 +78357,6 @@
             ]
           },
           {
-            "name": "AspectRegistration",
-            "description": "Auto-generated subscription for AspectRegistration",
-            "type": {
-              "kind": "LIST",
-              "name": null,
-              "ofType": {
-                "kind": "OBJECT",
-                "name": "AspectRegistration"
-              }
-            },
-            "args": [
-              {
-                "name": "category",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "description",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "displayName",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "endpoint",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "manageable",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "Boolean"
-                  }
-                }
-              },
-              {
-                "name": "name",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "owner",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "shortName",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "state",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "ENUM",
-                    "name": "AspectRegistrationState"
-                  }
-                }
-              },
-              {
-                "name": "unit",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "url",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              },
-              {
-                "name": "uuid",
-                "description": null,
-                "type": {
-                  "kind": "LIST",
-                  "name": null,
-                  "ofType": {
-                    "kind": "SCALAR",
-                    "name": "String"
-                  }
-                }
-              }
-            ]
-          },
-          {
             "name": "CommitIssueRelationship",
             "description": "Auto-generated subscription for CommitIssueRelationship",
             "type": {
@@ -79108,6 +79461,18 @@
                 }
               },
               {
+                "name": "configuration",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
                 "name": "contentType",
                 "description": null,
                 "type": {
@@ -79176,6 +79541,164 @@
                   "ofType": {
                     "kind": "ENUM",
                     "name": "LifecycleAttachmentType"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "name": "AspectRegistration",
+            "description": "Auto-generated subscription for AspectRegistration",
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "AspectRegistration"
+              }
+            },
+            "args": [
+              {
+                "name": "category",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "description",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "displayName",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "endpoint",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "manageable",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Boolean"
+                  }
+                }
+              },
+              {
+                "name": "name",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "owner",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "shortName",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "state",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "ENUM",
+                    "name": "AspectRegistrationState"
+                  }
+                }
+              },
+              {
+                "name": "unit",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "url",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
+                  }
+                }
+              },
+              {
+                "name": "uuid",
+                "description": null,
+                "type": {
+                  "kind": "LIST",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "String"
                   }
                 }
               }
@@ -81325,217 +81848,6 @@
         "possibleTypes": null,
         "kind": "OBJECT",
         "enumValues": null,
-        "inputFields": null,
-        "directives": []
-      },
-      {
-        "description": null,
-        "interfaces": [],
-        "name": "AspectRegistration",
-        "fields": [
-          {
-            "args": [],
-            "name": "category",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "description",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "displayName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "endpoint",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "manageable",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "name",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "directives": [
-              {
-                "args": [],
-                "name": "compositeId"
-              }
-            ],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "owner",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "shortName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "state",
-            "type": {
-              "kind": "ENUM",
-              "name": "AspectRegistrationState",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "unit",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "url",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "args": [],
-            "name": "uuid",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "directives": [],
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "id",
-            "description": "The ID of this AspectRegistration",
-            "type": {
-              "kind": "SCALAR",
-              "name": "ID"
-            },
-            "args": []
-          }
-        ],
-        "possibleTypes": null,
-        "kind": "OBJECT",
-        "enumValues": null,
-        "inputFields": null,
-        "directives": [
-          {
-            "args": [],
-            "name": "rootType"
-          }
-        ]
-      },
-      {
-        "description": null,
-        "interfaces": [],
-        "name": "AspectRegistrationState",
-        "fields": null,
-        "possibleTypes": null,
-        "kind": "ENUM",
-        "enumValues": [
-          {
-            "name": "Disabled",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "Enabled",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          }
-        ],
         "inputFields": null,
         "directives": []
       },
@@ -86096,6 +86408,24 @@
           },
           {
             "args": [],
+            "name": "configuration",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [
+              {
+                "args": [],
+                "name": "compositeId"
+              }
+            ],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
             "name": "contentType",
             "type": {
               "kind": "SCALAR",
@@ -86223,6 +86553,217 @@
         "enumValues": [
           {
             "name": "push",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "directives": []
+      },
+      {
+        "description": null,
+        "interfaces": [],
+        "name": "AspectRegistration",
+        "fields": [
+          {
+            "args": [],
+            "name": "category",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "description",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "displayName",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "endpoint",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "manageable",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "name",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [
+              {
+                "args": [],
+                "name": "compositeId"
+              }
+            ],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "owner",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "shortName",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "state",
+            "type": {
+              "kind": "ENUM",
+              "name": "AspectRegistrationState",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "unit",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "url",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "args": [],
+            "name": "uuid",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "directives": [],
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "id",
+            "description": "The ID of this AspectRegistration",
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID"
+            },
+            "args": []
+          }
+        ],
+        "possibleTypes": null,
+        "kind": "OBJECT",
+        "enumValues": null,
+        "inputFields": null,
+        "directives": [
+          {
+            "args": [],
+            "name": "rootType"
+          }
+        ]
+      },
+      {
+        "description": null,
+        "interfaces": [],
+        "name": "AspectRegistrationState",
+        "fields": null,
+        "possibleTypes": null,
+        "kind": "ENUM",
+        "enumValues": [
+          {
+            "name": "Disabled",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "Enabled",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -88037,162 +88578,6 @@
           },
           {
             "name": "text",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          }
-        ]
-      },
-      {
-        "description": "Auto generated input for type AspectRegistration",
-        "interfaces": [],
-        "ofType": null,
-        "name": "CustomAspectRegistrationInput",
-        "fields": null,
-        "possibleTypes": null,
-        "kind": "INPUT_OBJECT",
-        "enumValues": null,
-        "inputFields": [
-          {
-            "name": "category",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "description",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "displayName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "endpoint",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "manageable",
-            "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "name",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "owner",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "shortName",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "state",
-            "type": {
-              "kind": "ENUM",
-              "name": "AspectRegistrationState",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "unit",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "url",
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null,
-            "defaultValue": null
-          },
-          {
-            "name": "uuid",
             "type": {
               "kind": "SCALAR",
               "name": "String",
@@ -90928,6 +91313,18 @@
             "defaultValue": null
           },
           {
+            "name": "configuration",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
             "name": "contentType",
             "type": {
               "kind": "SCALAR",
@@ -90992,6 +91389,162 @@
             "type": {
               "kind": "ENUM",
               "name": "LifecycleAttachmentType",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          }
+        ]
+      },
+      {
+        "description": "Auto generated input for type AspectRegistration",
+        "interfaces": [],
+        "ofType": null,
+        "name": "CustomAspectRegistrationInput",
+        "fields": null,
+        "possibleTypes": null,
+        "kind": "INPUT_OBJECT",
+        "enumValues": null,
+        "inputFields": [
+          {
+            "name": "category",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "description",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "displayName",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "endpoint",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "manageable",
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "name",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "owner",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "shortName",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "state",
+            "type": {
+              "kind": "ENUM",
+              "name": "AspectRegistrationState",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "unit",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "url",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null,
+            "defaultValue": null
+          },
+          {
+            "name": "uuid",
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
               "ofType": null
             },
             "description": null,
