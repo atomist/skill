@@ -47,9 +47,7 @@ export interface DockerImage {
 }
 
 export interface DockerRegistry {
-	type: {
-		ident: string;
-	};
+	type: "GCR" | "DOCKER_HUB";
 	secret: string;
 	username: string;
 	serverUrl: string;
