@@ -54,7 +54,7 @@ export function createTransact(
 
 		const topicName =
 			process.env.ATOMIST_TOPIC ||
-			`${this.workspaceId}-${this.request.skill.id}-response`;
+			`${workspaceId}-${this.request.skill.id}-response`;
 		try {
 			debug(`Sending message: ${JSON.stringify(message, replacer)}`);
 			if (topicName) {

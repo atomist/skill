@@ -33,6 +33,15 @@ export function mapSubscription<T = any>(result: any[]): T {
 		} else if (Array.isArray(v)) {
 			return v.map(vr => mapper(vr));
 		} else {
+			// Special case for enums
+			const values = Object.keys(v);
+			if (
+				values.length === 2 &&
+				values.includes("db/id") &&
+				values.includes("db/ident")
+			) {
+				return nameFromKey(v["db/ident"], false);
+			}
 			const m = {};
 			for (const k in v) {
 				m[nameFromKey(k)] = mapper(v[k]);
@@ -59,14 +68,18 @@ export function mapSubscription<T = any>(result: any[]): T {
 	return mapped as T;
 }
 
-function nameFromKey(value: string): string {
+function nameFromKey(value: string, toCamelCase = true): string {
 	let name;
 	if (value.includes("/")) {
 		name = value.split("/")[1];
 	} else {
 		name = value;
 	}
-	return camelCase(name);
+	if (toCamelCase) {
+		return camelCase(name);
+	} else {
+		return name;
+	}
 }
 
 function isPrimitive(test): boolean {
