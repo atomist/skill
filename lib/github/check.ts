@@ -114,8 +114,10 @@ export async function createCheck(
 			owner: id.owner,
 			repo: id.repo,
 			check_run_id: openCheck.id,
+			started_at: parameters.startedAt || new Date().toISOString(),
 			external_id: ctx.correlationId,
 			details_url: ctx.audit.url,
+			status: "in_progress",
 			output: {
 				title: parameters.title,
 				summary: truncateText(
