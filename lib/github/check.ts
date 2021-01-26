@@ -33,6 +33,7 @@ export interface CreateCheck {
 	title: string;
 	body: string;
 	startedAt?: string;
+	reuse?: boolean;
 }
 
 export interface UpdateCheck {
@@ -82,7 +83,7 @@ export async function createCheck(
 			repo: id.repo,
 			ref: parameters.sha,
 			check_name: parameters.name,
-			status: "in_progress",
+			status: parameters.reuse ? undefined : "in_progress",
 			filter: "latest",
 		})
 	).data;
