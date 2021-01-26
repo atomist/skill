@@ -90,7 +90,7 @@ export interface DockerImageVulnerability {
 export interface OnDockerAnalysisComplete {
 	commit: Commit;
 	image: DockerImage & {
-		repository: { baseline: { cves: DockerImageVulnerability[] } };
+		repository: { baseline: Array<{ cves: DockerImageVulnerability[] }> };
 		vulnerabilities: DockerImageVulnerability[];
 	};
 }
