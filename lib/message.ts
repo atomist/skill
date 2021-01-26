@@ -54,6 +54,7 @@ export interface Destinations {
 
 export enum AttachmentTarget {
 	Push = "push",
+	Commit = "commit",
 }
 
 export interface MessageClient {
