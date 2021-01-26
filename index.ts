@@ -19,6 +19,7 @@ export * as parameter from "./lib/definition/parameter";
 export * as resourceProvider from "./lib/definition/resource_provider";
 export {
 	BooleanParameter,
+	CapabilityScope,
 	Category,
 	ChatChannelParameterValue,
 	ChatChannelsParameter,

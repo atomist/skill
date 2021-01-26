@@ -61,3 +61,22 @@ export interface OnDockerImage {
 	image: DockerImage;
 	registry: DockerRegistry;
 }
+
+export interface DockerImageVulnerability {
+	sourceId: string;
+	severity: "";
+	title: string;
+	description: string;
+	cvssScore: string;
+	fixAvailable: boolean;
+	affected: Array<{ name: string; version: string }>;
+	fixed: Array<{ name: string; version: string }>;
+}
+
+export interface OnDockerAnalysisComplete {
+	commit: Commit;
+	image: DockerImage & {
+		repository: { baseline: { cves: DockerImageVulnerability[] } };
+	};
+	vulnerabilities: DockerImageVulnerability[];
+}
