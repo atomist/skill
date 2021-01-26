@@ -46,8 +46,13 @@ export interface DockerImage {
 	};
 }
 
+export enum DockerRegistryType {
+	Gcr = "GCR",
+	DockerHub = "DOCKER_HUB",
+}
+
 export interface DockerRegistry {
-	type: "GCR" | "DOCKER_HUB";
+	type: DockerRegistryType;
 	secret: string;
 	username: string;
 	serverUrl: string;
@@ -62,9 +67,18 @@ export interface OnDockerImage {
 	registry: DockerRegistry;
 }
 
+export enum DockerImageVulnerabilitySeverity {
+	Unspecified = "SEVERITY_UNSPECIFIED",
+	Minimal = "MINIMAL",
+	Low = "LOW",
+	Medium = "MEDIUM",
+	High = "HIGH",
+	Critical = "CRITICAL",
+}
+
 export interface DockerImageVulnerability {
 	sourceId: string;
-	severity: "";
+	severity: DockerImageVulnerabilitySeverity;
 	title: string;
 	description: string;
 	cvssScore: string;
