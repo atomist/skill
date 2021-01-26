@@ -46,6 +46,7 @@ export async function assertSkill(
 	let status: HandlerResponse["status"];
 	const factory: ContextFactory = (p, c) => {
 		const context = createContext(p, c);
+		const attach = context.message.attach;
 		context.message = {
 			respond: async (msg: any) => {
 				debug(`Sending message: ${JSON.stringify(msg, replacer)}`);
@@ -62,6 +63,7 @@ export async function assertSkill(
 			publish: async (result: HandlerResponse["status"]) => {
 				status = result;
 			},
+			attach,
 		} as any;
 		return {
 			...context,
