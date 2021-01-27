@@ -48,8 +48,10 @@ export function handlerLoader<T>(type: string) {
 		const f = require(path);
 		if (f[name]) {
 			return f[name] as T;
-		} else {
+		} else if (f.handler) {
 			return f.handler as T;
+		} else {
+			throw new Error(`No ${type} handler found for '${name}'`);
 		}
 	};
 }
