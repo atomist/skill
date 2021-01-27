@@ -120,25 +120,21 @@ export async function createYamlSkillInput(
 	}
 
 	const datalogSubscriptions = [...(is.datalogSubscriptions || [])];
-	if (datalogSubscriptions.length === 0) {
-		datalogSubscriptions.push(
-			...(await withGlobMatches<{ name: string; query: string }>(
-				cwd,
-				"**/datalog/subscription/*.edn",
-				async file => {
-					const filePath = path.join(cwd, file);
-					const fileName = path.basename(filePath);
-					const extName = path.extname(fileName);
-					return {
-						query: (
-							await fs.readFile(path.join(cwd, file))
-						).toString(),
-						name: fileName.replace(extName, ""),
-					};
-				},
-			)),
-		);
-	}
+	datalogSubscriptions.push(
+		...(await withGlobMatches<{ name: string; query: string }>(
+			cwd,
+			"**/datalog/subscription/*.edn",
+			async file => {
+				const filePath = path.join(cwd, file);
+				const fileName = path.basename(filePath);
+				const extName = path.extname(fileName);
+				return {
+					query: (await fs.readFile(path.join(cwd, file))).toString(),
+					name: fileName.replace(extName, ""),
+				};
+			},
+		)),
+	);
 	datalogSubscriptions.forEach(dl => {
 		if (dl.query.startsWith("@")) {
 			dl.query = namedDatalog(dl.query);
