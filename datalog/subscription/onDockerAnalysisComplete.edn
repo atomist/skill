@@ -21,7 +21,9 @@
    :docker.image/digest
    :docker.image/sha
    {:docker.image/repository [:docker.repository/host
-                              :docker.repository/repository
+                              (:docker.repository/repository
+                               :as
+                               :name)
                               {(:vulnerability.cve.baseline/_on
                                 :as
                                 :baseline) [{:vulnerability.cve.baseline/cves [:vulnerability.cve/source-id

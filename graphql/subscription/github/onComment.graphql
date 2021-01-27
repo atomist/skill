@@ -12,6 +12,7 @@ subscription onComment {
     }
     pullRequest {
       title
+      body
       number
       state
       merged
@@ -75,6 +76,7 @@ subscription onComment {
     }
     issue {
       title
+      body
       number
       state
       repo {
