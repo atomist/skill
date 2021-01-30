@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Update schema. [#202](https://github.com/atomist-skills/skill/pull/202)
 
+### Fixed
+
+-   Fix missing await in state hydrate. [d6ec184](https://github.com/atomist-skills/skill/commit/d6ec18420df2fb3d7aaa1aedb1a1a0f953984c45)
+
 ## [0.7.1](https://github.com/atomist/skill/compare/0.7.0...0.7.1) - 2021-01-15
 
 ### Fixed
