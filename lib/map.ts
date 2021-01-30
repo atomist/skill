@@ -61,7 +61,13 @@ export function mapSubscription<T = any>(result: any[]): T {
 			}
 		}
 		if (key) {
-			mapped[key] = value;
+			if (Array.isArray(mapped[key])) {
+				mapped[key].push(value);
+			} else if (mapped[key]) {
+				mapped[key] = [mapped[key], value];
+			} else {
+				mapped[key] = value;
+			}
 		}
 	});
 

@@ -96,6 +96,99 @@ describe("map", () => {
 					"git.commit/message": "Update touch.txt",
 				},
 				{
+					"schema/entity-type": "git/commit",
+					"git.commit/repo": {
+						"git.repo/name": "view-service",
+						"git.repo/org": {
+							"github.org/installation-token":
+								"v*****************************************4",
+							"git.org/name": "atomisthq",
+							"git.provider/url": "h****************m",
+						},
+					},
+					"git.commit/author": {
+						"git.user/name": "C**************s",
+						"git.user/login": "c*****s",
+						"git.user/emails": [
+							{
+								"email.email/address": "cd@atomist.com",
+							},
+						],
+					},
+					"git.commit/sha":
+						"4f73e634a41c2ba41be7a80e16fbb731196f5776",
+					"git.commit/message": "Update touch.txt",
+				},
+			];
+			assert.deepStrictEqual(mapSubscription(result), {
+				commit: [
+					{
+						repo: {
+							name: "view-service",
+							org: {
+								installationToken:
+									"v*****************************************4",
+								name: "atomisthq",
+								url: "h****************m",
+							},
+						},
+						author: {
+							name: "C**************s",
+							login: "c*****s",
+							emails: [{ address: "cd@atomist.com" }],
+						},
+						sha: "4f73e634a41c2ba41be7a80e16fbb731196f5776",
+						message: "Update touch.txt",
+					},
+					{
+						repo: {
+							name: "view-service",
+							org: {
+								installationToken:
+									"v*****************************************4",
+								name: "atomisthq",
+								url: "h****************m",
+							},
+						},
+						author: {
+							name: "C**************s",
+							login: "c*****s",
+							emails: [{ address: "cd@atomist.com" }],
+						},
+						sha: "4f73e634a41c2ba41be7a80e16fbb731196f5776",
+						message: "Update touch.txt",
+					},
+				],
+			});
+		});
+
+		it("should map array result", () => {
+			const result = [
+				{
+					"schema/entity-type": "git/commit",
+					"git.commit/repo": {
+						"git.repo/name": "view-service",
+						"git.repo/org": {
+							"github.org/installation-token":
+								"v*****************************************4",
+							"git.org/name": "atomisthq",
+							"git.provider/url": "h****************m",
+						},
+					},
+					"git.commit/author": {
+						"git.user/name": "C**************s",
+						"git.user/login": "c*****s",
+						"git.user/emails": [
+							{
+								"email.email/address": "cd@atomist.com",
+							},
+						],
+					},
+					"git.commit/sha":
+						"4f73e634a41c2ba41be7a80e16fbb731196f5776",
+					"git.commit/message": "Update touch.txt",
+				},
+				{
 					"schema/entity-type": "docker/image",
 					"docker.image/image":
 						"gcr.io/atomist-container-registry/view-service:4f73e634a41c2ba41be7a80e16fbb731196f5776",
