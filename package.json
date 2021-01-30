@@ -17,7 +17,7 @@
   },
   "main": "./index.js",
   "browser": {
-    "atm-skill": "./bin/start.js"
+    "atm-skill": "bin/start.js"
   },
   "directories": {
     "test": "test"
