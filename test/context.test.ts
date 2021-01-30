@@ -25,6 +25,9 @@ describe("context", () => {
 			{
 				data: {},
 				extensions: { team_id: "1223456", correlation_id: guid() },
+				skill: {
+					id: "654321",
+				},
 			} as any,
 			{} as any,
 		);

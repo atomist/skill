@@ -25,6 +25,7 @@ export type Transact = (entities: any | any[]) => Promise<void>;
 export function createTransact(
 	workspaceId: string,
 	correlationId: string,
+	skillId: string,
 ): Transact {
 	return async entities => {
 		const invalidEntities = toArray(entities).filter(e =>
@@ -53,8 +54,7 @@ export function createTransact(
 		};
 
 		const topicName =
-			process.env.ATOMIST_TOPIC ||
-			`${workspaceId}-${this.request.skill.id}-response`;
+			process.env.ATOMIST_TOPIC || `${workspaceId}-${skillId}-response`;
 		try {
 			debug(`Sending message: ${JSON.stringify(message, replacer)}`);
 			if (topicName) {
