@@ -87,8 +87,26 @@ export interface DockerImageVulnerability {
 	fixed: Array<{ name: string; version: string }>;
 }
 
+export enum DockerAnalysisDiscoverySource {
+	Gcr = "GCR",
+	Trivy = "TRIVY",
+}
+
+export enum DockerAnalysisDiscoveryStatus {
+	Pending = "PENDING",
+	Scanning = "SCANNING",
+	FinishedSuccess = "FINISHED_SUCCESS",
+	FinishedFailed = "FINISHED_FAILED",
+	FinishedUnsupported = "FINISHED_UNSUPPORTED",
+	Unspecified = "ANALYSIS_STATUS_UNSPECIFIED",
+}
+
 export interface OnDockerAnalysisComplete {
-	commit: Commit[];
+	discovery: {
+		status: DockerAnalysisDiscoveryStatus;
+		source: DockerAnalysisDiscoverySource;
+	};
+	commit: Commit | Commit[];
 	image: DockerImage & {
 		repository: { baseline: Array<{ cves: DockerImageVulnerability[] }> };
 		vulnerabilities: DockerImageVulnerability[];

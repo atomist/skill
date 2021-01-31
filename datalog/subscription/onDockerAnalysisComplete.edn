@@ -1,5 +1,10 @@
 [:find
  (pull
+  ?discovery
+  [:schema/entity-type
+   :analysis.discovery/status
+   :analysis.discovery/source])
+ (pull
   ?commit
   [:schema/entity-type
    {:git.commit/repo [:git.repo/name
@@ -46,7 +51,7 @@
                                                                   :docker.analysis.package/version]}
                                       {:docker.analysis/fixed [:docker.analysis.package/name
                                                                :docker.analysis.package/version]}]}])
-(pull
+ (pull
   ?default-commit-image
   [:schema/entity-type
    :docker.image/image
@@ -90,14 +95,12 @@
  [?discovery :analysis.discovery/image ?image]
  [?image :docker.image/sha ?sha]
  [?commit :git.commit/sha ?sha]
-
  [?commit :git.commit/repo ?repo]
+
  [?repo :git.repo/default-branch ?default-branch-name]
  [?default-branch :git.ref/repo ?repo]
  [?default-branch :git.ref/type :git.ref.type/branch]
  [?default-branch :git.ref/name ?default-branch-name]
  [?default-branch :git.ref/commit ?default-head-commit]
  [?default-head-commit :git.commit/sha ?default-head-commit-sha]
-
- [?default-commit-image :docker.image/sha ?default-head-commit-sha]
-]
+ [?default-commit-image :docker.image/sha ?default-head-commit-sha]]
