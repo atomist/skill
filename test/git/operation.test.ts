@@ -19,11 +19,7 @@ import * as os from "os";
 import * as path from "path";
 import * as assert from "power-assert";
 
-import {
-	execPromise,
-	spawnPromise,
-	SpawnPromiseReturns,
-} from "../../lib/child_process";
+import { execPromise, spawnPromise } from "../../lib/child_process";
 import {
 	checkout,
 	ensureBranch,
@@ -95,7 +91,13 @@ describe("operation", () => {
 				"atomist-skills/skill",
 				`${org}/${repo}`,
 			);
-			await execPromise("git", ["clone", cloneUrl, cwd]);
+			await execPromise("git", [
+				"clone",
+				cloneUrl,
+				cwd,
+				"--branch=main",
+				"--depth=1",
+			]);
 		});
 		afterEach(async () => {
 			await checkout(cwd, defaultBranch);
@@ -104,23 +106,11 @@ describe("operation", () => {
 		after(async () => {
 			retryOptions.retries = 4;
 			for (const branch of branches) {
-				let rv: SpawnPromiseReturns | undefined;
-				if (branch.startsWith("origin/")) {
-					rv = await spawnPromise(
-						"git",
-						[
-							"push",
-							"--delete",
-							"origin",
-							branch.replace(/^origin\//, ""),
-						],
-						{ cwd },
-					);
-				} else {
-					rv = await spawnPromise("git", ["branch", "-D", branch], {
-						cwd,
-					});
-				}
+				const rv = await spawnPromise(
+					"git",
+					["push", "--delete", "origin", branch],
+					{ cwd },
+				);
 				if (rv.error) {
 					console.log(
 						`failed to delete branch ${branch}: ${rv.error.message}`,
@@ -138,7 +128,7 @@ describe("operation", () => {
 
 		it("creates non-existent branch locally", async () => {
 			const b = `atomist/delete-test-branch-${guid()}`;
-			branches.push(b);
+			assert(!(await hasBranch(cwd, b)));
 			await ensureBranch(cwd, b, false);
 			assert(await hasBranch(cwd, b));
 			assert((await determineBranch(cwd)) === b);
@@ -150,7 +140,6 @@ describe("operation", () => {
 
 		it("checks out local branch", async () => {
 			const b = `atomist/delete-test-branch-${guid()}`;
-			branches.push(b);
 			await execPromise("git", ["checkout", "-b", b], { cwd });
 			const n = path.join(cwd, `local-file-${guid()}`);
 			await fs.writeFile(n, "test local file");
@@ -173,20 +162,9 @@ describe("operation", () => {
 			assert(fs.existsSync(n));
 		});
 
-		it("checks out a remote branch", async () => {
-			const b = "existing-remote-0";
-			branches.push(b);
-			const r = path.join(cwd, "remote-file.txt");
-			assert(!fs.existsSync(r));
-			await ensureBranch(cwd, b, false);
-			assert(await hasBranch(cwd, b));
-			assert((await determineBranch(cwd)) === b);
-			assert(fs.existsSync(r));
-		});
-
 		it("creates non-existent branch locally and remotely", async () => {
 			const b = `atomist/delete-test-branch-${guid()}`;
-			branches.push(b, `origin/${b}`);
+			branches.push(b);
 			await ensureBranch(cwd, b, true);
 			assert(await hasBranch(cwd, b));
 			assert((await determineBranch(cwd)) === b);
@@ -204,7 +182,6 @@ describe("operation", () => {
 
 		it("checks out a remote branch and sets upstream", async () => {
 			const b = "existing-remote-1";
-			branches.push(b);
 			const r = path.join(cwd, "some-file.txt");
 			assert(!fs.existsSync(r));
 			await ensureBranch(cwd, b, true);
@@ -221,7 +198,7 @@ describe("operation", () => {
 
 		it("checks out local branch and pushes remotely", async () => {
 			const b = `atomist/delete-test-branch-${guid()}`;
-			branches.push(b, `origin/${b}`);
+			branches.push(b);
 			await execPromise("git", ["checkout", "-b", b], { cwd });
 			const n = path.join(cwd, `local-file-${guid()}`);
 			await fs.writeFile(n, "test local file");
