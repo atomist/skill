@@ -154,10 +154,13 @@ export async function ensureBranch(
  * then the local branch, which may have just been created, is pushed
  * to the remote and set as the upstream.
  *
- * If `sync` is `false` and the branch exists locally, use it.
- * If branch does not exist locally but exists remotely, create local
- * branch using remote. If it exists neither remotely nor locally, create it
- * locally.
+ * If `sync` is `false` and the branch exists locally, use it. If
+ * branch does not exist locally, create it. Any existing remote
+ * branch is ignored.
+ *
+ * Since most skills clone only a single branch, this function updates
+ * the remote.origin.fetch configuration to map all remote branches to
+ * local branches, instead of just the cloned branch.
  *
  * @param projectOrCwd local git repository clone
  * @param branch branch to ensure exists
@@ -169,8 +172,17 @@ async function _ensureBranch(
 	sync: boolean,
 ): Promise<void> {
 	const dir = cwd(projectOrCwd);
-	const localExists = await hasBranch(projectOrCwd, branch);
 	const opts = { cwd: dir };
+	await execPromise(
+		"git",
+		[
+			"config",
+			"remote.origin.fetch",
+			"+refs/heads/*:refs/remotes/origin/*",
+		],
+		opts,
+	);
+	const localExists = await hasBranch(projectOrCwd, branch);
 	const fetchResult = await spawnPromise(
 		"git",
 		["fetch", origin, branch],
@@ -181,33 +193,29 @@ async function _ensureBranch(
 		`Ensuring branch ${branch}: sync=${sync} ` +
 			`localExists=${localExists} remoteExists=${remoteExists}`,
 	);
-	const checkoutRemote = ["checkout", "-B", branch, `${origin}/${branch}`];
-	const checkoutLocal = ["checkout", branch];
-	const createLocal = ["checkout", "-b", branch];
+	const checkoutArgs = ["checkout", branch];
+	const createArgs = ["checkout", "-b", branch];
 	if (sync) {
 		if (remoteExists) {
-			await execPromise("git", checkoutRemote, opts);
-		} else {
-			if (localExists) {
-				await execPromise("git", checkoutLocal, opts);
-			} else {
-				await execPromise("git", createLocal, opts);
-			}
 			await execPromise(
 				"git",
-				["push", "--set-upstream", origin, branch],
-				{
-					cwd: dir,
-				},
+				["fetch", "--force", origin, `${branch}:${branch}`],
+				opts,
 			);
+			await execPromise("git", checkoutArgs, opts);
+		} else if (localExists) {
+			await execPromise("git", checkoutArgs, opts);
+		} else {
+			await execPromise("git", createArgs, opts);
 		}
+		await execPromise("git", ["push", "--set-upstream", origin, branch], {
+			cwd: dir,
+		});
 	} else {
 		if (localExists) {
-			await execPromise("git", checkoutLocal, opts);
-		} else if (remoteExists) {
-			await execPromise("git", checkoutRemote, opts);
+			await execPromise("git", checkoutArgs, opts);
 		} else {
-			await execPromise("git", createLocal, opts);
+			await execPromise("git", createArgs, opts);
 		}
 	}
 }
