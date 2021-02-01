@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 -   Update schema. [#202](https://github.com/atomist-skills/skill/pull/202)
+-   Set author and committer using env variables. [#215](https://github.com/atomist-skills/skill/issues/215)
 
 ### Fixed
 
