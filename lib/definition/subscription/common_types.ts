@@ -102,14 +102,16 @@ export enum DockerAnalysisDiscoveryStatus {
 	Unspecified = "ANALYSIS_STATUS_UNSPECIFIED",
 }
 
+export type DockerImageWithVulnerabilities = DockerImage & {
+	repository: { baseline: Array<{ cves: DockerImageVulnerability[] }> };
+	vulnerabilities: DockerImageVulnerability[];
+};
+
 export interface OnDockerAnalysisComplete {
 	discovery: {
 		status: DockerAnalysisDiscoveryStatus;
 		source: DockerAnalysisDiscoverySource;
 	};
-	commit: Commit | Commit[];
-	image: DockerImage & {
-		repository: { baseline: Array<{ cves: DockerImageVulnerability[] }> };
-		vulnerabilities: DockerImageVulnerability[];
-	};
+	commit: Commit;
+	image: DockerImageWithVulnerabilities | DockerImageWithVulnerabilities[];
 }
