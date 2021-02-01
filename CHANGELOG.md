@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Update schema. [#202](https://github.com/atomist-skills/skill/pull/202)
 -   Set author and committer using env variables. [#215](https://github.com/atomist-skills/skill/issues/215)
+-   Change ensureBranch behavior when sync false. [#214](https://github.com/atomist-skills/skill/issues/214)
 
 ### Fixed
 
