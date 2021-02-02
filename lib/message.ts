@@ -604,7 +604,7 @@ export interface StatusPublisher {
 }
 
 abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
-	private readonly pubsub: PubSub;
+	private topic;
 
 	constructor(
 		protected readonly request:
@@ -619,7 +619,6 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
 		protected readonly graphClient: GraphQLClient,
 	) {
 		super(request, correlationId, team, source, graphClient);
-		this.pubsub = new PubSub();
 	}
 
 	public async sendResponse(message: any): Promise<void> {
@@ -628,14 +627,16 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
 			`${this.workspaceId}-${this.request.skill.id}-response`;
 		try {
 			debug(`Sending message: ${JSON.stringify(message, replacer)}`);
-			if (topicName) {
-				const topic = this.pubsub.topic(topicName);
-				const messageBuffer = Buffer.from(
-					JSON.stringify(message),
-					"utf8",
-				);
-				await topic.publish(messageBuffer);
+			if (!this.topic) {
+				this.topic = new PubSub().topic(topicName, {
+					messageOrdering: true,
+				});
 			}
+			const messageBuffer = Buffer.from(JSON.stringify(message), "utf8");
+			await this.topic.publishMessage({
+				data: messageBuffer,
+				orderingKey: this.correlationId,
+			});
 		} catch (err) {
 			error(`Error occurred sending message: ${err.message}`);
 		}

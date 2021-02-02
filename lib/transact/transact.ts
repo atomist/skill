@@ -27,6 +27,9 @@ export function createTransact(
 	correlationId: string,
 	skillId: string,
 ): Transact {
+	const topicName =
+		process.env.ATOMIST_TOPIC || `${workspaceId}-${skillId}-response`;
+	let topic;
 	return async entities => {
 		const invalidEntities = toArray(entities).filter(e =>
 			Object.values(e).some(v => v === undefined),
@@ -53,23 +56,18 @@ export function createTransact(
 			),
 		};
 
-		const topicName =
-			process.env.ATOMIST_TOPIC || `${workspaceId}-${skillId}-response`;
 		try {
 			debug(`Sending message: ${JSON.stringify(message, replacer)}`);
-			if (topicName) {
-				const topic = new PubSub().topic(topicName, {
+			if (!topic) {
+				topic = new PubSub().topic(topicName, {
 					messageOrdering: true,
 				});
-				const messageBuffer = Buffer.from(
-					JSON.stringify(message),
-					"utf8",
-				);
-				await topic.publishMessage({
-					data: messageBuffer,
-					orderingKey: correlationId,
-				});
 			}
+			const messageBuffer = Buffer.from(JSON.stringify(message), "utf8");
+			await topic.publishMessage({
+				data: messageBuffer,
+				orderingKey: correlationId,
+			});
 		} catch (err) {
 			error(`Error occurred sending message: ${err.message}`);
 		}
