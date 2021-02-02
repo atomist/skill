@@ -16,6 +16,7 @@
 
 export interface Repo {
 	name: string;
+	defaultBranch: string;
 	org: {
 		installationToken: string;
 		name: string;
