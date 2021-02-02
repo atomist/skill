@@ -58,12 +58,17 @@ export function createTransact(
 		try {
 			debug(`Sending message: ${JSON.stringify(message, replacer)}`);
 			if (topicName) {
-				const topic = new PubSub().topic(topicName);
+				const topic = new PubSub().topic(topicName, {
+					messageOrdering: true,
+				});
 				const messageBuffer = Buffer.from(
 					JSON.stringify(message),
 					"utf8",
 				);
-				await topic.publish(messageBuffer);
+				await topic.publishMessage({
+					data: messageBuffer,
+					orderingKey: correlationId,
+				});
 			}
 		} catch (err) {
 			error(`Error occurred sending message: ${err.message}`);
