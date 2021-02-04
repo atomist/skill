@@ -177,12 +177,12 @@ async function _ensureBranch(
 		"git",
 		[
 			"config",
-			"remote.origin.fetch",
-			"+refs/heads/*:refs/remotes/origin/*",
+			`remote.${origin}.fetch`,
+			`+refs/heads/*:refs/remotes/${origin}/*`,
 		],
 		opts,
 	);
-	const localExists = await hasBranch(projectOrCwd, branch);
+	const localExists = await hasBranch(dir, branch);
 	const fetchResult = await spawnPromise(
 		"git",
 		["fetch", origin, branch],
@@ -197,12 +197,12 @@ async function _ensureBranch(
 	const createArgs = ["checkout", "-b", branch];
 	if (sync) {
 		if (remoteExists) {
+			await execPromise("git", checkoutArgs, opts);
 			await execPromise(
 				"git",
-				["fetch", "--force", origin, `${branch}:${branch}`],
+				["reset", "--hard", `${origin}/${branch}`],
 				opts,
 			);
-			await execPromise("git", checkoutArgs, opts);
 		} else if (localExists) {
 			await execPromise("git", checkoutArgs, opts);
 		} else {

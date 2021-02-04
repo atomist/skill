@@ -68,6 +68,7 @@ describe("operation", () => {
 				this.skip();
 			}
 		});
+		const origin = "origin";
 		let cwd: string | undefined;
 		let tmp: string | undefined;
 		const defaultBranch = "main";
@@ -84,7 +85,7 @@ describe("operation", () => {
 			const remoteResult = await execPromise("git", [
 				"remote",
 				"get-url",
-				"origin",
+				origin,
 			]);
 			const remote = remoteResult.stdout.trim();
 			const cloneUrl = remote.replace(
@@ -96,11 +97,16 @@ describe("operation", () => {
 				cloneUrl,
 				cwd,
 				"--branch=main",
-				"--depth=1",
+				"--depth=2",
 			]);
 		});
 		afterEach(async () => {
 			await checkout(cwd, defaultBranch);
+			await spawnPromise(
+				"git",
+				["reset", "--hard", `${origin}/${defaultBranch}`],
+				{ cwd },
+			);
 		});
 		const branches: string[] = [];
 		after(async () => {
@@ -108,7 +114,7 @@ describe("operation", () => {
 			for (const branch of branches) {
 				const rv = await spawnPromise(
 					"git",
-					["push", "--delete", "origin", branch],
+					["push", "--delete", origin, branch],
 					{ cwd },
 				);
 				if (rv.error) {
@@ -133,7 +139,7 @@ describe("operation", () => {
 			assert(await hasBranch(cwd, b));
 			assert((await determineBranch(cwd)) === b);
 			assert(
-				(await spawnPromise("git", ["fetch", "origin", b], { cwd }))
+				(await spawnPromise("git", ["fetch", origin, b], { cwd }))
 					.status !== 0,
 			);
 		});
@@ -168,7 +174,7 @@ describe("operation", () => {
 			assert(await hasBranch(cwd, b));
 			assert((await determineBranch(cwd)) === b);
 			assert(
-				(await spawnPromise("git", ["fetch", "origin", b], { cwd }))
+				(await spawnPromise("git", ["fetch", origin, b], { cwd }))
 					.status === 0,
 			);
 			const refResult = await execPromise(
@@ -176,7 +182,7 @@ describe("operation", () => {
 				["rev-parse", "--abbrev-ref", `${b}@{upstream}`],
 				{ cwd },
 			);
-			assert(refResult.stdout.trim() === `origin/${b}`);
+			assert(refResult.stdout.trim() === `${origin}/${b}`);
 		});
 
 		it("checks out a remote branch and sets upstream", async () => {
@@ -192,7 +198,7 @@ describe("operation", () => {
 				["rev-parse", "--abbrev-ref", `${b}@{upstream}`],
 				{ cwd },
 			);
-			assert(refResult.stdout.trim() === `origin/${b}`);
+			assert(refResult.stdout.trim() === `${origin}/${b}`);
 		});
 
 		it("checks out local branch and pushes remotely", async () => {
@@ -218,7 +224,7 @@ describe("operation", () => {
 			assert((await determineBranch(cwd)) === b);
 			assert(fs.existsSync(n));
 			assert(
-				(await spawnPromise("git", ["fetch", "origin", b], { cwd }))
+				(await spawnPromise("git", ["fetch", origin, b], { cwd }))
 					.status === 0,
 			);
 			const refResult = await execPromise(
@@ -226,7 +232,25 @@ describe("operation", () => {
 				["rev-parse", "--abbrev-ref", `${b}@{upstream}`],
 				{ cwd },
 			);
-			assert(refResult.stdout.trim() === `origin/${b}`);
+			assert(refResult.stdout.trim() === `${origin}/${b}`);
+		});
+
+		it("ensures current branch with remote", async () => {
+			const f = path.join(cwd, "default");
+			assert(fs.existsSync(f));
+			await execPromise("git", ["reset", "--hard", `${origin}/main~1`], {
+				cwd,
+			});
+			assert(!fs.existsSync(f));
+			await ensureBranch(cwd, defaultBranch, true);
+			assert((await determineBranch(cwd)) === defaultBranch);
+			assert(fs.existsSync(f));
+			const refResult = await execPromise(
+				"git",
+				["rev-parse", "--abbrev-ref", `${defaultBranch}@{upstream}`],
+				{ cwd },
+			);
+			assert(refResult.stdout.trim() === `${origin}/${defaultBranch}`);
 		});
 	});
 });
