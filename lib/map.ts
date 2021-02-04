@@ -15,6 +15,7 @@
  */
 
 import camelCase = require("lodash.camelcase");
+import { warn } from "./log/console";
 import { toArray } from "./util";
 
 /**
@@ -52,22 +53,21 @@ export function mapSubscription<T = any>(result: any[]): T {
 
 	toArray(result).forEach(r => {
 		const value = {};
-		let key;
+		const key = nameFromKey(r["schema/entity-type"] || "unknownEntity");
 		for (const k in r) {
-			if (k === "schema/entity-type") {
-				key = nameFromKey(r[k]);
-			} else {
+			if (k !== "schema/entity-type") {
 				value[nameFromKey(k)] = mapper(r[k]);
 			}
 		}
-		if (key) {
-			if (Array.isArray(mapped[key])) {
-				mapped[key].push(value);
-			} else if (mapped[key]) {
-				mapped[key] = [mapped[key], value];
-			} else {
-				mapped[key] = value;
-			}
+		if (key === "unknownEntity") {
+			warn(`Unknown entity detected: ${JSON.stringify(r)}`);
+		}
+		if (Array.isArray(mapped[key])) {
+			mapped[key].push(value);
+		} else if (mapped[key]) {
+			mapped[key] = [mapped[key], value];
+		} else {
+			mapped[key] = value;
 		}
 	});
 
