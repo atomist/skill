@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
--   Fix ensureBranch for current branch with remote. [0d1979b](https://github.com/atomist-skills/skill/commit/0d1979b07a8d5740055dee1d81a7a99c444a520d)
+-   Forcibly fetching current branch fails. [#222](https://github.com/atomist-skills/skill/issues/222)
 
 ## [0.8.0](https://github.com/atomist/skill/compare/0.7.1...0.8.0) - 2021-02-03
 
