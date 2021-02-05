@@ -63,15 +63,6 @@ export interface DockerRegistry {
 	serverUrl: string;
 }
 
-/**
- * Subscription type to be used with the onDockerImage datalog subscription
- */
-export interface OnDockerImage {
-	commit: Commit;
-	image: DockerImage;
-	registry: DockerRegistry;
-}
-
 export enum DockerImageVulnerabilitySeverity {
 	Unspecified = "SEVERITY_UNSPECIFIED",
 	Minimal = "MINIMAL",
@@ -111,6 +102,23 @@ export type DockerImageWithVulnerabilities = DockerImage & {
 	vulnerabilities: DockerImageVulnerability[];
 };
 
+/**
+ * Subscription type to be used with the onDockerImage datalog subscription
+ */
+export interface OnDockerImage {
+	commit: Commit;
+	image: DockerImage;
+	registry: DockerRegistry;
+}
+
+/**
+ * Subscription type to be used with the onDockerFile datalog subscription
+ */
+export type OnDockerFile = OnDockerImage;
+
+/**
+ * Subscription type to be used with the onDockerAnalysisComplete datalog subscription
+ */
 export interface OnDockerAnalysisComplete {
 	discovery: {
 		status: DockerAnalysisDiscoveryStatus;
