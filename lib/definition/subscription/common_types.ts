@@ -42,10 +42,6 @@ export interface DockerImage {
 	tags?: string[];
 	sha: string;
 	labels?: Array<{ name: string; value: string }>;
-	dockerFile?: {
-		path: string;
-		sha: string;
-	};
 	repository: {
 		host: string;
 		name: string;
@@ -115,7 +111,12 @@ export interface OnDockerImage {
 /**
  * Subscription type to be used with the onDockerFile datalog subscription
  */
-export type OnDockerFile = OnDockerImage;
+export interface OnDockerFile extends OnDockerImage {
+	file: {
+		path: string;
+		sha: string;
+	};
+}
 
 /**
  * Subscription type to be used with the onDockerAnalysisComplete datalog subscription

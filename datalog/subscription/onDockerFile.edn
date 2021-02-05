@@ -21,14 +21,15 @@
    :docker.image/image
    :docker.image/digest
    :docker.image/tags
-   {:docker.image/docker-file [:docker.file/path
-                               :docker.file/sha]}
    {:docker.image/labels [:docker.image.label/name
                           :docker.image.label/value]}
    {:docker.image/repository [:docker.repository/host
                               (:docker.repository/repository
                                :as
                                :name)]}])
+ (pull
+  ?docker-file
+  [:schema/entity-type :docker.file/path :docker.file/sha])
  (pull
   ?docker-registry
   [:schema/entity-type
@@ -41,7 +42,10 @@
  $before-db
  %
  :where
- (tx-entity-attr-value :docker.image/docker-file ?docker-image _)
+ (tx-entity-attr-value
+  :docker.image/docker-file
+  ?docker-image
+  ?docker-file)
  (capability-configuration
   "atomist"
   "DockerRegistry"

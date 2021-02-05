@@ -21,7 +21,6 @@
    :docker.image/image
    :docker.image/digest
    :docker.image/tags
-   {:docker.image/docker-file [:docker-file/path]}
    {:docker.image/labels [:docker.image.label/name
                           :docker.image.label/value]}
    {:docker.image/repository [:docker.repository/host
