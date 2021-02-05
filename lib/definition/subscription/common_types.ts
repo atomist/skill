@@ -42,6 +42,9 @@ export interface DockerImage {
 	tags?: string[];
 	sha: string;
 	labels?: Array<{ name: string; value: string }>;
+	file?: {
+		path: string;
+	};
 	repository: {
 		host: string;
 		name: string;

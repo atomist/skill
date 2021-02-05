@@ -26,6 +26,7 @@
    :docker.image/image
    :docker.image/digest
    :docker.image/sha
+   {:docker.image/docker-file [:docker-file/path]}
    {:docker.image/repository [:docker.repository/host
                               (:docker.repository/repository
                                :as
@@ -58,6 +59,7 @@
    :docker.image/image
    :docker.image/digest
    :docker.image/sha
+   {:docker.image/docker-file [:docker-file/path]}
    {:docker.image/repository [:docker.repository/host
                               (:docker.repository/repository
                                :as
