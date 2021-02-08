@@ -446,3 +446,16 @@ export async function stash(
 export async function stashPop(projectOrCwd: Project | string): Promise<void> {
 	await execPromise("git", ["stash", "pop"], { cwd: cwd(projectOrCwd) });
 }
+
+export async function headChangedFiles(
+	projectOrCwd: Project | string,
+): Promise<string[]> {
+	return (
+		await execPromise("git", ["diff", "--name-only", "HEAD~1"], {
+			cwd: cwd(projectOrCwd),
+		})
+	).stdout
+		.split("\n")
+		.map(f => f.trim())
+		.filter(f => !!f && f.length > 0);
+}
