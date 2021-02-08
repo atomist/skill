@@ -113,6 +113,7 @@ export interface OnDockerImage {
  */
 export interface OnDockerFile extends OnDockerImage {
 	file: {
+		id: string;
 		path: string;
 		sha: string;
 	};

@@ -29,7 +29,10 @@
                                :name)]}])
  (pull
   ?docker-file
-  [:schema/entity-type :docker.file/path :docker.file/sha])
+  [:schema/entity-type
+   :db/id
+   :docker.file/path
+   :docker.file/sha])
  (pull
   ?docker-registry
   [:schema/entity-type
