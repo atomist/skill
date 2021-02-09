@@ -26,6 +26,8 @@
    :docker.image/image
    :docker.image/digest
    :docker.image/sha
+   {:docker.image/layers [{:docker.image.layer/blob [:docker.image.blob/digest
+                                                     {:docker.image.blob/vulnerabilities [:vulnerability.cve/source-id]}]}]}
    {:docker.image/docker-file [:docker-file/path]}
    {:docker.image/repository [:docker.repository/host
                               (:docker.repository/repository
@@ -102,7 +104,6 @@
  [?image :docker.image/sha ?sha]
  [?commit :git.commit/sha ?sha]
  [?commit :git.commit/repo ?repo]
-
  [?repo :git.repo/default-branch ?default-branch-name]
  [?default-branch :git.ref/repo ?repo]
  [?default-branch :git.ref/type :git.ref.type/branch]
