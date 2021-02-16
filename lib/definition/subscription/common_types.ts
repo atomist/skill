@@ -37,7 +37,6 @@ export interface Commit {
 }
 
 export interface DockerImage {
-	image: string;
 	digest: string;
 	tags?: string[];
 	sha: string;

@@ -23,7 +23,6 @@
  (pull
   ?image
   [:schema/entity-type
-   :docker.image/image
    :docker.image/digest
    :docker.image/sha
    {:docker.image/layers [{:docker.image.layer/blob [:docker.image.blob/digest
@@ -58,7 +57,6 @@
  (pull
   ?default-commit-image
   [:schema/entity-type
-   :docker.image/image
    :docker.image/digest
    :docker.image/sha
    {:docker.image/docker-file [:docker-file/path]}
