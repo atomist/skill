@@ -33,11 +33,11 @@
    :db/id
    :docker.file/path
    :docker.file/sha
-   {:docker.file.line/_file [:docker.file.line/number
-                             :docker.file.line/instruction
-                             :docker.file.line/args-map
-                             :docker.file.line/args-array
-                             :docker.file.line/args-string]}])
+   {(:docker.file.line/_file :as :docker.file/lines) [:docker.file.line/number
+                                                      :docker.file.line/instruction
+                                                      :docker.file.line/args-map
+                                                      :docker.file.line/args-array
+                                                      :docker.file.line/args-string]}])
  (pull
   ?docker-registry
   [:schema/entity-type
