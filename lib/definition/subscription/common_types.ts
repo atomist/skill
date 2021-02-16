@@ -115,9 +115,15 @@ export interface OnDockerImage {
  */
 export interface OnDockerFile extends OnDockerImage {
 	file: {
-		id: string;
 		path: string;
 		sha: string;
+		lines: Array<{
+			number: number;
+			instruction: string;
+			argsMap: Record<string, string>;
+			argsArray: string[];
+			argsString: string;
+		}>;
 	};
 }
 

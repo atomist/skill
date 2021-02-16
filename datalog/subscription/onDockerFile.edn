@@ -29,7 +29,6 @@
  (pull
   ?docker-file
   [:schema/entity-type
-   :db/id
    :docker.file/path
    :docker.file/sha
    {(:docker.file.line/_file :as :docker.file/lines) [:docker.file.line/number
