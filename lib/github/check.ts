@@ -212,6 +212,7 @@ async function updateAnnotation(
 					start_line: c.startLine,
 				})),
 			},
+			actions: parameters.actions,
 		});
 	}
 }

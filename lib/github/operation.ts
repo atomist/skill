@@ -17,6 +17,7 @@
 import { Octokit } from "@octokit/rest"; // eslint-disable-line @typescript-eslint/no-unused-vars
 
 import { Contextual } from "../handler";
+import { debug, error, info, warn } from "../log/console";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 import { toArray } from "../util";
@@ -57,6 +58,12 @@ export function api(
 					`Abuse detected for request '${options.method} ${options.url}'`,
 				);
 			},
+		},
+		log: {
+			debug: debug,
+			info: info,
+			warn: warn,
+			error: error,
 		},
 	});
 }
