@@ -26,13 +26,14 @@
    :docker.image/digest
    :docker.image/sha
    {:docker.image/layers [{:docker.image.layer/blob [:docker.image.blob/digest
-                                                     {:docker.image.blob/created-by [:docker.file.line/number
+                                                     {:docker.image.blob/created-by [{:docker.file.line/file [:docker.file/path :docker.file/sha]}
+                                                                                     :docker.file.line/number
                                                                                      :docker.file.line/instruction
                                                                                      :docker.file.line/args-map
                                                                                      :docker.file.line/args-array
                                                                                      :docker.file.line/args-string]}
                                                      {:docker.image.blob/vulnerabilities [:vulnerability.cve/source-id]}]}]}
-   {:docker.image/docker-file [:docker.file/path]}
+   {:docker.image/docker-file [:docker.file/path :docker.file/sha]}
    {:docker.image/repository [:docker.repository/host
                               (:docker.repository/repository
                                :as

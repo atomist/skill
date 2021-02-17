@@ -98,17 +98,25 @@ export type DockerImageWithVulnerabilities = DockerImage & {
 		blob: {
 			digest: string;
 			vulnerabilities: Array<{ sourceId: string }>;
-			createdBy: {
+			createdBy: Array<{
+				file: {
+					path: string;
+					sha: string;
+				};
 				number: number;
 				instruction: string;
 				argsMap: Record<string, string>;
 				argsArray: string[];
 				argsString: string;
-			};
+			}>;
 		};
 	}>;
 	repository: { baseline: Array<{ cves: DockerImageVulnerability[] }> };
 	vulnerabilities: DockerImageVulnerability[];
+	dockerFile: {
+		path: string;
+		sha: string;
+	};
 };
 
 /**
