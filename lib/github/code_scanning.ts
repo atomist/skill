@@ -17,6 +17,7 @@
 import * as fs from "fs-extra";
 
 import { Contextual } from "../handler";
+import { warn } from "../log/console";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 import { Annotation } from "./check";
@@ -87,13 +88,16 @@ export async function uploadCodeScanningResults(
 	const util = await import("util");
 
 	const zipped = (await util.promisify(zlib.gzip)(sarif)).toString("base64");
-
-	await api(id).codeScanning.uploadSarif({
-		owner: id.owner,
-		repo: id.repo,
-		commit_sha: id.sha,
-		ref: `refs/heads/${id.branch}`,
-		sarif: zipped,
-		tool_name: `${ctx.skill.namespace}/${ctx.skill.name}`,
-	});
+	try {
+		await api(id).codeScanning.uploadSarif({
+			owner: id.owner,
+			repo: id.repo,
+			commit_sha: id.sha,
+			ref: `refs/heads/${id.branch}`,
+			sarif: zipped,
+			tool_name: `${ctx.skill.namespace}/${ctx.skill.name}`,
+		});
+	} catch (e) {
+		warn(`Uploading code scanning results failed: ${e.message}`);
+	}
 }
