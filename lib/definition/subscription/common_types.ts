@@ -95,7 +95,17 @@ export enum DockerAnalysisDiscoveryStatus {
 
 export type DockerImageWithVulnerabilities = DockerImage & {
 	layers: Array<{
-		blob: { digest: string; vulnerabilities: Array<{ sourceId: string }> };
+		blob: {
+			digest: string;
+			vulnerabilities: Array<{ sourceId: string }>;
+			createdBy: {
+				number: number;
+				instruction: string;
+				argsMap: Record<string, string>;
+				argsArray: string[];
+				argsString: string;
+			};
+		};
 	}>;
 	repository: { baseline: Array<{ cves: DockerImageVulnerability[] }> };
 	vulnerabilities: DockerImageVulnerability[];
