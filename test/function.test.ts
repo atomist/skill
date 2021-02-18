@@ -27,10 +27,14 @@ describe("function", () => {
 				correlation_id: guid(),
 				subscription: {
 					name: "check-complete",
-					result: {
-						"schema/entity-type": "git/commit",
-						"git.commit/sha": "123456",
-					},
+					result: [
+						[
+							{
+								"schema/entity-type": "git/commit",
+								"git.commit/sha": "123456",
+							},
+						],
+					],
 				},
 				team_id: "123456",
 				type: "not sure what goes here",
@@ -139,9 +143,11 @@ describe("function", () => {
 					);
 					return async ctx => {
 						(ctx.message as any).publish = publish;
-						assert.deepStrictEqual(ctx.data, {
-							commit: { sha: "123456" },
-						});
+						assert.deepStrictEqual(ctx.data, [
+							{
+								commit: { sha: "123456" },
+							},
+						]);
 						return success();
 					};
 				},

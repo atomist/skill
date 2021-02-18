@@ -15,8 +15,41 @@
  */
 
 import camelCase = require("lodash.camelcase");
+import { EventHandler } from "./handler";
 import { warn } from "./log/console";
 import { toArray } from "./util";
+
+export function wrapEventHandler(eh: EventHandler): EventHandler {
+	return async ctx => {
+		if (Array.isArray(ctx.data)) {
+			const results = [];
+			for (const event of ctx.data) {
+				const result = await eh({ ...ctx, data: event });
+				if (result) {
+					results.push(result);
+				}
+			}
+			return {
+				code: results.reduce((p, c) => {
+					if (c !== 0) {
+						return c;
+					} else {
+						return 0;
+					}
+				}, 0),
+				reason: results
+					.filter(r => r.reason)
+					.map(r => r.reason)
+					.join(", "),
+				visibility: results.some(r => r.visibility !== "hidden")
+					? undefined
+					: "hidden",
+			};
+		} else {
+			return eh(ctx);
+		}
+	};
+}
 
 /**
  * Map a Datalog subscription result to a JavaScript object

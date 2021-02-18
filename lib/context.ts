@@ -47,7 +47,7 @@ import { commandRequestParameterPromptFactory } from "./prompt/prompt";
 import { DefaultCredentialProvider } from "./secret/provider";
 import { createStorageProvider } from "./storage/provider";
 import { createTransact } from "./transact/transact";
-import { extractParameters, handleError } from "./util";
+import { extractParameters, handleError, toArray } from "./util";
 
 export type ContextFactory = (
 	payload:
@@ -172,9 +172,7 @@ export function createContext(
 		};
 	} else if (isSubscriptionIncoming(payload)) {
 		return {
-			data: Array.isArray(payload.subscription?.result)
-				? mapSubscription(payload.subscription?.result?.[0])
-				: mapSubscription(payload.subscription?.result),
+			data: toArray(payload.subscription?.result).map(mapSubscription),
 			name: payload.subscription?.name,
 			correlationId: payload.correlation_id,
 			executionId: ctx.eventId,
