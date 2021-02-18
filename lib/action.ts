@@ -17,6 +17,7 @@
 import { OnAttachmentActionSubscription } from "./definition/subscription/typings/types";
 import { processCommand } from "./function";
 import { EventHandler } from "./handler";
+import { wrapEventHandler } from "./map";
 import { CommandIncoming } from "./payload";
 import { success } from "./status";
 import { handlerLoader } from "./util";
@@ -29,7 +30,8 @@ export function eventHandlerLoader<EventHandler>(
 		if (name === "onAttachmentAction") {
 			return onAttachmentAction as any;
 		} else {
-			return hl(name, cwd);
+			const eh = await hl(name, cwd);
+			return wrapEventHandler(eh as any) as any;
 		}
 	};
 }
