@@ -284,7 +284,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 			owner: project.id.owner,
 			repo: project.id.repo,
 			pull_number: pr.number,
-			reviewers,
+			reviewers: reviewers.filter(r => !!r),
 		});
 	}
 	return status.success(
