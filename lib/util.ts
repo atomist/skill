@@ -112,7 +112,7 @@ export function replacer(key: string, value: any): any {
 	if (key === "secrets" && value) {
 		return value.map(v => ({ uri: v.uri, value: hideString(v.value) }));
 	} else if (
-		/token|password|jwt|url|secret|authorization|key|cert|pass|user/i.test(
+		/token|password|jwt|url|secret|authorization|key|cert|pass|user|address|email/i.test(
 			key,
 		)
 	) {
