@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.8.1...HEAD)
 
+### Changed
+
+-   Promote transact to a full Datalog client. [7965595](https://github.com/atomist-skills/skill/commit/7965595371dbc8fa9b4de0ec1a626a54367e156a)
+
 ## [0.8.1](https://github.com/atomist/skill/compare/0.8.0...0.8.1) - 2021-02-04
 
 ### Fixed
