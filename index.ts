@@ -47,6 +47,8 @@ export * as subscription from "./lib/definition/subscription";
 export * as git from "./lib/git";
 // lib/github
 export * as github from "./lib/github";
+// lib/handler
+export * as handler from "./lib/handler";
 // lib/log
 export * as log from "./lib/log";
 // lib/project
