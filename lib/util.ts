@@ -19,6 +19,14 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import { v4 as uuidv4 } from "uuid";
 
+import {
+	CommandHandler,
+	Contextual,
+	EventHandler,
+	HandlerStatus,
+	WebhookContext,
+	WebhookHandler,
+} from "./handler";
 import { error } from "./log";
 import { Arg } from "./payload";
 
@@ -186,4 +194,18 @@ export function isStaging(): boolean {
 		process.env.ATOMIST_GRAPHQL_ENDPOINT ||
 		"https://automation.atomist.com/graphql"
 	).includes(".services");
+}
+
+export function chain<D, C>(
+	...handlers: Array<EventHandler<D, C> | WebhookHandler<D, C>>
+): EventHandler<D, C> | WebhookHandler<D, C> {
+	return async ctx => {
+		for (const handler of handlers) {
+			const result = await handler(ctx);
+			if (result) {
+				return result;
+			}
+		}
+		return undefined;
+	};
 }
