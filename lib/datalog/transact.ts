@@ -20,13 +20,13 @@ import { toEDNStringFromSimpleObject } from "edn-data";
 import { debug, error, warn } from "../log/console";
 import { replacer, toArray } from "../util";
 
-export type Transact = (entities: any | any[]) => Promise<void>;
+export type DatalogTransact = (entities: any | any[]) => Promise<void>;
 
 export function createTransact(
 	workspaceId: string,
 	correlationId: string,
 	skillId: string,
-): Transact {
+): DatalogTransact {
 	const topicName =
 		process.env.ATOMIST_TOPIC || `${workspaceId}-${skillId}-response`;
 	let topic;

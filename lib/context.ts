@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { createDatalogClient } from "./datalog/client";
 import { createGraphQLClient } from "./graphql";
 import {
 	CommandContext,
@@ -46,7 +47,6 @@ import { createProjectLoader } from "./project/loader";
 import { commandRequestParameterPromptFactory } from "./prompt/prompt";
 import { DefaultCredentialProvider } from "./secret/provider";
 import { createStorageProvider } from "./storage/provider";
-import { createTransact } from "./transact/transact";
 import { extractParameters, handleError, toArray } from "./util";
 
 export type ContextFactory = (
@@ -117,10 +117,11 @@ export function createContext(
 			),
 			storage,
 			message,
-			transact: createTransact(
+			datalog: createDatalogClient(
+				apiKey,
 				wid,
 				payload.correlation_id,
-				payload.skill.id,
+				payload.skill,
 			),
 			project: createProjectLoader({ onComplete }),
 			trigger: payload,
@@ -158,10 +159,11 @@ export function createContext(
 				payload.extensions.operationName,
 				payload.extensions.correlation_id,
 			),
-			transact: createTransact(
+			datalog: createDatalogClient(
+				apiKey,
 				wid,
 				payload.extensions.correlation_id,
-				payload.skill.id,
+				payload.skill,
 			),
 			project: createProjectLoader({ onComplete }),
 			trigger: payload,
@@ -199,10 +201,11 @@ export function createContext(
 				payload.subscription?.name,
 				payload.correlation_id,
 			),
-			transact: createTransact(
+			datalog: createDatalogClient(
+				apiKey,
 				wid,
 				payload.correlation_id,
-				payload.skill.id,
+				payload.skill,
 			),
 			project: createProjectLoader({ onComplete }),
 			trigger: payload,
@@ -238,10 +241,11 @@ export function createContext(
 			),
 			storage,
 			message: new PubSubWebhookMessageClient(payload, graphql),
-			transact: createTransact(
+			datalog: createDatalogClient(
+				apiKey,
 				wid,
 				payload.correlation_id,
-				payload.skill.id,
+				payload.skill,
 			),
 			project: createProjectLoader(),
 			trigger: payload,

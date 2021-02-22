@@ -16,6 +16,7 @@
 
 import { Logger } from "@atomist/skill-logging/lib/logging";
 
+import { DatalogClient } from "./datalog/client";
 import { GraphQLClient } from "./graphql";
 import { HttpClient } from "./http";
 import { CommandMessageClient, MessageClient } from "./message";
@@ -29,7 +30,6 @@ import { ProjectLoader } from "./project";
 import { ParameterPromptObject, ParameterPromptOptions } from "./prompt/prompt";
 import { CredentialProvider } from "./secret/provider";
 import { StorageProvider } from "./storage/provider";
-import { Transact } from "./transact/transact";
 
 export interface Configuration<C extends Record<string, any>> {
 	name: string;
@@ -50,9 +50,9 @@ export interface Contextual<T, C> {
 
 	credential: CredentialProvider;
 	graphql: GraphQLClient;
+	datalog: DatalogClient;
 	http: HttpClient;
 	message: MessageClient;
-	transact: Transact;
 	project: ProjectLoader;
 	audit: Logger & { url: string };
 	storage: StorageProvider;
