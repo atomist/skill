@@ -174,7 +174,7 @@ export interface StringParameter
 }
 
 export interface SecretParameter
-	extends Omit<Parameter<ParameterType.Secret, "defaultValue">, string> {
+	extends Omit<Parameter<ParameterType.Secret>, "defaultValue"> {
 	lineStyle?: LineStyle;
 }
 

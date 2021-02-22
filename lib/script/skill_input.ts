@@ -138,6 +138,7 @@ export type AtomistSkillParameterSpecInput = {
 	multiChoice?: Maybe<AtomistSkillMultiChoiceParameterSpecInput>;
 	repoFilter?: Maybe<AtomistSkillRepoFilterParameterSpecInput>;
 	schedule?: Maybe<AtomistSkillScheduleParameterSpecInput>;
+	secret?: Maybe<AtomistSkillSecretParameterSpecInput>;
 	singleChoice?: Maybe<AtomistSkillSingleChoiceParameterSpecInput>;
 	string?: Maybe<AtomistSkillStringParameterSpecInput>;
 	stringArray?: Maybe<AtomistSkillStringArrayParameterSpecInput>;
@@ -238,6 +239,15 @@ export type AtomistSkillStringParameterSpecInput = {
 	name: Scalars["String"];
 	pattern?: Maybe<Scalars["String"]>;
 	placeHolder?: Maybe<Scalars["String"]>;
+	required: Scalars["Boolean"];
+	visibility?: Maybe<AtomistSkillParameterVisiblity>;
+};
+
+export type AtomistSkillSecretParameterSpecInput = {
+	description: Scalars["String"];
+	displayName?: Maybe<Scalars["String"]>;
+	lineStyle?: Maybe<AtomistSkillStringParameterLineStyle>;
+	name: Scalars["String"];
 	required: Scalars["Boolean"];
 	visibility?: Maybe<AtomistSkillParameterVisiblity>;
 };
