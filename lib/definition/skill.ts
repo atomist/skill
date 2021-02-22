@@ -173,6 +173,11 @@ export interface StringParameter
 	placeHolder?: string;
 }
 
+export interface SecretParameter
+	extends Omit<Parameter<ParameterType.Secret, "defaultValue">, string> {
+	lineStyle?: LineStyle;
+}
+
 export interface StringArrayParameter
 	extends Parameter<ParameterType.StringArray, string[]> {
 	maxAllowed?: number;
@@ -216,6 +221,7 @@ export enum ParameterType {
 	RepoFilter = "repoFilter",
 	Schedule = "schedule",
 	String = "string",
+	Secret = "secret",
 	StringArray = "stringArray",
 	Webhook = "webhook",
 }
@@ -252,6 +258,7 @@ export interface Configuration<PARAMS extends ParametersType = any> {
 		| StringArrayParameter
 		| ChatChannelsParameter
 		| WebhookParameter
+		| SecretParameter
 	>;
 
 	resourceProviders?: Record<string, ResourceProvider>;
