@@ -19,7 +19,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 49    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 586   |
+| [MIT](#mit)                     | 588   |
 | [Public Domain](#public-domain) | 1     |
 
 #### 0BSD
@@ -306,9 +306,11 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `@octokit/graphql`                                   | `4.6.0`         |                                | [https://github.com/octokit/graphql.js](https://github.com/octokit/graphql.js)                                                                                                                       |
 | `@octokit/openapi-types`                             | `3.2.1`         | Gregor Martynus                | [https://github.com/octokit/openapi-types.ts](https://github.com/octokit/openapi-types.ts)                                                                                                           |
 | `@octokit/openapi-types`                             | `5.1.0`         |                                | [https://github.com/octokit/openapi-types.ts](https://github.com/octokit/openapi-types.ts)                                                                                                           |
+| `@octokit/openapi-types`                             | `5.1.1`         |                                | [https://github.com/octokit/openapi-types.ts](https://github.com/octokit/openapi-types.ts)                                                                                                           |
 | `@octokit/plugin-paginate-rest`                      | `2.10.0`        |                                | [https://github.com/octokit/plugin-paginate-rest.js](https://github.com/octokit/plugin-paginate-rest.js)                                                                                             |
 | `@octokit/plugin-request-log`                        | `1.0.3`         |                                | [https://github.com/octokit/plugin-request-log.js](https://github.com/octokit/plugin-request-log.js)                                                                                                 |
 | `@octokit/plugin-rest-endpoint-methods`              | `4.12.0`        |                                | [https://github.com/octokit/plugin-rest-endpoint-methods.js](https://github.com/octokit/plugin-rest-endpoint-methods.js)                                                                             |
+| `@octokit/plugin-rest-endpoint-methods`              | `4.12.1`        |                                | [https://github.com/octokit/plugin-rest-endpoint-methods.js](https://github.com/octokit/plugin-rest-endpoint-methods.js)                                                                             |
 | `@octokit/plugin-retry`                              | `3.0.7`         |                                | [https://github.com/octokit/plugin-retry.js](https://github.com/octokit/plugin-retry.js)                                                                                                             |
 | `@octokit/plugin-throttling`                         | `3.4.1`         |                                | [https://github.com/octokit/plugin-throttling.js](https://github.com/octokit/plugin-throttling.js)                                                                                                   |
 | `@octokit/request-error`                             | `2.0.5`         |                                | [https://github.com/octokit/request-error.js](https://github.com/octokit/request-error.js)                                                                                                           |
