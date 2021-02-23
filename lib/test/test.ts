@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { Attachment } from "@atomist/slack-messages";
+
 import { eventHandlerLoader } from "../action";
 import { ContextFactory, createContext } from "../context";
 import { processCommand, processEvent, processWebhook } from "../function";
@@ -46,7 +48,6 @@ export async function assertSkill(
 	let status: HandlerResponse["status"];
 	const factory: ContextFactory = (p, c) => {
 		const context = createContext(p, c);
-		const attach = context.message.attach;
 		context.message = {
 			respond: async (msg: any) => {
 				debug(`Sending message: ${JSON.stringify(msg, replacer)}`);
@@ -63,8 +64,31 @@ export async function assertSkill(
 			publish: async (result: HandlerResponse["status"]) => {
 				status = result;
 			},
-			attach,
+			attach: async (attachment: Attachment) => {
+				debug(
+					`Sending attachment: ${JSON.stringify(
+						attachment,
+						replacer,
+					)}`,
+				);
+			},
 		} as any;
+		context.datalog = {
+			transact: async (entities: any) => {
+				debug(
+					`Transacting entities: ${JSON.stringify(
+						entities,
+						replacer,
+					)}`,
+				);
+			},
+			query: async (
+				query: string,
+				options?: { configurationName?: string },
+			) => {
+				return undefined;
+			},
+		};
 		return {
 			...context,
 			...ctx,
