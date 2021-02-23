@@ -16,7 +16,7 @@
 
 import { Octokit } from "@octokit/rest"; // eslint-disable-line @typescript-eslint/no-unused-vars
 
-import { Contextual } from "../handler";
+import { Contextual } from "../handler/handler";
 import { debug, error, info, warn } from "../log/console";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";

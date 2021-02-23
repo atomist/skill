@@ -16,7 +16,7 @@
 
 import * as fs from "fs-extra";
 
-import { Contextual } from "../handler";
+import { Contextual } from "../handler/handler";
 import { warn } from "../log/console";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";

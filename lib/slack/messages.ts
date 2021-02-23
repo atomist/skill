@@ -16,7 +16,7 @@
 
 import { Attachment, SlackMessage, url } from "@atomist/slack-messages";
 
-import { Contextual } from "../handler";
+import { Contextual } from "../handler/handler";
 import { guid } from "../util";
 
 export function successMessage(

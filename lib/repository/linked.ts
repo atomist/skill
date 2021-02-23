@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { CommandContext } from "../handler";
+import { CommandContext } from "../handler/handler";
 import { RepositoryId, RepositoryProviderType } from "./id";
 
 const LinkedRepositoriesQuery = `query LinkedRepositories($id: String!) {

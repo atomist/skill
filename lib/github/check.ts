@@ -20,7 +20,7 @@ import {
 	ChecksUpdateResponseData,
 } from "@octokit/types";
 
-import { Contextual } from "../handler";
+import { Contextual } from "../handler/handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 import { isStaging } from "../util";

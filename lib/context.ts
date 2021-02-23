@@ -22,7 +22,7 @@ import {
 	ContextualLifecycle,
 	EventContext,
 	WebhookContext,
-} from "./handler";
+} from "./handler/handler";
 import { createHttpClient } from "./http";
 import { wrapAuditLogger } from "./log/util";
 import { mapSubscription } from "./map";

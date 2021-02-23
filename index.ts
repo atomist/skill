@@ -83,7 +83,7 @@ export {
 	HandlerStatus,
 	WebhookContext,
 	WebhookHandler,
-} from "./lib/handler";
+} from "./lib/handler/handler";
 export { HttpClient } from "./lib/http";
 export {
 	AttachmentTarget,

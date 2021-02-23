@@ -16,7 +16,7 @@
 
 import * as assert from "power-assert";
 
-import { Contextual } from "../../lib/handler";
+import { Contextual } from "../../lib/handler/handler";
 import {
 	matchesRefFilter,
 	matchesRepoFilter,

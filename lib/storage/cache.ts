@@ -19,7 +19,7 @@ import * as JSZip from "jszip";
 import * as os from "os";
 import * as path from "path";
 
-import { CommandContext, EventContext } from "../handler";
+import { CommandContext, EventContext } from "../handler/handler";
 import { debug, warn } from "../log/console";
 import { Project } from "../project/project";
 import { globFiles } from "../project/util";

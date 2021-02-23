@@ -30,7 +30,7 @@ import {
 	EventContext,
 	HandlerStatus,
 	WebhookContext,
-} from "./handler";
+} from "./handler/handler";
 import { debug, error } from "./log";
 import {
 	CommandIncoming,

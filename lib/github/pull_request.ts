@@ -18,7 +18,7 @@ import * as fs from "fs-extra";
 
 import { PushStrategy } from "../definition/parameter/definition";
 import * as git from "../git/operation";
-import { Contextual, HandlerStatus } from "../handler";
+import { Contextual, HandlerStatus } from "../handler/handler";
 import { debug } from "../log/console";
 import { Project } from "../project/project";
 import * as status from "../status";

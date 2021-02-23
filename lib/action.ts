@@ -16,7 +16,7 @@
 
 import { OnAttachmentActionSubscription } from "./definition/subscription/typings/types";
 import { processCommand } from "./function";
-import { EventHandler } from "./handler";
+import { EventHandler } from "./handler/handler";
 import { wrapEventHandler } from "./map";
 import { CommandIncoming } from "./payload";
 import { success } from "./status";

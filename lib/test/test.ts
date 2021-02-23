@@ -17,7 +17,7 @@
 import { eventHandlerLoader } from "../action";
 import { ContextFactory, createContext } from "../context";
 import { processCommand, processEvent, processWebhook } from "../function";
-import { Contextual, HandlerStatus } from "../handler";
+import { Contextual, HandlerStatus } from "../handler/handler";
 import { debug } from "../log/console";
 import { Destinations, HandlerResponse, MessageOptions } from "../message";
 import {

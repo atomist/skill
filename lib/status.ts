@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { HandlerStatus } from "./handler";
+import { HandlerStatus } from "./handler/handler";
 
 class BuildableHandlerStatus implements HandlerStatus {
 	constructor(

@@ -18,7 +18,7 @@ import {
 	OnPushSubscription,
 	OnTagSubscription,
 } from "../definition/subscription/typings/types";
-import { Contextual, EventContext } from "../handler";
+import { Contextual, EventContext } from "../handler/handler";
 import { toArray } from "../util";
 
 /**

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { CommandContext, Configuration } from "../handler";
+import { CommandContext, Configuration } from "../handler/handler";
 import { toArray } from "../util";
 import { ParameterPromptObject } from "./prompt";
 

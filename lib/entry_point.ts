@@ -16,7 +16,7 @@
 
 import { bundle, registerCommand, registerEvent } from "./bundle";
 import { PubSubMessage } from "./function";
-import { CommandHandler, EventHandler } from "./handler";
+import { CommandHandler, EventHandler } from "./handler/handler";
 
 export function entryPoint(
 	handlers: Record<string, CommandHandler | EventHandler>,

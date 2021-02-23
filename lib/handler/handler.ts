@@ -16,20 +16,23 @@
 
 import { Logger } from "@atomist/skill-logging/lib/logging";
 
-import { DatalogClient } from "./datalog/client";
-import { GraphQLClient } from "./graphql";
-import { HttpClient } from "./http";
-import { CommandMessageClient, MessageClient } from "./message";
+import { DatalogClient } from "../datalog/client";
+import { GraphQLClient } from "../graphql";
+import { HttpClient } from "../http";
+import { CommandMessageClient, MessageClient } from "../message";
 import {
 	CommandIncoming,
 	EventIncoming,
 	SubscriptionIncoming,
 	WebhookIncoming,
-} from "./payload";
-import { ProjectLoader } from "./project";
-import { ParameterPromptObject, ParameterPromptOptions } from "./prompt/prompt";
-import { CredentialProvider } from "./secret/provider";
-import { StorageProvider } from "./storage/provider";
+} from "../payload";
+import { ProjectLoader } from "../project/index";
+import {
+	ParameterPromptObject,
+	ParameterPromptOptions,
+} from "../prompt/prompt";
+import { CredentialProvider } from "../secret/provider";
+import { StorageProvider } from "../storage/provider";
 
 export interface Configuration<C extends Record<string, any>> {
 	name: string;

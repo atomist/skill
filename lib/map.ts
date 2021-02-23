@@ -15,7 +15,7 @@
  */
 
 import camelCase = require("lodash.camelcase");
-import { EventHandler } from "./handler";
+import { EventHandler } from "./handler/handler";
 import { warn } from "./log/console";
 import { toArray } from "./util";
 

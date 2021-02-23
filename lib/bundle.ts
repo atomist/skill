@@ -20,7 +20,11 @@ import {
 	processWebhook,
 	PubSubMessage,
 } from "./function";
-import { CommandHandler, EventHandler, WebhookHandler } from "./handler";
+import {
+	CommandHandler,
+	EventHandler,
+	WebhookHandler,
+} from "./handler/handler";
 import { debug, info } from "./log";
 import {
 	CommandIncoming,
