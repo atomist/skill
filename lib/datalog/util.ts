@@ -35,7 +35,7 @@ export function entity(
 		if (attribute.includes("/")) {
 			e[attribute] = attributes[attribute];
 		} else {
-			e[kebabcase(`${prefix}/${attribute}`)] = attributes[attribute];
+			e[`${prefix}/${kebabcase(attribute)}`] = attributes[attribute];
 		}
 	}
 	return e;
