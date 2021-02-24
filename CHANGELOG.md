@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 -   Add support for Secret parameter type. [#166](https://github.com/atomist-skills/skill/issues/166)
+-   Add datalog.entity helper. [73e78f4](https://github.com/atomist-skills/skill/commit/73e78f45af100dadf03898da748ec2abae0f9f87)
 
 ### Changed
 
