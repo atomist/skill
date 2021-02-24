@@ -76,3 +76,18 @@ export function entityRefs(
 		.filter(e => e["schema/entity"])
 		.map(e => e["schema/entity"]);
 }
+
+/**
+ * Helper to extract an entity reference from a list of provided entities
+ * optionally filtered by schema/entity-type
+ */
+export function entityRef(
+	entities: Array<{ "schema/entity-type": string }>,
+	type?: string,
+): string {
+	const refs = entityRefs(entities, type);
+	if (refs.length > 0) {
+		return refs[0];
+	}
+	return undefined;
+}
