@@ -33,18 +33,22 @@ export type EntityType =
  */
 export function entity(
 	type: string,
-	attributes: Record<string, EntityType>,
-	name?: string,
+	nameOrAttributes: string | Record<string, EntityType>,
+	attributes?: Record<string, EntityType>,
 ): any {
 	const e = {
 		"schema/entity-type": `:${type}`,
 	};
-	if (name) {
-		e["schema/entity"] = name;
+	if (typeof nameOrAttributes === "string") {
+		e["schema/entity"] = nameOrAttributes;
 	}
+	const attributesToUse =
+		typeof nameOrAttributes === "string"
+			? attributes
+			: nameOrAttributes || {};
 	const prefix = type.replace(/\//g, ".");
-	for (const attribute of Object.keys(attributes)) {
-		const value = attributes[attribute];
+	for (const attribute of Object.keys(attributesToUse)) {
+		const value = attributesToUse[attribute];
 		if (value) {
 			if (attribute.includes("/")) {
 				e[attribute] = value;
