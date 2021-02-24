@@ -15,6 +15,7 @@
  */
 
 import kebabcase = require("lodash.kebabcase");
+import { guid } from "../util";
 
 export type EntityType =
 	| string
@@ -41,6 +42,8 @@ export function entity(
 	};
 	if (typeof nameOrAttributes === "string") {
 		e["schema/entity"] = nameOrAttributes;
+	} else {
+		e["schema/entity"] = `$${type.split("/")[1]}-${guid()}`;
 	}
 	const attributesToUse =
 		typeof nameOrAttributes === "string"
@@ -58,4 +61,18 @@ export function entity(
 		}
 	}
 	return e;
+}
+
+/**
+ * Helper to extract entity references from a list of provided entities
+ * optionally filtered by schema/entity-type
+ */
+export function entityRefs(
+	entities: Array<{ "schema/entity-type": string }>,
+	type?: string,
+): string[] {
+	return entities
+		.filter(e => !type || e["schema/entity-type"] === type)
+		.filter(e => e["schema/entity"])
+		.map(e => e["schema/entity"]);
 }
