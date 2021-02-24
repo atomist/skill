@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// lib/datalog
+export * as datalog from "./lib/datalog";
 // lib/definition
 export * as parameter from "./lib/definition/parameter";
 export * as resourceProvider from "./lib/definition/resource_provider";
