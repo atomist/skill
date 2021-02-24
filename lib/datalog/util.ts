@@ -72,7 +72,7 @@ export function entityRefs(
 	type?: string,
 ): string[] {
 	return entities
-		.filter(e => !type || e["schema/entity-type"] === type)
+		.filter(e => !type || e["schema/entity-type"] === `:${type}`)
 		.filter(e => e["schema/entity"])
 		.map(e => e["schema/entity"]);
 }
