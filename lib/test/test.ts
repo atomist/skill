@@ -82,10 +82,7 @@ export async function assertSkill(
 					)}`,
 				);
 			},
-			query: async (
-				query: string,
-				options?: { configurationName?: string },
-			) => {
+			query: async () => {
 				return undefined;
 			},
 		};
