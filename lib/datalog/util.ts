@@ -16,15 +16,24 @@
 
 import kebabcase = require("lodash.kebabcase");
 
+export type EntityType =
+	| string
+	| string[]
+	| number
+	| number[]
+	| boolean
+	| boolean[]
+	| Date
+	| Date[]
+	| { set: string[] }
+	| { add: string[] };
+
 /**
  * Helper to create a Datalog entity of given type and attributes
  */
 export function entity(
 	type: string,
-	attributes: Record<
-		string,
-		string | number | boolean | Date | { set: string[] } | { add: string[] }
-	>,
+	attributes: Record<string, EntityType>,
 	name?: string,
 ): any {
 	const e = {
