@@ -16,6 +16,9 @@
 
 import kebabcase = require("lodash.kebabcase");
 
+/**
+ * Helper to create a Datalog entity of given type and attributes
+ */
 export function entity(
 	type: string,
 	attributes: Record<
@@ -32,10 +35,13 @@ export function entity(
 	}
 	const prefix = type.replace(/\//g, ".");
 	for (const attribute of Object.keys(attributes)) {
-		if (attribute.includes("/")) {
-			e[attribute] = attributes[attribute];
-		} else {
-			e[`${prefix}/${kebabcase(attribute)}`] = attributes[attribute];
+		const value = attributes[attribute];
+		if (value) {
+			if (attribute.includes("/")) {
+				e[attribute] = value;
+			} else {
+				e[`${prefix}/${kebabcase(attribute)}`] = value;
+			}
 		}
 	}
 	return e;
