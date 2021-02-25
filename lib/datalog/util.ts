@@ -15,7 +15,7 @@
  */
 
 import kebabcase = require("lodash.kebabcase");
-import { guid } from "../util";
+import { guid, toArray } from "../util";
 
 export type EntityType =
 	| string
@@ -29,16 +29,17 @@ export type EntityType =
 	| { set: string[] }
 	| { add: string[] };
 
+export type Entity = {
+	"schema/entity-type": string;
+	"schema/entity": string;
+} & Record<string, EntityType>;
+
 /**
  * Helper to create a Datalog entity of given type and attributes
  */
 export function entity<
 	E extends Record<string, EntityType> = Record<string, EntityType>
->(
-	type: string,
-	nameOrAttributes: string | E,
-	attributes?: E,
-): { "schema/entity": string; "schema/entity-type": string } {
+>(type: string, nameOrAttributes: string | E, attributes?: E): Entity {
 	const e = {
 		"schema/entity-type": `:${type}`,
 	};
@@ -69,10 +70,7 @@ export function entity<
  * Helper to extract entity references from a list of provided entities
  * optionally filtered by schema/entity-type
  */
-export function entityRefs(
-	entities: Array<{ "schema/entity-type": string }>,
-	type?: string,
-): string[] {
+export function entityRefs(entities: Entity[], type?: string): string[] {
 	return entities
 		.filter(e => !type || e["schema/entity-type"] === `:${type}`)
 		.filter(e => e["schema/entity"])
@@ -83,11 +81,8 @@ export function entityRefs(
  * Helper to extract an entity reference from a list of provided entities
  * optionally filtered by schema/entity-type
  */
-export function entityRef(
-	entities: Array<{ "schema/entity-type": string }>,
-	type?: string,
-): string {
-	const refs = entityRefs(entities, type);
+export function entityRef(entities: Entity | Entity[], type?: string): string {
+	const refs = entityRefs(toArray(entities), type);
 	if (refs.length > 0) {
 		return refs[0];
 	}
