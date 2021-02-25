@@ -34,7 +34,11 @@ export type EntityType =
  */
 export function entity<
 	E extends Record<string, EntityType> = Record<string, EntityType>
->(type: string, nameOrAttributes: string | E, attributes?: E): any {
+>(
+	type: string,
+	nameOrAttributes: string | E,
+	attributes?: E,
+): { "schema/entity": string; "schema/entity-type": string } {
 	const e = {
 		"schema/entity-type": `:${type}`,
 	};
