@@ -62,7 +62,7 @@ export function entity<
 			}
 		}
 	}
-	return e;
+	return e as any;
 }
 
 /**
