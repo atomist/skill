@@ -17,6 +17,7 @@
 import camelCase = require("lodash.camelcase");
 import { EventHandler } from "./handler/handler";
 import { warn } from "./log/console";
+import { prepareStatus } from "./message";
 import { toArray } from "./util";
 
 export function wrapEventHandler(eh: EventHandler): EventHandler {
@@ -24,9 +25,13 @@ export function wrapEventHandler(eh: EventHandler): EventHandler {
 		if (Array.isArray(ctx.data)) {
 			const results = [];
 			for (const event of ctx.data) {
-				const result = await eh({ ...ctx, data: event });
-				if (result) {
-					results.push(result);
+				try {
+					const result = await eh({ ...ctx, data: event });
+					if (result) {
+						results.push(result);
+					}
+				} catch (e) {
+					results.push(prepareStatus(e, ctx));
 				}
 			}
 			return {
