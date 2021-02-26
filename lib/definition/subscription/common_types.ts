@@ -119,22 +119,23 @@ export type DockerImageWithVulnerabilities = DockerImage & {
 	};
 };
 
+export interface WithCommitAndRegistry {
+	commit: Commit;
+	registry: DockerRegistry;
+}
+
 /**
  * Subscription type to be used with the onDockerImage datalog subscription
  */
-export interface OnDockerImage {
-	commit: Commit;
+export interface OnDockerImage extends WithCommitAndRegistry {
 	image: DockerImage[];
-	registry: DockerRegistry;
 }
 
 /**
  * Subscription type to be used with the onDockerFile datalog subscription
  */
-export interface OnDockerFile {
-	commit: Commit;
+export interface OnDockerFile extends WithCommitAndRegistry {
 	image: DockerImage;
-	registry: DockerRegistry;
 	file: {
 		path: string;
 		sha: string;
