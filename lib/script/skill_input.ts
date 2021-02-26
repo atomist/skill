@@ -580,7 +580,7 @@ export async function writeSkillYaml(
 	const p = path.join(cwd, ".atomist", "skill.yaml");
 	await fs.ensureDir(path.dirname(p));
 	const yaml = await import("js-yaml");
-	const content = yaml.safeDump(
+	const content = yaml.dump(
 		{
 			apiVersion: 1,
 			skill,

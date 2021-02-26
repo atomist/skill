@@ -99,7 +99,7 @@ export async function createYamlSkillInput(
 	}
 
 	if (await fs.pathExists(path.join(cwd, "skill.yaml"))) {
-		const doc: any = yaml.safeLoad(
+		const doc: any = yaml.load(
 			(await fs.readFile(path.join(cwd, "skill.yaml"))).toString(),
 		);
 		is = merge({}, is, doc.skill ? doc.skill : doc);

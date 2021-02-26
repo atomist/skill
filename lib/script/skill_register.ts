@@ -76,9 +76,7 @@ export async function registerSkill(
 	const content = (
 		await fs.readFile(path.join(cwd, ".atomist", "skill.yaml"))
 	).toString();
-	const atomistYaml: { skill: AtomistSkillInput } = yaml.safeLoad(
-		content,
-	) as any;
+	const atomistYaml: { skill: AtomistSkillInput } = yaml.load(content) as any;
 
 	if (atomistYaml?.skill?.artifacts?.gcf?.[0]) {
 		atomistYaml.skill.artifacts.gcf[0].url = url;
@@ -110,7 +108,7 @@ export async function registerSkill(
 
 	await fs.writeFile(
 		path.join(cwd, ".atomist", "skill.yaml"),
-		yaml.safeDump(atomistYaml, { skipInvalid: true }),
+		yaml.dump(atomistYaml, { skipInvalid: true }),
 	);
 
 	if (await fs.pathExists(path.join(cwd, ".atomist", "skill.zip"))) {

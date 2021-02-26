@@ -15,10 +15,6 @@
  */
 
 import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types";
-import {
-	ChecksCreateResponseData,
-	ChecksUpdateResponseData,
-} from "@octokit/types";
 
 import { Contextual } from "../handler/handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
@@ -66,7 +62,9 @@ export interface Annotation {
 }
 
 export interface Check {
-	data: ChecksCreateResponseData | ChecksUpdateResponseData;
+	data:
+		| RestEndpointMethodTypes["checks"]["create"]["response"]["data"]
+		| RestEndpointMethodTypes["checks"]["update"]["response"]["data"];
 	update: (parameters: UpdateCheck) => Promise<void>;
 }
 
@@ -148,7 +146,7 @@ export async function createCheck(
 		});
 	}
 	return {
-		data: check.data as any,
+		data: check.data,
 		update: async params => {
 			await api(id).checks.update({
 				owner: id.owner,

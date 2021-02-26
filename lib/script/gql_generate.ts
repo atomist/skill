@@ -53,7 +53,7 @@ export async function generateGql(options: {
 		(fs.existsSync(npmCodegenPath) && npmCodegenPath) ||
 		skillCodegenPath;
 	info(`Using codegen configuration '${config}'`);
-	const codegen: { documents: string[] } = yaml.safeLoad(
+	const codegen: { documents: string[] } = yaml.load(
 		await fs.readFile(config, "utf8"),
 	) as any;
 

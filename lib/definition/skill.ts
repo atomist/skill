@@ -351,9 +351,7 @@ export async function skill<PARAMS = any>(
 	let skillYaml: any = {};
 	if (await fs.pathExists(skillYamlPath)) {
 		const yaml = await import("js-yaml");
-		skillYaml = yaml.safeLoad(
-			(await fs.readFile(skillYamlPath)).toString(),
-		);
+		skillYaml = yaml.load((await fs.readFile(skillYamlPath)).toString());
 		if (skillYaml.skill) {
 			skillYaml = skillYaml.skill;
 		}
