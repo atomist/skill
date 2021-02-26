@@ -20,6 +20,19 @@
   [:schema/entity-type
    :docker.image/digest
    :docker.image/tags
+   :docker.image/sha
+   {:docker.image/labels [:docker.image.label/name
+                          :docker.image.label/value]}
+   {:docker.image/repository [:docker.repository/host
+                              (:docker.repository/repository
+                               :as
+                               :name)]}])
+ (pull
+  ?default-docker-image
+  [:schema/entity-type
+   :docker.image/digest
+   :docker.image/tags
+   :docker.image/sha
    {:docker.image/labels [:docker.image.label/name
                           :docker.image.label/value]}
    {:docker.image/repository [:docker.repository/host
@@ -45,4 +58,12 @@
   "analysis"
   ?docker-registry)
  [?docker-image :docker.image/sha ?sha]
- [?commit :git.commit/sha ?sha]]
+ [?commit :git.commit/sha ?sha]
+ [?commit :git.commit/repo ?repo]
+ [?repo :git.repo/default-branch ?default-branch-name]
+ [?default-branch :git.ref/repo ?repo]
+ [?default-branch :git.ref/type :git.ref.type/branch]
+ [?default-branch :git.ref/name ?default-branch-name]
+ [?default-branch :git.ref/commit ?default-head-commit]
+ [?default-head-commit :git.commit/sha ?default-head-commit-sha]
+ [?default-docker-image :docker.image/sha ?default-head-commit-sha]]

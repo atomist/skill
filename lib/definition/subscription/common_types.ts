@@ -124,7 +124,7 @@ export type DockerImageWithVulnerabilities = DockerImage & {
  */
 export interface OnDockerImage {
 	commit: Commit;
-	image: DockerImage;
+	image: DockerImage[];
 	registry: DockerRegistry;
 }
 
