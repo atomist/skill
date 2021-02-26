@@ -131,7 +131,10 @@ export interface OnDockerImage {
 /**
  * Subscription type to be used with the onDockerFile datalog subscription
  */
-export interface OnDockerFile extends OnDockerImage {
+export interface OnDockerFile {
+	commit: Commit;
+	image: DockerImage;
+	registry: DockerRegistry;
 	file: {
 		path: string;
 		sha: string;
