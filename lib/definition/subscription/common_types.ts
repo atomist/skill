@@ -68,13 +68,16 @@ export enum DockerImageVulnerabilitySeverity {
 	Critical = "CRITICAL",
 }
 
-export interface DockerImageVulnerability {
+export interface BaseDockerVulnerability {
 	sourceId: string;
 	severity: DockerImageVulnerabilitySeverity;
+	fixAvailable: boolean;
+}
+
+export interface DockerImageVulnerability extends BaseDockerVulnerability {
 	title: string;
 	description: string;
 	cvssScore: string;
-	fixAvailable: boolean;
 	affected: Array<{ name: string; version: string }>;
 	fixed: Array<{ name: string; version: string }>;
 }
@@ -97,9 +100,7 @@ export type BaseDockerImageWithVulnerabilities = Pick<
 	DockerImage,
 	"digest" | "sha"
 > & {
-	vulnerabilities: Array<
-		Pick<DockerImageVulnerability, "sourceId" | "severity" | "fixAvailable">
-	>;
+	vulnerabilities: BaseDockerVulnerability[];
 };
 
 export type DockerImageWithVulnerabilities = DockerImage & {
