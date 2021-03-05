@@ -21,11 +21,6 @@
    :git.commit/sha
    :git.commit/message])
  (pull
-  ?previous-vulnerabilities
-  [:schema/entity-type
-   :vulnerability.cve/source-id
-   :vulnerability.cve/severity])
- (pull
   ?image
   [:schema/entity-type
    :docker.image/digest
