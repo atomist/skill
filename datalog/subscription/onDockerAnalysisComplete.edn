@@ -24,13 +24,7 @@
   ?previous-vulnerabilities
   [:schema/entity-type
    :vulnerability.cve/source-id
-   :vulnerability.cve/severity
-   :vulnerability.cve/cvss-score
-   :vulnerability.cve/fix-available
-   {:docker.analysis/affected [:docker.analysis.package/name
-                               :docker.analysis.package/version]}
-   {:docker.analysis/fixed [:docker.analysis.package/name
-                            :docker.analysis.package/version]}])
+   :vulnerability.cve/severity])
  (pull
   ?image
   [:schema/entity-type
@@ -52,15 +46,7 @@
                               {(:vulnerability.cve.baseline/_on
                                 :as
                                 :baseline) [{:vulnerability.cve.baseline/cves [:vulnerability.cve/source-id
-                                                                               :vulnerability.cve/severity
-                                                                               :vulnerability.cve/title
-                                                                               :vulnerability.cve/description
-                                                                               :vulnerability.cve/cvss-score
-                                                                               :vulnerability.cve/fix-available
-                                                                               {:docker.analysis/affected [:docker.analysis.package/name
-                                                                                                           :docker.analysis.package/version]}
-                                                                               {:docker.analysis/fixed [:docker.analysis.package/name
-                                                                                                        :docker.analysis.package/version]}]}]}]}
+                                                                               :vulnerability.cve/severity]}]}]}
    {:docker.analysis/vulnerabilities [:vulnerability.cve/source-id
                                       :vulnerability.cve/severity
                                       :vulnerability.cve/title
@@ -84,25 +70,9 @@
                               {(:vulnerability.cve.baseline/_on
                                 :as
                                 :baseline) [{:vulnerability.cve.baseline/cves [:vulnerability.cve/source-id
-                                                                               :vulnerability.cve/severity
-                                                                               :vulnerability.cve/title
-                                                                               :vulnerability.cve/description
-                                                                               :vulnerability.cve/cvss-score
-                                                                               :vulnerability.cve/fix-available
-                                                                               {:docker.analysis/affected [:docker.analysis.package/name
-                                                                                                           :docker.analysis.package/version]}
-                                                                               {:docker.analysis/fixed [:docker.analysis.package/name
-                                                                                                        :docker.analysis.package/version]}]}]}]}
+                                                                               :vulnerability.cve/severity]}]}]}
    {:docker.analysis/vulnerabilities [:vulnerability.cve/source-id
-                                      :vulnerability.cve/severity
-                                      :vulnerability.cve/title
-                                      :vulnerability.cve/description
-                                      :vulnerability.cve/cvss-score
-                                      :vulnerability.cve/fix-available
-                                      {:docker.analysis/affected [:docker.analysis.package/name
-                                                                  :docker.analysis.package/version]}
-                                      {:docker.analysis/fixed [:docker.analysis.package/name
-                                                               :docker.analysis.package/version]}]}])
+                                      :vulnerability.cve/severity]}])
  :in
  $
  $before
