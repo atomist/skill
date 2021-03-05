@@ -72,13 +72,13 @@ export interface BaseDockerVulnerability {
 	sourceId: string;
 	severity: DockerImageVulnerabilitySeverity;
 	fixAvailable: boolean;
+	affected: Array<{ name: string; version: string }>;
 }
 
 export interface DockerImageVulnerability extends BaseDockerVulnerability {
 	title: string;
 	description: string;
 	cvssScore: string;
-	affected: Array<{ name: string; version: string }>;
 	fixed: Array<{ name: string; version: string }>;
 }
 
