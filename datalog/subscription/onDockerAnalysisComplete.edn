@@ -58,14 +58,16 @@
    :docker.image/digest
    :docker.image/sha
    {:docker.analysis/vulnerabilities [:vulnerability.cve/source-id
-                                      :vulnerability.cve/severity]}])
+                                      :vulnerability.cve/severity
+                                      :vulnerability.cve/fix-available]}])
  (pull
   ?before-image
   [:schema/entity-type
    :docker.image/digest
    :docker.image/sha
    {:docker.analysis/vulnerabilities [:vulnerability.cve/source-id
-                                      :vulnerability.cve/severity]}])
+                                      :vulnerability.cve/severity
+                                      :vulnerability.cve/fix-available]}])
  :in
  $
  $before

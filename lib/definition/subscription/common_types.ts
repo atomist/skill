@@ -98,7 +98,7 @@ export type BaseDockerImageWithVulnerabilities = Pick<
 	"digest" | "sha"
 > & {
 	vulnerabilities: Array<
-		Pick<DockerImageVulnerability, "sourceId" | "severity">
+		Pick<DockerImageVulnerability, "sourceId" | "severity" | "fixAvailable">
 	>;
 };
 
