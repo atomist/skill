@@ -86,8 +86,6 @@
   :analysis.discovery/source
   :analysis.discovery.source/TRIVY]
 
- [$before ?discovery :analysis.discovery/vulnerabilities ?previous-vulnerabilities]
-
  [?discovery :analysis.discovery/image ?image]
  [?image :docker.image/sha ?sha]
  [?commit :git.commit/sha ?sha]
