@@ -57,15 +57,13 @@
   [:schema/entity-type
    :docker.image/digest
    :docker.image/sha
-   {:docker.image/docker-file [:docker-file/path]}
-   {:docker.image/repository [:docker.repository/host
-                              (:docker.repository/repository
-                               :as
-                               :name)
-                              {(:vulnerability.cve.baseline/_on
-                                :as
-                                :baseline) [{:vulnerability.cve.baseline/cves [:vulnerability.cve/source-id
-                                                                               :vulnerability.cve/severity]}]}]}
+   {:docker.analysis/vulnerabilities [:vulnerability.cve/source-id
+                                      :vulnerability.cve/severity]}])
+ (pull
+  ?before-image
+  [:schema/entity-type
+   :docker.image/digest
+   :docker.image/sha
    {:docker.analysis/vulnerabilities [:vulnerability.cve/source-id
                                       :vulnerability.cve/severity]}])
  :in
