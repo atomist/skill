@@ -93,6 +93,15 @@ export enum DockerAnalysisDiscoveryStatus {
 	Unspecified = "ANALYSIS_STATUS_UNSPECIFIED",
 }
 
+export type BaseDockerImageWithVulnerabilities = Pick<
+	DockerImage,
+	"digest" | "sha"
+> & {
+	vulnerabilities: Array<
+		Pick<DockerImageVulnerability, "sourceId" | "sourceId">
+	>;
+};
+
 export type DockerImageWithVulnerabilities = DockerImage & {
 	layers: Array<{
 		blob: {
@@ -158,5 +167,9 @@ export interface OnDockerAnalysisComplete {
 		source: DockerAnalysisDiscoverySource;
 	};
 	commit: Commit;
-	image: DockerImageWithVulnerabilities | DockerImageWithVulnerabilities[];
+	image: [
+		DockerImageWithVulnerabilities,
+		BaseDockerImageWithVulnerabilities,
+		BaseDockerImageWithVulnerabilities,
+	];
 }
