@@ -198,7 +198,7 @@ export async function spawnPromise(
 		let stdout = "";
 		if (optsToUse.log) {
 			const logData = (data: Buffer): void => {
-				pLog(data.toString(logEncoding));
+				pLog(data.toString(logEncoding as any));
 			};
 			childProcess.stderr.on("data", logData);
 			childProcess.stdout.on("data", logData);
