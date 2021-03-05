@@ -83,6 +83,9 @@
 
  [?discovery :analysis.discovery/image ?image]
  [?image :docker.image/sha ?sha]
+ 
+ [$before ?before-image :docker.image/sha ?sha]
+ 
  [?commit :git.commit/sha ?sha]
  [?commit :git.commit/repo ?repo]
  [?repo :git.repo/default-branch ?default-branch-name]
