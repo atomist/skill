@@ -168,9 +168,5 @@ export interface OnDockerAnalysisComplete {
 		source: DockerAnalysisDiscoverySource;
 	};
 	commit: Commit;
-	image: [
-		DockerImageWithVulnerabilities,
-		BaseDockerImageWithVulnerabilities,
-		BaseDockerImageWithVulnerabilities,
-	];
+	image: [DockerImageWithVulnerabilities, BaseDockerImageWithVulnerabilities];
 }

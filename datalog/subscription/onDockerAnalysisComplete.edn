@@ -65,14 +65,6 @@
                                       :vulnerability.cve/fix-available
                                       {:docker.analysis/affected [:docker.analysis.package/name
                                                                   :docker.analysis.package/version]}]}])
- (pull
-  ?before-image
-  [:schema/entity-type
-   :docker.image/digest
-   :docker.image/sha
-   {:docker.analysis/vulnerabilities [:vulnerability.cve/source-id
-                                      :vulnerability.cve/severity
-                                      :vulnerability.cve/fix-available]}])
  :in
  $
  $before
@@ -88,8 +80,6 @@
 
  [?discovery :analysis.discovery/image ?image]
  [?image :docker.image/sha ?sha]
- 
- [$before ?before-image :docker.image/sha ?sha]
  
  [?commit :git.commit/sha ?sha]
  [?commit :git.commit/repo ?repo]
