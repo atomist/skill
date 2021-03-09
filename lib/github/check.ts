@@ -196,7 +196,9 @@ async function updateAnnotation(
 				title: check.data.output.title,
 				summary: truncateText(
 					parameters.body
-						? `${parameters.body}\n${formatMarkers(ctx)}`
+						? `${parameters.body}\n${formatFooter(
+								ctx,
+						  )}\n${formatMarkers(ctx)}`
 						: check.data.output.summary,
 				),
 				annotations: ch.map(c => ({
