@@ -53,6 +53,8 @@ export * as github from "./lib/github";
 export * as handler from "./lib/handler";
 // lib/log
 export * as log from "./lib/log";
+// lib/policy
+export * as policy from "./lib/policy";
 // lib/project
 export * as project from "./lib/project";
 // lib/prompt

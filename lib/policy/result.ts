@@ -42,7 +42,10 @@ export interface PolicyRun {
 	update: (state: ResultEntityState) => Promise<void>;
 }
 
-export async function start(ctx, options: { sha: string }): Promise<PolicyRun> {
+export async function pending(
+	ctx,
+	options: { sha: string },
+): Promise<PolicyRun> {
 	let terminated = false;
 	const ownerEntity = entity<ResultOwnerEntity>("policy.result/owner", {
 		name: ctx.skill.name,
