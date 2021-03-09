@@ -39,12 +39,14 @@ export type ResultOwnerEntity = {
 };
 
 export interface PolicyRun {
-	update: (state: ResultEntityState) => Promise<void>;
+	failed: () => Promise<void>;
+	neutral: () => Promise<void>;
+	success: () => Promise<void>;
 }
 
 export async function pending(
 	ctx,
-	options: { sha: string },
+	parameters: { sha: string },
 ): Promise<PolicyRun> {
 	let terminated = false;
 	const ownerEntity = entity<ResultOwnerEntity>("policy.result/owner", {
@@ -53,7 +55,7 @@ export async function pending(
 		version: ctx.skill.version,
 	});
 	let resultEntity = entity<ResultEntity>("policy/result", {
-		sha: options.sha,
+		sha: parameters.sha,
 		name: ctx.skill.name,
 		state: ResultEntityState.Pending,
 		createdAt: new Date(),
@@ -62,29 +64,26 @@ export async function pending(
 	});
 	await ctx.datalog.transact([ownerEntity, resultEntity]);
 
+	const update = (state: ResultEntityState) => async () => {
+		resultEntity = entity<ResultEntity>("policy/result", {
+			sha: parameters.sha,
+			name: ctx.skill.name,
+			state,
+			lastUpdated: new Date(),
+		});
+		await ctx.datalog.transact([ownerEntity, resultEntity]);
+		terminated = true;
+	};
+
 	ctx.onComplete(async () => {
 		if (!terminated) {
-			resultEntity = entity<ResultEntity>("policy/result", {
-				sha: options.sha,
-				name: ctx.skill.name,
-				state: ResultEntityState.Failure,
-				lastUpdated: new Date(),
-			});
-			await ctx.datalog.transact([ownerEntity, resultEntity]);
-			terminated = true;
+			await update(ResultEntityState.Failure);
 		}
 	});
 
 	return {
-		update: async state => {
-			resultEntity = entity<ResultEntity>("policy/result", {
-				sha: options.sha,
-				name: ctx.skill.name,
-				state,
-				lastUpdated: new Date(),
-			});
-			await ctx.datalog.transact([ownerEntity, resultEntity]);
-			terminated = true;
-		},
+		failed: update(ResultEntityState.Failure),
+		neutral: update(ResultEntityState.Neutral),
+		success: update(ResultEntityState.Success),
 	};
 }
