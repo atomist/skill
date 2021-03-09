@@ -46,7 +46,7 @@ export interface PolicyRun {
 
 export async function pending(
 	ctx,
-	parameters: { sha: string },
+	parameters: { name?: string; sha: string },
 ): Promise<PolicyRun> {
 	let terminated = false;
 	const ownerEntity = entity<ResultOwnerEntity>("policy.result/owner", {
@@ -56,7 +56,7 @@ export async function pending(
 	});
 	let resultEntity = entity<ResultEntity>("policy/result", {
 		sha: parameters.sha,
-		name: ctx.skill.name,
+		name: parameters.name || ctx.skill.name,
 		state: ResultEntityState.Pending,
 		createdAt: new Date(),
 		lastUpdated: new Date(),
