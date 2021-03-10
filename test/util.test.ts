@@ -16,7 +16,7 @@
 
 import * as assert from "assert";
 
-import { extractParameters, guid } from "../lib/util";
+import { extractParameters, guid, truncate } from "../lib/util";
 
 describe("util", () => {
 	describe("extractParameters", () => {
@@ -56,6 +56,32 @@ describe("util", () => {
 		it("generates uuid", () => {
 			const uuid = guid();
 			assert(!!uuid);
+		});
+	});
+
+	describe("truncate", () => {
+		it("should not truncate", () => {
+			const text =
+				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt";
+			const result = truncate(text, 100);
+			assert.strictEqual(result, text);
+		});
+		it("should truncate at the end", () => {
+			const text =
+				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt";
+			assert.strictEqual(
+				truncate(text, 20, { separator: "[...]", direction: "end" }),
+				"Lorem ipsum dol[...]",
+			);
+		});
+		it("should truncate in the middle", () => {
+			const text =
+				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt";
+			assert.strictEqual(truncate(text, 20), "Lorem ips...invidunt");
+			assert.strictEqual(
+				truncate(text, 20, { separator: "[...]", direction: "middle" }),
+				"Lorem ip[...]nvidunt",
+			);
 		});
 	});
 });

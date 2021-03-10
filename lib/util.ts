@@ -29,6 +29,32 @@ export function hash(obj: any): string {
 	return hash.digest("hex");
 }
 
+export function truncate(
+	text: string,
+	length: number,
+	options: { direction: "middle" | "end"; separator: string } = {
+		direction: "middle",
+		separator: "...",
+	},
+) {
+	if (text.length <= length) {
+		return text;
+	}
+	const separatorLength = options.separator.length;
+	if (options.direction === "end") {
+		return `${text.slice(0, length - separatorLength)}${options.separator}`;
+	} else if (options.direction === "middle") {
+		const charsToShow = length - separatorLength;
+		const frontChars = Math.ceil(charsToShow / 2);
+		const backChars = Math.floor(charsToShow / 2);
+
+		return `${text.slice(0, frontChars)}${options.separator}${text.slice(
+			text.length - backChars,
+		)}`;
+	}
+	return text;
+}
+
 export function toArray<T>(value: T | T[]): T[] {
 	if (value) {
 		if (Array.isArray(value)) {
