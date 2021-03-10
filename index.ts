@@ -109,4 +109,5 @@ export {
 	hideString,
 	replacer,
 	toArray,
+	truncate,
 } from "./lib/util";
