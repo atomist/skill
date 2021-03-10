@@ -55,11 +55,11 @@ describe("named", () => {
 		);
 	});
 	it("should load onDockerImage datalog subscription", () => {
-		const subscription = namedDatalog("@atomist/skill/onDockerImage");
+		const subscription = namedDatalog("@atomist/skill/on_docker_image");
 		assert.deepStrictEqual(
 			subscription,
 			fs
-				.readFileSync("datalog/subscription/onDockerImage.edn")
+				.readFileSync("datalog/subscription/on_docker_image.edn")
 				.toString(),
 		);
 	});
