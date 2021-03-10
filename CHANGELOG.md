@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.9.0...HEAD)
 
+### Added
+
+-   Add truncate helper. [641c6fd](https://github.com/atomist-skills/skill/commit/641c6fd059ea48950e6769f481305622a7eb1471)
+
 ## [0.9.0](https://github.com/atomist/skill/compare/0.8.1...0.9.0) - 2021-03-01
 
 ### Added
