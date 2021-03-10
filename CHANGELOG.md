@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Add truncate helper. [641c6fd](https://github.com/atomist-skills/skill/commit/641c6fd059ea48950e6769f481305622a7eb1471)
 
+### Fixed
+
+-   Don't swallow expections in event handlers. [6f53ffd](https://github.com/atomist-skills/skill/commit/6f53ffdf0016e155c29b22da8e9f6c474a329e45)
+
 ## [0.9.0](https://github.com/atomist/skill/compare/0.8.1...0.9.0) - 2021-03-01
 
 ### Added
