@@ -32,7 +32,7 @@ export function hash(obj: any): string {
 export function truncate(
 	text: string,
 	length: number,
-	options: { direction: "middle" | "end"; separator: string } = {
+	options: { direction: "start" | "middle" | "end"; separator: string } = {
 		direction: "middle",
 		separator: "...",
 	},
@@ -41,7 +41,11 @@ export function truncate(
 		return text;
 	}
 	const separatorLength = options.separator.length;
-	if (options.direction === "end") {
+	if (options.direction === "start") {
+		return `${options.separator}${text.slice(
+			text.length - length + separatorLength,
+		)}`;
+	} else if (options.direction === "end") {
 		return `${text.slice(0, length - separatorLength)}${options.separator}`;
 	} else if (options.direction === "middle") {
 		const charsToShow = length - separatorLength;

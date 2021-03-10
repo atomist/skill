@@ -83,5 +83,13 @@ describe("util", () => {
 				"Lorem ip[...]nvidunt",
 			);
 		});
+		it("should truncate at the start", () => {
+			const text =
+				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt";
+			assert.strictEqual(
+				truncate(text, 20, { separator: "[...]", direction: "start" }),
+				"[...]tempor invidunt",
+			);
+		});
 	});
 });
