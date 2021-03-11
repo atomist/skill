@@ -295,6 +295,58 @@ yargs
 			}
 		},
 	)
+	.command(
+		["datalog-query"],
+		"Run a Datalog query",
+		args =>
+			args.option({
+				cwd: {
+					type: "string",
+					description: "Set working directory",
+					default: process.cwd(),
+					demandOption: false,
+				},
+				query: {
+					type: "string",
+					alias: "q",
+					description: "Path to query file",
+					demandOption: true,
+				},
+				config: {
+					type: "string",
+					alias: "c",
+					description: "Skill configuration name",
+					demandOption: false,
+				},
+				workspace: {
+					type: "string",
+					description: "Id of workspace to register",
+					demandOption: false,
+				},
+				parse: {
+					type: "boolean",
+					alias: "p",
+					description: "Parse and convert to JSON",
+					demandOption: false,
+					defaultValue: false,
+				},
+				tx: {
+					type: "number",
+					alias: "t",
+					description: "Transaction id",
+					demandOption: false,
+				},
+			}),
+		async argv => {
+			try {
+				await (await import("../lib/script/datalog")).query(argv);
+				return 0;
+			} catch (e) {
+				error(e.message);
+				process.exit(1);
+			}
+		},
+	)
 	.version(false)
 	.strict()
 	.help().argv;

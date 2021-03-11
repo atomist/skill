@@ -27,10 +27,10 @@ import { createTransact } from "./transact";
 
 export interface DatalogClient {
 	transact(entities: any | any[]): Promise<void>;
-	query<T>(
+	query<T = any>(
 		query: string,
-		options?: { configurationName?: string },
-	): Promise<T[]>;
+		options?: { configurationName?: string; tx?: number; raw?: boolean },
+	): Promise<T[] | string>;
 }
 
 class NodeFetchDatalogClient implements DatalogClient {
@@ -50,15 +50,16 @@ class NodeFetchDatalogClient implements DatalogClient {
 		)(entities);
 	}
 
-	public async query<T>(
+	public async query<T = any>(
 		query: string,
-		options?: { configurationName: string },
-	): Promise<T[]> {
+		options?: { configurationName: string; tx: number; raw: boolean },
+	): Promise<T[] | string> {
 		const body = `{
 :query
 
 	${query}
 
+${options?.tx ? `:tx-range {:start ${options.tx} }` : ""}
 ${
 	options?.configurationName
 		? `:skill-ref {:name "${this.skill.name}" :namespace "${this.skill.namespace}" :configuration-name "${options.configurationName}"}`
@@ -94,11 +95,20 @@ ${
 				}
 			})
 		).text();
-		const parsed = parseEDNString(result, {
-			mapAs: "object",
-			keywordAs: "string",
-		});
-		return toArray(parsed).map(mapSubscription);
+
+		if (options.raw) {
+			return result;
+		} else {
+			const parsed = parseEDNString(result, {
+				mapAs: "object",
+				keywordAs: "string",
+			});
+			if (options.tx) {
+				return toArray(parsed[0].result).map(mapSubscription);
+			} else {
+				return toArray(parsed).map(mapSubscription);
+			}
+		}
 	}
 }
 
