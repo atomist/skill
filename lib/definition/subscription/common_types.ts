@@ -150,6 +150,7 @@ export interface OnDockerImage extends WithCommitAndRegistry {
 export interface OnDockerFile extends WithCommitAndRegistry {
 	image: DockerImage;
 	file: {
+		id: number;
 		path: string;
 		sha: string;
 		lines: Array<{

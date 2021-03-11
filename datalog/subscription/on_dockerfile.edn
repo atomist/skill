@@ -28,8 +28,9 @@
                                :name)]}])
  (pull
   ?docker-file
-  [:schema/entity-type
-   :docker.file/path
+   [:db/id
+    :schema/entity-type
+    :docker.file/path
    :docker.file/sha
    {(:docker.file.line/_file :as :docker.file/lines) [:docker.file.line/number
                                                       :docker.file.line/instruction
