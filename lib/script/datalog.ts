@@ -64,7 +64,7 @@ export async function query(args: {
 	const result = await client.query(query, {
 		configurationName: args.config,
 		tx: args.tx,
-		raw: !args.parse,
+		mode: !args.parse ? "raw" : undefined,
 	});
 	if (args.parse) {
 		console.log(JSON.stringify(result));

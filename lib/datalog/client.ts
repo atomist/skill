@@ -27,9 +27,14 @@ import { createTransact } from "./transact";
 
 export interface DatalogClient {
 	transact(entities: any | any[]): Promise<void>;
-	query<T = any>(
+	query<T = any, P = any>(
 		query: string,
-		options?: { configurationName?: string; tx?: number; raw?: boolean },
+		parameters?: P,
+		options?: {
+			configurationName?: string;
+			tx?: number;
+			mode?: "raw" | "map" | "obj";
+		},
 	): Promise<T[] | string>;
 }
 
@@ -50,14 +55,19 @@ class NodeFetchDatalogClient implements DatalogClient {
 		)(entities);
 	}
 
-	public async query<T = any>(
+	public async query<T = any, P = any>(
 		query: string,
-		options?: { configurationName: string; tx: number; raw: boolean },
+		parameters: P,
+		options: {
+			configurationName?: string;
+			tx?: number;
+			mode?: "raw" | "map" | "obj";
+		} = {},
 	): Promise<T[] | string> {
 		const body = `{
 :query
 
-	${query}
+	${resolveParameters(query, parameters)}
 
 ${options?.tx ? `:tx-range {:start ${options.tx} }` : ""}
 ${
@@ -96,13 +106,16 @@ ${
 			})
 		).text();
 
-		if (options.raw) {
+		if (options.mode === "raw") {
 			return result;
 		} else {
 			const parsed = parseEDNString(result, {
 				mapAs: "object",
 				keywordAs: "string",
 			});
+			if (options.mode === "obj") {
+				return toArray(parsed[0]) as any;
+			}
 			if (options.tx) {
 				return toArray(parsed[0].result).map(mapSubscription);
 			} else {
@@ -122,4 +135,16 @@ export function createDatalogClient(
 ): DatalogClient {
 	const url = `${endpoint}/team/${wid}`;
 	return new NodeFetchDatalogClient(apiKey, url, wid, correlationId, skill);
+}
+
+export function resolveParameters(query: string, parameters: any = {}): string {
+	let newQuery = query;
+	for (const key of Object.keys(parameters)) {
+		const value = parameters[key];
+		newQuery = newQuery.replace(
+			new RegExp(`\\?${key}`, "g"),
+			typeof value === "string" ? `"${value}"` : value,
+		);
+	}
+	return newQuery;
 }
