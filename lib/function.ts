@@ -86,7 +86,13 @@ export async function processEvent(
 	const context = factory(event, ctx) as EventContext<any> &
 		ContextualLifecycle;
 	try {
-		debug(`Invoking event handler '${context.name}'`);
+		if (isSubscriptionIncoming(event)) {
+			debug(
+				`Invoking event handler '${context.name}' for tx '${event.subscription.tx}'`,
+			);
+		} else {
+			debug(`Invoking event handler '${context.name}'`);
+		}
 		const result = (await (await loader(context.name))(
 			context,
 		)) as HandlerStatus;

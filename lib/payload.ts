@@ -108,6 +108,7 @@ export interface SubscriptionIncoming {
 	subscription: {
 		name: string;
 		result: any;
+		tx: number;
 	};
 }
 
