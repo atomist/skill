@@ -55,10 +55,10 @@ export async function status(projectOrCwd: Project | string): Promise<Status> {
 
 /** Default retry options for git operations. */
 export const retryOptions = {
-	retries: 4,
+	retries: 5,
 	factor: 2,
-	minTimeout: 250,
-	maxTimeout: 1000,
+	minTimeout: 500,
+	maxTimeout: 5000,
 	randomize: true,
 };
 
