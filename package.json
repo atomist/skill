@@ -58,7 +58,7 @@
     "@atomist/slack-messages": "^1.2.1",
     "@google-cloud/pubsub": "^2.10.0",
     "@google-cloud/storage": "^5.8.1",
-    "@graphql-codegen/cli": "^1.21.2",
+    "@graphql-codegen/cli": "^1.21.3",
     "@graphql-codegen/typescript": "^1.21.1",
     "@graphql-codegen/typescript-operations": "^1.17.15",
     "@octokit/plugin-rest-endpoint-methods": "^4.13.5",
@@ -136,7 +136,7 @@
     "power-assert": "^1.6.1",
     "rimraf": "^3.0.2",
     "supervisor": "^0.12.0",
-    "typedoc": "^0.20.31",
+    "typedoc": "^0.20.32",
     "typescript": "^4.2.3"
   },
   "engines": {
