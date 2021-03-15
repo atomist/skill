@@ -20,10 +20,10 @@ import * as path from "path";
 
 import { encrypt } from "../jose/encyrpt";
 
-export async function badgeLink(parameters: {
+export async function link(parameters: {
 	sha: string;
 	policy: string;
-	workspaceId: string;
+	workspace: string;
 }): Promise<string> {
 	const publicKey = crypto.createPublicKey(
 		await fs.readFile(path.join(__dirname, "badge-public.pem")),

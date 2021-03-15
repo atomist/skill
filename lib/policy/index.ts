@@ -14,4 +14,5 @@
  * limitations under the License.
  */
 
+export * as badge from "./badge";
 export * as result from "./result";
