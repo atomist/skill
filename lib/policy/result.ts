@@ -23,12 +23,36 @@ export enum ResultEntityState {
 	Neutral = ":policy.result.state/NEUTRAL",
 }
 
+export function toState(state: string): ResultEntityState {
+	for (const key of Object.keys(ResultEntityState)) {
+		if (
+			`:policy.result.state/${state.toUpperCase()}` ===
+			ResultEntitySeverity[key]
+		) {
+			return ResultEntityState[key];
+		}
+	}
+	return undefined;
+}
+
 export enum ResultEntitySeverity {
 	Critial = ":policy.result.severity/CRITICAL",
 	High = ":policy.result.severity/HIGH",
 	Medium = ":policy.result.severity/MEDIUM",
 	Low = ":policy.result.severity/LOW",
 	Minimum = ":policy.result.severity/MINIMUM",
+}
+
+export function toSeverity(severity: string): ResultEntitySeverity {
+	for (const key of Object.keys(ResultEntitySeverity)) {
+		if (
+			`:policy.result.severity/${severity.toUpperCase()}` ===
+			ResultEntitySeverity[key]
+		) {
+			return ResultEntitySeverity[key];
+		}
+	}
+	return undefined;
 }
 
 export type ResultEntity = {
