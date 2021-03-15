@@ -23,7 +23,7 @@ import { ResultEntitySeverity, ResultEntityState } from "./result";
 
 export async function link(parameters: {
 	sha: string;
-	policy: string;
+	name: string;
 	workspace: string;
 	title?: string;
 	state?: ResultEntityState;
@@ -40,7 +40,7 @@ export async function link(parameters: {
 
 export async function markdownLink(parameters: {
 	sha: string;
-	policy: string;
+	name: string;
 	workspace: string;
 	title?: string;
 	state?: ResultEntityState;
