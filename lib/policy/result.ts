@@ -23,13 +23,25 @@ export enum ResultEntityState {
 	Neutral = ":policy.result.state/NEUTRAL",
 }
 
+export enum ResultEntitySeverity {
+	Critial = ":policy.result.severity/CRITICAL",
+	High = ":policy.result.severity/HIGH",
+	Medium = ":policy.result.severity/MEDIUM",
+	Low = ":policy.result.severity/LOW",
+	Minimum = ":policy.result.severity/MINIMUM",
+}
+
 export type ResultEntity = {
 	sha: string;
 	name: string;
+	title: string;
+	message?: string;
 	state: ResultEntityState;
+	severity?: ResultEntitySeverity;
 	managedBy?: string;
 	createdAt?: Date;
 	lastUpdated: Date;
+	jws?: string;
 };
 
 export type ResultOwnerEntity = {
@@ -39,14 +51,14 @@ export type ResultOwnerEntity = {
 };
 
 export interface PolicyRun {
-	failed: () => Promise<void>;
-	neutral: () => Promise<void>;
-	success: () => Promise<void>;
+	failed: (severity: ResultEntitySeverity, message?: string) => Promise<void>;
+	neutral: (message?: string) => Promise<void>;
+	success: (message?: string) => Promise<void>;
 }
 
 export async function pending(
 	ctx,
-	parameters: { name?: string; sha: string },
+	parameters: { name?: string; title: string; sha: string },
 ): Promise<PolicyRun> {
 	let terminated = false;
 	const ownerEntity = entity<ResultOwnerEntity>("policy.result/owner", {
@@ -57,6 +69,7 @@ export async function pending(
 	let resultEntity = entity<ResultEntity>("policy/result", {
 		sha: parameters.sha,
 		name: parameters.name || ctx.skill.name,
+		title: parameters.title,
 		state: ResultEntityState.Pending,
 		createdAt: new Date(),
 		lastUpdated: new Date(),
@@ -64,11 +77,18 @@ export async function pending(
 	});
 	await ctx.datalog.transact([ownerEntity, resultEntity]);
 
-	const update = (state: ResultEntityState) => async () => {
+	const update = (state: ResultEntityState) => async (
+		message?: string,
+		severity?: ResultEntitySeverity,
+	) => {
 		resultEntity = entity<ResultEntity>("policy/result", {
+			...resultEntity,
 			sha: parameters.sha,
-			name: ctx.skill.name,
+			name: parameters.name || ctx.skill.name,
+			title: parameters.title,
+			message,
 			state,
+			severity,
 			lastUpdated: new Date(),
 		});
 		await ctx.datalog.transact([ownerEntity, resultEntity]);
@@ -77,13 +97,17 @@ export async function pending(
 
 	ctx.onComplete(async () => {
 		if (!terminated) {
-			await update(ResultEntityState.Failure);
+			await update(ResultEntityState.Failure)(
+				"Policy failed to complete",
+				ResultEntitySeverity.High,
+			);
 		}
 	});
 
 	return {
-		failed: update(ResultEntityState.Failure),
-		neutral: update(ResultEntityState.Neutral),
-		success: update(ResultEntityState.Success),
+		failed: (severity, msg) =>
+			update(ResultEntityState.Failure)(msg, severity),
+		neutral: msg => update(ResultEntityState.Neutral)(msg),
+		success: msg => update(ResultEntityState.Success)(msg),
 	};
 }
