@@ -33,3 +33,13 @@ export async function link(parameters: {
 		encrypted,
 	)}`;
 }
+
+export async function markdownLink(parameters: {
+	sha: string;
+	policy: string;
+	workspace: string;
+}): Promise<string> {
+	return `<!-- atomist:hide -->
+![badge](${await link(parameters)})
+<!-- atomist:show -->`;
+}
