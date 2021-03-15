@@ -27,7 +27,7 @@ export function toState(state: string): ResultEntityState {
 	for (const key of Object.keys(ResultEntityState)) {
 		if (
 			`:policy.result.state/${state.toUpperCase()}` ===
-			ResultEntitySeverity[key]
+			ResultEntityState[key]
 		) {
 			return ResultEntityState[key];
 		}
