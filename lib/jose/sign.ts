@@ -16,8 +16,8 @@
 
 import * as crypto from "crypto";
 
-export async function sign<T = any>(
-	payload: string | T,
+export async function sign<T = string>(
+	payload: T,
 	privateKey: crypto.KeyObject,
 ): Promise<string> {
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -35,13 +35,13 @@ export async function sign<T = any>(
 export async function verify<T>(
 	signature: string,
 	publicKey: crypto.KeyObject,
-): Promise<string | T> {
+): Promise<T> {
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const { default: compactVerify } = require("jose/jws/compact/verify");
 	const { payload } = await compactVerify(signature, publicKey);
 	try {
 		return JSON.parse(Buffer.from(payload).toString()) as T;
 	} catch (e) {
-		return Buffer.from(payload).toString();
+		return Buffer.from(payload).toString() as any;
 	}
 }

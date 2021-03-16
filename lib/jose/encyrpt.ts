@@ -16,17 +16,17 @@
 
 import * as crypto from "crypto";
 
-export async function decrypt<T = any>(
+export async function decrypt<T = string>(
 	jwe: string,
 	privateKey: crypto.KeyObject,
-): Promise<string | T> {
+): Promise<T> {
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const { default: compactDecrypt } = require("jose/jwe/compact/decrypt");
 	const { plaintext } = await compactDecrypt(jwe, privateKey);
 	try {
 		return JSON.parse(Buffer.from(plaintext).toString());
 	} catch (e) {
-		return Buffer.from(plaintext).toString();
+		return Buffer.from(plaintext).toString() as any;
 	}
 }
 
