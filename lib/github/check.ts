@@ -123,6 +123,7 @@ export async function createCheck(
 						ctx,
 					)}`,
 				),
+				annotations: [],
 			},
 		});
 	} else {
@@ -142,6 +143,7 @@ export async function createCheck(
 						ctx,
 					)}`,
 				),
+				annotations: [],
 			},
 		});
 	}
