@@ -145,6 +145,14 @@ export interface OnDockerImage extends WithCommitAndRegistry {
 }
 
 /**
+ * Subscription type to be used with on_docker_image_unlinked
+ */
+export interface OnDockerImageUnlinked {
+	image: DockerImage;
+	registry: DockerRegistry;
+}
+
+/**
  * Subscription type to be used with the on_dockerfile datalog subscription
  */
 export interface OnDockerFile extends WithCommitAndRegistry {
@@ -174,8 +182,3 @@ export interface OnDockerAnalysisComplete {
 	commit: Commit;
 	image: [DockerImageWithVulnerabilities, BaseDockerImageWithVulnerabilities];
 }
-
-/**
- * Subscription type to be used with on_docker_image_unlinked
- */
-export type OnDockerImageUnlinked = WithCommitAndRegistry;
