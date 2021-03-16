@@ -138,14 +138,14 @@ export interface WithCommitAndRegistry {
 }
 
 /**
- * Subscription type to be used with the onDockerImage datalog subscription
+ * Subscription type to be used with the on_docker_image datalog subscription
  */
 export interface OnDockerImage extends WithCommitAndRegistry {
 	image: DockerImage[];
 }
 
 /**
- * Subscription type to be used with the onDockerFile datalog subscription
+ * Subscription type to be used with the on_dockerfile datalog subscription
  */
 export interface OnDockerFile extends WithCommitAndRegistry {
 	image: DockerImage;
@@ -164,7 +164,7 @@ export interface OnDockerFile extends WithCommitAndRegistry {
 }
 
 /**
- * Subscription type to be used with the onDockerAnalysisComplete datalog subscription
+ * Subscription type to be used with the on_docker_analysis_complete datalog subscription
  */
 export interface OnDockerAnalysisComplete {
 	discovery: {
@@ -174,3 +174,8 @@ export interface OnDockerAnalysisComplete {
 	commit: Commit;
 	image: [DockerImageWithVulnerabilities, BaseDockerImageWithVulnerabilities];
 }
+
+/**
+ * Subscription type to be used with on_docker_image_unlinked
+ */
+export type OnDockerImageUnlinked = WithCommitAndRegistry;
