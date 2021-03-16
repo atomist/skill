@@ -275,6 +275,7 @@ export interface Command {
 export enum CapabilityScope {
 	Ingestion = "ingestion",
 	Configuration = "configuration",
+	Subscription = "subscription",
 }
 
 export interface Operations {
