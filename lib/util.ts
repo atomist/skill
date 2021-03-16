@@ -36,7 +36,7 @@ export function truncate(
 		direction: "middle",
 		separator: "...",
 	},
-) {
+): string {
 	if (text.length <= length) {
 		return text;
 	}

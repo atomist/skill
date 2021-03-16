@@ -15,6 +15,7 @@
  */
 
 import { entity, entityRef } from "../datalog/util";
+import { EventContext } from "../handler/handler";
 
 export enum ResultEntityState {
 	Pending = ":policy.result.state/PENDING",
@@ -81,7 +82,7 @@ export interface PolicyRun {
 }
 
 export async function pending(
-	ctx,
+	ctx: EventContext<any, any>,
 	parameters: { name?: string; title: string; sha: string },
 ): Promise<PolicyRun> {
 	let terminated = false;
