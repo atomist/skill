@@ -1,4 +1,4 @@
-FROM ubuntu:focal
+FROM ubuntu:rolling
 
 # Install some common packages
 RUN apt-get update && apt-get install -y \
