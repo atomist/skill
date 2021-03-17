@@ -63,13 +63,10 @@ export function chain<D, C, S = any>(
 
 export type CreateRepositoryId<D, C> = (
 	ctx: EventContext<D, C>,
-) => RepositoryId;
+) => Pick<RepositoryId, "owner" | "repo" | "sha" | "branch">;
 
 export function createRef<D, C>(
-	id:
-		| RepositoryId
-		| AuthenticatedRepositoryId<any>
-		| CreateRepositoryId<D, C>,
+	id: CreateRepositoryId<D, C>,
 ): ChainedHandler<D, C, { id: AuthenticatedRepositoryId<any> }> {
 	return async ctx => {
 		let repositoryId: AuthenticatedRepositoryId<any> =
