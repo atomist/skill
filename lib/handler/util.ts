@@ -36,35 +36,20 @@ import {
 } from "../repository/id";
 import { gitHubAppToken } from "../secret/resolver";
 import { failure } from "../status";
-import {
-	EventContext,
-	EventHandler,
-	HandlerStatus,
-	WebhookContext,
-	WebhookHandler,
-} from "./handler";
+import { EventContext, EventHandler, HandlerStatus } from "./handler";
 
 export type ChainedHandler<D, C, S> = (
-	context: (EventContext<D, C> | WebhookContext<D, C>) & {
-		state: S;
-	},
+	context: EventContext<D, C> & { state: S },
 ) => Promise<void | HandlerStatus>;
 
 /**
  * Chain a series of [[ChainedHandler]]s until the first one
  * returns a [[HandlerStatus]].
  */
-export function chain<
-	D,
-	C,
-	S = any,
-	T extends EventHandler<D, C> | WebhookHandler<D, C> = EventHandler<D, C>
->(...handlers: Array<ChainedHandler<D, C, S>>): T {
-	return (async (
-		ctx: (EventContext<D, C> | WebhookContext<D, C>) & {
-			state: S;
-		},
-	) => {
+export function chain<D, C, S = any>(
+	...handlers: Array<ChainedHandler<D, C, S>>
+): EventHandler<D, C> {
+	return async (ctx: EventContext<D, C> & { state: S }) => {
 		ctx.state = {} as any;
 		for (const handler of handlers) {
 			const result = await handler(ctx);
@@ -73,11 +58,11 @@ export function chain<
 			}
 		}
 		return undefined;
-	}) as any;
+	};
 }
 
 export type CreateRepositoryId<D, C> = (
-	ctx: EventContext<D, C> | WebhookContext<D, C>,
+	ctx: EventContext<D, C>,
 ) => RepositoryId;
 
 export function createRef<D, C>(
@@ -100,7 +85,7 @@ export function createRef<D, C>(
 }
 
 export type CreateCloneOptions<D, C> = (
-	ctx: EventContext<D, C> | WebhookContext<D, C>,
+	ctx: EventContext<D, C>,
 ) => CloneOptions;
 
 export function cloneRef<D, C>(
@@ -125,7 +110,7 @@ export function cloneRef<D, C>(
 }
 
 export type CreateCheckOptions<D, C> = (
-	ctx: EventContext<D, C> | WebhookContext<D, C>,
+	ctx: EventContext<D, C>,
 ) => Omit<CreateCheck, "sha">;
 
 export function createCheck<D, C>(
@@ -148,7 +133,7 @@ export function createCheck<D, C>(
 }
 
 export type CreatePolicyRun<D, C> = (
-	ctx: EventContext<D, C> | WebhookContext<D, C>,
+	ctx: EventContext<D, C>,
 ) => { name?: string; title: string };
 
 export function createPolicyRun<D, C>(
@@ -191,14 +176,14 @@ function createDetails<D, C>(
 export function policyHandler<S, C>(parameters: {
 	id: CreateRepositoryId<S, C>;
 	details: (
-		ctx: EventContext<S, C> | WebhookContext<S, C>,
+		ctx: EventContext<S, C>,
 	) => {
 		name: string;
 		title: string;
 		body: string;
 	};
 	execute: (
-		ctx: (EventContext<S, C> | WebhookContext<S, C>) & {
+		ctx: EventContext<S, C> & {
 			state: {
 				id: AuthenticatedRepositoryId<any>;
 				details: PolicyDetails;
