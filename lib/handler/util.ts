@@ -54,11 +54,18 @@ export type ChainedHandler<D, C, S> = (
  * Chain a series of [[ChainedHandler]]s until the first one
  * returns a [[HandlerStatus]].
  */
-export function chain<D, C, S = any>(
-	...handlers: Array<ChainedHandler<D, C, S>>
-): EventHandler<D, C> | WebhookHandler<D, C> {
-	return async ctx => {
-		(ctx as any).state = {};
+export function chain<
+	D,
+	C,
+	S = any,
+	T extends EventHandler<D, C> | WebhookHandler<D, C> = EventHandler<D, C>
+>(...handlers: Array<ChainedHandler<D, C, S>>): T {
+	return (async (
+		ctx: (EventContext<D, C> | WebhookContext<D, C>) & {
+			state: S;
+		},
+	) => {
+		ctx.state = {} as any;
 		for (const handler of handlers) {
 			const result = await handler(ctx);
 			if (result) {
@@ -66,7 +73,7 @@ export function chain<D, C, S = any>(
 			}
 		}
 		return undefined;
-	};
+	}) as any;
 }
 
 export type CreateRepositoryId<D, C> = (
