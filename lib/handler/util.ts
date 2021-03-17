@@ -86,7 +86,7 @@ export type CreateCloneOptions<D, C> = (
 ) => CloneOptions;
 
 export function cloneRef<D, C>(
-	options: CloneOptions | CreateCloneOptions<D, C>,
+	options?: CloneOptions | CreateCloneOptions<D, C>,
 ): ChainedHandler<
 	D,
 	C,
