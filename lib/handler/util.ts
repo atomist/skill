@@ -123,11 +123,7 @@ export type CreateCheckOptions<D, C> = (
 
 export function createCheck<D, C>(
 	options: Omit<CreateCheck, "sha"> | CreateCheckOptions<D, C>,
-): ChainedHandler<
-	D,
-	C,
-	{ id: AuthenticatedRepositoryId<any>; check: Check } & any
-> {
+): ChainedHandler<D, C, { id: AuthenticatedRepositoryId<any>; check: Check }> {
 	return async ctx => {
 		if (!ctx.state.id) {
 			return failure(
@@ -153,7 +149,7 @@ export function createPolicyRun<D, C>(
 ): ChainedHandler<
 	D,
 	C,
-	{ id: AuthenticatedRepositoryId<any>; policy: PolicyRun } & any
+	{ id: AuthenticatedRepositoryId<any>; policy: PolicyRun }
 > {
 	return async ctx => {
 		if (!ctx.state.id) {
@@ -179,7 +175,7 @@ export interface PolicyDetails {
 
 function createDetails<D, C>(
 	options: (ctx: EventContext<D, C>) => PolicyDetails,
-): ChainedHandler<D, C, any & { details: PolicyDetails }> {
+): ChainedHandler<D, C, { details: PolicyDetails }> {
 	return async ctx => {
 		ctx.state.details = options(ctx as any);
 	};
