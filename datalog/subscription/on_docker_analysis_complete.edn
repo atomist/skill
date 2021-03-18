@@ -81,9 +81,6 @@
  [?discovery
   :analysis.discovery/status
   :analysis.discovery.status/FINISHED_SUCCESS]
- [?discovery
-  :analysis.discovery/source
-  :analysis.discovery.source/TRIVY]
 
  [?discovery :analysis.discovery/image ?image]
  [?image :docker.image/sha ?sha]
