@@ -75,7 +75,7 @@ function createDetails<D, C>(
 }
 
 export function handler<S, C>(parameters: {
-	when?: (ctx: EventContext<S, C>) => HandlerStatus | Promise<HandlerStatus>;
+	when?: (ctx: EventContext<S, C>) => HandlerStatus | undefined;
 	id: CreateRepositoryId<S, C>;
 	details: (
 		ctx: EventContext<S, C>,
