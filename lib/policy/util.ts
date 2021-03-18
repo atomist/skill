@@ -114,14 +114,14 @@ export function handler<S, C>(parameters: {
 		createRef<S, C>(parameters.id),
 		createDetails<S, C>(parameters.details),
 		createCheck<S, C>((ctx: any) => ({
-			name: ctx.state.details.name,
-			title: ctx.state.details.title,
-			body: ctx.state.details.body,
+			name: ctx.chain.details.name,
+			title: ctx.chain.details.title,
+			body: ctx.chain.details.body,
 			reuse: true,
 		})),
 		createPolicyRun<S, C>((ctx: any) => ({
-			name: ctx.state.details.name,
-			title: ctx.state.details.title,
+			name: ctx.chain.details.name,
+			title: ctx.chain.details.title,
 		})),
 		async ctx => {
 			const result = await parameters.execute(ctx);
