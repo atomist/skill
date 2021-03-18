@@ -75,6 +75,7 @@ function createDetails<D, C>(
 }
 
 export function handler<S, C>(parameters: {
+	when?: (ctx: EventContext<S, C>) => HandlerStatus | Promise<HandlerStatus>;
 	id: CreateRepositoryId<S, C>;
 	details: (
 		ctx: EventContext<S, C>,
@@ -111,6 +112,12 @@ export function handler<S, C>(parameters: {
 			policy: PolicyRun;
 		}
 	>(
+		async ctx => {
+			if (parameters.when) {
+				return parameters.when(ctx);
+			}
+			return undefined;
+		},
 		createRef<S, C>(parameters.id),
 		createDetails<S, C>(parameters.details),
 		createCheck<S, C>((ctx: any) => ({
