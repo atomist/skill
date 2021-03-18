@@ -39,7 +39,7 @@ import { failure } from "../status";
 import { EventContext, EventHandler, HandlerStatus } from "./handler";
 
 export type ChainedHandler<D, C, S> = (
-	context: EventContext<D, C> & { state: S },
+	context: EventContext<D, C> & { chain: S },
 ) => Promise<void | HandlerStatus>;
 
 /**
@@ -49,8 +49,8 @@ export type ChainedHandler<D, C, S> = (
 export function chain<D, C, S = any>(
 	...handlers: Array<ChainedHandler<D, C, S>>
 ): EventHandler<D, C> {
-	return async (ctx: EventContext<D, C> & { state: S }) => {
-		ctx.state = {} as any;
+	return async (ctx: EventContext<D, C> & { chain: S }) => {
+		ctx.chain = {} as any;
 		for (const handler of handlers) {
 			const result = await handler(ctx);
 			if (result) {
@@ -67,7 +67,7 @@ export type CreateRepositoryId<D, C> = (
 
 export function createRef<D, C>(
 	id: CreateRepositoryId<D, C>,
-): ChainedHandler<D, C, { id: AuthenticatedRepositoryId<any> }> {
+): ChainedHandler<D, C, { id?: AuthenticatedRepositoryId<any> }> {
 	return async ctx => {
 		let repositoryId: AuthenticatedRepositoryId<any> =
 			typeof id === "function" ? id(ctx) : (id as any);
@@ -77,7 +77,7 @@ export function createRef<D, C>(
 			);
 			repositoryId = gitHubComRepository({ ...repositoryId, credential });
 		}
-		ctx.state.id = repositoryId;
+		ctx.chain.id = repositoryId;
 	};
 }
 
@@ -90,16 +90,16 @@ export function cloneRef<D, C>(
 ): ChainedHandler<
 	D,
 	C,
-	{ id: AuthenticatedRepositoryId<any>; project: Project }
+	{ id?: AuthenticatedRepositoryId<any>; project?: Project }
 > {
 	return async ctx => {
-		if (!ctx.state.id) {
+		if (!ctx.chain.id) {
 			return failure(
-				"'id' missing in state. Make sure to include 'createRef' in handler chain",
+				"'id' missing in chain. Make sure to include 'createRef' in handler chain",
 			);
 		}
-		ctx.state.project = await ctx.project.clone(
-			ctx.state.id,
+		ctx.chain.project = await ctx.project.clone(
+			ctx.chain.id,
 			typeof options === "function" ? options(ctx) : options,
 		);
 		return undefined;
@@ -112,17 +112,21 @@ export type CreateCheckOptions<D, C> = (
 
 export function createCheck<D, C>(
 	options: Omit<CreateCheck, "sha"> | CreateCheckOptions<D, C>,
-): ChainedHandler<D, C, { id: AuthenticatedRepositoryId<any>; check: Check }> {
+): ChainedHandler<
+	D,
+	C,
+	{ id?: AuthenticatedRepositoryId<any>; check?: Check }
+> {
 	return async ctx => {
-		if (!ctx.state.id) {
+		if (!ctx.chain.id) {
 			return failure(
-				"'id' missing in state. Make sure to include 'createRef' in handler chain",
+				"'id' missing in chain. Make sure to include 'createRef' in handler chain",
 			);
 		}
 		const optsToUse =
 			typeof options === "function" ? options(ctx) : options;
-		ctx.state.check = await raiseCheck(ctx, ctx.state.id, {
-			sha: ctx.state.id.sha,
+		ctx.chain.check = await raiseCheck(ctx, ctx.chain.id, {
+			sha: ctx.chain.id.sha,
 			...optsToUse,
 		});
 		return undefined;
@@ -138,18 +142,18 @@ export function createPolicyRun<D, C>(
 ): ChainedHandler<
 	D,
 	C,
-	{ id: AuthenticatedRepositoryId<any>; policy: PolicyRun }
+	{ id?: AuthenticatedRepositoryId<any>; policy?: PolicyRun }
 > {
 	return async ctx => {
-		if (!ctx.state.id) {
+		if (!ctx.chain.id) {
 			return failure(
-				"'id' missing in state. Make sure to include 'createRef' in handler chain",
+				"'id' missing in chain. Make sure to include 'createRef' in handler chain",
 			);
 		}
 		const optsToUse =
 			typeof options === "function" ? options(ctx) : options;
-		ctx.state.policy = await pending(ctx as any, {
-			sha: ctx.state.id.sha,
+		ctx.chain.policy = await pending(ctx as any, {
+			sha: ctx.chain.id.sha,
 			...optsToUse,
 		});
 		return undefined;
@@ -164,9 +168,9 @@ export interface PolicyDetails {
 
 function createDetails<D, C>(
 	options: (ctx: EventContext<D, C>) => PolicyDetails,
-): ChainedHandler<D, C, { details: PolicyDetails }> {
+): ChainedHandler<D, C, { details?: PolicyDetails }> {
 	return async ctx => {
-		ctx.state.details = options(ctx as any);
+		ctx.chain.details = options(ctx as any);
 	};
 }
 
@@ -181,7 +185,7 @@ export function policyHandler<S, C>(parameters: {
 	};
 	execute: (
 		ctx: EventContext<S, C> & {
-			state: {
+			chain: {
 				id: AuthenticatedRepositoryId<any>;
 				details: PolicyDetails;
 				policy: PolicyRun;
@@ -236,28 +240,28 @@ export function policyHandler<S, C>(parameters: {
 			}
 
 			const body = `${await markdownLink({
-				sha: ctx.state.id.sha,
+				sha: ctx.chain.id.sha,
 				workspace: ctx.workspaceId,
-				name: ctx.state.details.name,
-				title: ctx.state.details.title,
+				name: ctx.chain.details.name,
+				title: ctx.chain.details.title,
 				state: result.state,
 				severity: result.severity,
 			})}${result.body ? `\n\n${result.body}` : ""}`;
 
-			await ctx.state.check.update({
+			await ctx.chain.check.update({
 				conclusion,
 				body,
 				annotations: result.annotations,
 			});
 			switch (result.state) {
 				case ResultEntityState.Success:
-					await ctx.state.policy.success(result.body);
+					await ctx.chain.policy.success(result.body);
 					break;
 				case ResultEntityState.Failure:
-					await ctx.state.policy.failed(result.severity, result.body);
+					await ctx.chain.policy.failed(result.severity, result.body);
 					break;
 				case ResultEntityState.Neutral:
-					await ctx.state.policy.neutral(result.body);
+					await ctx.chain.policy.neutral(result.body);
 					break;
 			}
 
