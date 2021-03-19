@@ -110,7 +110,9 @@ export type DockerImageWithVulnerabilities = DockerImage & {
 			vulnerabilities: Array<{ sourceId: string }>;
 		};
 	}>;
-	repository: { baseline: Array<{ cves: DockerImageVulnerability[] }> };
+	repository: {
+		baseline: Array<{ vulnerabilities: DockerImageVulnerability[] }>;
+	};
 	vulnerabilities: DockerImageVulnerability[];
 	dockerFile: {
 		path: string;

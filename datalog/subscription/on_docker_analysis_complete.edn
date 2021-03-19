@@ -47,11 +47,11 @@
                                  :name)
                                {(:vulnerability.cve.baseline/_on
                                   :as
-                                  :baseline) [{:vulnerability.cve.baseline/cves [:vulnerability.cve/source-id
-                                                                                 :vulnerability.cve/severity
-                                                                                 :vulnerability.cve/fix-available
-                                                                                 {:docker.analysis/affected [:docker.analysis.package/name
-                                                                                                             :docker.analysis.package/version]}]}]}]}
+                                  :baseline) [{:vulnerability.cve.baseline/vulnerabilities [:vulnerability.cve/source-id
+                                                                                            :vulnerability.cve/severity
+                                                                                            :vulnerability.cve/fix-available
+                                                                                            {:docker.analysis/affected [:docker.analysis.package/name
+                                                                                                                        :docker.analysis.package/version]}]}]}]}
     {:docker.analysis/vulnerabilities [:vulnerability.cve/source-id
                                        :vulnerability.cve/severity
                                        :vulnerability.cve/title
