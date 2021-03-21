@@ -25,6 +25,7 @@ import {
 	CreateRepositoryId,
 } from "../handler/util";
 import { CloneOptions } from "../project/clone";
+import { Project } from "../project/project";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { failure } from "../status";
 import { markdownLink } from "./badge";
@@ -113,6 +114,7 @@ export function handler<S, C>(parameters: {
 			details: PolicyDetails;
 			check: Check;
 			policy: PolicyRun;
+			project?: Project;
 		}
 	>(
 		async ctx => {
