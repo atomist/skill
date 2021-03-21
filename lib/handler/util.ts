@@ -59,13 +59,14 @@ export function createRef<D, C>(
 	return async ctx => {
 		const repositoryId: AuthenticatedRepositoryId<any> =
 			typeof id === "function" ? id(ctx) : (id as any);
-		let credential;
 		if (!repositoryId.credential) {
-			credential = await ctx.credential.resolve(
+			const credential = await ctx.credential.resolve(
 				gitHubAppToken(repositoryId),
 			);
+			ctx.chain.id = gitHubComRepository({ ...repositoryId, credential });
+		} else {
+			ctx.chain.id = gitHubComRepository({ ...repositoryId });
 		}
-		ctx.chain.id = gitHubComRepository({ ...repositoryId, credential });
 	};
 }
 
