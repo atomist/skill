@@ -184,3 +184,10 @@ export interface OnDockerAnalysisComplete {
 	commit: Commit;
 	image: [DockerImageWithVulnerabilities, BaseDockerImageWithVulnerabilities];
 }
+
+/**
+ * Subscription type to be used with the on_push datalog subscription
+ */
+export interface OnPush {
+	commit: Commit;
+}
