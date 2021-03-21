@@ -19,10 +19,12 @@ import { EventContext, EventHandler, HandlerStatus } from "../handler/handler";
 import {
 	chain,
 	ChainedHandler,
+	cloneRef,
 	createCheck,
 	createRef,
 	CreateRepositoryId,
 } from "../handler/util";
+import { CloneOptions } from "../project/clone";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { failure } from "../status";
 import { markdownLink } from "./badge";
@@ -77,6 +79,7 @@ function createDetails<D, C>(
 export function handler<S, C>(parameters: {
 	when?: (ctx: EventContext<S, C>) => HandlerStatus | undefined;
 	id: CreateRepositoryId<S, C>;
+	clone?: (ctx: EventContext<S, C>) => CloneOptions | boolean;
 	details: (
 		ctx: EventContext<S, C>,
 	) => {
@@ -119,6 +122,16 @@ export function handler<S, C>(parameters: {
 			return undefined;
 		},
 		createRef<S, C>(parameters.id),
+		async ctx => {
+			if (parameters.clone) {
+				if (typeof parameters.clone === "function") {
+					return cloneRef(parameters.clone(ctx) as any)(ctx);
+				} else {
+					return cloneRef()(ctx);
+				}
+			}
+			return undefined;
+		},
 		createDetails<S, C>(parameters.details),
 		createCheck<S, C>((ctx: any) => ({
 			name: ctx.chain.details.name,
