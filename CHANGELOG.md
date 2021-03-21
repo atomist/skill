@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 -   Add truncate helper. [641c6fd](https://github.com/atomist-skills/skill/commit/641c6fd059ea48950e6769f481305622a7eb1471)
+-   Add on_push subscription. [70c9a5b](https://github.com/atomist-skills/skill/commit/70c9a5ba0aa759a457d05854f3440db644e16410)
 
 ### Fixed
 
