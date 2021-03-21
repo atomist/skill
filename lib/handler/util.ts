@@ -57,15 +57,15 @@ export function createRef<D, C>(
 	id: CreateRepositoryId<D, C>,
 ): ChainedHandler<D, C, { id?: AuthenticatedRepositoryId<any> }> {
 	return async ctx => {
-		let repositoryId: AuthenticatedRepositoryId<any> =
+		const repositoryId: AuthenticatedRepositoryId<any> =
 			typeof id === "function" ? id(ctx) : (id as any);
+		let credential;
 		if (!repositoryId.credential) {
-			const credential = await ctx.credential.resolve(
+			credential = await ctx.credential.resolve(
 				gitHubAppToken(repositoryId),
 			);
-			repositoryId = gitHubComRepository({ ...repositoryId, credential });
 		}
-		ctx.chain.id = repositoryId;
+		ctx.chain.id = gitHubComRepository({ ...repositoryId, credential });
 	};
 }
 
