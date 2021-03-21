@@ -95,6 +95,7 @@ export function handler<S, C>(parameters: {
 				details: PolicyDetails;
 				policy: PolicyRun;
 				check: Check;
+				project?: Project;
 			};
 		},
 	) => Promise<{
