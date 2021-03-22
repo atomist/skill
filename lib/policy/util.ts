@@ -140,7 +140,6 @@ export function handler<S, C>(parameters: {
 			name: ctx.chain.details.name,
 			title: ctx.chain.details.title,
 			body: ctx.chain.details.body,
-			reuse: true,
 		})),
 		createPolicyRun<S, C>((ctx: any) => ({
 			name: ctx.chain.details.name,
