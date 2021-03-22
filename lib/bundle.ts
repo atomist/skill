@@ -108,7 +108,7 @@ export const bundle = async (
 		return processEvent(payload, context, async () => {
 			const loader = HandlerRegistry.events[payload.subscription.name];
 			if (loader) {
-				return wrapEventHandler(loader());
+				return wrapEventHandler(await loader());
 			} else {
 				throw new Error(
 					`Event handler with name '${payload.subscription.name}' not registered`,
