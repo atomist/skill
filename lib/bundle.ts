@@ -26,6 +26,7 @@ import {
 	WebhookHandler,
 } from "./handler/handler";
 import { debug, info } from "./log";
+import { wrapEventHandler } from "./map";
 import {
 	CommandIncoming,
 	EventIncoming,
@@ -107,7 +108,7 @@ export const bundle = async (
 		return processEvent(payload, context, async () => {
 			const loader = HandlerRegistry.events[payload.subscription.name];
 			if (loader) {
-				return loader();
+				return wrapEventHandler(loader());
 			} else {
 				throw new Error(
 					`Event handler with name '${payload.subscription.name}' not registered`,

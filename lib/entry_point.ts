@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-import { bundle, registerCommand, registerEvent } from "./bundle";
+import {
+	bundle,
+	registerCommand,
+	registerEvent,
+	registerWebhook,
+} from "./bundle";
 import { PubSubMessage } from "./function";
-import { CommandHandler, EventHandler } from "./handler/handler";
+import {
+	CommandHandler,
+	EventHandler,
+	WebhookHandler,
+} from "./handler/handler";
 
 export function entryPoint(
-	handlers: Record<string, CommandHandler | EventHandler>,
+	handlers: Record<string, CommandHandler | EventHandler | WebhookHandler>,
 ): (pubSubEvent: PubSubMessage, context: { eventId: string }) => Promise<void> {
 	for (const handler in handlers) {
 		registerCommand(
@@ -27,6 +36,10 @@ export function entryPoint(
 			async () => handlers[handler] as CommandHandler,
 		);
 		registerEvent(handler, async () => handlers[handler] as EventHandler);
+		registerWebhook(
+			handler,
+			async () => handlers[handler] as WebhookHandler,
+		);
 	}
 	return bundle;
 }
