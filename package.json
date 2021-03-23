@@ -106,6 +106,7 @@
     "lodash.map": "^4.6.0",
     "lodash.merge": "^4.6.2",
     "lodash.set": "^4.3.2",
+    "lodash.sortby": "^4.7.0",
     "lodash.uniq": "^4.5.0",
     "node-fetch": "^2.6.1",
     "p-retry": "^4.4.0",
