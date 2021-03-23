@@ -20,7 +20,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 43    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 587   |
+| [MIT](#mit)                     | 588   |
 | [Public Domain](#public-domain) | 1     |
 | [Python-2.0](#python-20)        | 1     |
 
@@ -611,6 +611,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `lodash.once`                                        | `4.1.1`        | John-David Dalton              | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
 | `lodash.set`                                         | `4.3.2`        | John-David Dalton              | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
 | `lodash.snakecase`                                   | `4.1.1`        | John-David Dalton              | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
+| `lodash.sortby`                                      | `4.7.0`        | John-David Dalton              | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
 | `lodash.union`                                       | `4.6.0`        | John-David Dalton              | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
 | `lodash.uniq`                                        | `4.5.0`        | John-David Dalton              | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
 | `lodash`                                             | `4.17.21`      | John-David Dalton              | [https://github.com/lodash/lodash](https://github.com/lodash/lodash)                                                                                                                                 |
