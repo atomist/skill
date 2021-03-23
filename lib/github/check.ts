@@ -152,6 +152,16 @@ export async function createCheck(
 		data: check.data,
 		update: async params => {
 			const gh = api(id);
+			const output = {
+				title: check.data.output.title,
+				summary: truncateText(
+					params.body
+						? `${params.body}\n${formatFooter(
+								ctx,
+						  )}\n${formatMarkers(ctx)}`
+						: check.data.output.summary,
+				),
+			};
 			const chunks = chunk(
 				(params.annotations || []).map(c => ({
 					annotation_level: c.annotationLevel,
@@ -171,6 +181,7 @@ export async function createCheck(
 					repo: id.repo,
 					check_run_id: check.data.id,
 					output: {
+						...output,
 						annotations: ch,
 					},
 				});
@@ -184,16 +195,7 @@ export async function createCheck(
 					? new Date().toISOString()
 					: undefined,
 				status: params.conclusion ? "completed" : "in_progress",
-				output: {
-					title: check.data.output.title,
-					summary: truncateText(
-						params.body
-							? `${params.body}\n${formatFooter(
-									ctx,
-							  )}\n${formatMarkers(ctx)}`
-							: check.data.output.summary,
-					),
-				},
+				output,
 				actions: params.actions,
 			});
 			if (params.conclusion) {
