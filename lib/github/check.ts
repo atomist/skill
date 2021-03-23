@@ -22,6 +22,7 @@ import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 import { isStaging } from "../util";
 import { api, formatFooter, formatMarkers } from "./operation";
 import chunk = require("lodash.chunk");
+import sortBy = require("lodash.sortby");
 
 export interface CreateCheck {
 	sha: string;
@@ -163,16 +164,19 @@ export async function createCheck(
 				),
 			};
 			const chunks = chunk(
-				(params.annotations || []).map(c => ({
-					annotation_level: c.annotationLevel,
-					title: c.title,
-					end_column: c.endColumn,
-					end_line: c.endLine,
-					message: c.message,
-					path: c.path,
-					start_column: c.startColumn,
-					start_line: c.startLine,
-				})),
+				sortBy(
+					(params.annotations || []).map(c => ({
+						annotation_level: c.annotationLevel,
+						title: c.title,
+						end_column: c.endColumn,
+						end_line: c.endLine,
+						message: c.message,
+						path: c.path,
+						start_column: c.startColumn,
+						start_line: c.startLine,
+					})),
+					["path", "start_line", "start_column", "title", "message"],
+				),
 				50,
 			);
 			for (const ch of chunks) {

@@ -97,7 +97,7 @@ export function cloneRef<D, C>(
 
 export type CreateCheckOptions<D, C> = (
 	ctx: EventContext<D, C>,
-) => Omit<CreateCheck, "sha">;
+) => Omit<CreateCheck, "sha"> | Promise<Omit<CreateCheck, "sha">>;
 
 export function createCheck<D, C>(
 	options: Omit<CreateCheck, "sha"> | CreateCheckOptions<D, C>,
@@ -113,7 +113,7 @@ export function createCheck<D, C>(
 			);
 		}
 		const optsToUse =
-			typeof options === "function" ? options(ctx) : options;
+			typeof options === "function" ? await options(ctx) : options;
 		ctx.chain.check = await raiseCheck(ctx, ctx.chain.id, {
 			sha: ctx.chain.id.sha,
 			...optsToUse,

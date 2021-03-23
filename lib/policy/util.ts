@@ -136,10 +136,18 @@ export function handler<S, C>(parameters: {
 			return undefined;
 		},
 		createDetails<S, C>(parameters.details),
-		createCheck<S, C>((ctx: any) => ({
+		createCheck<S, C>(async (ctx: any) => ({
 			name: ctx.chain.details.name,
 			title: ctx.chain.details.title,
-			body: ctx.chain.details.body,
+			body: `${await markdownLink({
+				sha: ctx.chain.id.sha,
+				workspace: ctx.workspaceId,
+				name: ctx.chain.details.name,
+				title: ctx.chain.details.title,
+				state: ResultEntityState.Pending,
+			})}\n\n${
+				ctx.chain.details.body ? `\n\n${ctx.chain.details.body}` : ""
+			}`,
 		})),
 		createPolicyRun<S, C>((ctx: any) => ({
 			name: ctx.chain.details.name,
