@@ -116,6 +116,7 @@ export async function createCheck(
 			external_id: ctx.correlationId,
 			details_url: ctx.audit.url,
 			status: "in_progress",
+			conclusion: undefined,
 			output: {
 				title: parameters.title,
 				summary: truncateText(
@@ -150,7 +151,9 @@ export async function createCheck(
 	return {
 		data: check.data,
 		update: async params => {
-			await api(id).checks.update({
+			const gh = api(id);
+			const chunks = chunk(params.annotations || [], 50);
+			const request = {
 				owner: id.owner,
 				repo: id.repo,
 				check_run_id: check.data.id,
@@ -168,55 +171,22 @@ export async function createCheck(
 							  )}\n${formatMarkers(ctx)}`
 							: check.data.output.summary,
 					),
+					annotations: chunks.length > 0 ? chunks[0] : [],
 				},
 				actions: params.actions,
-			});
-			await updateAnnotation(ctx, id, check, params);
+			};
+			await gh.checks.update(request);
+			if (chunks.length > 1) {
+				for (const ch of chunks.slice(1)) {
+					request.output.annotations = ch;
+					await gh.checks.update(request);
+				}
+			}
 			if (params.conclusion) {
 				terminated = true;
 			}
 		},
 	};
-}
-
-async function updateAnnotation(
-	ctx: Contextual<any, any>,
-	id: AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
-	check:
-		| RestEndpointMethodTypes["checks"]["create"]["response"]
-		| RestEndpointMethodTypes["checks"]["update"]["response"],
-	parameters: UpdateCheck,
-): Promise<void> {
-	const gh = api(id);
-	const chunks = chunk(parameters.annotations || [], 50);
-	for (const ch of chunks) {
-		await gh.checks.update({
-			owner: id.owner,
-			repo: id.repo,
-			check_run_id: check.data.id,
-			output: {
-				title: check.data.output.title,
-				summary: truncateText(
-					parameters.body
-						? `${parameters.body}\n${formatFooter(
-								ctx,
-						  )}\n${formatMarkers(ctx)}`
-						: check.data.output.summary,
-				),
-				annotations: ch.map(c => ({
-					annotation_level: c.annotationLevel,
-					title: c.title,
-					end_column: c.endColumn,
-					end_line: c.endLine,
-					message: c.message,
-					path: c.path,
-					start_column: c.startColumn,
-					start_line: c.startLine,
-				})),
-			},
-			actions: parameters.actions,
-		});
-	}
 }
 
 /**
