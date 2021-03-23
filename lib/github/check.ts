@@ -152,7 +152,19 @@ export async function createCheck(
 		data: check.data,
 		update: async params => {
 			const gh = api(id);
-			const chunks = chunk(params.annotations || [], 50);
+			const chunks = chunk(
+				(params.annotations || []).map(c => ({
+					annotation_level: c.annotationLevel,
+					title: c.title,
+					end_column: c.endColumn,
+					end_line: c.endLine,
+					message: c.message,
+					path: c.path,
+					start_column: c.startColumn,
+					start_line: c.startLine,
+				})),
+				50,
+			);
 			const request = {
 				owner: id.owner,
 				repo: id.repo,
