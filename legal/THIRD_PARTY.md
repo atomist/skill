@@ -20,7 +20,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 43    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 586   |
+| [MIT](#mit)                     | 587   |
 | [Public Domain](#public-domain) | 1     |
 | [Python-2.0](#python-20)        | 1     |
 
@@ -341,6 +341,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `@types/lodash.map`                                  | `4.6.13`       |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
 | `@types/lodash.merge`                                | `4.6.6`        |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
 | `@types/lodash.set`                                  | `4.3.6`        |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
+| `@types/lodash.sortby`                               | `4.7.6`        |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
 | `@types/lodash.uniq`                                 | `4.5.6`        |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
 | `@types/lodash`                                      | `4.14.168`     |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
 | `@types/long`                                        | `4.0.1`        |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
