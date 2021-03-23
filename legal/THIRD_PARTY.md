@@ -194,7 +194,7 @@ ISC License - [https://www.isc.org/downloads/software-support-policy/isc-license
 | `require-main-filename`     | `2.0.0`   | Ben Coe            | [https://github.com/yargs/require-main-filename](https://github.com/yargs/require-main-filename)             |
 | `semver`                    | `5.7.1`   |                    | [https://github.com/npm/node-semver](https://github.com/npm/node-semver)                                     |
 | `semver`                    | `6.3.0`   |                    | [https://github.com/npm/node-semver](https://github.com/npm/node-semver)                                     |
-| `semver`                    | `7.3.4`   |                    | [https://github.com/npm/node-semver](https://github.com/npm/node-semver)                                     |
+| `semver`                    | `7.3.5`   |                    | [https://github.com/npm/node-semver](https://github.com/npm/node-semver)                                     |
 | `set-blocking`              | `2.0.0`   | Ben Coe            | [https://github.com/yargs/set-blocking](https://github.com/yargs/set-blocking)                               |
 | `setprototypeof`            | `1.2.0`   | Wes Todd           | [https://github.com/wesleytodd/setprototypeof](https://github.com/wesleytodd/setprototypeof)                 |
 | `signal-exit`               | `3.0.3`   | Ben Coe            | [https://github.com/tapjs/signal-exit](https://github.com/tapjs/signal-exit)                                 |
