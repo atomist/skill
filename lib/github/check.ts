@@ -165,7 +165,17 @@ export async function createCheck(
 				})),
 				50,
 			);
-			const request = {
+			for (const ch of chunks) {
+				await gh.checks.update({
+					owner: id.owner,
+					repo: id.repo,
+					check_run_id: check.data.id,
+					output: {
+						annotations: ch,
+					},
+				});
+			}
+			await gh.checks.update({
 				owner: id.owner,
 				repo: id.repo,
 				check_run_id: check.data.id,
@@ -183,17 +193,9 @@ export async function createCheck(
 							  )}\n${formatMarkers(ctx)}`
 							: check.data.output.summary,
 					),
-					annotations: chunks.length > 0 ? chunks[0] : [],
 				},
 				actions: params.actions,
-			};
-			await gh.checks.update(request);
-			if (chunks.length > 1) {
-				for (const ch of chunks.slice(1)) {
-					request.output.annotations = ch;
-					await gh.checks.update(request);
-				}
-			}
+			});
 			if (params.conclusion) {
 				terminated = true;
 			}
