@@ -57,7 +57,7 @@
     "@atomist/skill-logging": "^0.2.6",
     "@atomist/slack-messages": "^1.2.2",
     "@google-cloud/pubsub": "^2.10.0",
-    "@google-cloud/storage": "^5.8.1",
+    "@google-cloud/storage": "^5.8.2",
     "@graphql-codegen/cli": "^1.21.3",
     "@graphql-codegen/typescript": "^1.21.1",
     "@graphql-codegen/typescript-operations": "^1.17.15",
