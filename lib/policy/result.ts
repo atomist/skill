@@ -21,6 +21,7 @@ export enum ResultEntityState {
 	Pending = ":policy.result.state/PENDING",
 	Success = ":policy.result.state/SUCCESS",
 	Failure = ":policy.result.state/FAILURE",
+	ActionRequired = ":policy.result.state/ACTION_REQUIRED",
 	Neutral = ":policy.result.state/NEUTRAL",
 }
 
@@ -77,6 +78,10 @@ export type ResultOwnerEntity = {
 
 export interface PolicyRun {
 	failed: (severity: ResultEntitySeverity, message?: string) => Promise<void>;
+	actionRequired: (
+		severity: ResultEntitySeverity,
+		message?: string,
+	) => Promise<void>;
 	neutral: (message?: string) => Promise<void>;
 	success: (message?: string) => Promise<void>;
 }
@@ -132,6 +137,8 @@ export async function pending(
 	return {
 		failed: (severity, msg) =>
 			update(ResultEntityState.Failure)(msg, severity),
+		actionRequired: (severity, msg) =>
+			update(ResultEntityState.ActionRequired)(msg, severity),
 		neutral: msg => update(ResultEntityState.Neutral)(msg),
 		success: msg => update(ResultEntityState.Success)(msg),
 	};

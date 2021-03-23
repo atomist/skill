@@ -153,8 +153,11 @@ export function handler<S, C>(parameters: {
 				case ResultEntityState.Success:
 					conclusion = "success";
 					break;
-				case ResultEntityState.Failure:
+				case ResultEntityState.ActionRequired:
 					conclusion = "action_required";
+					break;
+				case ResultEntityState.Failure:
+					conclusion = "failure";
 					break;
 				case ResultEntityState.Neutral:
 					conclusion = "neutral";
@@ -178,6 +181,12 @@ export function handler<S, C>(parameters: {
 			switch (result.state) {
 				case ResultEntityState.Success:
 					await ctx.chain.policy.success(result.body);
+					break;
+				case ResultEntityState.ActionRequired:
+					await ctx.chain.policy.actionRequired(
+						result.severity,
+						result.body,
+					);
 					break;
 				case ResultEntityState.Failure:
 					await ctx.chain.policy.failed(result.severity, result.body);
