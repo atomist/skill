@@ -22,7 +22,7 @@ import { Contextual, HandlerStatus } from "../handler/handler";
 import { debug } from "../log/console";
 import { Project } from "../project/project";
 import * as status from "../status";
-import { hash } from "../util";
+import { hash, toArray } from "../util";
 import { api, formatMarkers } from "./operation";
 
 import uniq = require("lodash.uniq");
@@ -204,6 +204,22 @@ async function ensurePullRequest(
 ${files.length === 1 ? "File" : "Files"} changed:
 
 ${files.map(f => `-   \`${f}\``).join("\n")}
+
+<!-- atomist:hide -->
+---
+
+<p align="center">
+<sub>
+<a href="https://go.atomist.com/catalog/skills/${ctx.skill.namespace}/${
+		ctx.skill.name
+	}">${ctx.skill.namespace}/${ctx.skill.name}</a> \u00B7 ${toArray(
+		ctx.configuration,
+	)
+		.map(c => `<a href="${c.url}">Configure</a>`)
+		.join("\u00B7")}
+</sub>
+</p>
+<!-- atomist:show -->
 
 ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 `;
