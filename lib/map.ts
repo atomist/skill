@@ -17,13 +17,22 @@
 import camelCase = require("lodash.camelcase");
 import { Severity } from "@atomist/skill-logging";
 
-import { EventHandler } from "./handler/handler";
+import { EventHandler, MappingEventHandler } from "./handler/handler";
 import { warn } from "./log/console";
 import { prepareStatus } from "./message";
 import { toArray } from "./util";
 
 export function wrapEventHandler(eh: EventHandler): EventHandler {
 	return async ctx => {
+		const meh = (eh as any) as MappingEventHandler;
+		if (typeof meh !== "function" && meh.map && meh.handle) {
+			const data = meh.map(ctx.data);
+			return meh.handle({
+				...ctx,
+				data,
+			});
+		}
+
 		if (Array.isArray(ctx.data)) {
 			const results = [];
 			for (const event of ctx.data) {
@@ -50,6 +59,7 @@ export function wrapEventHandler(eh: EventHandler): EventHandler {
 				}, 0),
 				reason: results
 					.filter(r => r.reason)
+					.filter(r => r.visibility !== "hidden")
 					.map(r => r.reason)
 					.join(", "),
 				visibility: results.some(r => r.visibility !== "hidden")

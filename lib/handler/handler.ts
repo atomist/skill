@@ -125,6 +125,11 @@ export type EventHandler<E = any, C = any> = (
 	context: EventContext<E, C>,
 ) => Promise<void | HandlerStatus>;
 
+export type MappingEventHandler<E = any, R = any, C = any> = {
+	handle: EventHandler<E, C>;
+	map: (data: R[]) => E;
+};
+
 export type WebhookHandler<B = any, C = any> = (
 	context: WebhookContext<B, C>,
 ) => Promise<void | HandlerStatus>;
