@@ -91,13 +91,17 @@ export function formatFooter(ctx: Contextual<any, any>): string {
 	return `
 ---
 
-<sub>Skill: [\`${ctx.skill.namespace}/${ctx.skill.name}@${
-		ctx.skill.version
-	}\`](https://go.atomist.com/catalog/skills/${ctx.skill.namespace}/${
+<p align="center">
+<sub>
+<a href="https://go.atomist.com/catalog/skills/${ctx.skill.namespace}/${
 		ctx.skill.name
-	}) \u00B7 Configuration: ${toArray(ctx.configuration)
-		.map(c => `[\`${c.name}\`](${c.url})`)
-		.join("\u00B7")}</sub>`;
+	}">${ctx.skill.namespace}/${ctx.skill.name}</a> \u00B7 ${toArray(
+		ctx.configuration,
+	)
+		.map(c => `<a href="${c.url}">Configure</a>`)
+		.join("\u00B7")}
+</sub>
+</p>`;
 }
 
 export async function convergeLabel(
