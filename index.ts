@@ -87,6 +87,7 @@ export {
 	EventContext,
 	EventHandler,
 	HandlerStatus,
+	MappingEventHandler,
 	WebhookContext,
 	WebhookHandler,
 } from "./lib/handler/handler";
