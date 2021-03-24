@@ -203,7 +203,12 @@ async function ensurePullRequest(
 
 ${files.length === 1 ? "File" : "Files"} changed:
 
-${files.map(f => `-   \`${f}\``).join("\n")}
+${files
+	.map(
+		f =>
+			`-   [\`${f}\`](https://github.com/${project.id.owner}/${project.id.repo}/blob/${push.branch}/${f})`,
+	)
+	.join("\n")}
 
 <!-- atomist:hide -->
 ---
