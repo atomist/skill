@@ -33,7 +33,7 @@ export function isSubscriptionIncoming(
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	event: any,
 ): event is SubscriptionIncoming {
-	return !!event.subscription;
+	return !!event.subscription && !event.data;
 }
 
 export function workspaceId(
