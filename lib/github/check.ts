@@ -17,6 +17,7 @@
 import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types";
 
 import { Contextual } from "../handler/handler";
+import { isSubscriptionIncoming } from "../payload";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 import { isStaging } from "../util";
@@ -75,6 +76,9 @@ export async function createCheck(
 	parameters: CreateCheck,
 ): Promise<Check> {
 	let terminated = false;
+	const externalId = isSubscriptionIncoming(ctx.trigger)
+		? ctx.trigger.subscription.tx
+		: ctx.correlationId;
 	// Check if there is a check open with that name
 	const openChecks = (
 		await api(id).checks.listForRef({
@@ -114,7 +118,7 @@ export async function createCheck(
 			repo: id.repo,
 			check_run_id: openCheck.id,
 			started_at: parameters.startedAt || new Date().toISOString(),
-			external_id: ctx.correlationId,
+			external_id: externalId,
 			details_url: ctx.audit.url,
 			status: "in_progress",
 			conclusion: undefined,
@@ -135,7 +139,7 @@ export async function createCheck(
 			head_sha: parameters.sha,
 			name: parameters.name,
 			started_at: parameters.startedAt || new Date().toISOString(),
-			external_id: ctx.correlationId,
+			external_id: externalId,
 			details_url: ctx.audit.url,
 			status: "in_progress",
 			output: {

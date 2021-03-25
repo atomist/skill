@@ -15,6 +15,7 @@
  */
 
 import { Check, UpdateCheck } from "../github/check";
+import { api } from "../github/operation";
 import { EventContext, EventHandler, HandlerStatus } from "../handler/handler";
 import {
 	chain,
@@ -24,10 +25,12 @@ import {
 	createRef,
 	CreateRepositoryId,
 } from "../handler/util";
+import { SubscriptionIncoming } from "../payload";
 import { CloneOptions } from "../project/clone";
 import { Project } from "../project/project";
 import { AuthenticatedRepositoryId } from "../repository/id";
-import { failure } from "../status";
+import { failure, success } from "../status";
+import { isStaging } from "../util";
 import { markdownLink } from "./badge";
 import {
 	pending,
@@ -136,6 +139,30 @@ export function handler<S, C>(parameters: {
 			return undefined;
 		},
 		createDetails<S, C>(parameters.details),
+		async ctx => {
+			const app = isStaging() ? "atomista" : "atomist";
+			const tx = (ctx.trigger as SubscriptionIncoming).subscription.tx;
+			const checks = (
+				await api(ctx.chain.id).checks.listForRef({
+					owner: ctx.chain.id.owner,
+					repo: ctx.chain.id.repo,
+					ref: ctx.chain.id.sha,
+					check_name: ctx.chain.details.name,
+					filter: "latest",
+				})
+			).data;
+			if (
+				checks.check_runs
+					.filter(c => c.app.slug === app)
+					.filter(c => Number.isInteger(c.external_id))
+					.some(c => +c.external_id > tx)
+			) {
+				return success(
+					"Skipping execution of outdated subscription result",
+				).hidden();
+			}
+			return undefined;
+		},
 		createCheck<S, C>(async (ctx: any) => ({
 			name: ctx.chain.details.name,
 			title: ctx.chain.details.title,
