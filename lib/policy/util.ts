@@ -154,7 +154,7 @@ export function handler<S, C>(parameters: {
 			if (
 				checks.check_runs
 					.filter(c => c.app.slug === app)
-					.filter(c => Number.isInteger(c.external_id))
+					.filter(c => !isNaN(+c.external_id))
 					.some(c => +c.external_id > tx)
 			) {
 				return success(
