@@ -2,10 +2,13 @@ FROM ubuntu:rolling@sha256:37586e1b9bab0a851b639c9102b002475987c336fa3433fa01b6a
 
 # Install some common packages
 RUN apt-get update && apt-get install -y \
+        build-essential \
+        && rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && apt-get install -y \
         curl \
         wget \
         gnupg \
-        build-essential \
         dumb-init \
         rlwrap \
         && rm -rf /var/lib/apt/lists/*
