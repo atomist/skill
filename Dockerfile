@@ -1,4 +1,4 @@
-FROM ubuntu:rolling@sha256:37586e1b9bab0a851b639c9102b002475987c336fa3433fa01b6abf98dfdc2a7
+FROM ubuntu:rolling@sha256:8f6f3f52f4369200f9b446a47d98e194e30bc554e667a98cdddd4f30e9549ea5
 
 # Install some common packages
 RUN apt-get update && apt-get install -y \
