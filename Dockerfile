@@ -18,7 +18,8 @@ RUN apt-get update && apt-get install -y \
 
 # Install node and npm
 RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-    apt-get -y install nodejs
+    apt-get -y install nodejs && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install the Atomist Skill CLI
 RUN npm i -g @atomist/skill@next
