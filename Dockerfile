@@ -1,4 +1,4 @@
-FROM ubuntu:rolling@sha256:37586e1b9bab0a851b639c9102b002475987c336fa3433fa01b6abf98dfdc2a7
+FROM ubuntu:rolling@sha256:5ecc0d5a84c0d82444a97da0391058d01f40d0594e54b065d431092dc5f7ed43
 
 # ENV VARs needed for Node.js
 ENV BLUEBIRD_WARNINGS 0
