@@ -29,5 +29,4 @@
    "DockerRegistry"
    "analysis"
    ?docker-registry)
- [?docker-image :docker.image/sha ?sha]
  [(missing? $ ?docker-image :docker.image/sha)]]
