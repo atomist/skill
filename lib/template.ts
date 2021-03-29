@@ -62,6 +62,7 @@ async function findTemplate(
 		.find(
 			s =>
 				!s.getFileName().includes("node_modules/@atomist/skill") &&
+				!s.getFileName().endsWith("lib/template.js") &&
 				s.getFileName().startsWith("/"),
 		);
 
