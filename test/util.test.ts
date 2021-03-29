@@ -98,7 +98,7 @@ describe("util", () => {
 			assert.deepStrictEqual(bytes(undefined), undefined);
 		});
 		it("should format +", () => {
-			assert.deepStrictEqual(bytes("+"), undefined);
+			assert.deepStrictEqual(bytes("+"), "+");
 		});
 		it("should format 1024", () => {
 			assert.deepStrictEqual(bytes("1024"), "1.0kb");
