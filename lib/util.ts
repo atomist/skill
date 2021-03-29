@@ -182,8 +182,11 @@ export function guid(): string {
 
 const units = ["b", "kb", "mb", "gb", "tb", "pb"];
 export function bytes(x: string): string {
-	let l = 0,
-		n = parseInt(x, 10) || 0;
+	if (x === undefined || isNaN(+x)) {
+		return undefined;
+	}
+	let l = 0;
+	let n = parseInt(x, 10) || 0;
 
 	while (n >= 1024 && ++l) {
 		n = n / 1024;

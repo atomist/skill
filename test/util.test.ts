@@ -16,7 +16,7 @@
 
 import * as assert from "assert";
 
-import { extractParameters, guid, truncate } from "../lib/util";
+import { bytes, extractParameters, guid, truncate } from "../lib/util";
 
 describe("util", () => {
 	describe("extractParameters", () => {
@@ -90,6 +90,18 @@ describe("util", () => {
 				truncate(text, 20, { separator: "[...]", direction: "start" }),
 				"[...]tempor invidunt",
 			);
+		});
+	});
+
+	describe("bytes", () => {
+		it("should format undefined", () => {
+			assert.deepStrictEqual(bytes(undefined), undefined);
+		});
+		it("should format +", () => {
+			assert.deepStrictEqual(bytes("+"), undefined);
+		});
+		it("should format 1024", () => {
+			assert.deepStrictEqual(bytes("1024"), "1.0kb");
 		});
 	});
 });
