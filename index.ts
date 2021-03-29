@@ -105,6 +105,7 @@ export {} from "./lib/payload";
 export * as state from "./lib/state";
 export * as status from "./lib/status";
 export { runSteps, Step, StepListener } from "./lib/steps";
+export * as template from "./lib/template";
 export {
 	guid,
 	handleError,
