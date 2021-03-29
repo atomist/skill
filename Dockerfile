@@ -22,7 +22,8 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     rm -rf /var/lib/apt/lists/*
 
 # Install the Atomist Skill CLI
-RUN npm i -g @atomist/skill@next
+RUN npm i -g @atomist/skill@next \
+    && npm cache clean --force
 
 WORKDIR "/atm/home"
 
