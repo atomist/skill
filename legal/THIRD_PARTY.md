@@ -12,7 +12,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | ------------------------------- | ----- |
 | [0BSD](#0bsd)                   | 3     |
 | [Apache-2.0](#apache-20)        | 39    |
-| [BSD-2-Clause](#bsd-2-clause)   | 10    |
+| [BSD-2-Clause](#bsd-2-clause)   | 11    |
 | [BSD-3-Clause](#bsd-3-clause)   | 23    |
 | [CC-BY-4.0](#cc-by-40)          | 1     |
 | [CC0-1.0](#cc0-10)              | 2     |
@@ -20,7 +20,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 43    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 589   |
+| [MIT](#mit)                     | 592   |
 | [Public Domain](#public-domain) | 1     |
 | [Python-2.0](#python-20)        | 1     |
 
@@ -95,6 +95,7 @@ BSD 2-Clause "Simplified" License - [https://opensource.org/licenses/BSD-2-Claus
 | `http-cache-semantics`       | `4.1.0`  | Kornel Lesiński   | [https://github.com/kornelski/http-cache-semantics](https://github.com/kornelski/http-cache-semantics)                     |
 | `rc`                         | `1.2.8`  | Dominic Tarr      | [https://github.com/dominictarr/rc](https://github.com/dominictarr/rc)                                                     |
 | `shimmer`                    | `1.2.1`  | Forrest L Norvell | [https://github.com/othiym23/shimmer](https://github.com/othiym23/shimmer)                                                 |
+| `uglify-js`                  | `3.13.3` | Mihai Bazon       | [https://github.com/mishoo/UglifyJS](https://github.com/mishoo/UglifyJS)                                                   |
 | `uri-js`                     | `4.4.1`  | Gary Court        | [https://github.com/garycourt/uri-js](https://github.com/garycourt/uri-js)                                                 |
 
 #### BSD-3-Clause
@@ -508,6 +509,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `graphql-ws`                                         | `4.1.5`        |                                | [https://github.com/enisdenjo/graphql-ws](https://github.com/enisdenjo/graphql-ws)                                                                                                                   |
 | `graphql`                                            | `15.5.0`       |                                | [https://github.com/graphql/graphql-js](https://github.com/graphql/graphql-js)                                                                                                                       |
 | `gtoken`                                             | `5.2.1`        | Google, LLC                    | [https://github.com/google/node-gtoken](https://github.com/google/node-gtoken)                                                                                                                       |
+| `handlebars`                                         | `4.7.7`        | Yehuda Katz                    | [https://github.com/wycats/handlebars.js](https://github.com/wycats/handlebars.js)                                                                                                                   |
 | `has-ansi`                                           | `2.0.0`        | Sindre Sorhus                  | [https://github.com/sindresorhus/has-ansi](https://github.com/sindresorhus/has-ansi)                                                                                                                 |
 | `has-bigints`                                        | `1.0.1`        | Jordan Harband                 | [https://github.com/ljharb/has-bigints](https://github.com/ljharb/has-bigints)                                                                                                                       |
 | `has-flag`                                           | `3.0.0`        | Sindre Sorhus                  | [https://github.com/sindresorhus/has-flag](https://github.com/sindresorhus/has-flag)                                                                                                                 |
@@ -639,6 +641,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `minimist`                                           | `1.2.5`        | James Halliday                 | [https://github.com/substack/minimist](https://github.com/substack/minimist)                                                                                                                         |
 | `mkdirp`                                             | `1.0.4`        |                                | [https://github.com/isaacs/node-mkdirp](https://github.com/isaacs/node-mkdirp)                                                                                                                       |
 | `ms`                                                 | `2.1.2`        |                                | [https://github.com/zeit/ms](https://github.com/zeit/ms)                                                                                                                                             |
+| `neo-async`                                          | `2.6.2`        |                                | [https://github.com/suguru03/neo-async](https://github.com/suguru03/neo-async)                                                                                                                       |
 | `no-case`                                            | `3.0.4`        | Blake Embrey                   | [https://github.com/blakeembrey/change-case](https://github.com/blakeembrey/change-case)                                                                                                             |
 | `node-fetch`                                         | `2.6.1`        | David Frank                    | [https://github.com/bitinn/node-fetch](https://github.com/bitinn/node-fetch)                                                                                                                         |
 | `node-int64`                                         | `0.4.0`        | Robert Kieffer                 | [https://github.com/broofa/node-int64](https://github.com/broofa/node-int64)                                                                                                                         |
@@ -796,6 +799,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `valid-url`                                          | `1.0.9`        |                                | [https://github.com/ogt/valid-url](https://github.com/ogt/valid-url)                                                                                                                                 |
 | `whatwg-fetch`                                       | `3.6.2`        |                                | [https://github.com/github/fetch](https://github.com/github/fetch)                                                                                                                                   |
 | `which-boxed-primitive`                              | `1.0.2`        | Jordan Harband                 | [https://github.com/inspect-js/which-boxed-primitive](https://github.com/inspect-js/which-boxed-primitive)                                                                                           |
+| `wordwrap`                                           | `1.0.0`        | James Halliday                 | [https://github.com/substack/node-wordwrap](https://github.com/substack/node-wordwrap)                                                                                                               |
 | `wrap-ansi`                                          | `3.0.1`        | Sindre Sorhus                  | [https://github.com/chalk/wrap-ansi](https://github.com/chalk/wrap-ansi)                                                                                                                             |
 | `wrap-ansi`                                          | `6.2.0`        | Sindre Sorhus                  | [https://github.com/chalk/wrap-ansi](https://github.com/chalk/wrap-ansi)                                                                                                                             |
 | `wrap-ansi`                                          | `7.0.0`        | Sindre Sorhus                  | [https://github.com/chalk/wrap-ansi](https://github.com/chalk/wrap-ansi)                                                                                                                             |
