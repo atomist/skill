@@ -23,6 +23,7 @@ import { debug } from "../log/console";
 import { Project } from "../project/project";
 import * as status from "../status";
 import { hash, toArray } from "../util";
+import { truncateText } from "./check";
 import { api, formatMarkers } from "./operation";
 
 import uniq = require("lodash.uniq");
@@ -197,7 +198,7 @@ async function ensurePullRequest(
 
 	const slug = `${project.id.owner}/${project.id.repo}`;
 	const repoUrl = `https://github.com/${slug}`;
-	const body = `${pullRequest.body.trim()}
+	const body = truncateText(`${pullRequest.body.trim()}
 
 ---
 
@@ -227,7 +228,7 @@ ${files
 <!-- atomist:show -->
 
 ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
-`;
+`);
 
 	const openPrs = await gh.paginate(gh.pulls.list, {
 		owner: project.id.owner,
@@ -237,20 +238,18 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 		head: `${project.id.owner}:${pullRequest.branch}`,
 	});
 	const newPr = openPrs.length !== 1;
+	let pushRequired = true;
 	if (!newPr) {
 		const body = openPrs[0].body;
 		const diffRegexp = /\[atomist-diff:([^\]]*)\]/;
 		const diffMatch = diffRegexp.exec(body);
 		if (diffMatch?.[1] === diffHash) {
-			const pr = openPrs[0];
-			return status.success(
-				`No changes pushed to ` +
-					`[${slug}/${pullRequest.branch}](${repoUrl})` +
-					` because [#${pr.number}](${pr.html_url}) is up to date`,
-			);
+			pushRequired = false;
 		}
 	}
-	await git.push(project, { branch: pullRequest.branch, force: true });
+	if (pushRequired) {
+		await git.push(project, { branch: pullRequest.branch, force: true });
+	}
 	const pr = newPr
 		? (
 				await gh.pulls.create({
@@ -310,11 +309,21 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 				.filter(r => r !== "atomist[bot]"),
 		});
 	}
-	return status.success(
-		`Pushed changes to [${slug}/${pullRequest.branch}](${repoUrl}) and ${
-			newPr ? "raised" : "updated"
-		} [#${pr.number}](${pr.html_url})`,
-	);
+	if (pushRequired) {
+		return status.success(
+			`Pushed changes to [${slug}/${
+				pullRequest.branch
+			}](${repoUrl}) and ${newPr ? "raised" : "updated"} [#${
+				pr.number
+			}](${pr.html_url})`,
+		);
+	} else {
+		return status.success(
+			`No changes pushed to ` +
+				`[${slug}/${pullRequest.branch}](${repoUrl})` +
+				` because [#${pr.number}](${pr.html_url}) is up to date`,
+		);
+	}
 }
 
 /**
