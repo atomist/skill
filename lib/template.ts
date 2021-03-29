@@ -49,6 +49,7 @@ async function hb(): Promise<any> {
 	handlebars.registerHelper("bold", arg => `__${arg}__`);
 	handlebars.registerHelper("link", (name, url) => `[${name}](${url})`);
 	handlebars.registerHelper("bytes", args => bytes(args));
+	handlebars.registerHelper("or", (arg1, arg2) => arg1 || arg2);
 	return handlebars;
 }
 
