@@ -37,18 +37,28 @@ export async function render(
 
 async function hb(): Promise<any> {
 	const handlebars = await import("handlebars");
-	handlebars.registerHelper("italic", arg => `_${arg}_`);
-	handlebars.registerHelper(
-		"code",
-		arg => new handlebars.SafeString(`\`${arg}\``),
+	handlebars.registerHelper("italic", arg =>
+		arg !== undefined ? `_${arg}_` : undefined,
 	);
-	handlebars.registerHelper(
-		"codeblock",
-		arg => new handlebars.SafeString(`\n\`\`\`\n${arg}\n\`\`\`\n`),
+	handlebars.registerHelper("code", arg =>
+		arg !== undefined ? new handlebars.SafeString(`\`${arg}\``) : undefined,
 	);
-	handlebars.registerHelper("bold", arg => `__${arg}__`);
-	handlebars.registerHelper("link", (name, url) => `[${name}](${url})`);
-	handlebars.registerHelper("bytes", args => bytes(args));
+	handlebars.registerHelper("codeblock", arg =>
+		arg !== undefined
+			? new handlebars.SafeString(`\n\`\`\`\n${arg}\n\`\`\`\n`)
+			: undefined,
+	);
+	handlebars.registerHelper("bold", arg =>
+		arg !== undefined ? `__${arg}__` : undefined,
+	);
+	handlebars.registerHelper("link", (name, url) =>
+		name !== undefined && url !== undefined
+			? `[${name}](${url})`
+			: undefined,
+	);
+	handlebars.registerHelper("bytes", args =>
+		args !== undefined ? bytes(args) : undefined,
+	);
 	handlebars.registerHelper("or", (arg1, arg2) => arg1 || arg2);
 	return handlebars;
 }
