@@ -17,6 +17,8 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 
+import { bytes } from "./util";
+
 export async function render(
 	name: string,
 	view: Record<string, any>,
@@ -46,6 +48,7 @@ async function hb(): Promise<any> {
 	);
 	handlebars.registerHelper("bold", arg => `__${arg}__`);
 	handlebars.registerHelper("link", (name, url) => `[${name}](${url})`);
+	handlebars.registerHelper("bytes", args => bytes(args));
 	return handlebars;
 }
 
