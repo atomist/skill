@@ -100,6 +100,7 @@ export type AtomistGcfSkillArtifactInput = {
 export enum AtomistSkillRuntime {
 	Nodejs10 = "nodejs10",
 	Nodejs12 = "nodejs12",
+	Nodejs14 = "nodejs14",
 	Python37 = "python37",
 	Go113 = "go113",
 }
@@ -108,6 +109,7 @@ export enum AtomistSkillCategoryKey {
 	Chat = "CHAT",
 	CodeMaintenance = "CODE_MAINTENANCE",
 	DevOps = "DEVOPS",
+	DevSecOps = "DEVSECOPS",
 	RepoManagement = "REPO_MANAGEMENT",
 	Security = "SECURITY",
 }
@@ -384,7 +386,7 @@ export async function createJavaScriptSkillInput(
 					timeout: is.runtime?.timeout || 60,
 					runtime:
 						(is.runtime?.platform as any) ||
-						AtomistSkillRuntime.Nodejs12,
+						AtomistSkillRuntime.Nodejs14,
 					name: "gcf",
 					url: undefined,
 				},
