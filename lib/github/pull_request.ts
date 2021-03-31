@@ -306,7 +306,8 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 			pull_number: pr.number,
 			reviewers: reviewers
 				.filter(r => !!r)
-				.filter(r => r !== "atomist[bot]"),
+				.filter(r => r !== "atomist[bot]")
+				.filter(r => r !== "atomist-bot"),
 		});
 	}
 	if (pushRequired) {
