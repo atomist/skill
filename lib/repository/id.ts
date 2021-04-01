@@ -52,7 +52,13 @@ export function gitHubComRepository(details: {
 		cloneUrl: (): string => {
 			if (details.credential) {
 				// GitHub App tokens start with v1. and are expected in the password field
-				if (details.credential.token.startsWith("v1.")) {
+				// See https://github.blog/changelog/2021-03-31-authentication-token-format-updates-are-generally-available/
+				if (
+					details.credential.token.startsWith("v1.") ||
+					details.credential.token.startsWith("ghu_") ||
+					details.credential.token.startsWith("ghs_") ||
+					details.credential.token.startsWith("ghr_")
+				) {
 					return `https://atomist:${details.credential.token}@github.com/${details.owner}/${details.repo}.git`;
 				} else {
 					return `https://${details.credential.token}:x-oauth-basic@github.com/${details.owner}/${details.repo}.git`;
