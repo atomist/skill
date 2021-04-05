@@ -59,6 +59,7 @@ export async function persistChanges(
 		labels?: string[];
 		reviewers?: string[];
 		assignReviewer?: boolean;
+		update: () => Promise<{ title?: string; body: string }>;
 	},
 	commit: {
 		message?: string;
@@ -178,6 +179,7 @@ async function ensurePullRequest(
 		labels?: string[];
 		reviewers?: string[];
 		assignReviewer?: boolean;
+		update: () => Promise<{ title?: string; body: string }>;
 	},
 	push: {
 		author: { login: string };
@@ -310,6 +312,17 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 				.filter(r => r !== "atomist-bot"),
 		});
 	}
+	if (pullRequest.update) {
+		const update = await pullRequest.update();
+		await gh.issues.update({
+			owner: project.id.owner,
+			repo: project.id.repo,
+			issue_number: pr.number,
+			title: update.title || pr.title,
+			body: update.body,
+		});
+	}
+
 	if (pushRequired) {
 		return status.success(
 			`Pushed changes to [${slug}/${
