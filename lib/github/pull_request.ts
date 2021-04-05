@@ -179,7 +179,7 @@ async function ensurePullRequest(
 		labels?: string[];
 		reviewers?: string[];
 		assignReviewer?: boolean;
-		update: () => Promise<{ title?: string; body: string }>;
+		update?: () => Promise<{ title?: string; body: string }>;
 	},
 	push: {
 		author: { login: string };
