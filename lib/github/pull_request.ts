@@ -200,7 +200,8 @@ async function ensurePullRequest(
 
 	const slug = `${project.id.owner}/${project.id.repo}`;
 	const repoUrl = `https://github.com/${slug}`;
-	const body = truncateText(`${pullRequest.body.trim()}
+	const body = (text: string) =>
+		truncateText(`${text.trim()}
 
 ---
 
@@ -219,12 +220,12 @@ ${files
 <p align="center">
 <sub>
 <a href="https://go.atomist.com/catalog/skills/${ctx.skill.namespace}/${
-		ctx.skill.name
-	}">${ctx.skill.namespace}/${ctx.skill.name}</a> \u00B7 ${toArray(
-		ctx.configuration,
-	)
-		.map(c => `<a href="${c.url}">Configure</a>`)
-		.join("\u00B7")}
+			ctx.skill.name
+		}">${ctx.skill.namespace}/${ctx.skill.name}</a> \u00B7 ${toArray(
+			ctx.configuration,
+		)
+			.map(c => `<a href="${c.url}">Configure</a>`)
+			.join("\u00B7")}
 </sub>
 </p>
 <!-- atomist:show -->
@@ -258,7 +259,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 					owner: project.id.owner,
 					repo: project.id.repo,
 					title: pullRequest.title,
-					body,
+					body: body(pullRequest.body),
 					base: push.branch,
 					head: pullRequest.branch,
 				})
@@ -269,7 +270,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 					repo: project.id.repo,
 					pull_number: openPrs[0].number,
 					title: pullRequest.title,
-					body,
+					body: body(pullRequest.body),
 				})
 		  ).data;
 	if (pullRequest.labels?.length > 0) {
@@ -319,7 +320,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 			repo: project.id.repo,
 			issue_number: pr.number,
 			title: update.title || pr.title,
-			body: update.body,
+			body: body(update.body),
 		});
 	}
 
