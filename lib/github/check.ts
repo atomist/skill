@@ -30,6 +30,7 @@ export interface CreateCheck {
 	name: string;
 	title: string;
 	body: string;
+	details?: string;
 	startedAt?: string;
 	reuse?: boolean;
 }
@@ -44,6 +45,7 @@ export interface UpdateCheck {
 		| "timed_out"
 		| "action_required";
 	body?: string;
+	details?: string;
 	annotations?: Annotation[];
 	actions?: Array<{
 		label: string;
@@ -129,6 +131,9 @@ export async function createCheck(
 						ctx,
 					)}`,
 				),
+				details: parameters.details
+					? truncateText(parameters.details)
+					: undefined,
 				annotations: [],
 			},
 		});
@@ -149,6 +154,9 @@ export async function createCheck(
 						ctx,
 					)}`,
 				),
+				details: parameters.details
+					? truncateText(parameters.details)
+					: undefined,
 				annotations: [],
 			},
 		});
@@ -166,6 +174,9 @@ export async function createCheck(
 						  )}\n${formatMarkers(ctx)}`
 						: check.data.output.summary,
 				),
+				details: parameters.details
+					? truncateText(parameters.details)
+					: undefined,
 			};
 			const chunks = chunk(
 				sortBy(
