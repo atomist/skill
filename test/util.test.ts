@@ -16,7 +16,13 @@
 
 import * as assert from "assert";
 
-import { bytes, extractParameters, guid, truncate } from "../lib/util";
+import {
+	bytes,
+	extractParameters,
+	guid,
+	pluralize,
+	truncate,
+} from "../lib/util";
 
 describe("util", () => {
 	describe("extractParameters", () => {
@@ -102,6 +108,15 @@ describe("util", () => {
 		});
 		it("should format 1024", () => {
 			assert.deepStrictEqual(bytes("1024"), "1.0kb");
+		});
+	});
+
+	describe("pluralize", () => {
+		it("should correctly pluralize", () => {
+			assert.deepStrictEqual(
+				pluralize("vulnerability", ["CVE-1234", "CVE-5678"]),
+				"2 vulnerabilities",
+			);
 		});
 	});
 });

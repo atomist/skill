@@ -111,6 +111,7 @@ export {
 	handleError,
 	handleErrorSync,
 	hideString,
+	pluralize,
 	replacer,
 	toArray,
 	truncate,

@@ -231,3 +231,13 @@ export function isStaging(): boolean {
 		"https://automation.atomist.com/graphql"
 	).includes(".services");
 }
+
+export function pluralize(
+	text: string,
+	count: number | any[],
+	include = true,
+): string {
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const plu = require("pluralize");
+	return plu(text, typeof count === "number" ? count : count.length, include);
+}

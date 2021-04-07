@@ -29,6 +29,8 @@ describe("template", () => {
 		assert.deepStrictEqual(
 			result,
 			`Hello Mickey Mouse
+3 colors
+
  * \`blue\` [test](google.com)
  * \`orange\` [test](google.com)
  * \`red\` [test](google.com)

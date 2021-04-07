@@ -17,7 +17,7 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 
-import { bytes } from "./util";
+import { bytes, pluralize } from "./util";
 
 export async function render(
 	name: string,
@@ -60,6 +60,9 @@ async function hb(): Promise<any> {
 		args !== undefined ? bytes(args) : undefined,
 	);
 	handlebars.registerHelper("or", (arg1, arg2) => arg1 || arg2);
+	handlebars.registerHelper("plural", (arg1, arg2, arg3) =>
+		pluralize(arg1, arg2, arg3),
+	);
 	return handlebars;
 }
 
