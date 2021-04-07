@@ -20,7 +20,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 43    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 592   |
+| [MIT](#mit)                     | 594   |
 | [Public Domain](#public-domain) | 1     |
 | [Python-2.0](#python-20)        | 1     |
 
@@ -352,6 +352,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `@types/node`                                        | `13.13.45`     |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
 | `@types/node`                                        | `14.14.31`     |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
 | `@types/parse-json`                                  | `4.0.0`        |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
+| `@types/pluralize`                                   | `0.0.29`       |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
 | `@types/retry`                                       | `0.12.0`       |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
 | `@types/semver`                                      | `7.3.4`        |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
 | `@types/stack-trace`                                 | `0.0.29`       |                                | [https://github.com/DefinitelyTyped/DefinitelyTyped](https://github.com/DefinitelyTyped/DefinitelyTyped)                                                                                             |
@@ -688,6 +689,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `path-root`                                          | `0.1.1`        | Jon Schlinkert                 | [https://github.com/jonschlinkert/path-root](https://github.com/jonschlinkert/path-root)                                                                                                             |
 | `path-type`                                          | `4.0.0`        | Sindre Sorhus                  | [https://github.com/sindresorhus/path-type](https://github.com/sindresorhus/path-type)                                                                                                               |
 | `picomatch`                                          | `2.2.2`        | Jon Schlinkert                 | [https://github.com/micromatch/picomatch](https://github.com/micromatch/picomatch)                                                                                                                   |
+| `pluralize`                                          | `8.0.0`        | Blake Embrey                   | [https://github.com/blakeembrey/pluralize](https://github.com/blakeembrey/pluralize)                                                                                                                 |
 | `prepend-http`                                       | `2.0.0`        | Sindre Sorhus                  | [https://github.com/sindresorhus/prepend-http](https://github.com/sindresorhus/prepend-http)                                                                                                         |
 | `prettier`                                           | `2.2.1`        | James Long                     | [https://github.com/prettier/prettier](https://github.com/prettier/prettier)                                                                                                                         |
 | `process-nextick-args`                               | `2.0.1`        |                                | [https://github.com/calvinmetcalf/process-nextick-args](https://github.com/calvinmetcalf/process-nextick-args)                                                                                       |
