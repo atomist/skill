@@ -59,7 +59,12 @@ export async function persistChanges(
 		labels?: string[];
 		reviewers?: string[];
 		assignReviewer?: boolean;
-		update?: () => Promise<{ title?: string; body: string }>;
+		update?: () => Promise<{
+			title?: string;
+			body?: string;
+			labels?: string[];
+			reviewers?: [];
+		}>;
 	},
 	commit: {
 		message?: string;
@@ -179,7 +184,12 @@ async function ensurePullRequest(
 		labels?: string[];
 		reviewers?: string[];
 		assignReviewer?: boolean;
-		update?: () => Promise<{ title?: string; body: string }>;
+		update?: () => Promise<{
+			title?: string;
+			body?: string;
+			labels?: string[];
+			reviewers?: [];
+		}>;
 	},
 	push: {
 		author: { login: string };
@@ -321,7 +331,19 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 			issue_number: pr.number,
 			title: update.title || pr.title,
 			body: body(update.body),
+			labels: update.labels || pr.labels,
 		});
+		if (update.reviewers?.length > 0) {
+			await gh.pulls.requestReviewers({
+				owner: project.id.owner,
+				repo: project.id.repo,
+				pull_number: pr.number,
+				reviewers: update.reviewers
+					.filter(r => !!r)
+					.filter(r => r !== "atomist[bot]")
+					.filter(r => r !== "atomist-bot"),
+			});
+		}
 	}
 
 	if (pushRequired) {
