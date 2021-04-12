@@ -340,7 +340,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 			title: update.title || pr.title,
 			body: body(update.body),
 			labels: uniq([
-				...update.labels,
+				...(update.labels || []),
 				...(pr.labels || []).map(l => l.name),
 			]),
 		});
