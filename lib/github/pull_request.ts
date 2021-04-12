@@ -263,7 +263,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 	if (pushRequired) {
 		await git.push(project, { branch: pullRequest.branch, force: true });
 	}
-	const pr = newPr
+	let pr = newPr
 		? (
 				await gh.pulls.create({
 					owner: project.id.owner,
@@ -325,23 +325,37 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 	}
 	if (pullRequest.update) {
 		const update = await pullRequest.update();
+		// Re-read the PR as there might have been some external modifications
+		pr = (
+			await gh.pulls.get({
+				owner: project.id.owner,
+				repo: project.id.repo,
+				pull_number: pr.number,
+			})
+		).data;
 		await gh.issues.update({
 			owner: project.id.owner,
 			repo: project.id.repo,
 			issue_number: pr.number,
 			title: update.title || pr.title,
 			body: body(update.body),
-			labels: update.labels || pr.labels,
+			labels: uniq([
+				...update.labels,
+				...(pr.labels || []).map(l => l.name),
+			]),
 		});
 		if (update.reviewers?.length > 0) {
 			await gh.pulls.requestReviewers({
 				owner: project.id.owner,
 				repo: project.id.repo,
 				pull_number: pr.number,
-				reviewers: update.reviewers
-					.filter(r => !!r)
-					.filter(r => r !== "atomist[bot]")
-					.filter(r => r !== "atomist-bot"),
+				reviewers: uniq([
+					...(pr.requested_reviewers || []).map(r => r.login),
+					...update.reviewers
+						.filter(r => !!r)
+						.filter(r => r !== "atomist[bot]")
+						.filter(r => r !== "atomist-bot"),
+				]),
 			});
 		}
 	}
