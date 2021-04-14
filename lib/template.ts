@@ -60,8 +60,8 @@ async function hb(): Promise<any> {
 		args !== undefined ? bytes(args) : undefined,
 	);
 	handlebars.registerHelper("or", (arg1, arg2) => arg1 || arg2);
-	handlebars.registerHelper("plural", (arg1, arg2, arg3) =>
-		pluralize(arg1, arg2, arg3),
+	handlebars.registerHelper("plural", (arg1, arg2, arg3, arg4) =>
+		pluralize(arg1, arg2, { include: arg3, includeOne: arg4 }),
 	);
 	return handlebars;
 }

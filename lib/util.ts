@@ -235,9 +235,17 @@ export function isStaging(): boolean {
 export function pluralize(
 	text: string,
 	count: number | any[],
-	include = true,
+	options: { include?: boolean; includeOne?: boolean } = {
+		include: true,
+		includeOne: false,
+	},
 ): string {
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const plu = require("pluralize");
-	return plu(text, typeof count === "number" ? count : count.length, include);
+	const countNumber = typeof count === "number" ? count : count.length;
+	return plu(
+		text,
+		countNumber,
+		countNumber === 1 ? options.includeOne : options.include,
+	);
 }

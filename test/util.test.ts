@@ -118,5 +118,17 @@ describe("util", () => {
 				"2 vulnerabilities",
 			);
 		});
+		it("should correctly pluralize one result", () => {
+			assert.deepStrictEqual(
+				pluralize("dependency", ["lodash"]),
+				"dependency",
+			);
+		});
+		it("should correctly pluralize two results", () => {
+			assert.deepStrictEqual(
+				pluralize("dependency", ["lodash", "typescript"]),
+				"2 dependencies",
+			);
+		});
 	});
 });
