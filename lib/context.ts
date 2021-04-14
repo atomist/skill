@@ -24,7 +24,7 @@ import {
 	WebhookContext,
 } from "./handler/handler";
 import { createHttpClient } from "./http";
-import { wrapAuditLogger } from "./log/util";
+import { createAuditLogger } from "./log/util";
 import { mapSubscription } from "./map";
 import {
 	PubSubCommandMessageClient,
@@ -105,8 +105,9 @@ export function createContext(
 			credential,
 			graphql,
 			http: createHttpClient(),
-			audit: wrapAuditLogger(
+			audit: createAuditLogger(
 				{
+					skillId: payload.skill.id,
 					eventId: ctx.eventId,
 					correlationId: payload.correlation_id,
 					workspaceId: wid,
@@ -114,6 +115,7 @@ export function createContext(
 				{
 					name: payload.command,
 				},
+				onComplete,
 			),
 			storage,
 			message,
@@ -140,8 +142,9 @@ export function createContext(
 			credential,
 			graphql,
 			http: createHttpClient(),
-			audit: wrapAuditLogger(
+			audit: createAuditLogger(
 				{
+					skillId: payload.skill.id,
 					eventId: ctx.eventId,
 					correlationId: payload.extensions.correlation_id,
 					workspaceId: wid,
@@ -149,6 +152,7 @@ export function createContext(
 				{
 					name: payload.extensions.operationName,
 				},
+				onComplete,
 			),
 			storage,
 			message: new PubSubEventMessageClient(
@@ -182,8 +186,9 @@ export function createContext(
 			credential,
 			graphql,
 			http: createHttpClient(),
-			audit: wrapAuditLogger(
+			audit: createAuditLogger(
 				{
+					skillId: payload.skill.id,
 					eventId: ctx.eventId,
 					correlationId: payload.correlation_id,
 					workspaceId: wid,
@@ -191,6 +196,7 @@ export function createContext(
 				{
 					name: payload.subscription?.name,
 				},
+				onComplete,
 			),
 			storage,
 			message: new PubSubEventMessageClient(
@@ -229,8 +235,9 @@ export function createContext(
 			credential,
 			graphql,
 			http: createHttpClient(),
-			audit: wrapAuditLogger(
+			audit: createAuditLogger(
 				{
+					skillId: payload.skill.id,
 					eventId: ctx.eventId,
 					correlationId: payload.correlation_id,
 					workspaceId: wid,
@@ -238,6 +245,7 @@ export function createContext(
 				{
 					name: payload.webhook.parameter_name,
 				},
+				onComplete,
 			),
 			storage,
 			message: new PubSubWebhookMessageClient(payload, graphql),
