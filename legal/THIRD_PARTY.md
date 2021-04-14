@@ -20,7 +20,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 43    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 594   |
+| [MIT](#mit)                     | 595   |
 | [Public Domain](#public-domain) | 1     |
 | [Python-2.0](#python-20)        | 1     |
 
@@ -476,6 +476,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `fast-deep-equal`                                    | `3.1.3`        | Evgeny Poberezkin              | [https://github.com/epoberezkin/fast-deep-equal](https://github.com/epoberezkin/fast-deep-equal)                                                                                                     |
 | `fast-glob`                                          | `3.2.5`        | Denis Malinochkin              | [https://github.com/mrmlnc/fast-glob](https://github.com/mrmlnc/fast-glob)                                                                                                                           |
 | `fast-json-stable-stringify`                         | `2.1.0`        | James Halliday                 | [https://github.com/epoberezkin/fast-json-stable-stringify](https://github.com/epoberezkin/fast-json-stable-stringify)                                                                               |
+| `fastest-levenshtein`                                | `1.0.12`       | Kasper U. Weihe                | [https://github.com/ka-weihe/fastest-levenshtein](https://github.com/ka-weihe/fastest-levenshtein)                                                                                                   |
 | `fbjs-css-vars`                                      | `1.0.2`        |                                | [https://github.com/facebook/fbjs](https://github.com/facebook/fbjs)                                                                                                                                 |
 | `fbjs`                                               | `3.0.0`        |                                | [https://github.com/facebook/fbjs](https://github.com/facebook/fbjs)                                                                                                                                 |
 | `figures`                                            | `1.7.0`        | Sindre Sorhus                  | [https://github.com/sindresorhus/figures](https://github.com/sindresorhus/figures)                                                                                                                   |
