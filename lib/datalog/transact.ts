@@ -17,7 +17,7 @@
 import { PubSub } from "@google-cloud/pubsub";
 import { toEDNStringFromSimpleObject } from "edn-data";
 
-import { debug, error, warn } from "../log/console";
+import { debug, error } from "../log/console";
 import { replacer, toArray } from "../util";
 
 export type DatalogTransact = (entities: any | any[]) => Promise<void>;
@@ -35,7 +35,7 @@ export function createTransact(
 			Object.values(e).some(v => v === undefined),
 		);
 		if (invalidEntities.length > 0) {
-			warn(
+			debug(
 				`Entities with 'undefined' properties detected: ${JSON.stringify(
 					invalidEntities,
 				)}`,
