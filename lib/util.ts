@@ -256,3 +256,7 @@ export function levenshteinSort(word: string, elements: string[]): string[] {
 	const { distance } = require("fastest-levenshtein");
 	return sortBy([...elements], o => distance(word, o));
 }
+
+export function isPrimitive(test): boolean {
+	return test !== Object(test);
+}

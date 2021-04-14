@@ -19,8 +19,8 @@ import * as os from "os";
 import * as path from "path";
 
 import { Contextual, EventContext } from "./handler/handler";
-import { warn } from "./log/console";
-import { guid } from "./util";
+import { debug } from "./log/console";
+import { guid, isPrimitive } from "./util";
 
 export async function hydrate<T>(
 	configurationName: string,
@@ -52,7 +52,7 @@ export async function save(
 		await fs.writeJson(targetFilePath, state);
 		await ctx.storage.store(key, targetFilePath);
 	} catch (e) {
-		warn(`Failed to save state: ${e.message}`);
+		debug(`Failed to save state: ${e.message}`);
 	}
 }
 
@@ -74,7 +74,7 @@ export function cachify<
 			key = resolver(...args);
 		} else {
 			key = args.reduce((p, c) => {
-				if (Object(c) !== c) {
+				if (isPrimitive(c)) {
 					return `${p}_${c.toString()}`;
 				} else {
 					return p;
