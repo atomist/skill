@@ -111,6 +111,7 @@ export {
 	handleError,
 	handleErrorSync,
 	hideString,
+	levenshteinSort,
 	pluralize,
 	replacer,
 	toArray,
