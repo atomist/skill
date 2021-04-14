@@ -130,10 +130,20 @@ export function handler<S, C>(parameters: {
 		createRef<S, C>(parameters.id),
 		async ctx => {
 			if (parameters.clone) {
-				if (typeof parameters.clone === "function") {
-					return cloneRef(parameters.clone(ctx) as any)(ctx);
-				} else {
-					return cloneRef()(ctx);
+				try {
+					if (typeof parameters.clone === "function") {
+						return cloneRef(parameters.clone(ctx) as any)(ctx);
+					} else {
+						return cloneRef()(ctx);
+					}
+				} catch (e) {
+					return success(
+						`Failed to clone ${ctx.chain.id.owner}/${
+							ctx.chain.id.repo
+						}#${
+							ctx.chain.id.sha?.slice(0, 7) || ctx.chain.id.branch
+						}`,
+					).hidden();
 				}
 			}
 			return undefined;
