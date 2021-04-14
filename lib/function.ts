@@ -17,8 +17,6 @@
 // tslint:disable-next-line:no-import-side-effect
 import "source-map-support/register";
 
-import { Severity } from "@atomist/skill-logging";
-
 import { eventHandlerLoader } from "./action";
 import { ContextFactory, createContext } from "./context";
 import {
@@ -31,7 +29,7 @@ import {
 	WebhookContext,
 	WebhookHandler,
 } from "./handler/handler";
-import { debug, info } from "./log";
+import { debug, error } from "./log";
 import { prepareStatus, StatusPublisher } from "./message";
 import {
 	CommandIncoming,
@@ -64,7 +62,6 @@ export const entryPoint = async (
 	const payload: CommandIncoming | EventIncoming = JSON.parse(
 		Buffer.from(pubSubEvent.data, "base64").toString(),
 	);
-	info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
 
 	if (isEventIncoming(payload) || isSubscriptionIncoming(payload)) {
 		await processEvent(payload, context);
@@ -85,29 +82,25 @@ export async function processEvent(
 ): Promise<void> {
 	const context = factory(event, ctx) as EventContext<any> &
 		ContextualLifecycle;
+	debug(`Incoming event message: ${JSON.stringify(event, replacer)}`);
+	if (isSubscriptionIncoming(event)) {
+		debug(
+			`Invoking event handler '${context.name}' for tx '${event.subscription.tx}'`,
+		);
+	} else {
+		debug(`Invoking event handler '${context.name}'`);
+	}
 	try {
-		if (isSubscriptionIncoming(event)) {
-			debug(
-				`Invoking event handler '${context.name}' for tx '${event.subscription.tx}'`,
-			);
-		} else {
-			debug(`Invoking event handler '${context.name}'`);
-		}
-		const result = (await (await loader(context.name))(
-			context,
-		)) as HandlerStatus;
+		const result = await invokeHandler(loader, context);
 		await ((context.message as any) as StatusPublisher).publish(
 			prepareStatus(result || { code: 0 }, context),
 		);
 	} catch (e) {
-		await context.audit.log(`Error occurred: ${e.stack}`, Severity.Error);
-		await ((context.message as any) as StatusPublisher).publish(
-			prepareStatus(e, context),
-		);
+		await publishError(e, context);
 	} finally {
+		debug(`Completed event handler '${context.name}'`);
 		await context.close();
 	}
-	debug(`Completed event handler '${context.name}'`);
 }
 
 export async function processCommand(
@@ -119,11 +112,10 @@ export async function processCommand(
 	factory: ContextFactory = createContext,
 ): Promise<void> {
 	const context = factory(event, ctx) as CommandContext & ContextualLifecycle;
+	debug(`Incoming command message: ${JSON.stringify(event, replacer)}`);
+	debug(`Invoking command handler '${context.name}'`);
 	try {
-		debug(`Invoking command handler '${context.name}'`);
-		const result = (await (await loader(context.name))(
-			context,
-		)) as HandlerStatus;
+		const result = await invokeHandler(loader, context);
 		await ((context.message as any) as StatusPublisher).publish(
 			prepareStatus(result || { code: 0 }, context),
 		);
@@ -133,18 +125,12 @@ export async function processCommand(
 				prepareStatus({ code: 0 }, context),
 			);
 		} else {
-			await context.audit.log(
-				`Error occurred: ${e.stack}`,
-				Severity.Error,
-			);
-			await ((context.message as any) as StatusPublisher).publish(
-				prepareStatus(e, context),
-			);
+			await publishError(e, context);
 		}
 	} finally {
+		debug(`Completed command handler '${context.name}'`);
 		await context.close();
 	}
-	debug(`Completed command handler '${context.name}'`);
 }
 
 export async function processWebhook(
@@ -156,30 +142,39 @@ export async function processWebhook(
 	factory: ContextFactory = createContext,
 ): Promise<void> {
 	const context = factory(event, ctx) as WebhookContext & ContextualLifecycle;
+	debug(`Incoming webhook message: ${JSON.stringify(event, replacer)}`);
+	debug(`Invoking webhook handler '${context.name}'`);
 	try {
-		debug(`Invoking webhook handler '${context.name}'`);
-		const result = (await (await loader(context.name))(
-			context,
-		)) as HandlerStatus;
+		const result = await invokeHandler(loader, context);
 		await ((context.message as any) as StatusPublisher).publish(
 			prepareStatus(result || { code: 0 }, context),
 		);
 	} catch (e) {
-		if (e instanceof CommandListenerExecutionInterruptError) {
-			await ((context.message as any) as StatusPublisher).publish(
-				prepareStatus({ code: 0 }, context),
-			);
-		} else {
-			await context.audit.log(
-				`Error occurred: ${e.stack}`,
-				Severity.Error,
-			);
-			await ((context.message as any) as StatusPublisher).publish(
-				prepareStatus(e, context),
-			);
-		}
+		await publishError(e, context);
 	} finally {
+		debug(`Completed webhook handler '${context.name}'`);
 		await context.close();
 	}
-	debug(`Completed webhook handler '${context.name}'`);
+}
+
+async function invokeHandler(
+	loader: (name: string) => Promise<any>,
+	context: (EventContext | CommandContext | WebhookContext) &
+		ContextualLifecycle,
+) {
+	const result = (await (await loader(context.name))(
+		context,
+	)) as HandlerStatus;
+	return result;
+}
+
+async function publishError(
+	e,
+	context: (EventContext | CommandContext | WebhookContext) &
+		ContextualLifecycle,
+) {
+	error(`Error occurred: ${e.stack}`);
+	await ((context.message as any) as StatusPublisher).publish(
+		prepareStatus(e, context),
+	);
 }

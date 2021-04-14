@@ -17,6 +17,7 @@
 import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types";
 
 import { Contextual } from "../handler/handler";
+import { url } from "../log/util";
 import { isSubscriptionIncoming } from "../payload";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
@@ -121,7 +122,7 @@ export async function createCheck(
 			check_run_id: openCheck.id,
 			started_at: parameters.startedAt || new Date().toISOString(),
 			external_id: externalId,
-			details_url: ctx.audit.url,
+			details_url: url(ctx),
 			status: "in_progress",
 			conclusion: undefined,
 			output: {
@@ -145,7 +146,7 @@ export async function createCheck(
 			name: parameters.name,
 			started_at: parameters.startedAt || new Date().toISOString(),
 			external_id: externalId,
-			details_url: ctx.audit.url,
+			details_url: url(ctx),
 			status: "in_progress",
 			output: {
 				title: parameters.title,
