@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Logger } from "@atomist/skill-logging/lib/logging";
+import { Severity } from "@atomist/skill-logging";
 
 import { DatalogClient } from "../datalog/client";
 import { GraphQLClient } from "../graphql";
@@ -57,7 +57,17 @@ export interface Contextual<T, C> {
 	http: HttpClient;
 	message: MessageClient;
 	project: ProjectLoader;
-	audit: Logger & { url: string };
+	audit: {
+		/**
+		 * @deprecated use debug, info, warn and error log methods
+		 */
+		log(
+			msg: string | string[],
+			severity?: Severity,
+			labels?: Record<string, any>,
+		): void;
+		url: string;
+	};
 	storage: StorageProvider;
 
 	trigger: T;

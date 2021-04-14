@@ -54,7 +54,7 @@
     "test:one": "mocha --require espower-typescript/guess \"test/**/${TEST:-*.test.ts}\""
   },
   "dependencies": {
-    "@atomist/skill-logging": "^0.2.6",
+    "@atomist/skill-logging": "^0.2.7-main.40",
     "@atomist/slack-messages": "^1.2.2",
     "@google-cloud/pubsub": "^2.10.0",
     "@google-cloud/storage": "^5.8.3",
@@ -82,6 +82,7 @@
     "@types/node-fetch": "^2.5.10",
     "@types/pluralize": "0.0.29",
     "@types/semver": "^7.3.4",
+    "@types/sprintf-js": "^1.1.2",
     "@types/stack-trace": "0.0.29",
     "@types/uuid": "^8.3.0",
     "@types/yargs": "^16.0.1",
@@ -117,6 +118,7 @@
     "prettier": "^2.2.1",
     "semver": "^7.3.5",
     "source-map-support": "^0.5.19",
+    "sprintf-js": "^1.1.2",
     "stack-trace": "0.0.10",
     "strip-ansi": "^6.0.0",
     "tree-kill": "^1.2.2",

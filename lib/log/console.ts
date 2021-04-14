@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import { Logger, Severity } from "@atomist/skill-logging";
+import { sprintf } from "sprintf-js";
+
 import { redact } from "./redact";
 import { enabled } from "./util";
 
@@ -25,8 +28,13 @@ import { enabled } from "./util";
  */
 export function debug(message: string, ...optionalParams: any[]): void {
 	if (enabled("debug")) {
-		// tslint:disable-next-line:no-console
-		console.debug(`[debug] ${redact(message)}`, ...optionalParams);
+		const fmsg = redact(sprintf(message, ...optionalParams));
+		if (getLogger()) {
+			getLogger().log(fmsg, Severity.Debug);
+		} else {
+			// tslint:disable-next-line:no-console
+			console.debug(`[debug] ${fmsg}`);
+		}
 	}
 }
 
@@ -38,8 +46,13 @@ export function debug(message: string, ...optionalParams: any[]): void {
  */
 export function info(message: string, ...optionalParams: any[]): void {
 	if (enabled("info")) {
-		// tslint:disable-next-line:no-console
-		console.info(` [info] ${redact(message)}`, ...optionalParams);
+		const fmsg = redact(sprintf(message, ...optionalParams));
+		if (getLogger()) {
+			getLogger().log(fmsg, Severity.Debug);
+		} else {
+			// tslint:disable-next-line:no-console
+			console.info(` [info] ${fmsg}`);
+		}
 	}
 }
 
@@ -51,8 +64,13 @@ export function info(message: string, ...optionalParams: any[]): void {
  */
 export function warn(message: string, ...optionalParams: any[]): void {
 	if (enabled("warn")) {
-		// tslint:disable-next-line:no-console
-		console.warn(` [warn] ${redact(message)}`, ...optionalParams);
+		const fmsg = redact(sprintf(message, ...optionalParams));
+		if (getLogger()) {
+			getLogger().log(fmsg, Severity.Warning);
+		} else {
+			// tslint:disable-next-line:no-console
+			console.warn(` [warn] ${fmsg}`);
+		}
 	}
 }
 
@@ -64,7 +82,24 @@ export function warn(message: string, ...optionalParams: any[]): void {
  */
 export function error(message: string, ...optionalParams: any[]): void {
 	if (enabled("error")) {
-		// tslint:disable-next-line:no-console
-		console.error(`[error] ${redact(message)}`, ...optionalParams);
+		const fmsg = redact(sprintf(message, ...optionalParams));
+		if (getLogger()) {
+			getLogger().log(fmsg, Severity.Error);
+		} else {
+			// tslint:disable-next-line:no-console
+			console.error(`[error] ${fmsg}`);
+		}
 	}
+}
+
+export function clearLogger(logger: Logger): void {
+	(global as any)._logger = undefined;
+}
+
+export function setLogger(logger: Logger): void {
+	(global as any)._logger = logger;
+}
+
+function getLogger(): Logger {
+	return (global as any)._logger;
 }

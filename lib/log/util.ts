@@ -14,36 +14,28 @@
  * limitations under the License.
  */
 
-import { createLogger, Logger, Severity } from "@atomist/skill-logging";
+import { createLogger, Logger } from "@atomist/skill-logging";
 
-import { toArray } from "../util";
-import { error, info, warn } from "./console";
+import { setLogger } from "./console";
 
-export function wrapAuditLogger(
-	context: { eventId?: string; correlationId: string; workspaceId: string },
+export function createAuditLogger(
+	context: {
+		eventId?: string;
+		correlationId: string;
+		workspaceId: string;
+		skillId: string;
+	},
 	labels: Record<string, any> = {},
+	onComplete: (callback: () => Promise<void>) => void,
 ): Logger & { url: string } {
 	const logger = createLogger(context, labels);
+	setLogger(logger);
+	onComplete(async () => {
+		await logger.close();
+		setLogger(undefined);
+	});
 	return {
-		log: async (
-			msg: string | string[],
-			severity: Severity = Severity.Info,
-			labels?: Record<string, any>,
-		): Promise<void> => {
-			const msgs = toArray(msg);
-			switch (severity) {
-				case Severity.Warning:
-					msgs.forEach(m => warn(m));
-					break;
-				case Severity.Error:
-					msgs.forEach(m => error(m));
-					break;
-				default:
-					msgs.forEach(m => info(m));
-					break;
-			}
-			return logger.log(msg, severity, labels);
-		},
+		...logger,
 		url: `https://go.atomist.${
 			(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
 				? "services"

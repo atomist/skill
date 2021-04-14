@@ -64,7 +64,6 @@ export const entryPoint = async (
 	const payload: CommandIncoming | EventIncoming = JSON.parse(
 		Buffer.from(pubSubEvent.data, "base64").toString(),
 	);
-	info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
 
 	if (isEventIncoming(payload) || isSubscriptionIncoming(payload)) {
 		await processEvent(payload, context);
@@ -85,6 +84,7 @@ export async function processEvent(
 ): Promise<void> {
 	const context = factory(event, ctx) as EventContext<any> &
 		ContextualLifecycle;
+	info(`Incoming event message: ${JSON.stringify(event, replacer)}`);
 	try {
 		if (isSubscriptionIncoming(event)) {
 			debug(
@@ -119,6 +119,7 @@ export async function processCommand(
 	factory: ContextFactory = createContext,
 ): Promise<void> {
 	const context = factory(event, ctx) as CommandContext & ContextualLifecycle;
+	info(`Incoming command message: ${JSON.stringify(event, replacer)}`);
 	try {
 		debug(`Invoking command handler '${context.name}'`);
 		const result = (await (await loader(context.name))(
@@ -156,6 +157,7 @@ export async function processWebhook(
 	factory: ContextFactory = createContext,
 ): Promise<void> {
 	const context = factory(event, ctx) as WebhookContext & ContextualLifecycle;
+	info(`Incoming webhook message: ${JSON.stringify(event, replacer)}`);
 	try {
 		debug(`Invoking webhook handler '${context.name}'`);
 		const result = (await (await loader(context.name))(
