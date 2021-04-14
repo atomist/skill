@@ -27,7 +27,7 @@ export function createAuditLogger(
 	},
 	labels: Record<string, any> = {},
 	onComplete: (callback: () => Promise<void>) => void,
-): Logger & { url: string } {
+): Pick<Logger, "log"> & { url: string } {
 	const logger = createLogger(context, labels);
 	setLogger(logger);
 	onComplete(async () => {
@@ -35,7 +35,7 @@ export function createAuditLogger(
 		clearLogger();
 	});
 	return {
-		...logger,
+		log: logger.log,
 		url: `https://go.atomist.${
 			(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
 				? "services"
