@@ -18,6 +18,7 @@ import * as crypto from "crypto";
 import * as fs from "fs-extra";
 import * as path from "path";
 import { v4 as uuidv4 } from "uuid";
+import sortBy = require("lodash.sortby");
 
 import { error } from "./log";
 import { Arg } from "./payload";
@@ -248,4 +249,10 @@ export function pluralize(
 		countNumber,
 		countNumber === 1 ? options.includeOne : options.include,
 	);
+}
+
+export function levenshteinSort(word: string, elements: string[]): string[] {
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const { distance } = require("fastest-levenshtein");
+	return sortBy([...elements], o => distance(word, o));
 }

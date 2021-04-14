@@ -20,6 +20,7 @@ import {
 	bytes,
 	extractParameters,
 	guid,
+	levenshteinSort,
 	pluralize,
 	truncate,
 } from "../lib/util";
@@ -129,6 +130,14 @@ describe("util", () => {
 				pluralize("dependency", ["lodash", "typescript"]),
 				"2 dependencies",
 			);
+		});
+	});
+
+	describe("levenshteinSort", () => {
+		it("should sort correctly", () => {
+			const elems = ["slow", "faster", "fastest"];
+			const result = levenshteinSort("fast", elems);
+			assert.deepStrictEqual(result, ["faster", "fastest", "slow"]);
 		});
 	});
 });
