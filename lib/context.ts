@@ -24,7 +24,7 @@ import {
 	WebhookContext,
 } from "./handler/handler";
 import { createHttpClient } from "./http";
-import { wrapAuditLogger } from "./log/util";
+import { initLogging } from "./log/util";
 import { mapSubscription } from "./map";
 import {
 	PubSubCommandMessageClient,
@@ -94,6 +94,19 @@ export function createContext(
 			payload.parameters.push(...parameters);
 		}
 		const message = new PubSubCommandMessageClient(payload, graphql);
+		initLogging(
+			{
+				skillId: payload.skill.id,
+				eventId: ctx.eventId,
+				correlationId: payload.correlation_id,
+				workspaceId: wid,
+			},
+			onComplete,
+			{
+				name: payload.command,
+				skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
+			},
+		);
 		return {
 			parameters: {
 				prompt: commandRequestParameterPromptFactory(message, payload),
@@ -105,16 +118,6 @@ export function createContext(
 			credential,
 			graphql,
 			http: createHttpClient(),
-			audit: wrapAuditLogger(
-				{
-					eventId: ctx.eventId,
-					correlationId: payload.correlation_id,
-					workspaceId: wid,
-				},
-				{
-					name: payload.command,
-				},
-			),
 			storage,
 			message,
 			datalog: createDatalogClient(
@@ -131,6 +134,19 @@ export function createContext(
 			onComplete,
 		};
 	} else if (isEventIncoming(payload)) {
+		initLogging(
+			{
+				skillId: payload.skill.id,
+				eventId: ctx.eventId,
+				correlationId: payload.extensions.correlation_id,
+				workspaceId: wid,
+			},
+			onComplete,
+			{
+				name: payload.extensions.operationName,
+				skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
+			},
+		);
 		return {
 			data: payload.data,
 			name: payload.extensions.operationName,
@@ -140,16 +156,6 @@ export function createContext(
 			credential,
 			graphql,
 			http: createHttpClient(),
-			audit: wrapAuditLogger(
-				{
-					eventId: ctx.eventId,
-					correlationId: payload.extensions.correlation_id,
-					workspaceId: wid,
-				},
-				{
-					name: payload.extensions.operationName,
-				},
-			),
 			storage,
 			message: new PubSubEventMessageClient(
 				payload,
@@ -173,6 +179,19 @@ export function createContext(
 			onComplete,
 		};
 	} else if (isSubscriptionIncoming(payload)) {
+		initLogging(
+			{
+				skillId: payload.skill.id,
+				eventId: ctx.eventId,
+				correlationId: payload.correlation_id,
+				workspaceId: wid,
+			},
+			onComplete,
+			{
+				name: payload.subscription?.name,
+				skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
+			},
+		);
 		return {
 			data: toArray(payload.subscription?.result).map(mapSubscription),
 			name: payload.subscription?.name,
@@ -182,16 +201,6 @@ export function createContext(
 			credential,
 			graphql,
 			http: createHttpClient(),
-			audit: wrapAuditLogger(
-				{
-					eventId: ctx.eventId,
-					correlationId: payload.correlation_id,
-					workspaceId: wid,
-				},
-				{
-					name: payload.subscription?.name,
-				},
-			),
 			storage,
 			message: new PubSubEventMessageClient(
 				payload,
@@ -215,6 +224,19 @@ export function createContext(
 			onComplete,
 		};
 	} else if (isWebhookIncoming(payload)) {
+		initLogging(
+			{
+				skillId: payload.skill.id,
+				eventId: ctx.eventId,
+				correlationId: payload.correlation_id,
+				workspaceId: wid,
+			},
+			onComplete,
+			{
+				name: payload.webhook.parameter_name,
+				skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
+			},
+		);
 		return {
 			name: payload.webhook.parameter_name,
 			body: payload.webhook.body,
@@ -229,16 +251,6 @@ export function createContext(
 			credential,
 			graphql,
 			http: createHttpClient(),
-			audit: wrapAuditLogger(
-				{
-					eventId: ctx.eventId,
-					correlationId: payload.correlation_id,
-					workspaceId: wid,
-				},
-				{
-					name: payload.webhook.parameter_name,
-				},
-			),
 			storage,
 			message: new PubSubWebhookMessageClient(payload, graphql),
 			datalog: createDatalogClient(
