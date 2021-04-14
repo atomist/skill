@@ -92,7 +92,7 @@ export function error(message: string, ...optionalParams: any[]): void {
 	}
 }
 
-export function clearLogger(logger: Logger): void {
+export function clearLogger(): void {
 	(global as any)._logger = undefined;
 }
 

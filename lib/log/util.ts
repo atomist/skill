@@ -16,7 +16,7 @@
 
 import { createLogger, Logger } from "@atomist/skill-logging";
 
-import { setLogger } from "./console";
+import { clearLogger, setLogger } from "./console";
 
 export function createAuditLogger(
 	context: {
@@ -32,7 +32,7 @@ export function createAuditLogger(
 	setLogger(logger);
 	onComplete(async () => {
 		await logger.close();
-		setLogger(undefined);
+		clearLogger();
 	});
 	return {
 		...logger,
