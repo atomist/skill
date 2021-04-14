@@ -256,3 +256,8 @@ export function levenshteinSort(word: string, elements: string[]): string[] {
 	const { distance } = require("fastest-levenshtein");
 	return sortBy([...elements], o => distance(word, o));
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export function isPrimitive(test: any): boolean {
+	return test !== Object(test);
+}

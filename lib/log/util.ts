@@ -14,42 +14,27 @@
  * limitations under the License.
  */
 
-import { createLogger, Logger, Severity } from "@atomist/skill-logging";
+import { createLogger } from "@atomist/skill-logging";
 
-import { toArray } from "../util";
-import { error, info, warn } from "./console";
+import { Contextual } from "../handler/handler";
+import { clearLogger, setLogger } from "./console";
 
-export function wrapAuditLogger(
-	context: { eventId?: string; correlationId: string; workspaceId: string },
+export function initLogging(
+	context: {
+		eventId?: string;
+		correlationId: string;
+		workspaceId: string;
+		skillId: string;
+	},
+	onComplete: (callback: () => Promise<void>) => void,
 	labels: Record<string, any> = {},
-): Logger & { url: string } {
+): void {
 	const logger = createLogger(context, labels);
-	return {
-		log: async (
-			msg: string | string[],
-			severity: Severity = Severity.Info,
-			labels?: Record<string, any>,
-		): Promise<void> => {
-			const msgs = toArray(msg);
-			switch (severity) {
-				case Severity.Warning:
-					msgs.forEach(m => warn(m));
-					break;
-				case Severity.Error:
-					msgs.forEach(m => error(m));
-					break;
-				default:
-					msgs.forEach(m => info(m));
-					break;
-			}
-			return logger.log(msg, severity, labels);
-		},
-		url: `https://go.atomist.${
-			(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
-				? "services"
-				: "com"
-		}/log/${context.workspaceId}/${context.correlationId}`,
-	};
+	setLogger(logger);
+	onComplete(async () => {
+		await logger.close();
+		clearLogger();
+	});
 }
 
 enum Level {
@@ -62,4 +47,12 @@ enum Level {
 export function enabled(level: string): boolean {
 	const configuredLevel = Level[process.env.ATOMIST_LOG_LEVEL || "debug"];
 	return configuredLevel >= Level[level];
+}
+
+export function url(ctx: Contextual<any, any>): string {
+	return `https://go.atomist.${
+		(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
+			? "services"
+			: "com"
+	}/log/${ctx.workspaceId}/${ctx.correlationId}`;
 }
