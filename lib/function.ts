@@ -105,9 +105,9 @@ export async function processEvent(
 			prepareStatus(e, context),
 		);
 	} finally {
+		debug(`Completed event handler '${context.name}'`);
 		await context.close();
 	}
-	debug(`Completed event handler '${context.name}'`);
 }
 
 export async function processCommand(
@@ -143,9 +143,9 @@ export async function processCommand(
 			);
 		}
 	} finally {
+		debug(`Completed command handler '${context.name}'`);
 		await context.close();
 	}
-	debug(`Completed command handler '${context.name}'`);
 }
 
 export async function processWebhook(
@@ -181,7 +181,7 @@ export async function processWebhook(
 			);
 		}
 	} finally {
+		debug(`Completed webhook handler '${context.name}'`);
 		await context.close();
 	}
-	debug(`Completed webhook handler '${context.name}'`);
 }
