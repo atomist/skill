@@ -18,7 +18,7 @@ import camelCase = require("lodash.camelcase");
 import { Severity } from "@atomist/skill-logging";
 
 import { EventHandler, MappingEventHandler } from "./handler/handler";
-import { warn } from "./log/console";
+import { debug } from "./log/console";
 import { prepareStatus } from "./message";
 import { toArray } from "./util";
 
@@ -114,7 +114,7 @@ export function mapSubscription<T = any>(result: any[]): T {
 			}
 		}
 		if (key === "unknownEntity") {
-			warn(`Unknown entity detected: ${JSON.stringify(r)}`);
+			debug(`Unknown entity detected: ${JSON.stringify(r)}`);
 		}
 		if (Array.isArray(mapped[key])) {
 			mapped[key].push(value);
