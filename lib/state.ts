@@ -18,7 +18,7 @@ import * as fs from "fs-extra";
 import * as os from "os";
 import * as path from "path";
 
-import { Contextual } from "./handler/handler";
+import { Contextual, EventContext } from "./handler/handler";
 import { warn } from "./log/console";
 import { guid } from "./util";
 
@@ -63,4 +63,33 @@ function stateKey(
 	return `state/${ctx.workspaceId}/${ctx.skill.namespace}/${
 		ctx.skill.name
 	}/${configurationName.replace(/[^a-zA-Z0-9-_]/g, "").toLowerCase()}.json`;
+}
+
+export function cachify<
+	T extends (ctx: EventContext<any, any>, ...args: any) => Promise<any>
+>(func: T, resolver?: (...args: any) => string): T {
+	return (async (ctx: EventContext<any, any>, ...args: any) => {
+		let key;
+		if (resolver) {
+			key = resolver(...args);
+		} else {
+			key = args.reduce((p, c) => {
+				if (Object(c) !== c) {
+					return `${p}_${c.toString()}`;
+				} else {
+					return p;
+				}
+			}, "");
+		}
+		const resultKey = `${ctx.configuration.name}/${key.toLowerCase()}`;
+		const old = await hydrate(resultKey, ctx, {
+			result: undefined,
+		});
+		if (old.result) {
+			return JSON.parse(old.result);
+		}
+		const result = await func(ctx, ...args);
+		await save({ result: JSON.stringify(result) }, resultKey, ctx);
+		return result;
+	}) as any;
 }
