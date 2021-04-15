@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add pluralization helper. [dd8b8e0](https://github.com/atomist-skills/skill/commit/dd8b8e0b7461f08016106179481ec46151d3ed1b)
 -   Add tx to formatMarkers. [2df7dc6](https://github.com/atomist-skills/skill/commit/2df7dc66c0e3d98fd70cef6e06a58a41e434fe2f)
 -   Add levenshteinSort helper. [eaf3648](https://github.com/atomist-skills/skill/commit/eaf36487809c159a5c3466282436c2334697b064)
+-   Add cachify helper. [b8c8139](https://github.com/atomist-skills/skill/commit/b8c813989c13afd345e4f999865e7d0855705326)
 
 ## [0.9.1](https://github.com/atomist/skill/compare/0.9.0...0.9.1) - 2021-04-01
 
