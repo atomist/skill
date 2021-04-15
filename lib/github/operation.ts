@@ -62,9 +62,9 @@ export function api(
 		},
 		log: {
 			debug: debug,
-			info: info,
-			warn: warn,
-			error: error,
+			info: debug,
+			warn: debug,
+			error: debug,
 		},
 	});
 }

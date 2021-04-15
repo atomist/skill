@@ -114,7 +114,7 @@ export function mapSubscription<T = any>(result: any[]): T {
 			}
 		}
 		if (key === "unknownEntity") {
-			warn(`Unknown entity detected: ${JSON.stringify(r)}`);
+			debug(`Unknown entity detected: ${JSON.stringify(r)}`);
 		}
 		if (Array.isArray(mapped[key])) {
 			mapped[key].push(value);

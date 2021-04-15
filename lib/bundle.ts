@@ -25,7 +25,7 @@ import {
 	EventHandler,
 	WebhookHandler,
 } from "./handler/handler";
-import { debug, info } from "./log";
+import { debug } from "./log";
 import { wrapEventHandler } from "./map";
 import {
 	CommandIncoming,
@@ -36,7 +36,6 @@ import {
 	isWebhookIncoming,
 	WebhookIncoming,
 } from "./payload";
-import { replacer } from "./util";
 
 const HandlerRegistry = {
 	events: {},
@@ -90,7 +89,6 @@ export const bundle = async (
 		| WebhookIncoming = JSON.parse(
 		Buffer.from(pubSubEvent.data, "base64").toString(),
 	);
-	info(`Incoming pub/sub message: ${JSON.stringify(payload, replacer)}`);
 
 	if (isEventIncoming(payload)) {
 		return processEvent(payload, context, async () => {

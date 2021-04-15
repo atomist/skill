@@ -20,7 +20,7 @@ import * as os from "os";
 import * as path from "path";
 
 import { CommandContext, EventContext } from "../handler/handler";
-import { debug, warn } from "../log/console";
+import { debug } from "../log/console";
 import { Project } from "../project/project";
 import { globFiles } from "../project/util";
 
@@ -101,7 +101,7 @@ export async function restore(
 			}
 		}
 	} catch (e) {
-		warn(`Error extracting cache: %s`, e.message);
+		debug(`Error extracting cache: %s`, e.message);
 	}
 	debug(`Cache '${key}' restored`);
 }

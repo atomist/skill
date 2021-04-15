@@ -19,7 +19,7 @@ import * as os from "os";
 import * as path from "path";
 
 import { Contextual } from "./handler/handler";
-import { warn } from "./log/console";
+import { debug } from "./log/console";
 import { guid } from "./util";
 
 export async function hydrate<T>(
@@ -52,7 +52,7 @@ export async function save(
 		await fs.writeJson(targetFilePath, state);
 		await ctx.storage.store(key, targetFilePath);
 	} catch (e) {
-		warn(`Failed to save state: ${e.message}`);
+		debug(`Failed to save state: ${e.message}`);
 	}
 }
 

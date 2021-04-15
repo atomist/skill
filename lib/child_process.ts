@@ -189,7 +189,7 @@ export async function spawnPromise(
 			timer = setTimeout(() => {
 				commandLog(
 					`Child process timeout expired, killing command: ${cmdString}`,
-					warn,
+					debug,
 				);
 				killProcess(childProcess.pid, optsToUse.killSignal);
 			}, optsToUse.timeout);
