@@ -17,8 +17,6 @@
 // tslint:disable-next-line:no-import-side-effect
 import "source-map-support/register";
 
-import { Severity } from "@atomist/skill-logging";
-
 import { eventHandlerLoader } from "./action";
 import { ContextFactory, createContext } from "./context";
 import {
@@ -100,7 +98,7 @@ export async function processEvent(
 			prepareStatus(result || { code: 0 }, context),
 		);
 	} catch (e) {
-		error(`Error occurred: ${e.stack}`, Severity.Error);
+		error(`Error occurred: ${e.stack}`);
 		await ((context.message as any) as StatusPublisher).publish(
 			prepareStatus(e, context),
 		);
@@ -134,7 +132,7 @@ export async function processCommand(
 				prepareStatus({ code: 0 }, context),
 			);
 		} else {
-			error(`Error occurred: ${e.stack}`, Severity.Error);
+			error(`Error occurred: ${e.stack}`);
 			await ((context.message as any) as StatusPublisher).publish(
 				prepareStatus(e, context),
 			);
@@ -164,16 +162,10 @@ export async function processWebhook(
 			prepareStatus(result || { code: 0 }, context),
 		);
 	} catch (e) {
-		if (e instanceof CommandListenerExecutionInterruptError) {
-			await ((context.message as any) as StatusPublisher).publish(
-				prepareStatus({ code: 0 }, context),
-			);
-		} else {
-			error(`Error occurred: ${e.stack}`, Severity.Error);
-			await ((context.message as any) as StatusPublisher).publish(
-				prepareStatus(e, context),
-			);
-		}
+		error(`Error occurred: ${e.stack}`);
+		await ((context.message as any) as StatusPublisher).publish(
+			prepareStatus(e, context),
+		);
 	} finally {
 		debug(`Completed webhook handler '${context.name}'`);
 		await context.close();
