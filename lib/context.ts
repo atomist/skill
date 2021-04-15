@@ -114,6 +114,7 @@ export function createContext(
 				},
 				{
 					name: payload.command,
+					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
 				},
 				onComplete,
 			),
@@ -151,6 +152,7 @@ export function createContext(
 				},
 				{
 					name: payload.extensions.operationName,
+					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
 				},
 				onComplete,
 			),
@@ -195,6 +197,7 @@ export function createContext(
 				},
 				{
 					name: payload.subscription?.name,
+					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
 				},
 				onComplete,
 			),
@@ -244,6 +247,7 @@ export function createContext(
 				},
 				{
 					name: payload.webhook.parameter_name,
+					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
 				},
 				onComplete,
 			),
