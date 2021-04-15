@@ -31,7 +31,7 @@ import {
 	WebhookContext,
 	WebhookHandler,
 } from "./handler/handler";
-import { debug, info } from "./log";
+import { debug } from "./log";
 import { prepareStatus, StatusPublisher } from "./message";
 import {
 	CommandIncoming,
@@ -84,7 +84,7 @@ export async function processEvent(
 ): Promise<void> {
 	const context = factory(event, ctx) as EventContext<any> &
 		ContextualLifecycle;
-	info(`Incoming event message: ${JSON.stringify(event, replacer)}`);
+	debug(`Incoming event message: ${JSON.stringify(event, replacer)}`);
 	try {
 		if (isSubscriptionIncoming(event)) {
 			debug(
@@ -119,7 +119,7 @@ export async function processCommand(
 	factory: ContextFactory = createContext,
 ): Promise<void> {
 	const context = factory(event, ctx) as CommandContext & ContextualLifecycle;
-	info(`Incoming command message: ${JSON.stringify(event, replacer)}`);
+	debug(`Incoming command message: ${JSON.stringify(event, replacer)}`);
 	try {
 		debug(`Invoking command handler '${context.name}'`);
 		const result = (await (await loader(context.name))(
@@ -157,7 +157,7 @@ export async function processWebhook(
 	factory: ContextFactory = createContext,
 ): Promise<void> {
 	const context = factory(event, ctx) as WebhookContext & ContextualLifecycle;
-	info(`Incoming webhook message: ${JSON.stringify(event, replacer)}`);
+	debug(`Incoming webhook message: ${JSON.stringify(event, replacer)}`);
 	try {
 		debug(`Invoking webhook handler '${context.name}'`);
 		const result = (await (await loader(context.name))(
