@@ -27,15 +27,7 @@ import { enabled } from "./util";
  * @param optionalParams Optional params to pass to the logger
  */
 export function debug(message: string, ...optionalParams: any[]): void {
-	if (enabled("debug")) {
-		const fmsg = redact(sprintf(message, ...optionalParams));
-		if (getLogger()) {
-			getLogger().log(fmsg, Severity.Debug);
-		} else {
-			// tslint:disable-next-line:no-console
-			console.debug(`[debug] ${fmsg}`);
-		}
-	}
+	log(Severity.Debug, "debug", message, ...optionalParams);
 }
 
 /**
@@ -45,15 +37,7 @@ export function debug(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function info(message: string, ...optionalParams: any[]): void {
-	if (enabled("info")) {
-		const fmsg = redact(sprintf(message, ...optionalParams));
-		if (getLogger()) {
-			getLogger().log(fmsg, Severity.Debug);
-		} else {
-			// tslint:disable-next-line:no-console
-			console.info(` [info] ${fmsg}`);
-		}
-	}
+	log(Severity.Info, "info", message, ...optionalParams);
 }
 
 /**
@@ -63,15 +47,7 @@ export function info(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function warn(message: string, ...optionalParams: any[]): void {
-	if (enabled("warn")) {
-		const fmsg = redact(sprintf(message, ...optionalParams));
-		if (getLogger()) {
-			getLogger().log(fmsg, Severity.Warning);
-		} else {
-			// tslint:disable-next-line:no-console
-			console.warn(` [warn] ${fmsg}`);
-		}
-	}
+	log(Severity.Warning, "warn", message, ...optionalParams);
 }
 
 /**
@@ -81,15 +57,7 @@ export function warn(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function error(message: string, ...optionalParams: any[]): void {
-	if (enabled("error")) {
-		const fmsg = redact(sprintf(message, ...optionalParams));
-		if (getLogger()) {
-			getLogger().log(fmsg, Severity.Error);
-		} else {
-			// tslint:disable-next-line:no-console
-			console.error(`[error] ${fmsg}`);
-		}
-	}
+	log(Severity.Error, "error", message, ...optionalParams);
 }
 
 export function clearLogger(): void {
@@ -102,4 +70,25 @@ export function setLogger(logger: Logger): void {
 
 function getLogger(): Logger {
 	return (global as any)._logger;
+}
+
+function log(
+	severity: Severity,
+	level: string,
+	message: string,
+	...optionalParams: any[]
+): void {
+	if (enabled(level)) {
+		const fmsg = redact(sprintf(message, ...optionalParams));
+		if (getLogger()) {
+			getLogger().log(fmsg, severity);
+		} else {
+			// tslint:disable-next-line:no-console
+			let prefix = `[${level}]`;
+			while (prefix.length < 7) {
+				prefix = ` ${prefix};`;
+			}
+			console[level](`${prefix} ${fmsg}`);
+		}
+	}
 }
