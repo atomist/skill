@@ -18,6 +18,7 @@ import * as fs from "fs-extra";
 
 import { Contextual } from "../handler/handler";
 import { debug } from "../log/console";
+import { url } from "../log/util";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 import { Annotation } from "./check";
@@ -43,7 +44,7 @@ export async function uploadCodeScanningResults(
 						driver: {
 							name: `${ctx.skill.namespace}/${ctx.skill.name}`,
 							version: ctx.skill.version,
-							informationUri: ctx.audit.url,
+							informationUri: url(ctx),
 							semanticVersion: ctx.skill.version,
 						},
 					},

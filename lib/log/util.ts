@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-import { createLogger, Logger } from "@atomist/skill-logging";
+import { createLogger } from "@atomist/skill-logging";
 
+import { Contextual } from "../handler/handler";
 import { clearLogger, setLogger } from "./console";
 
-export function createAuditLogger(
+export function initLogging(
 	context: {
 		eventId?: string;
 		correlationId: string;
@@ -27,21 +28,13 @@ export function createAuditLogger(
 	},
 	onComplete: (callback: () => Promise<void>) => void,
 	labels: Record<string, any> = {},
-): Pick<Logger, "log"> & { url: string } {
+): void {
 	const logger = createLogger(context, labels);
 	setLogger(logger);
 	onComplete(async () => {
 		await logger.close();
 		clearLogger();
 	});
-	return {
-		log: logger.log,
-		url: `https://go.atomist.${
-			(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
-				? "services"
-				: "com"
-		}/log/${context.workspaceId}/${context.correlationId}`,
-	};
 }
 
 enum Level {
@@ -54,4 +47,12 @@ enum Level {
 export function enabled(level: string): boolean {
 	const configuredLevel = Level[process.env.ATOMIST_LOG_LEVEL || "debug"];
 	return configuredLevel >= Level[level];
+}
+
+export function url(ctx: Contextual<any, any>): string {
+	return `https://go.atomist.${
+		(process.env.ATOMIST_GRAPHQL_ENDPOINT || "").includes("staging")
+			? "services"
+			: "com"
+	}/log/${ctx.workspaceId}/${ctx.correlationId}`;
 }
