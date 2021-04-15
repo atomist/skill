@@ -112,11 +112,11 @@ export function createContext(
 					correlationId: payload.correlation_id,
 					workspaceId: wid,
 				},
+				onComplete,
 				{
 					name: payload.command,
 					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
 				},
-				onComplete,
 			),
 			storage,
 			message,
@@ -150,11 +150,11 @@ export function createContext(
 					correlationId: payload.extensions.correlation_id,
 					workspaceId: wid,
 				},
+				onComplete,
 				{
 					name: payload.extensions.operationName,
 					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
 				},
-				onComplete,
 			),
 			storage,
 			message: new PubSubEventMessageClient(
@@ -195,11 +195,11 @@ export function createContext(
 					correlationId: payload.correlation_id,
 					workspaceId: wid,
 				},
+				onComplete,
 				{
 					name: payload.subscription?.name,
 					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
 				},
-				onComplete,
 			),
 			storage,
 			message: new PubSubEventMessageClient(
@@ -245,11 +245,11 @@ export function createContext(
 					correlationId: payload.correlation_id,
 					workspaceId: wid,
 				},
+				onComplete,
 				{
 					name: payload.webhook.parameter_name,
 					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
 				},
-				onComplete,
 			),
 			storage,
 			message: new PubSubWebhookMessageClient(payload, graphql),
