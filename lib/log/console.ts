@@ -15,7 +15,7 @@
  */
 
 import { Logger, Severity } from "@atomist/skill-logging";
-import { sprintf } from "sprintf-js";
+import * as util from "util";
 
 import { redact } from "./redact";
 import { enabled } from "./util";
@@ -79,7 +79,7 @@ function log(
 	...optionalParams: any[]
 ): void {
 	if (enabled(level)) {
-		const fmsg = redact(sprintf(message, ...optionalParams));
+		const fmsg = redact(util.format(message, ...optionalParams));
 		if (getLogger()) {
 			getLogger().log(fmsg, severity);
 		} else {
