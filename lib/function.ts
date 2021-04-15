@@ -31,7 +31,7 @@ import {
 	WebhookContext,
 	WebhookHandler,
 } from "./handler/handler";
-import { debug } from "./log";
+import { debug, error } from "./log";
 import { prepareStatus, StatusPublisher } from "./message";
 import {
 	CommandIncoming,
@@ -100,7 +100,7 @@ export async function processEvent(
 			prepareStatus(result || { code: 0 }, context),
 		);
 	} catch (e) {
-		await context.audit.log(`Error occurred: ${e.stack}`, Severity.Error);
+		error(`Error occurred: ${e.stack}`, Severity.Error);
 		await ((context.message as any) as StatusPublisher).publish(
 			prepareStatus(e, context),
 		);
@@ -134,10 +134,7 @@ export async function processCommand(
 				prepareStatus({ code: 0 }, context),
 			);
 		} else {
-			await context.audit.log(
-				`Error occurred: ${e.stack}`,
-				Severity.Error,
-			);
+			error(`Error occurred: ${e.stack}`, Severity.Error);
 			await ((context.message as any) as StatusPublisher).publish(
 				prepareStatus(e, context),
 			);
@@ -172,10 +169,7 @@ export async function processWebhook(
 				prepareStatus({ code: 0 }, context),
 			);
 		} else {
-			await context.audit.log(
-				`Error occurred: ${e.stack}`,
-				Severity.Error,
-			);
+			error(`Error occurred: ${e.stack}`, Severity.Error);
 			await ((context.message as any) as StatusPublisher).publish(
 				prepareStatus(e, context),
 			);

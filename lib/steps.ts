@@ -17,7 +17,7 @@
 import { Severity } from "@atomist/skill-logging";
 
 import { CommandContext, EventContext, HandlerStatus } from "./handler/handler";
-import { warn } from "./log";
+import { error, info, warn } from "./log";
 import { toArray } from "./util";
 
 /**
@@ -73,7 +73,7 @@ export async function runSteps<
 	for (const step of toArray(options.steps)) {
 		try {
 			if (!step.runWhen || !!(await step.runWhen(context, parameters))) {
-				await context.audit.log(`Running '${step.name}'`);
+				info(`Running '${step.name}'`);
 				await invokeListeners(
 					listeners.filter(l => !!l.starting),
 					async l => l.starting(step, parameters),
@@ -98,42 +98,30 @@ export async function runSteps<
 				);
 
 				if ((sr as any)?._abort) {
-					await context.audit.log(
-						`Completed '${step.name}' and exited`,
-					);
+					info(`Completed '${step.name}' and exited`);
 					return sr;
 				} else if (sr?.code !== 0) {
-					await context.audit.log(
-						`'${step.name}' errored with: ${sr.reason}`,
-						Severity.Error,
-					);
+					warn(`'${step.name}' errored with: ${sr.reason}`);
 					return sr;
 				} else if (sr?.reason) {
-					await context.audit.log(
-						`Completed '${step.name}' with: ${sr.reason}`,
-					);
+					info(`Completed '${step.name}' with: ${sr.reason}`);
 				} else {
-					await context.audit.log(`Completed '${step.name}'`);
+					info(`Completed '${step.name}'`);
 				}
 			} else {
-				await context.audit.log(`Skipping '${step.name}'`);
+				info(`Skipping '${step.name}'`);
 				await invokeListeners(
 					listeners.filter(l => !!l.skipped),
 					async l => l.skipped(step, parameters),
 				);
 			}
 		} catch (e) {
-			await context.audit.log(
-				`'${step.name}' errored with: ${e.message}`,
-				Severity.Error,
-			);
-			await context.audit.log(e.stack, Severity.Error);
+			warn(`'${step.name}' errored with: ${e.message}`);
+			warn(e.stack);
 			await invokeListeners(
 				listeners.filter(l => !!l.failed),
 				async l => l.failed(step, parameters, e),
 			);
-			warn(`'${step.name}' errored with:`);
-			warn(e.stack);
 			return {
 				code: 1,
 				reason: `'${step.name}' errored`,
