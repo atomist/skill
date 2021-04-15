@@ -18,7 +18,7 @@ import camelCase = require("lodash.camelcase");
 import { Severity } from "@atomist/skill-logging";
 
 import { EventHandler, MappingEventHandler } from "./handler/handler";
-import { warn } from "./log/console";
+import { debug } from "./log/console";
 import { prepareStatus } from "./message";
 import { toArray } from "./util";
 
