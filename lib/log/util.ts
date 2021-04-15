@@ -25,8 +25,8 @@ export function createAuditLogger(
 		workspaceId: string;
 		skillId: string;
 	},
-	labels: Record<string, any> = {},
 	onComplete: (callback: () => Promise<void>) => void,
+	labels: Record<string, any> = {},
 ): Pick<Logger, "log"> & { url: string } {
 	const logger = createLogger(context, labels);
 	setLogger(logger);

@@ -18,7 +18,7 @@ import camelCase = require("lodash.camelcase");
 import { Severity } from "@atomist/skill-logging";
 
 import { EventHandler, MappingEventHandler } from "./handler/handler";
-import { debug } from "./log/console";
+import { debug, error } from "./log/console";
 import { prepareStatus } from "./message";
 import { toArray } from "./util";
 
@@ -42,10 +42,7 @@ export function wrapEventHandler(eh: EventHandler): EventHandler {
 						results.push(result);
 					}
 				} catch (e) {
-					await ctx.audit.log(
-						`Error occurred: ${e.stack}`,
-						Severity.Error,
-					);
+					error(`Error occurred: ${e.stack}`, Severity.Error);
 					results.push(prepareStatus(e, ctx));
 				}
 			}
