@@ -86,7 +86,7 @@ function log(
 			// tslint:disable-next-line:no-console
 			let prefix = `[${level}]`;
 			while (prefix.length < 7) {
-				prefix = ` ${prefix};`;
+				prefix = ` ${prefix}`;
 			}
 			console[level](`${prefix} ${fmsg}`);
 		}
