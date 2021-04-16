@@ -20,7 +20,7 @@ import * as path from "path";
 
 import { Contextual, EventContext } from "./handler/handler";
 import { debug } from "./log/console";
-import { guid } from "./util";
+import { guid, isPrimitive } from "./util";
 
 export async function hydrate<T>(
 	configurationName: string,
@@ -74,7 +74,7 @@ export function cachify<
 			key = resolver(...args);
 		} else {
 			key = args.reduce((p, c) => {
-				if (Object(c) !== c) {
+				if (isPrimitive(c)) {
 					return `${p}_${c.toString()}`;
 				} else {
 					return p;

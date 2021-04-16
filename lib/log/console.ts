@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Logger, Severity } from "@atomist/skill-logging";
+import { Logger } from "@atomist/skill-logging";
 import * as util from "util";
 
 import { redact } from "./redact";
@@ -27,7 +27,7 @@ import { enabled } from "./util";
  * @param optionalParams Optional params to pass to the logger
  */
 export function debug(message: string, ...optionalParams: any[]): void {
-	log(Severity.Debug, "debug", message, ...optionalParams);
+	log("debug", message, ...optionalParams);
 }
 
 /**
@@ -37,7 +37,7 @@ export function debug(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function info(message: string, ...optionalParams: any[]): void {
-	log(Severity.Info, "info", message, ...optionalParams);
+	log("info", message, ...optionalParams);
 }
 
 /**
@@ -47,7 +47,7 @@ export function info(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function warn(message: string, ...optionalParams: any[]): void {
-	log(Severity.Warning, "warn", message, ...optionalParams);
+	log("warn", message, ...optionalParams);
 }
 
 /**
@@ -57,7 +57,7 @@ export function warn(message: string, ...optionalParams: any[]): void {
  * @param optionalParams Optional params to pass to the logger
  */
 export function error(message: string, ...optionalParams: any[]): void {
-	log(Severity.Error, "error", message, ...optionalParams);
+	log("error", message, ...optionalParams);
 }
 
 export function clearLogger(): void {
@@ -72,21 +72,16 @@ function getLogger(): Logger {
 	return (global as any)._logger;
 }
 
-function log(
-	severity: Severity,
-	level: string,
-	message: string,
-	...optionalParams: any[]
-): void {
+function log(level: string, message: string, ...optionalParams: any[]): void {
 	if (enabled(level)) {
 		const fmsg = redact(util.format(message, ...optionalParams));
 		if (getLogger()) {
-			getLogger().log(fmsg, severity);
+			getLogger()[level](fmsg);
 		} else {
 			// tslint:disable-next-line:no-console
 			let prefix = `[${level}]`;
 			while (prefix.length < 7) {
-				prefix = ` ${prefix};`;
+				prefix = ` ${prefix}`;
 			}
 			console[level](`${prefix} ${fmsg}`);
 		}

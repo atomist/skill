@@ -15,12 +15,11 @@
  */
 
 import camelCase = require("lodash.camelcase");
-import { Severity } from "@atomist/skill-logging";
 
 import { EventHandler, MappingEventHandler } from "./handler/handler";
 import { debug, error } from "./log/console";
 import { prepareStatus } from "./message";
-import { toArray } from "./util";
+import { isPrimitive, toArray } from "./util";
 
 export function wrapEventHandler(eh: EventHandler): EventHandler {
 	return async ctx => {
@@ -42,7 +41,7 @@ export function wrapEventHandler(eh: EventHandler): EventHandler {
 						results.push(result);
 					}
 				} catch (e) {
-					error(`Error occurred: ${e.stack}`, Severity.Error);
+					error(`Error occurred: ${e.stack}`);
 					results.push(prepareStatus(e, ctx));
 				}
 			}
@@ -137,8 +136,4 @@ function nameFromKey(value: string, toCamelCase = true): string {
 	} else {
 		return name;
 	}
-}
-
-function isPrimitive(test): boolean {
-	return test !== Object(test);
 }
