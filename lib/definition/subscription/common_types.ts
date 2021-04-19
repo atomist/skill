@@ -34,6 +34,7 @@ export interface Commit {
 		login: string;
 		emails: Array<{ address: string }>;
 	};
+	refs: Array<{ name: string; type: "branch" }>;
 }
 
 export interface DockerImage {

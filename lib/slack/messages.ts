@@ -17,6 +17,7 @@
 import { Attachment, SlackMessage, url } from "@atomist/slack-messages";
 
 import { Contextual } from "../handler/handler";
+import { url as lurl } from "../log/util";
 import { guid } from "../util";
 
 export function successMessage(
@@ -30,7 +31,7 @@ export function successMessage(
 			{
 				author_icon: `https://images.atomist.com/rug/check-circle.gif?gif=${guid()}`,
 				author_name: title,
-				author_link: ctx.audit.url,
+				author_link: lurl(ctx),
 				text,
 				fallback: text,
 				color: "#37A745",
@@ -57,7 +58,7 @@ export function questionMessage(
 			{
 				author_icon: `https://images.atomist.com/rug/question.png`,
 				author_name: title,
-				author_link: ctx.audit.url,
+				author_link: lurl(ctx),
 				text,
 				fallback: text,
 				color: "#B5B5B5",
@@ -84,7 +85,7 @@ export function infoMessage(
 			{
 				author_icon: `https://images.atomist.com/rug/info.png`,
 				author_name: title,
-				author_link: ctx.audit.url,
+				author_link: lurl(ctx),
 				text,
 				fallback: text,
 				color: "#B5B5B5",
@@ -111,7 +112,7 @@ export function warningMessage(
 			{
 				author_icon: `https://images.atomist.com/rug/warning-yellow.png`,
 				author_name: title,
-				author_link: ctx.audit.url,
+				author_link: lurl(ctx),
 				text,
 				fallback: text,
 				color: "#D7B958",
@@ -138,7 +139,7 @@ export function errorMessage(
 			{
 				author_icon: "https://images.atomist.com/rug/error-circle.png",
 				author_name: title,
-				author_link: ctx.audit.url,
+				author_link: lurl(ctx),
 				text,
 				fallback: text,
 				color: "#BC3D33",
@@ -229,7 +230,7 @@ export function progressMessage(
 				mrkdwn_in: ["text"],
 				fallback: title,
 				title,
-				title_link: ctx.audit.url,
+				title_link: lurl(ctx),
 				text,
 				thumb_url: `https://badge.atomist.com/v2/progress/${
 					progress.state

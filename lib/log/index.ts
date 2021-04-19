@@ -16,4 +16,4 @@
 
 export { debug, error, info, warn } from "./console";
 export { DEFAULT_REDACTION_PATTERNS, redact } from "./redact";
-export { Severity } from "@atomist/skill-logging";
+export { url } from "./util";

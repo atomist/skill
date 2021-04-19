@@ -28,22 +28,23 @@ export async function runSkill(skill?: string): Promise<void> {
 	const payload = await fs.readJson(
 		process.env.ATOMIST_PAYLOAD || "/atm/payload.json",
 	);
+	const ctx = { eventId: process.env.ATOMIST_EVENT_ID };
 	if (isEventIncoming(payload)) {
 		if (skill) {
 			payload.extensions.operationName = skill;
 		}
-		await processEvent(payload, {} as any);
+		await processEvent(payload, ctx);
 	} else if (isSubscriptionIncoming(payload)) {
 		if (skill) {
 			payload.subscription.name = skill;
 		}
-		await processEvent(payload, {} as any);
+		await processEvent(payload, ctx);
 	} else if (isCommandIncoming(payload)) {
 		if (skill) {
 			payload.command = skill;
 		}
-		await processCommand(payload, {} as any);
+		await processCommand(payload, ctx);
 	} else if (isWebhookIncoming(payload)) {
-		await processWebhook(payload, {} as any);
+		await processWebhook(payload, ctx);
 	}
 }

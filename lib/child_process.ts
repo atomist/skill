@@ -21,7 +21,7 @@ import {
 } from "child_process";
 import * as process from "process";
 
-import { debug, error, warn } from "./log";
+import { debug, error } from "./log";
 
 /**
  * Convert child process into an informative string.
@@ -189,7 +189,7 @@ export async function spawnPromise(
 			timer = setTimeout(() => {
 				commandLog(
 					`Child process timeout expired, killing command: ${cmdString}`,
-					warn,
+					debug,
 				);
 				killProcess(childProcess.pid, optsToUse.killSignal);
 			}, optsToUse.timeout);
