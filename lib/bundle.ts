@@ -25,7 +25,6 @@ import {
 	EventHandler,
 	WebhookHandler,
 } from "./handler/handler";
-import { debug } from "./log";
 import { wrapEventHandler } from "./map";
 import {
 	CommandIncoming,
@@ -77,12 +76,6 @@ export const bundle = async (
 	pubSubEvent: PubSubMessage,
 	context: { eventId: string },
 ): Promise<void> => {
-	const attributes = {
-		...(pubSubEvent.attributes || {}),
-		eventId: context.eventId,
-	};
-	debug(`atm:attributes=${JSON.stringify(attributes)}`);
-
 	const payload:
 		| CommandIncoming
 		| EventIncoming
