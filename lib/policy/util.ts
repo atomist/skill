@@ -132,9 +132,9 @@ export function handler<S, C>(parameters: {
 			if (parameters.clone) {
 				try {
 					if (typeof parameters.clone === "function") {
-						return cloneRef(parameters.clone(ctx) as any)(ctx);
+						await cloneRef(parameters.clone(ctx) as any)(ctx);
 					} else {
-						return cloneRef()(ctx);
+						await cloneRef()(ctx);
 					}
 				} catch (e) {
 					return success(
