@@ -257,6 +257,6 @@ export function levenshteinSort(word: string, elements: string[]): string[] {
 	return sortBy([...elements], o => distance(word, o));
 }
 
-export function isPrimitive(test): boolean {
+export function isPrimitive(test: any): boolean {
 	return test !== Object(test);
 }
