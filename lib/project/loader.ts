@@ -18,6 +18,7 @@ import * as fs from "fs-extra";
 
 import { Contextual } from "../handler/handler";
 import { AuthenticatedRepositoryId } from "../repository/id";
+import { handleError } from "../util";
 import { CloneOptions } from "./clone";
 import { clone, load, Project } from "./project";
 
@@ -57,7 +58,14 @@ export class DefaultProjectLoader implements ProjectLoader {
 	): Promise<Project> {
 		const p = await clone(id, options);
 		if (this.ctx) {
-			this.ctx.onComplete(() => fs.remove(p.path()));
+			this.ctx.onComplete(() =>
+				handleError(
+					async () => fs.remove(p.path()),
+					() => {
+						// Intentionally left empty
+					},
+				),
+			);
 		}
 		return p;
 	}
