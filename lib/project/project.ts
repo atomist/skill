@@ -64,7 +64,7 @@ export async function load<C>(
 			path.join(baseDir, ...(elements || [])),
 		spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> =>
 			spawnPromise(cmd, args, {
-				log: log(opts.level),
+				log: log(opts?.level),
 				cwd: baseDir,
 				...(opts || {}),
 			}),
@@ -90,7 +90,7 @@ export async function clone<C>(
 			path.join(baseDir, ...(elements || [])),
 		spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> =>
 			spawnPromise(cmd, args, {
-				log: log(opts.level),
+				log: log(opts?.level),
 				cwd: baseDir,
 				...(opts || {}),
 			}),
