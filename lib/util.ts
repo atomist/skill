@@ -18,10 +18,10 @@ import * as crypto from "crypto";
 import * as fs from "fs-extra";
 import * as path from "path";
 import { v4 as uuidv4 } from "uuid";
-import sortBy = require("lodash.sortby");
 
 import { error } from "./log";
 import { Arg } from "./payload";
+import sortBy = require("lodash.sortby");
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function hash(obj: any): string {
@@ -138,15 +138,25 @@ export function extractParameters(intent: string): Arg[] {
 		.reverse();
 }
 
+function keyToHide(key: string): boolean {
+	return /token|password|jwt|url|secret|authorization|key|cert|pass|user|address|email/i.test(
+		key,
+	);
+}
+
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function replacer(key: string, value: any): any {
-	if (key === "secrets" && value) {
+	if (key === "parameters" && value) {
+		return value.map(v => {
+			let value = v.value;
+			if (keyToHide(v.name)) {
+				value = hideString(v.value);
+			}
+			return { name: v.name, value };
+		});
+	} else if (key === "secrets" && value) {
 		return value.map(v => ({ uri: v.uri, value: hideString(v.value) }));
-	} else if (
-		/token|password|jwt|url|secret|authorization|key|cert|pass|user|address|email/i.test(
-			key,
-		)
-	) {
+	} else if (keyToHide(key)) {
 		return hideString(value);
 	} else {
 		return value;
@@ -182,6 +192,7 @@ export function guid(): string {
 }
 
 const units = ["b", "kb", "mb", "gb", "tb", "pb"];
+
 export function bytes(x: string): string {
 	if (x === undefined || isNaN(+x)) {
 		return x;
