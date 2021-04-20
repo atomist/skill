@@ -20,7 +20,7 @@ import * as path from "path";
 
 import { Contextual, EventContext } from "./handler/handler";
 import { debug } from "./log/console";
-import { guid, isPrimitive } from "./util";
+import { guid, handleError, isPrimitive } from "./util";
 
 export async function hydrate<T>(
 	configurationName: string,
@@ -89,7 +89,9 @@ export function cachify<
 			return JSON.parse(old.result);
 		}
 		const result = await func(ctx, ...args);
-		await save({ result: JSON.stringify(result) }, resultKey, ctx);
+		await handleError(() =>
+			save({ result: JSON.stringify(result) }, resultKey, ctx),
+		);
 		return result;
 	}) as any;
 }
