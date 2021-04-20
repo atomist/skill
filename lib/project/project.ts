@@ -110,6 +110,9 @@ function log(level = "debug"): WritableLog {
 		case "info":
 			cb = info;
 			break;
+		default:
+			cb = debug;
+			break;
 	}
 	return {
 		write: (msg: string): void => {
