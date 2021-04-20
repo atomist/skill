@@ -24,9 +24,10 @@ import {
 	spawnPromise,
 	SpawnPromiseOptions,
 	SpawnPromiseReturns,
+	WritableLog,
 } from "../child_process";
 import { init, setUserConfig } from "../git";
-import { debug } from "../log";
+import { debug, info } from "../log";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { handleError } from "../util";
 import { CloneOptions, doClone } from "./clone";
@@ -34,7 +35,7 @@ import { CloneOptions, doClone } from "./clone";
 export type Spawn = (
 	cmd: string,
 	args?: string[],
-	opts?: SpawnPromiseOptions,
+	opts?: SpawnPromiseOptions & { level?: "debug" | "info" },
 ) => Promise<SpawnPromiseReturns>;
 export type Exec = (
 	cmd: string,
@@ -62,7 +63,11 @@ export async function load<C>(
 		path: (...elements: string[]): string =>
 			path.join(baseDir, ...(elements || [])),
 		spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> =>
-			spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
+			spawnPromise(cmd, args, {
+				log: log(opts.level),
+				cwd: baseDir,
+				...(opts || {}),
+			}),
 		exec: (cmd, args, opts): Promise<ExecPromiseResult> =>
 			execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
 	};
@@ -84,7 +89,11 @@ export async function clone<C>(
 		path: (...elements: string[]): string =>
 			path.join(baseDir, ...(elements || [])),
 		spawn: (cmd, args, opts): Promise<SpawnPromiseReturns> =>
-			spawnPromise(cmd, args, { log, cwd: baseDir, ...(opts || {}) }),
+			spawnPromise(cmd, args, {
+				log: log(opts.level),
+				cwd: baseDir,
+				...(opts || {}),
+			}),
 		exec: (cmd, args, opts): Promise<ExecPromiseResult> =>
 			execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
 	};
@@ -92,13 +101,24 @@ export async function clone<C>(
 	return project;
 }
 
-const log = {
-	write: (msg: string): void => {
-		let line = msg;
-		if (line.endsWith("\n")) {
-			line = line.slice(0, -1);
-		}
-		const lines = line.split("\n");
-		lines.forEach(l => debug(l.trimRight()));
-	},
-};
+function log(level = "debug"): WritableLog {
+	let cb;
+	switch (level) {
+		case "debug":
+			cb = debug;
+			break;
+		case "info":
+			cb = info;
+			break;
+	}
+	return {
+		write: (msg: string): void => {
+			let line = msg;
+			if (line.endsWith("\n")) {
+				line = line.slice(0, -1);
+			}
+			const lines = line.split("\n");
+			lines.forEach(l => cb(l.trimRight()));
+		},
+	};
+}
