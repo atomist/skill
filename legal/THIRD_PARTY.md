@@ -20,7 +20,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 43    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 593   |
+| [MIT](#mit)                     | 592   |
 | [Public Domain](#public-domain) | 1     |
 | [Python-2.0](#python-20)        | 1     |
 
@@ -305,13 +305,12 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `@octokit/openapi-types`                             | `6.1.0`        |                                | [https://github.com/octokit/openapi-types.ts](https://github.com/octokit/openapi-types.ts)                                                                                                           |
 | `@octokit/plugin-paginate-rest`                      | `2.13.3`       |                                | [https://github.com/octokit/plugin-paginate-rest.js](https://github.com/octokit/plugin-paginate-rest.js)                                                                                             |
 | `@octokit/plugin-request-log`                        | `1.0.3`        |                                | [https://github.com/octokit/plugin-request-log.js](https://github.com/octokit/plugin-request-log.js)                                                                                                 |
-| `@octokit/plugin-rest-endpoint-methods`              | `5.0.0`        |                                | [https://github.com/octokit/plugin-rest-endpoint-methods.js](https://github.com/octokit/plugin-rest-endpoint-methods.js)                                                                             |
 | `@octokit/plugin-rest-endpoint-methods`              | `5.0.1`        |                                | [https://github.com/octokit/plugin-rest-endpoint-methods.js](https://github.com/octokit/plugin-rest-endpoint-methods.js)                                                                             |
 | `@octokit/plugin-retry`                              | `3.0.7`        |                                | [https://github.com/octokit/plugin-retry.js](https://github.com/octokit/plugin-retry.js)                                                                                                             |
 | `@octokit/plugin-throttling`                         | `3.4.1`        |                                | [https://github.com/octokit/plugin-throttling.js](https://github.com/octokit/plugin-throttling.js)                                                                                                   |
 | `@octokit/request-error`                             | `2.0.5`        |                                | [https://github.com/octokit/request-error.js](https://github.com/octokit/request-error.js)                                                                                                           |
 | `@octokit/request`                                   | `5.4.15`       |                                | [https://github.com/octokit/request.js](https://github.com/octokit/request.js)                                                                                                                       |
-| `@octokit/rest`                                      | `18.5.2`       |                                | [https://github.com/octokit/rest.js](https://github.com/octokit/rest.js)                                                                                                                             |
+| `@octokit/rest`                                      | `18.5.3`       |                                | [https://github.com/octokit/rest.js](https://github.com/octokit/rest.js)                                                                                                                             |
 | `@octokit/types`                                     | `6.13.0`       |                                | [https://github.com/octokit/types.ts](https://github.com/octokit/types.ts)                                                                                                                           |
 | `@octokit/types`                                     | `6.13.1`       |                                | [https://github.com/octokit/types.ts](https://github.com/octokit/types.ts)                                                                                                                           |
 | `@samverschueren/stream-to-observable`               | `0.3.1`        |                                | [https://github.com/SamVerschueren/stream-to-observable](https://github.com/SamVerschueren/stream-to-observable)                                                                                     |
