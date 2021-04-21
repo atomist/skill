@@ -65,7 +65,6 @@
     "@octokit/plugin-retry": "^3.0.7",
     "@octokit/plugin-throttling": "^3.4.1",
     "@octokit/rest": "^18.5.2",
-    "@octokit/types": "6.13.0",
     "@types/cross-spawn": "^6.0.2",
     "@types/flat": "^5.0.1",
     "@types/fs-extra": "^9.0.11",
