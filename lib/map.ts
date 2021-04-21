@@ -19,7 +19,7 @@ import camelCase = require("lodash.camelcase");
 import { EventHandler, MappingEventHandler } from "./handler/handler";
 import { debug, error } from "./log/console";
 import { prepareStatus } from "./message";
-import { isPrimitive, toArray } from "./util";
+import { isPrimitive, replacer, toArray } from "./util";
 
 export function wrapEventHandler(eh: EventHandler): EventHandler {
 	return async ctx => {
@@ -110,7 +110,7 @@ export function mapSubscription<T = any>(result: any[]): T {
 			}
 		}
 		if (key === "unknownEntity") {
-			debug(`Unknown entity detected: ${JSON.stringify(r)}`);
+			debug(`Unknown entity detected: ${JSON.stringify(r, replacer)}`);
 		}
 		if (Array.isArray(mapped[key])) {
 			mapped[key].push(value);
