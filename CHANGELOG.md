@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.10.0...HEAD)
 
+### Added
+
+-   Add delete to storage interface. [7ff45f4](https://github.com/atomist-skills/skill/commit/7ff45f4c1d380e096e815aa0be954cf0c7cda556)
+
 ## [0.10.0](https://github.com/atomist/skill/compare/0.9.1...0.10.0) - 2021-04-21
 
 ### Added
