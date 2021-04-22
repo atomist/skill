@@ -24,6 +24,8 @@ export interface StorageProvider {
 	store(key: string, sourceFilePath: string): Promise<void>;
 
 	retrieve(key: string, targetFilePath?: string): Promise<string>;
+
+	delete(key: string): Promise<void>;
 }
 
 export function createStorageProvider(workspaceId: string): StorageProvider {
@@ -51,6 +53,14 @@ export class GoogleCloudStorageProvider implements StorageProvider {
 			destination: key,
 			resumable: false,
 		});
+	}
+
+	public async delete(key: string): Promise<void> {
+		const storage = new (await import("@google-cloud/storage")).Storage();
+		await storage
+			.bucket(this.bucket)
+			.file(key)
+			.delete({ ignoreNotFound: true });
 	}
 }
 
