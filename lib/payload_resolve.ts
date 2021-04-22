@@ -35,7 +35,7 @@ export async function resolvePayload(pubSubEvent: {
 		if (resolver) {
 			return resolvePayload(await resolver.resolve(payload.message_uri));
 		} else {
-			throw new Error(`Unknown message_uri provided`);
+			throw new Error(`Unsupported message_uri provided`);
 		}
 	} else {
 		return payload;
