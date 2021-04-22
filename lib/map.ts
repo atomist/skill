@@ -17,9 +17,9 @@
 import camelCase = require("lodash.camelcase");
 
 import { EventHandler, MappingEventHandler } from "./handler/handler";
-import { debug, error } from "./log/console";
+import { error } from "./log/console";
 import { prepareStatus } from "./message";
-import { isPrimitive, replacer, toArray } from "./util";
+import { isPrimitive, toArray } from "./util";
 
 export function wrapEventHandler(eh: EventHandler): EventHandler {
 	return async ctx => {
@@ -108,9 +108,6 @@ export function mapSubscription<T = any>(result: any[]): T {
 			if (k !== "schema/entity-type") {
 				value[nameFromKey(k)] = mapper(r[k]);
 			}
-		}
-		if (key === "unknownEntity") {
-			debug(`Unknown entity detected: ${JSON.stringify(r, replacer)}`);
 		}
 		if (Array.isArray(mapped[key])) {
 			mapped[key].push(value);
