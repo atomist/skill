@@ -27,14 +27,12 @@ import {
 } from "./handler/handler";
 import { wrapEventHandler } from "./map";
 import {
-	CommandIncoming,
-	EventIncoming,
 	isCommandIncoming,
 	isEventIncoming,
 	isSubscriptionIncoming,
 	isWebhookIncoming,
-	WebhookIncoming,
 } from "./payload";
+import { resolvePayload } from "./payload_resolve";
 
 const HandlerRegistry = {
 	events: {},
@@ -76,12 +74,7 @@ export const bundle = async (
 	pubSubEvent: PubSubMessage,
 	context: { eventId: string },
 ): Promise<void> => {
-	const payload:
-		| CommandIncoming
-		| EventIncoming
-		| WebhookIncoming = JSON.parse(
-		Buffer.from(pubSubEvent.data, "base64").toString(),
-	);
+	const payload = await resolvePayload(pubSubEvent);
 
 	if (isEventIncoming(payload)) {
 		return processEvent(payload, context, async () => {

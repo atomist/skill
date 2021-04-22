@@ -41,6 +41,7 @@ import {
 	SubscriptionIncoming,
 	WebhookIncoming,
 } from "./payload";
+import { resolvePayload } from "./payload_resolve";
 import { CommandListenerExecutionInterruptError } from "./prompt/prompt";
 import { handlerLoader, replacer } from "./util";
 
@@ -53,10 +54,7 @@ export const entryPoint = async (
 	pubSubEvent: PubSubMessage,
 	context: { eventId: string },
 ): Promise<void> => {
-	const payload: CommandIncoming | EventIncoming = JSON.parse(
-		Buffer.from(pubSubEvent.data, "base64").toString(),
-	);
-
+	const payload = await resolvePayload(pubSubEvent);
 	if (isEventIncoming(payload) || isSubscriptionIncoming(payload)) {
 		await processEvent(payload, context);
 	} else if (isCommandIncoming(payload)) {
