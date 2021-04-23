@@ -232,7 +232,7 @@ export function createContext(
 	);
 	const rt = runtime();
 	debug(
-		"Starting %s/%s:%s '%s' - %s (%s) / %s",
+		"Starting %s/%s %s '%s' atomist/skill:%s (%s) nodejs:%s",
 		payload.skill.namespace,
 		payload.skill.name,
 		payload.skill.version,
