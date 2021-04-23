@@ -107,6 +107,7 @@ export function handler<S, C>(parameters: {
 		message?: string;
 		body?: string;
 		annotations?: UpdateCheck["annotations"];
+		actions?: UpdateCheck["actions"];
 		status: HandlerStatus;
 	}>;
 }): EventHandler<S, C> {
@@ -222,6 +223,7 @@ export function handler<S, C>(parameters: {
 				conclusion,
 				body,
 				annotations: result.annotations,
+				actions: result.actions,
 			});
 			switch (result.state) {
 				case ResultEntityState.Success:
