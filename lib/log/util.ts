@@ -17,6 +17,7 @@
 import { createLogger } from "@atomist/skill-logging";
 
 import { Contextual } from "../handler/handler";
+import { handleErrorSync } from "../util";
 import { clearLogger, setLogger } from "./console";
 
 export function initLogging(
@@ -66,12 +67,18 @@ export function runtime(): {
 		sha: string;
 		date: string;
 	};
+	host: {
+		sha: string;
+		date: string;
+	};
 } {
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const gitInfo = require("../../git-info.json");
 	const nodeVersion = process.version;
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const packageJson = require("../../package.json");
+	const hostGitInfo =
+		handleErrorSync(() => require("../../../../../git-info.json")) || {};
 	return {
 		node: {
 			version: nodeVersion.replace(/v/g, ""),
@@ -80,6 +87,10 @@ export function runtime(): {
 			version: packageJson.version,
 			sha: gitInfo.sha,
 			date: gitInfo.date,
+		},
+		host: {
+			sha: hostGitInfo.sha,
+			date: hostGitInfo.date,
 		},
 	};
 }
