@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 -   Add delete to storage interface. [7ff45f4](https://github.com/atomist-skills/skill/commit/7ff45f4c1d380e096e815aa0be954cf0c7cda556)
 -   Resolve incoming messages from GCS. [4cc2477](https://github.com/atomist-skills/skill/commit/4cc24773b96e05ce5a670efe4488290e7647b509)
 
+### Changed
+
+-   Add version information to startup. [4deec03](https://github.com/atomist-skills/skill/commit/4deec03b6204045934e55bb54bfe6014fbd16894)
+
 ## [0.10.0](https://github.com/atomist/skill/compare/0.9.1...0.10.0) - 2021-04-21
 
 ### Added
