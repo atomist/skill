@@ -232,7 +232,7 @@ export function createContext(
 	);
 	const rt = runtime();
 	debug(
-		"Starting %s/%s %s '%s' %satomist/skill:%s (%s) nodejs:%s",
+		"Starting %s/%s:%s '%s' %satomist/skill:%s (%s) nodejs:%s",
 		payload.skill.namespace,
 		payload.skill.name,
 		payload.skill.version,
