@@ -272,3 +272,34 @@ export function levenshteinSort(word: string, elements: string[]): string[] {
 export function isPrimitive(test: any): boolean {
 	return test !== Object(test);
 }
+
+export function sourceLocationFromOffset(
+	match: string,
+	offset: number,
+	content: string,
+): {
+	startLine: number;
+	startOffset: number;
+	endLine: number;
+	endOffset: number;
+} {
+	const startLine = (content.slice(0, offset).match(/\n/gm) || []).length + 1;
+	const endLine =
+		startLine +
+		(content.slice(offset, offset + match.length).match(/\n/gm) || [])
+			.length;
+
+	let startOffset: number;
+	let endOffset: number;
+
+	if (startLine === endLine) {
+		startOffset = offset - content.slice(0, offset).lastIndexOf("\n");
+		endOffset = startOffset + match.length;
+	}
+	return {
+		startLine,
+		startOffset,
+		endLine,
+		endOffset,
+	};
+}
