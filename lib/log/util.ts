@@ -56,3 +56,30 @@ export function url(ctx: Contextual<any, any>): string {
 			: "com"
 	}/log/${ctx.workspaceId}/${ctx.correlationId}`;
 }
+
+export function runtime(): {
+	node: {
+		version: string;
+	};
+	skill: {
+		version: string;
+		sha: string;
+		date: string;
+	};
+} {
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const gitInfo = require("../../git-info.json");
+	const nodeVersion = process.version;
+	// eslint-disable-next-line @typescript-eslint/no-var-requires
+	const packageJson = require("../../package.json");
+	return {
+		node: {
+			version: nodeVersion.replace(/v/g, ""),
+		},
+		skill: {
+			version: packageJson.version,
+			sha: gitInfo.sha,
+			date: gitInfo.date,
+		},
+	};
+}

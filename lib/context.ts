@@ -24,7 +24,8 @@ import {
 	WebhookContext,
 } from "./handler/handler";
 import { createHttpClient } from "./http";
-import { initLogging } from "./log/util";
+import { debug } from "./log/console";
+import { initLogging, runtime } from "./log/util";
 import { mapSubscription } from "./map";
 import {
 	PubSubCommandMessageClient,
@@ -88,26 +89,14 @@ export function createContext(
 		}
 	};
 
+	let context;
 	if (isCommandIncoming(payload)) {
 		if (payload.raw_message) {
 			const parameters = extractParameters(payload.raw_message);
 			payload.parameters.push(...parameters);
 		}
 		const message = new PubSubCommandMessageClient(payload, graphql);
-		initLogging(
-			{
-				skillId: payload.skill.id,
-				eventId: ctx.eventId,
-				correlationId: payload.correlation_id,
-				workspaceId: wid,
-			},
-			onComplete,
-			{
-				name: payload.command,
-				skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
-			},
-		);
-		return {
+		context = {
 			parameters: {
 				prompt: commandRequestParameterPromptFactory(message, payload),
 			},
@@ -134,20 +123,7 @@ export function createContext(
 			onComplete,
 		};
 	} else if (isEventIncoming(payload)) {
-		initLogging(
-			{
-				skillId: payload.skill.id,
-				eventId: ctx.eventId,
-				correlationId: payload.extensions.correlation_id,
-				workspaceId: wid,
-			},
-			onComplete,
-			{
-				name: payload.extensions.operationName,
-				skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
-			},
-		);
-		return {
+		context = {
 			data: payload.data,
 			name: payload.extensions.operationName,
 			correlationId: payload.extensions.correlation_id,
@@ -179,20 +155,7 @@ export function createContext(
 			onComplete,
 		};
 	} else if (isSubscriptionIncoming(payload)) {
-		initLogging(
-			{
-				skillId: payload.skill.id,
-				eventId: ctx.eventId,
-				correlationId: payload.correlation_id,
-				workspaceId: wid,
-			},
-			onComplete,
-			{
-				name: payload.subscription?.name,
-				skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
-			},
-		);
-		return {
+		context = {
 			data: toArray(payload.subscription?.result).map(mapSubscription),
 			name: payload.subscription?.name,
 			correlationId: payload.correlation_id,
@@ -224,20 +187,7 @@ export function createContext(
 			onComplete,
 		};
 	} else if (isWebhookIncoming(payload)) {
-		initLogging(
-			{
-				skillId: payload.skill.id,
-				eventId: ctx.eventId,
-				correlationId: payload.correlation_id,
-				workspaceId: wid,
-			},
-			onComplete,
-			{
-				name: payload.webhook.parameter_name,
-				skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
-			},
-		);
-		return {
+		context = {
 			name: payload.webhook.parameter_name,
 			body: payload.webhook.body,
 			get json() {
@@ -267,7 +217,31 @@ export function createContext(
 			onComplete,
 		};
 	}
-	return undefined;
+	initLogging(
+		{
+			skillId: payload.skill.id,
+			eventId: ctx.eventId,
+			correlationId: context.correlationId,
+			workspaceId: wid,
+		},
+		onComplete,
+		{
+			name: context.name,
+			skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
+		},
+	);
+	const rt = runtime();
+	debug(
+		"Starting %s/%s:%s %s - %s (%s) / %s",
+		payload.skill.namespace,
+		payload.skill.name,
+		payload.skill.version,
+		context.name,
+		rt.skill.version,
+		rt.skill.sha.slice(0, 7),
+		rt.node.version,
+	);
+	return context;
 }
 
 export function extractConfiguration(
