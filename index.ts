@@ -114,6 +114,7 @@ export {
 	levenshteinSort,
 	pluralize,
 	replacer,
+	sourceLocationFromOffset,
 	toArray,
 	truncate,
 } from "./lib/util";
