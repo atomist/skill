@@ -125,7 +125,7 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@atomist/npm-tools": "^0.1.0-master.20210421125139",
+    "@atomist/npm-tools": "^0.1.1-main.0",
     "@types/mocha": "^8.2.2",
     "@types/power-assert": "^1.5.3",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
