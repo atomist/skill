@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased](https://github.com/atomist/skill/compare/0.11.0...HEAD)
 
+### Changed
+
+-   Skip payload logging for container skills. [ae77043](https://github.com/atomist-skills/skill/commit/ae770439958df58f646bb974cadd66c44306c3da)
+
 ## [0.11.0](https://github.com/atomist/skill/compare/0.10.0...0.11.0) - 2021-04-26
 
 ### Added
