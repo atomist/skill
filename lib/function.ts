@@ -30,7 +30,6 @@ import {
 	WebhookHandler,
 } from "./handler/handler";
 import { debug, error } from "./log";
-import { logPayload } from "./log/util";
 import { prepareStatus, StatusPublisher } from "./message";
 import {
 	CommandIncoming,
@@ -44,7 +43,7 @@ import {
 } from "./payload";
 import { resolvePayload } from "./payload_resolve";
 import { CommandListenerExecutionInterruptError } from "./prompt/prompt";
-import { handlerLoader, replacer } from "./util";
+import { handlerLoader } from "./util";
 
 export interface PubSubMessage {
 	data: string;
