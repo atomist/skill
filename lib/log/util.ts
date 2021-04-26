@@ -17,8 +17,14 @@
 import { createLogger } from "@atomist/skill-logging";
 
 import { Contextual } from "../handler/handler";
-import { handleErrorSync } from "../util";
-import { clearLogger, setLogger } from "./console";
+import {
+	isCommandIncoming,
+	isEventIncoming,
+	isSubscriptionIncoming,
+	isWebhookIncoming,
+} from "../payload";
+import { handleErrorSync, replacer } from "../util";
+import { clearLogger, debug, setLogger } from "./console";
 
 export function initLogging(
 	context: {
@@ -98,4 +104,27 @@ export function runtime(): {
 			date: hostGitInfo.date,
 		},
 	};
+}
+
+export function logPayload(ctx: Contextual<any, any>): void {
+	// Exit early for container skills
+	if (
+		(ctx.skill as any).artifacts?.some(
+			a => a.__typename === "AtomistSkillDockerArtifact",
+		)
+	) {
+		return;
+	}
+
+	const payload = ctx.trigger;
+	let label;
+	if (isEventIncoming(payload) || isSubscriptionIncoming(payload)) {
+		label = "event";
+	} else if (isCommandIncoming(payload)) {
+		label = "command";
+	} else if (isWebhookIncoming(payload)) {
+		label = "webhook";
+	}
+
+	debug(`Incoming ${label} message: ${JSON.stringify(payload, replacer)}`);
 }

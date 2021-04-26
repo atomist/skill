@@ -30,6 +30,7 @@ import {
 	WebhookHandler,
 } from "./handler/handler";
 import { debug, error } from "./log";
+import { logPayload } from "./log/util";
 import { prepareStatus, StatusPublisher } from "./message";
 import {
 	CommandIncoming,
@@ -74,7 +75,6 @@ export async function processEvent(
 ): Promise<void> {
 	const context = factory(event, ctx) as EventContext<any> &
 		ContextualLifecycle;
-	debug(`Incoming event message: ${JSON.stringify(event, replacer)}`);
 	if (isSubscriptionIncoming(event)) {
 		debug(
 			`Invoking event handler '${context.name}' for tx '${event.subscription.tx}'`,
@@ -104,7 +104,6 @@ export async function processCommand(
 	factory: ContextFactory = createContext,
 ): Promise<void> {
 	const context = factory(event, ctx) as CommandContext & ContextualLifecycle;
-	debug(`Incoming command message: ${JSON.stringify(event, replacer)}`);
 	debug(`Invoking command handler '${context.name}'`);
 	try {
 		const result = await invokeHandler(loader, context);
@@ -134,7 +133,6 @@ export async function processWebhook(
 	factory: ContextFactory = createContext,
 ): Promise<void> {
 	const context = factory(event, ctx) as WebhookContext & ContextualLifecycle;
-	debug(`Incoming webhook message: ${JSON.stringify(event, replacer)}`);
 	debug(`Invoking webhook handler '${context.name}'`);
 	try {
 		const result = await invokeHandler(loader, context);

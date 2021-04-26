@@ -25,7 +25,7 @@ import {
 } from "./handler/handler";
 import { createHttpClient } from "./http";
 import { debug } from "./log/console";
-import { initLogging, runtime } from "./log/util";
+import { initLogging, logPayload, runtime } from "./log/util";
 import { mapSubscription } from "./map";
 import {
 	PubSubCommandMessageClient,
@@ -243,6 +243,7 @@ export function createContext(
 			rt.skill.sha.slice(0, 7),
 			rt.node.version,
 		);
+		logPayload(context);
 	}
 	return context;
 }
