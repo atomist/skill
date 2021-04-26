@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Removed
 
--   Possibly change @google-cloud/functions-framework dependency. [#153](https://github.com/atomist-skills/skill/issues/153)
+-   Change @google-cloud/functions-framework dependency. [#153](https://github.com/atomist-skills/skill/issues/153)
 
 ## [0.10.0](https://github.com/atomist/skill/compare/0.9.1...0.10.0) - 2021-04-21
 
