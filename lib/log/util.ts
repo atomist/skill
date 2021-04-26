@@ -78,7 +78,12 @@ export function runtime(): {
 	// eslint-disable-next-line @typescript-eslint/no-var-requires
 	const packageJson = require("../../package.json");
 	const hostGitInfo =
-		handleErrorSync(() => require("../../../../../git-info.json")) || {};
+		handleErrorSync(
+			() => require("../../../../../git-info.json"),
+			() => {
+				// intentionally left empty
+			},
+		) || {};
 	return {
 		node: {
 			version: nodeVersion.replace(/v/g, ""),
