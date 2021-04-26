@@ -106,12 +106,16 @@ export function runtime(): {
 	};
 }
 
-export function logPayload(ctx: Contextual<any, any>): void {
+export function logPayload(
+	ctx: Contextual<any, any>,
+	containerSkip = true,
+): void {
 	// Exit early for container skills
 	if (
 		(ctx.skill as any).artifacts?.some(
 			a => a.__typename === "AtomistSkillDockerArtifact",
-		)
+		) &&
+		containerSkip
 	) {
 		return;
 	}
