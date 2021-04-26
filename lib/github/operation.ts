@@ -31,7 +31,7 @@ export function api(
 		"credential" | "apiUrl"
 	>,
 ): Octokit {
-	const url = id.apiUrl || DefaultGitHubApiUrl;
+	const url = id?.apiUrl || DefaultGitHubApiUrl;
 
 	const { Octokit } = require("@octokit/rest"); // eslint-disable-line @typescript-eslint/no-var-requires
 	const { throttling } = require("@octokit/plugin-throttling"); // eslint-disable-line @typescript-eslint/no-var-requires
@@ -39,7 +39,7 @@ export function api(
 	const ConfiguredOctokit = Octokit.plugin(throttling, retry);
 
 	return new ConfiguredOctokit({
-		auth: `token ${id.credential.token}`,
+		auth: id?.credential ? `token ${id.credential.token}` : undefined,
 		baseUrl: url.endsWith("/") ? url.slice(0, -1) : url,
 		throttle: {
 			onRateLimit: (retryAfter: any, options: any): boolean => {
