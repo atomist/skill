@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Add version information to startup. [4deec03](https://github.com/atomist-skills/skill/commit/4deec03b6204045934e55bb54bfe6014fbd16894)
 
+### Removed
+
+-   Possibly change @google-cloud/functions-framework dependency. [#153](https://github.com/atomist-skills/skill/issues/153)
+
 ## [0.10.0](https://github.com/atomist/skill/compare/0.9.1...0.10.0) - 2021-04-21
 
 ### Added
