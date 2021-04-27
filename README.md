@@ -1,6 +1,6 @@
 # `@atomist/skill`
 
-API to implement a JavaScript/TypeScript-based Atomist Skills.
+API to implement JavaScript/TypeScript-based Atomist Skills.
 
 ## Contributing
 
