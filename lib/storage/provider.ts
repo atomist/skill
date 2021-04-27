@@ -64,7 +64,7 @@ export class GoogleCloudStorageProvider implements StorageProvider {
 	}
 }
 
-function bucketName(workspaceId: string): string {
+export function bucketName(workspaceId: string): string {
 	const bucket =
 		process.env.ATOMIST_STORAGE ||
 		(workspaceId

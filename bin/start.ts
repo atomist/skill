@@ -161,6 +161,65 @@ yargs
 		},
 	)
 	.command(
+		["upload", "up"],
+		"Upload skill metadata",
+		args =>
+			args.option({
+				cwd: {
+					type: "string",
+					description: "Set working directory",
+					default: process.cwd(),
+					demandOption: false,
+				},
+				workspace: {
+					type: "string",
+					description: "Id of workspace to register",
+					demandOption: false,
+				},
+			}),
+		async argv => {
+			try {
+				await (await import("../lib/script/skill_upload")).uploadSkill(
+					argv.cwd,
+					argv.workspace,
+				);
+				return 0;
+			} catch (e) {
+				error(e.message);
+				process.exit(1);
+			}
+		},
+	)
+	.command(
+		["download", "down"],
+		"Download skill metadata",
+		args =>
+			args.option({
+				cwd: {
+					type: "string",
+					description: "Set working directory",
+					default: process.cwd(),
+					demandOption: false,
+				},
+				workspace: {
+					type: "string",
+					description: "Id of workspace to register",
+					demandOption: false,
+				},
+			}),
+		async argv => {
+			try {
+				await (
+					await import("../lib/script/skill_download")
+				).downloadSkill(argv.cwd, argv.workspace);
+				return 0;
+			} catch (e) {
+				error(e.message);
+				process.exit(1);
+			}
+		},
+	)
+	.command(
 		["clean"],
 		"Clean skill archive",
 		args =>
