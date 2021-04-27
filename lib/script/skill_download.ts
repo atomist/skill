@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import * as fs from "fs-extra";
 import * as path from "path";
 
 import { spawnPromise } from "../child_process";
@@ -25,8 +26,6 @@ export async function downloadSkill(
 	cwd: string,
 	workspaceId: string,
 ): Promise<void> {
-	const filePath = path.join(cwd, ".atomist", "skill.yaml");
-
 	const originUrl = await spawnPromise(
 		"git",
 		["config", "--get", "remote.origin.url"],
@@ -34,6 +33,9 @@ export async function downloadSkill(
 	);
 	const giturl = (await import("git-url-parse"))(originUrl.stdout.trim());
 	const status = await git.status(cwd);
+
+	const filePath = path.join(cwd, ".atomist", "skill.yaml");
+	await fs.ensureDir(path.dirname(filePath));
 
 	const storage = new (await import("@google-cloud/storage")).Storage();
 	await storage
