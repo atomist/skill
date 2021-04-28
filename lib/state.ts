@@ -25,18 +25,20 @@ import { guid, handleError, isPrimitive } from "./util";
 export async function hydrate<T>(
 	configurationName: string,
 	ctx: Contextual<any, any>,
-	value?: T,
+	options?: { value?: T; ttl?: number },
 ): Promise<T> {
 	const key = stateKey(configurationName, ctx);
 	try {
-		const stateFile = await ctx.storage.retrieve(key);
+		const stateFile = await ctx.storage.retrieve(key, {
+			ttl: options?.ttl,
+		});
 		const state = await fs.readJson(stateFile);
 		return {
-			...(value || ({} as T)),
+			...(options?.value || ({} as T)),
 			...state,
 		};
 	} catch (e) {
-		return value || ({} as T);
+		return options?.value || ({} as T);
 	}
 }
 
@@ -67,14 +69,14 @@ function stateKey(
 
 export function cachify<
 	T extends (ctx: EventContext<any, any>, ...args: any) => Promise<any>
->(func: T, resolver?: (...args: any) => string): T {
+>(func: T, options?: { resolver?: (...args: any) => string; ttl?: number }): T {
 	if (!func.name) {
 		throw new Error("cachify does not support anonymous functions");
 	}
 	return (async (ctx: EventContext<any, any>, ...args: any) => {
 		let key;
-		if (resolver) {
-			key = resolver(...args);
+		if (options?.resolver) {
+			key = options.resolver(...args);
 		} else {
 			key = args.reduce((p, c) => {
 				if (isPrimitive(c)) {
@@ -86,7 +88,8 @@ export function cachify<
 		}
 		const resultKey = `${ctx.configuration.name}/${key.toLowerCase()}`;
 		const old = await hydrate(resultKey, ctx, {
-			result: undefined,
+			value: { result: undefined },
+			ttl: options?.ttl,
 		});
 		if (old.result) {
 			return JSON.parse(old.result);
