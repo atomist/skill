@@ -62,7 +62,7 @@
     "@graphql-codegen/cli": "^1.21.4",
     "@graphql-codegen/typescript": "^1.22.0",
     "@graphql-codegen/typescript-operations": "^1.17.16",
-    "@octokit/plugin-rest-endpoint-methods": "^5.0.1",
+    "@octokit/plugin-rest-endpoint-methods": "^5.1.0",
     "@octokit/plugin-retry": "^3.0.7",
     "@octokit/plugin-throttling": "^3.4.1",
     "@octokit/rest": "^18.5.3",
