@@ -49,8 +49,8 @@ export class GoogleCloudStorageProvider implements StorageProvider {
 		const file = storage.bucket(this.bucket).file(key);
 		if (options?.ttl !== undefined) {
 			const [metadata] = await file.getMetadata();
-			const createdAt = new Date(metadata.timeCreated);
-			if (createdAt.getTime() + options.ttl < Date.now()) {
+			const lastModified = new Date(metadata.updated);
+			if (lastModified.getTime() + options.ttl < Date.now()) {
 				throw new Error(`Storage item '${key}' expired`);
 			}
 		}
