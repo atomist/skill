@@ -15,10 +15,13 @@
  */
 
 import {
+	BooleanParameter,
 	ParameterType,
+	ParameterVisibility,
 	RepoFilterParameter,
 	SingleChoiceParameter,
 	StringArrayParameter,
+	StringParameter,
 } from "../skill";
 
 export function repoFilter(
@@ -102,5 +105,36 @@ export function pushStrategy(options: {
 			...(options.options || []),
 		],
 		required: options.required !== undefined ? options.required : false,
+	};
+}
+
+export function internalParameters(): {
+	"atomist/configureUrl": StringParameter;
+	"atomist/skillUrl": StringParameter;
+	"atomist/isPolicy": BooleanParameter;
+} {
+	return {
+		"atomist/configureUrl": {
+			type: ParameterType.String,
+			displayName: "configure url",
+			description: "url to the skill configuration page",
+			required: false,
+			visibility: ParameterVisibility.Hidden,
+		},
+		"atomist/skillUrl": {
+			type: ParameterType.String,
+			displayName: "skill url",
+			description: "url to the skill catalog page",
+			required: false,
+			visibility: ParameterVisibility.Hidden,
+		},
+		"atomist/isPolicy": {
+			type: ParameterType.Boolean,
+			displayName: "is policy",
+			description:
+				"flag indicated if skill configuration is from policy page",
+			required: false,
+			visibility: ParameterVisibility.Hidden,
+		},
 	};
 }

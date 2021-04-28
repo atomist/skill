@@ -15,6 +15,7 @@
  */
 
 export {
+	internalParameters,
 	PushStrategy,
 	pushStrategy,
 	refFilter,
