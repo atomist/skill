@@ -116,7 +116,7 @@ export function internalParameters(): {
 	return {
 		"atomist://configuration-url": {
 			type: ParameterType.String,
-			displayName: "configure url",
+			displayName: "configuration url",
 			description: "url to the skill configuration page",
 			required: false,
 			visibility: ParameterVisibility.Hidden,
