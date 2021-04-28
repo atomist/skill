@@ -84,7 +84,7 @@ export async function restore(
 			os.tmpdir() || "/tmp",
 			`${ctx.correlationId}-${Date.now()}.zip`,
 		);
-		await ctx.storage.retrieve(key, fileName);
+		await ctx.storage.retrieve(key, { targetFilePath: fileName });
 
 		const zip = await JSZip.loadAsync(await fs.readFile(fileName));
 		for (const file in zip.files) {

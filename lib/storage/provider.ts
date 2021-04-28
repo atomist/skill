@@ -23,7 +23,10 @@ import { guid } from "../util";
 export interface StorageProvider {
 	store(key: string, sourceFilePath: string): Promise<void>;
 
-	retrieve(key: string, targetFilePath?: string): Promise<string>;
+	retrieve(
+		key: string,
+		options?: { targetFilePath?: string; ttl?: number },
+	): Promise<string>;
 
 	delete(key: string): Promise<void>;
 }
@@ -35,15 +38,24 @@ export function createStorageProvider(workspaceId: string): StorageProvider {
 export class GoogleCloudStorageProvider implements StorageProvider {
 	constructor(private readonly bucket: string) {}
 
-	public async retrieve(key: string, filePath?: string): Promise<string> {
+	public async retrieve(
+		key: string,
+		options?: { targetFilePath?: string; ttl?: number },
+	): Promise<string> {
 		const targetFilePath =
-			filePath || path.join(os.tmpdir() || "/tmp", guid());
+			options?.targetFilePath || path.join(os.tmpdir() || "/tmp", guid());
 		await fs.ensureDir(path.dirname(targetFilePath));
 		const storage = new (await import("@google-cloud/storage")).Storage();
-		await storage
-			.bucket(this.bucket)
-			.file(key)
-			.download({ destination: targetFilePath });
+		const file = storage.bucket(this.bucket).file(key);
+		if (options?.ttl !== undefined) {
+			const [metadata] = await file.getMetadata();
+			const createdAt = new Date(metadata.timeCreated);
+			if (createdAt.getTime() + options.ttl < Date.now()) {
+				throw new Error(`Storage item '${key}' expired`);
+			}
+		}
+
+		await file.download({ destination: targetFilePath });
 		return targetFilePath;
 	}
 
