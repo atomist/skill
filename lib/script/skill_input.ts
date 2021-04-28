@@ -18,6 +18,7 @@ import { toEDNStringFromSimpleObject } from "edn-data";
 import * as fs from "fs-extra";
 import * as path from "path";
 
+import { internalParameters } from "../definition/parameter/definition";
 import { Skill } from "../definition/skill";
 import { namedDatalog, namedGraphQl } from "../definition/subscription/named";
 import { error, info } from "../log";
@@ -301,6 +302,11 @@ export async function createJavaScriptSkillInput(
 	const is: Skill = merge(
 		{},
 		await defaults(cwd),
+		{
+			parameters: {
+				...internalParameters(),
+			},
+		},
 		await handleError<Skill>(
 			async () => await (await import(p)).Skill,
 			() => {
