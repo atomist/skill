@@ -97,17 +97,23 @@ export function formatMarkers(
 }
 
 export function formatFooter(ctx: Contextual<any, any>): string {
-	return `
+	const skillUrl =
+		ctx.configuration.parameters?.atomist?.skillUrl ||
+		`https://go.atomist.com/catalog/skills/${ctx.skill.namespace}/${ctx.skill.name}`;
+	return `	
 ---
 
 <p align="center">
 <sub>
-<a href="https://go.atomist.com/catalog/skills/${ctx.skill.namespace}/${
+<a href="${skillUrl}">${ctx.skill.namespace}/${
 		ctx.skill.name
-	}">${ctx.skill.namespace}/${ctx.skill.name}</a> \u00B7 ${toArray(
-		ctx.configuration,
-	)
-		.map(c => `<a href="${c.url}">Configure</a>`)
+	}</a> \u00B7 ${toArray(ctx.configuration)
+		.map(
+			c =>
+				`<a href="${
+					c.parameters?.atomist?.configurationUrl || c.url
+				}">Configure</a>`,
+		)
 		.join("\u00B7")}
 </sub>
 </p>`;

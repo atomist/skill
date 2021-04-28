@@ -49,6 +49,7 @@ import { commandRequestParameterPromptFactory } from "./prompt/prompt";
 import { DefaultCredentialProvider } from "./secret/provider";
 import { createStorageProvider } from "./storage/provider";
 import { extractParameters, handleError, toArray } from "./util";
+import camelCase = require("lodash.camelcase");
 
 export type ContextFactory = (
 	payload:
@@ -281,7 +282,15 @@ function extractConfigurationParameters(
 	params: Array<{ name: string; value: any }>,
 ): Record<string, any> {
 	const parameters = {};
-	params?.forEach(p => (parameters[p.name] = p.value));
+	params?.forEach(p => {
+		if (p.name.startsWith("atomist://")) {
+			const rec = parameters["atomist"] || {};
+			rec[camelCase(p.name.split("://")[1])] = p.value;
+			parameters["atomist"] = rec;
+		} else {
+			parameters[p.name] = p.value;
+		}
+	});
 	return parameters;
 }
 

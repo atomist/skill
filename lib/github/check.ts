@@ -122,7 +122,9 @@ export async function createCheck(
 			check_run_id: openCheck.id,
 			started_at: parameters.startedAt || new Date().toISOString(),
 			external_id: externalId,
-			details_url: url(ctx),
+			details_url: ctx.configuration.parameters?.atomist?.policy
+				? undefined
+				: url(ctx),
 			status: "in_progress",
 			conclusion: undefined,
 			output: {
@@ -146,7 +148,9 @@ export async function createCheck(
 			name: parameters.name,
 			started_at: parameters.startedAt || new Date().toISOString(),
 			external_id: externalId,
-			details_url: url(ctx),
+			details_url: ctx.configuration.parameters?.atomist?.policy
+				? undefined
+				: url(ctx),
 			status: "in_progress",
 			output: {
 				title: parameters.title,

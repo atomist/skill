@@ -109,26 +109,26 @@ export function pushStrategy(options: {
 }
 
 export function internalParameters(): {
-	"atomist/configureUrl": StringParameter;
-	"atomist/skillUrl": StringParameter;
-	"atomist/isPolicy": BooleanParameter;
+	"atomist://configuration-url": StringParameter;
+	"atomist://skill-url": StringParameter;
+	"atomist://policy": BooleanParameter;
 } {
 	return {
-		"atomist/configureUrl": {
+		"atomist://configuration-url": {
 			type: ParameterType.String,
 			displayName: "configure url",
 			description: "url to the skill configuration page",
 			required: false,
 			visibility: ParameterVisibility.Hidden,
 		},
-		"atomist/skillUrl": {
+		"atomist://skill-url": {
 			type: ParameterType.String,
 			displayName: "skill url",
 			description: "url to the skill catalog page",
 			required: false,
 			visibility: ParameterVisibility.Hidden,
 		},
-		"atomist/isPolicy": {
+		"atomist://policy": {
 			type: ParameterType.Boolean,
 			displayName: "is policy",
 			description:

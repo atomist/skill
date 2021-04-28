@@ -22,9 +22,9 @@ import { Contextual, HandlerStatus } from "../handler/handler";
 import { debug } from "../log/console";
 import { Project } from "../project/project";
 import * as status from "../status";
-import { hash, toArray } from "../util";
+import { hash } from "../util";
 import { truncateText } from "./check";
-import { api, formatMarkers } from "./operation";
+import { api, formatFooter, formatMarkers } from "./operation";
 
 import uniq = require("lodash.uniq");
 
@@ -225,19 +225,7 @@ ${files
 	.join("\n")}
 
 <!-- atomist:hide -->
----
-
-<p align="center">
-<sub>
-<a href="https://go.atomist.com/catalog/skills/${ctx.skill.namespace}/${
-			ctx.skill.name
-		}">${ctx.skill.namespace}/${ctx.skill.name}</a> \u00B7 ${toArray(
-			ctx.configuration,
-		)
-			.map(c => `<a href="${c.url}">Configure</a>`)
-			.join("\u00B7")}
-</sub>
-</p>
+${formatFooter(ctx)}
 <!-- atomist:show -->
 
 ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}

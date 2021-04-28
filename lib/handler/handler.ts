@@ -34,7 +34,13 @@ import { StorageProvider } from "../storage/provider";
 
 export interface Configuration<C extends Record<string, any>> {
 	name: string;
-	parameters: C;
+	parameters: C & {
+		atomist?: {
+			skillUrl?: string;
+			configurationUrl?: string;
+			policy?: boolean;
+		};
+	};
 	resourceProviders: Record<
 		string,
 		{ typeName: string; selectedResourceProviders: Array<{ id: string }> }
