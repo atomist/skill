@@ -68,6 +68,9 @@ function stateKey(
 export function cachify<
 	T extends (ctx: EventContext<any, any>, ...args: any) => Promise<any>
 >(func: T, resolver?: (...args: any) => string): T {
+	if (!func.name) {
+		throw new Error("cachify does not support anonymous functions");
+	}
 	return (async (ctx: EventContext<any, any>, ...args: any) => {
 		let key;
 		if (resolver) {
@@ -79,7 +82,7 @@ export function cachify<
 				} else {
 					return p;
 				}
-			}, "");
+			}, func.name || "cachify");
 		}
 		const resultKey = `${ctx.configuration.name}/${key.toLowerCase()}`;
 		const old = await hydrate(resultKey, ctx, {
