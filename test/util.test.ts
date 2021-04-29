@@ -115,8 +115,8 @@ describe("util", () => {
 	describe("pluralize", () => {
 		it("should correctly pluralize", () => {
 			assert.deepStrictEqual(
-				pluralize("vulnerability", ["CVE-1234", "CVE-5678"]),
-				"2 vulnerabilities",
+				pluralize("new vulnerability", ["CVE-1234", "CVE-5678"]),
+				"2 new vulnerabilities",
 			);
 		});
 		it("should correctly pluralize one result", () => {

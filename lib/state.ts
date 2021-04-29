@@ -64,7 +64,7 @@ function stateKey(
 ): string {
 	return `state/${ctx.workspaceId}/${ctx.skill.namespace}/${
 		ctx.skill.name
-	}/${configurationName.replace(/[^a-zA-Z0-9-_]/g, "").toLowerCase()}.json`;
+	}/${configurationName.replace(/[^a-zA-Z0-9-_/]/g, "").toLowerCase()}.json`;
 }
 
 export function cachify<
