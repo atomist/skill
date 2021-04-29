@@ -57,6 +57,7 @@
     {:docker.analysis/vulnerabilities [:vulnerability.cve/source-id
                                        :vulnerability.cve/severity
                                        :vulnerability.cve/title
+                                       :vulnerability.cve/cvss-score
                                        :vulnerability.cve/fix-available
                                        {:docker.analysis/affected [:docker.analysis.package/name
                                                                    :docker.analysis.package/version]}
