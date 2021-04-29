@@ -77,9 +77,6 @@ export interface BaseDockerVulnerability {
 }
 
 export interface DockerImageVulnerability extends BaseDockerVulnerability {
-	title: string;
-	description: string;
-	cvssScore: string;
 	fixed: Array<{ name: string; version: string }>;
 }
 
