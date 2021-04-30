@@ -20,6 +20,7 @@ import { EventContext, EventHandler, HandlerStatus } from "../handler/handler";
 import {
 	chain,
 	ChainedHandler,
+	cloneFiles,
 	cloneRef,
 	createCheck,
 	createRef,
@@ -83,7 +84,7 @@ function createDetails<D, C>(
 export function handler<S, C>(parameters: {
 	when?: (ctx: EventContext<S, C>) => HandlerStatus | undefined;
 	id: CreateRepositoryId<S, C>;
-	clone?: (ctx: EventContext<S, C>) => CloneOptions | boolean;
+	clone?: (ctx: EventContext<S, C>) => CloneOptions | string[] | boolean;
 	details: (
 		ctx: EventContext<S, C>,
 	) => {
@@ -132,10 +133,13 @@ export function handler<S, C>(parameters: {
 		async ctx => {
 			if (parameters.clone) {
 				try {
-					if (typeof parameters.clone === "function") {
-						await cloneRef(parameters.clone(ctx) as any)(ctx);
-					} else {
+					const cloneResult = parameters.clone(ctx);
+					if (Array.isArray(cloneResult)) {
+						await cloneFiles(cloneResult as any)(ctx);
+					} else if (typeof cloneResult === "boolean") {
 						await cloneRef()(ctx);
+					} else {
+						await cloneRef(cloneResult as any)(ctx);
 					}
 				} catch (e) {
 					return success(
