@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
+import * as fs from "fs-extra";
+import * as os from "os";
+import * as path from "path";
+
 import { Check, CreateCheck, createCheck as raiseCheck } from "../github/check";
+import { api } from "../github/operation";
 import { CloneOptions } from "../project/clone";
 import { Project } from "../project/project";
 import {
@@ -24,6 +29,7 @@ import {
 } from "../repository/id";
 import { gitHubAppToken } from "../secret/resolver";
 import { failure } from "../status";
+import { guid } from "../util";
 import { EventContext, EventHandler, HandlerStatus } from "./handler";
 
 export type ChainedHandler<D, C, S> = (
@@ -91,6 +97,51 @@ export function cloneRef<D, C>(
 			ctx.chain.id,
 			typeof options === "function" ? options(ctx) : options,
 		);
+		return undefined;
+	};
+}
+
+export type CreateFileCloneOptions<D, C> = (
+	ctx: EventContext<D, C>,
+) => string[];
+
+export function cloneFiles<D, C>(
+	options: string[] | CreateFileCloneOptions<D, C>,
+): ChainedHandler<
+	D,
+	C,
+	{ id?: AuthenticatedRepositoryId<any>; project?: Project }
+> {
+	return async ctx => {
+		if (!ctx.chain.id) {
+			return failure(
+				"'id' missing in chain. Make sure to include 'createRef' in handler chain",
+			);
+		}
+		const gh = api(ctx.chain.id);
+
+		const paths: string[] =
+			typeof options === "function" ? options(ctx) : options;
+
+		ctx.chain.project = await ctx.project.load(
+			ctx.chain.id,
+			process.env.ATOMIST_HOME || path.join(os.tmpdir(), guid()),
+		);
+
+		for (const path of paths) {
+			const fileResponse = (
+				await gh.repos.getContent({
+					owner: ctx.chain.id.owner,
+					repo: ctx.chain.id.repo,
+					ref: ctx.chain.id.sha || ctx.chain.id.branch,
+					path,
+				})
+			).data as { content?: string };
+			await fs.writeFile(
+				ctx.chain.project.path(path),
+				Buffer.from(fileResponse.content, "base64"),
+			);
+		}
 		return undefined;
 	};
 }
