@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 -   Add skill upload and download commands. [a238bb9](https://github.com/atomist-skills/skill/commit/a238bb9bc307553d2f6d4a6c7bb6815c461ee736)
+-   Get files only instead of detached clone. [#341](https://github.com/atomist-skills/skill/issues/341)
 
 ### Changed
 
