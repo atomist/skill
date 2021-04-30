@@ -17,6 +17,7 @@
 // lib/datalog
 export * as datalog from "./lib/datalog";
 // lib/definition
+export * as env from "./lib/definition/env";
 export * as parameter from "./lib/definition/parameter";
 export * as resourceProvider from "./lib/definition/resource_provider";
 export {
