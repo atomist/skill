@@ -19,7 +19,7 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import { v4 as uuidv4 } from "uuid";
 
-import { error } from "./log";
+import { error } from "./log/console";
 import { Arg } from "./payload";
 import sortBy = require("lodash.sortby");
 
@@ -208,8 +208,11 @@ export function bytes(x: string): string {
 
 export async function handleError<T>(
 	f: () => Promise<T>,
-	cb: (err: Error) => T | undefined = DefaultErrorHandler,
+	cb: (err: Error) => T | undefined,
 ): Promise<T | undefined> {
+	if (!cb) {
+		cb = loggingErrorHandler();
+	}
 	try {
 		const result = await f();
 		return result;
@@ -220,8 +223,11 @@ export async function handleError<T>(
 
 export function handleErrorSync<T>(
 	f: () => T,
-	cb: (err: Error) => T | undefined = DefaultErrorHandler,
+	cb: (err: Error) => T | undefined,
 ): T | undefined {
+	if (!cb) {
+		cb = loggingErrorHandler();
+	}
 	try {
 		return f();
 	} catch (e) {
@@ -229,13 +235,18 @@ export function handleErrorSync<T>(
 	}
 }
 
-export const DefaultErrorHandler: (err: Error) => undefined = err => {
-	error(`Error occurred: %s`, err.message);
-	if (err.stack) {
-		error(err.stack);
-	}
-	return undefined;
-};
+export function loggingErrorHandler(
+	cb: (msg: string) => void = error,
+): (err: Error) => undefined {
+	return err => {
+		if (err.stack) {
+			cb(`Error occurred: ${err.stack}`);
+		} else {
+			cb(`Error occurred: ${err.message}`);
+		}
+		return undefined;
+	};
+}
 
 export function isStaging(): boolean {
 	return (
