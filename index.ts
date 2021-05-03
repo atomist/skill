@@ -113,6 +113,7 @@ export {
 	handleErrorSync,
 	hideString,
 	levenshteinSort,
+	loggingErrorHandler,
 	pluralize,
 	replacer,
 	sourceLocationFromOffset,
