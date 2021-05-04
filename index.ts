@@ -103,6 +103,8 @@ export {
 	SlackFileMessage,
 } from "./lib/message";
 export {} from "./lib/payload";
+export {} from "./lib/payload_resolve";
+export { retry, RetryOptions } from "./lib/retry";
 export * as state from "./lib/state";
 export * as status from "./lib/status";
 export { runSteps, Step, StepListener } from "./lib/steps";

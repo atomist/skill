@@ -16,9 +16,11 @@
 
 import * as pRetry from "p-retry";
 
+export type RetryOptions = pRetry.Options;
+
 export async function retry<T>(
 	cb: () => Promise<T>,
-	options: pRetry.Options = {
+	options: RetryOptions = {
 		retries: 5,
 		factor: 3,
 		minTimeout: 1 * 500,
