@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-import { parseEDNString } from "edn-data";
 import { Response } from "node-fetch";
-import * as pRetry from "p-retry";
 
 import { warn } from "../log/console";
 import { mapSubscription } from "../map";
@@ -100,7 +98,7 @@ ${
 						);
 						throw e;
 					} else {
-						throw new pRetry.AbortError(e);
+						throw new (await import("p-retry")).AbortError(e);
 					}
 				}
 			})
@@ -109,7 +107,7 @@ ${
 		if (options.mode === "raw") {
 			return result;
 		} else {
-			const parsed = parseEDNString(result, {
+			const parsed = (await import("edn-data")).parseEDNString(result, {
 				mapAs: "object",
 				keywordAs: "string",
 			});

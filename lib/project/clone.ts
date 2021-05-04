@@ -15,7 +15,6 @@
  */
 
 import * as os from "os";
-import * as pRetry from "p-retry";
 import * as path from "path";
 
 import { execPromise } from "../child_process";
@@ -126,7 +125,10 @@ export async function doClone(
 		maxTimeout: 500,
 		randomize: false,
 	};
-	await pRetry(() => execPromise("git", cloneArgs), retryOptions);
+	await (await import("p-retry"))(
+		() => execPromise("git", cloneArgs),
+		retryOptions,
+	);
 
 	try {
 		await execPromise("git", ["checkout", checkoutRef, "--"], {

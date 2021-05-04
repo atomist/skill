@@ -17,7 +17,6 @@
 import * as findUp from "find-up";
 import * as fs from "fs-extra";
 import { Response } from "node-fetch";
-import * as pRetry from "p-retry";
 import * as path from "path";
 
 import { inlineFragments } from "./definition/subscription/util";
@@ -135,7 +134,7 @@ class NodeFetchGraphQLClient implements GraphQLClient {
 						);
 						throw e;
 					} else {
-						throw new pRetry.AbortError(e);
+						throw new (await import("p-retry")).AbortError(e);
 					}
 				}
 			})
