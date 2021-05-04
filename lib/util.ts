@@ -223,7 +223,7 @@ export async function handleError<T>(
 
 export function handleErrorSync<T>(
 	f: () => T,
-	cb: (err: Error) => T | undefined,
+	cb?: (err: Error) => T | undefined,
 ): T | undefined {
 	if (!cb) {
 		cb = loggingErrorHandler();
