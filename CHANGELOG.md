@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 -   Skip payload logging for container skills. [ae77043](https://github.com/atomist-skills/skill/commit/ae770439958df58f646bb974cadd66c44306c3da)
 -   Add ttl to storage api. [8710804](https://github.com/atomist-skills/skill/commit/8710804ffbd6806ba22333b78e2a81ee580f7f94)
+-   Export retry helper. [dafea5d](https://github.com/atomist-skills/skill/commit/dafea5d3213f0f6cd3c5b2d593598be1bb221292)
 
 ## [0.11.0](https://github.com/atomist/skill/compare/0.10.0...0.11.0) - 2021-04-26
 
