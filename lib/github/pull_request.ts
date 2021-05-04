@@ -134,12 +134,16 @@ export async function persistChanges(
 				author,
 			)),
 		);
-		return await ensurePullRequest(
-			ctx,
-			project,
-			{ ...pullRequest, branch, changedFiles },
-			push,
-		);
+		if (changedFiles.length === 0) {
+			return status.success(`No changes to push`);
+		} else {
+			return await ensurePullRequest(
+				ctx,
+				project,
+				{ ...pullRequest, branch, changedFiles },
+				push,
+			);
+		}
 	} else {
 		if (commit.editors && commit.editors.length > 0) {
 			await git.persistChanges({
