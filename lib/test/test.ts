@@ -17,7 +17,11 @@
 import { Attachment } from "@atomist/slack-messages";
 
 import { eventHandlerLoader } from "../action";
-import { ContextFactory, createContext } from "../context";
+import {
+	ContextFactory,
+	createContext,
+	loggingCreateContext,
+} from "../context";
 import { processCommand, processEvent, processWebhook } from "../function";
 import { Contextual, HandlerStatus } from "../handler/handler";
 import { debug } from "../log/console";
@@ -47,7 +51,7 @@ export async function assertSkill(
 
 	let status: HandlerResponse["status"];
 	const factory: ContextFactory = (p, c) => {
-		const context = createContext(p, c);
+		const context = loggingCreateContext(createContext)(p, c);
 		context.message = {
 			respond: async (msg: any) => {
 				debug(`Sending message: ${JSON.stringify(msg, replacer)}`);

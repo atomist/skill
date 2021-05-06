@@ -18,7 +18,7 @@
 import "source-map-support/register";
 
 import { eventHandlerLoader } from "./action";
-import { ContextFactory, createContext } from "./context";
+import { ContextFactory, createContext, loggingCreateContext } from "./context";
 import {
 	CommandContext,
 	CommandHandler,
@@ -70,7 +70,7 @@ export async function processEvent(
 	loader: (name: string) => Promise<EventHandler> = eventHandlerLoader(
 		"events",
 	),
-	factory: ContextFactory = createContext,
+	factory: ContextFactory = loggingCreateContext(createContext),
 ): Promise<void> {
 	const context = factory(event, ctx) as EventContext<any> &
 		ContextualLifecycle;
@@ -100,7 +100,7 @@ export async function processCommand(
 	loader: (name: string) => Promise<CommandHandler> = handlerLoader(
 		"commands",
 	),
-	factory: ContextFactory = createContext,
+	factory: ContextFactory = loggingCreateContext(createContext),
 ): Promise<void> {
 	const context = factory(event, ctx) as CommandContext & ContextualLifecycle;
 	debug(`Invoking command handler '${context.name}'`);
@@ -129,7 +129,7 @@ export async function processWebhook(
 	loader: (name: string) => Promise<WebhookHandler> = handlerLoader(
 		"webhooks",
 	),
-	factory: ContextFactory = createContext,
+	factory: ContextFactory = loggingCreateContext(createContext),
 ): Promise<void> {
 	const context = factory(event, ctx) as WebhookContext & ContextualLifecycle;
 	debug(`Invoking webhook handler '${context.name}'`);

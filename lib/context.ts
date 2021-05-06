@@ -62,6 +62,41 @@ export type ContextFactory = (
 	| ((CommandContext | EventContext | WebhookContext) & ContextualLifecycle)
 	| undefined;
 
+export function loggingCreateContext(delegate: ContextFactory): ContextFactory {
+	return (payload, ctx) => {
+		const context = delegate(payload, ctx);
+		if (context) {
+			initLogging(
+				{
+					skillId: payload.skill.id,
+					eventId: ctx.eventId,
+					correlationId: context.correlationId,
+					workspaceId: context.workspaceId,
+				},
+				context.onComplete,
+				{
+					name: context.name,
+					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
+				},
+			);
+			const rt = runtime();
+			debug(
+				"Starting %s/%s:%s '%s' %satomist/skill:%s (%s) nodejs:%s",
+				payload.skill.namespace,
+				payload.skill.name,
+				payload.skill.version,
+				context.name,
+				rt.host?.sha ? `(${rt.host.sha.slice(0, 7)}) ` : "",
+				rt.skill.version,
+				rt.skill.sha.slice(0, 7),
+				rt.node.version,
+			);
+			logPayload(context);
+		}
+		return context;
+	};
+}
+
 export function createContext(
 	payload:
 		| CommandIncoming
@@ -217,34 +252,6 @@ export function createContext(
 			close,
 			onComplete,
 		};
-	}
-	if (context) {
-		initLogging(
-			{
-				skillId: payload.skill.id,
-				eventId: ctx.eventId,
-				correlationId: context.correlationId,
-				workspaceId: wid,
-			},
-			onComplete,
-			{
-				name: context.name,
-				skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
-			},
-		);
-		const rt = runtime();
-		debug(
-			"Starting %s/%s:%s '%s' %satomist/skill:%s (%s) nodejs:%s",
-			payload.skill.namespace,
-			payload.skill.name,
-			payload.skill.version,
-			context.name,
-			rt.host?.sha ? `(${rt.host.sha.slice(0, 7)}) ` : "",
-			rt.skill.version,
-			rt.skill.sha.slice(0, 7),
-			rt.node.version,
-		);
-		logPayload(context);
 	}
 	return context;
 }
