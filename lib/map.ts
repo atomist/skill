@@ -45,6 +45,15 @@ export function wrapEventHandler(eh: EventHandler): EventHandler {
 					results.push(prepareStatus(e, ctx));
 				}
 			}
+			let reason;
+			if (results.some(r => r.visibility !== "hidden")) {
+				reason = results
+					.filter(r => r.visibility !== "hidden")
+					.map(r => r.reason)
+					.join(", ");
+			} else {
+				reason = results.map(r => r.reason).join(", ");
+			}
 			return {
 				code: results.reduce((p, c) => {
 					if (c.code !== 0) {
@@ -53,11 +62,7 @@ export function wrapEventHandler(eh: EventHandler): EventHandler {
 						return 0;
 					}
 				}, 0),
-				reason: results
-					.filter(r => r.reason)
-					.filter(r => r.visibility !== "hidden")
-					.map(r => r.reason)
-					.join(", "),
+				reason,
 				visibility: results.some(r => r.visibility !== "hidden")
 					? undefined
 					: "hidden",
