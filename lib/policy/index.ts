@@ -22,4 +22,5 @@ export {
 	handler,
 	PolicyDetails,
 	whenAll,
+	whenParameter,
 } from "./util";

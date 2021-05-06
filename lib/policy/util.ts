@@ -95,6 +95,22 @@ export function whenAll<S, C>(
 	};
 }
 
+export function whenParameter<S, C>(
+	parameterName: string,
+	message?: string,
+): (ctx: EventContext<S, C>) => HandlerStatus | undefined {
+	return ctx => {
+		if (ctx.configuration.parameters[parameterName] !== true) {
+			return success(
+				message
+					? message
+					: `Configuration parameter _${parameterName}_ not enabled`,
+			).hidden();
+		}
+		return undefined;
+	};
+}
+
 export function handler<S, C>(parameters: {
 	when?: (ctx: EventContext<S, C>) => HandlerStatus | undefined;
 	id: CreateRepositoryId<S, C>;
