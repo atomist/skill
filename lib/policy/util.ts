@@ -81,6 +81,20 @@ function createDetails<D, C>(
 	};
 }
 
+export function whenAll<S, C>(
+	...whens: Array<(ctx: EventContext<S, C>) => HandlerStatus | undefined>
+): (ctx: EventContext<S, C>) => HandlerStatus | undefined {
+	return ctx => {
+		for (const when of whens) {
+			const result = when(ctx);
+			if (result) {
+				return result;
+			}
+		}
+		return undefined;
+	};
+}
+
 export function handler<S, C>(parameters: {
 	when?: (ctx: EventContext<S, C>) => HandlerStatus | undefined;
 	id: CreateRepositoryId<S, C>;

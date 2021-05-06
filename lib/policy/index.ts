@@ -21,4 +21,5 @@ export {
 	createPolicyRun,
 	handler,
 	PolicyDetails,
+	whenAll,
 } from "./util";
