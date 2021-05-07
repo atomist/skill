@@ -22,6 +22,7 @@ import { isSubscriptionIncoming } from "../payload";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import { GitHubAppCredential, GitHubCredential } from "../secret/provider";
 import { toArray } from "../util";
+import { transactResponse } from "./transact";
 
 const DefaultGitHubApiUrl = "https://api.github.com/";
 
@@ -30,6 +31,7 @@ export function api(
 		AuthenticatedRepositoryId<GitHubCredential | GitHubAppCredential>,
 		"credential" | "apiUrl"
 	>,
+	ctx?: Contextual<any, any>,
 ): Octokit {
 	const url = id?.apiUrl || DefaultGitHubApiUrl;
 
@@ -38,7 +40,7 @@ export function api(
 	const { retry } = require("@octokit/plugin-retry"); // eslint-disable-line @typescript-eslint/no-var-requires
 	const ConfiguredOctokit = Octokit.plugin(throttling, retry);
 
-	return new ConfiguredOctokit({
+	const octokit = new ConfiguredOctokit({
 		auth: id?.credential ? `token ${id.credential.token}` : undefined,
 		baseUrl: url.endsWith("/") ? url.slice(0, -1) : url,
 		throttle: {
@@ -67,6 +69,14 @@ export function api(
 			error: debug,
 		},
 	});
+
+	if (ctx) {
+		// Add hook to transact GitHub entities to Datalog
+		octokit.hook.after("request", async (response, options) => {
+			await transactResponse(response, options, ctx, octokit);
+		});
+	}
+	return octokit;
 }
 
 export function formatMarkers(
@@ -81,7 +91,7 @@ export function formatMarkers(
   [atomist:generated]
   [atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]
   [atomist-version:${ctx.skill.version}]
-  [atomist-configuration:${toArray(ctx.configuration)
+  [atomist-configuration:${toArray(ctx.configuration || [])
 		.map(c => c.name)
 		.join(",")}]
   [atomist-workspace-id:${ctx.workspaceId}]${
@@ -98,7 +108,7 @@ export function formatMarkers(
 
 export function formatFooter(ctx: Contextual<any, any>): string {
 	const skillUrl =
-		ctx.configuration.parameters?.atomist?.skillUrl ||
+		ctx.configuration?.parameters?.atomist?.skillUrl ||
 		`https://go.atomist.com/catalog/skills/${ctx.skill.namespace}/${ctx.skill.name}`;
 	return `	
 ---
@@ -107,7 +117,7 @@ export function formatFooter(ctx: Contextual<any, any>): string {
 <sub>
 <a href="${skillUrl}">${ctx.skill.namespace}/${
 		ctx.skill.name
-	}</a> \u00B7 ${toArray(ctx.configuration)
+	}</a> \u00B7 ${toArray(ctx.configuration || [])
 		.map(
 			c =>
 				`<a href="${
