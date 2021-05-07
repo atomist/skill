@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods/dist-types/generated/parameters-and-response-types";
+import { RestEndpointMethodTypes } from "@octokit/plugin-rest-endpoint-methods";
 
 import { Contextual } from "../handler/handler";
 import { url } from "../log/util";
@@ -84,7 +84,7 @@ export async function createCheck(
 		: ctx.correlationId;
 	// Check if there is a check open with that name
 	const openChecks = (
-		await api(id).checks.listForRef({
+		await api(id, ctx).checks.listForRef({
 			owner: id.owner,
 			repo: id.repo,
 			ref: parameters.sha,
@@ -96,7 +96,7 @@ export async function createCheck(
 
 	ctx.onComplete(async () => {
 		if (!terminated && check) {
-			await api(id).checks.update({
+			await api(id, ctx).checks.update({
 				owner: id.owner,
 				repo: id.repo,
 				check_run_id: check.data.id,
@@ -116,13 +116,13 @@ export async function createCheck(
 	const app = isStaging() ? "atomista" : "atomist";
 	const openCheck = openChecks?.check_runs?.find(cr => cr.app.slug === app);
 	if (openCheck) {
-		check = await api(id).checks.update({
+		check = await api(id, ctx).checks.update({
 			owner: id.owner,
 			repo: id.repo,
 			check_run_id: openCheck.id,
 			started_at: parameters.startedAt || new Date().toISOString(),
 			external_id: externalId,
-			details_url: ctx.configuration.parameters?.atomist?.policy
+			details_url: ctx.configuration?.parameters?.atomist?.policy
 				? undefined
 				: url(ctx),
 			status: "in_progress",
@@ -141,14 +141,14 @@ export async function createCheck(
 			},
 		});
 	} else {
-		check = await api(id).checks.create({
+		check = await api(id, ctx).checks.create({
 			owner: id.owner,
 			repo: id.repo,
 			head_sha: parameters.sha,
 			name: parameters.name,
 			started_at: parameters.startedAt || new Date().toISOString(),
 			external_id: externalId,
-			details_url: ctx.configuration.parameters?.atomist?.policy
+			details_url: ctx.configuration?.parameters?.atomist?.policy
 				? undefined
 				: url(ctx),
 			status: "in_progress",
@@ -169,7 +169,7 @@ export async function createCheck(
 	return {
 		data: check.data,
 		update: async params => {
-			const gh = api(id);
+			const gh = api(id, ctx);
 			const output = {
 				title: check.data.output.title,
 				summary: truncateText(

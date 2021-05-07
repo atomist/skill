@@ -19,21 +19,21 @@ import * as fs from "fs-extra";
 import * as path from "path";
 
 import { encrypt } from "../jose/encyrpt";
-import { ResultEntitySeverity, ResultEntityState } from "./result";
+import { Conclusion, Severity } from "./policy";
 
 export async function link(parameters: {
 	sha: string;
 	name: string;
 	workspace: string;
 	title?: string;
-	state?: ResultEntityState;
-	severity?: ResultEntitySeverity;
+	conclusion?: Conclusion;
+	severity?: Severity;
 }): Promise<string> {
 	const publicKey = crypto.createPublicKey(
 		await fs.readFile(path.join(__dirname, "badge-public.pem")),
 	);
 	const encrypted = await encrypt(parameters, publicKey);
-	return `https://us-east1-atomist-skill-production.cloudfunctions.net/global-badge-creator/badge/${encodeURIComponent(
+	return `https://us-east1-atomist-skill-production.cloudfunctions.net/global-badge-creator/v2/badge/${encodeURIComponent(
 		encrypted,
 	)}`;
 }
@@ -43,8 +43,8 @@ export async function markdownLink(parameters: {
 	name: string;
 	workspace: string;
 	title?: string;
-	state?: ResultEntityState;
-	severity?: ResultEntitySeverity;
+	conclusion?: Conclusion;
+	severity?: Severity;
 }): Promise<string> {
 	return `<!-- atomist:hide -->
 ![badge](${await link(parameters)})
