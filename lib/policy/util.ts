@@ -30,42 +30,14 @@ import { SubscriptionIncoming } from "../payload";
 import { CloneOptions } from "../project/clone";
 import { Project } from "../project/project";
 import { AuthenticatedRepositoryId } from "../repository/id";
-import { failure, success } from "../status";
+import { success } from "../status";
 import { isStaging } from "../util";
 import { markdownLink } from "./badge";
-import {
-	pending,
-	PolicyRun,
-	ResultEntitySeverity,
-	ResultEntityState,
-} from "./result";
+import { PolicyConclusion, PolicySeverity } from "./result";
 
 export type CreatePolicyRun<D, C> = (
 	ctx: EventContext<D, C>,
 ) => { name?: string; title: string };
-
-export function createPolicyRun<D, C>(
-	options: { name?: string; title: string } | CreatePolicyRun<D, C>,
-): ChainedHandler<
-	D,
-	C,
-	{ id?: AuthenticatedRepositoryId<any>; policy?: PolicyRun }
-> {
-	return async ctx => {
-		if (!ctx.chain.id) {
-			return failure(
-				"'id' missing in chain. Make sure to include 'createRef' in handler chain",
-			);
-		}
-		const optsToUse =
-			typeof options === "function" ? options(ctx) : options;
-		ctx.chain.policy = await pending(ctx as any, {
-			sha: ctx.chain.id.sha,
-			...optsToUse,
-		});
-		return undefined;
-	};
-}
 
 export interface PolicyDetails {
 	name: string;
@@ -127,14 +99,13 @@ export function handler<S, C>(parameters: {
 			chain: {
 				id: AuthenticatedRepositoryId<any>;
 				details: PolicyDetails;
-				policy: PolicyRun;
 				check: Check;
 				project?: Project;
 			};
 		},
 	) => Promise<{
-		state: ResultEntityState;
-		severity?: ResultEntitySeverity;
+		conclusion: PolicyConclusion;
+		severity?: PolicySeverity;
 		message?: string;
 		body?: string;
 		annotations?: UpdateCheck["annotations"];
@@ -149,7 +120,6 @@ export function handler<S, C>(parameters: {
 			id: AuthenticatedRepositoryId<any>;
 			details: PolicyDetails;
 			check: Check;
-			policy: PolicyRun;
 			project?: Project;
 		}
 	>(
@@ -216,66 +186,28 @@ export function handler<S, C>(parameters: {
 				workspace: ctx.workspaceId,
 				name: ctx.chain.details.name,
 				title: ctx.chain.details.title,
-				state: ResultEntityState.Pending,
 			})}\n\n${
 				ctx.chain.details.body ? `\n\n${ctx.chain.details.body}` : ""
 			}`,
 		})),
-		createPolicyRun<S, C>((ctx: any) => ({
-			name: ctx.chain.details.name,
-			title: ctx.chain.details.title,
-		})),
 		async ctx => {
 			const result = await parameters.execute(ctx);
-
-			let conclusion;
-			switch (result.state) {
-				case ResultEntityState.Success:
-					conclusion = "success";
-					break;
-				case ResultEntityState.ActionRequired:
-					conclusion = "action_required";
-					break;
-				case ResultEntityState.Failure:
-					conclusion = "failure";
-					break;
-				case ResultEntityState.Neutral:
-					conclusion = "neutral";
-					break;
-			}
 
 			const body = `${await markdownLink({
 				sha: ctx.chain.id.sha,
 				workspace: ctx.workspaceId,
 				name: ctx.chain.details.name,
 				title: ctx.chain.details.title,
-				state: result.state,
+				conclusion: result.conclusion,
 				severity: result.severity,
 			})}${result.body ? `\n\n${result.body}` : ""}`;
 
 			await ctx.chain.check.update({
-				conclusion,
+				conclusion: result.conclusion,
 				body,
 				annotations: result.annotations,
 				actions: result.actions,
 			});
-			switch (result.state) {
-				case ResultEntityState.Success:
-					await ctx.chain.policy.success(result.body);
-					break;
-				case ResultEntityState.ActionRequired:
-					await ctx.chain.policy.actionRequired(
-						result.severity,
-						result.body,
-					);
-					break;
-				case ResultEntityState.Failure:
-					await ctx.chain.policy.failed(result.severity, result.body);
-					break;
-				case ResultEntityState.Neutral:
-					await ctx.chain.policy.neutral(result.body);
-					break;
-			}
 
 			return result.status;
 		},

@@ -19,15 +19,15 @@ import * as fs from "fs-extra";
 import * as path from "path";
 
 import { encrypt } from "../jose/encyrpt";
-import { ResultEntitySeverity, ResultEntityState } from "./result";
+import { PolicyConclusion, PolicySeverity } from "./result";
 
 export async function link(parameters: {
 	sha: string;
 	name: string;
 	workspace: string;
 	title?: string;
-	state?: ResultEntityState;
-	severity?: ResultEntitySeverity;
+	conclusion?: PolicyConclusion;
+	severity?: PolicySeverity;
 }): Promise<string> {
 	const publicKey = crypto.createPublicKey(
 		await fs.readFile(path.join(__dirname, "badge-public.pem")),
@@ -43,8 +43,8 @@ export async function markdownLink(parameters: {
 	name: string;
 	workspace: string;
 	title?: string;
-	state?: ResultEntityState;
-	severity?: ResultEntitySeverity;
+	conclusion?: PolicyConclusion;
+	severity?: PolicySeverity;
 }): Promise<string> {
 	return `<!-- atomist:hide -->
 ![badge](${await link(parameters)})

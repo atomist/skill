@@ -15,10 +15,14 @@
  */
 
 export * as badge from "./badge";
-export * as result from "./result";
+export {
+	PolicyConclusion,
+	PolicySeverity,
+	toConclusion,
+	toSeverity,
+} from "./result";
 export {
 	CreatePolicyRun,
-	createPolicyRun,
 	handler,
 	PolicyDetails,
 	whenAll,

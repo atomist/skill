@@ -14,132 +14,38 @@
  * limitations under the License.
  */
 
-import { entity, entityRef } from "../datalog/util";
-import { EventContext } from "../handler/handler";
-
-export enum ResultEntityState {
-	Pending = ":policy.result.state/PENDING",
-	Success = ":policy.result.state/SUCCESS",
-	Failure = ":policy.result.state/FAILURE",
-	ActionRequired = ":policy.result.state/ACTION_REQUIRED",
-	Neutral = ":policy.result.state/NEUTRAL",
+export enum PolicyConclusion {
+	Failure = "failure",
+	ActionRequired = "action_required",
+	Success = "success",
+	Cancelled = "cancelled",
+	Skipped = "skipped",
+	Neutral = "neutral",
+	TimedOut = "timed_out",
 }
 
-export function toState(state: string): ResultEntityState {
-	for (const key of Object.keys(ResultEntityState)) {
-		if (
-			`:policy.result.state/${state.toUpperCase()}` ===
-			ResultEntityState[key]
-		) {
-			return ResultEntityState[key];
+export enum PolicySeverity {
+	Critical = "critical",
+	High = "high",
+	Medium = "medium",
+	Low = "low",
+	Minimum = "minimum",
+}
+
+export function toConclusion(conclusion: string): PolicyConclusion {
+	for (const key of Object.keys(PolicyConclusion)) {
+		if (conclusion.toLowerCase() === PolicyConclusion[key]) {
+			return PolicyConclusion[key];
 		}
 	}
 	return undefined;
 }
 
-export enum ResultEntitySeverity {
-	Critial = ":policy.result.severity/CRITICAL",
-	High = ":policy.result.severity/HIGH",
-	Medium = ":policy.result.severity/MEDIUM",
-	Low = ":policy.result.severity/LOW",
-	Minimum = ":policy.result.severity/MINIMUM",
-}
-
-export function toSeverity(severity: string): ResultEntitySeverity {
-	for (const key of Object.keys(ResultEntitySeverity)) {
-		if (
-			`:policy.result.severity/${severity.toUpperCase()}` ===
-			ResultEntitySeverity[key]
-		) {
-			return ResultEntitySeverity[key];
+export function toSeverity(severity: string): PolicySeverity {
+	for (const key of Object.keys(PolicySeverity)) {
+		if (severity.toLowerCase() === PolicySeverity[key]) {
+			return PolicySeverity[key];
 		}
 	}
 	return undefined;
-}
-
-export type ResultEntity = {
-	sha: string;
-	name: string;
-	title: string;
-	message?: string;
-	state: ResultEntityState;
-	severity?: ResultEntitySeverity;
-	managedBy?: string;
-	createdAt?: Date;
-	lastUpdated: Date;
-	jws?: string;
-};
-
-export type ResultOwnerEntity = {
-	name: string;
-	namespace: string;
-	version: string;
-};
-
-export interface PolicyRun {
-	failed: (severity: ResultEntitySeverity, message?: string) => Promise<void>;
-	actionRequired: (
-		severity: ResultEntitySeverity,
-		message?: string,
-	) => Promise<void>;
-	neutral: (message?: string) => Promise<void>;
-	success: (message?: string) => Promise<void>;
-}
-
-export async function pending(
-	ctx: EventContext<any, any>,
-	parameters: { name?: string; title: string; sha: string },
-): Promise<PolicyRun> {
-	let terminated = false;
-	const ownerEntity = entity<ResultOwnerEntity>("policy.result/owner", {
-		name: ctx.skill.name,
-		namespace: ctx.skill.namespace,
-		version: ctx.skill.version,
-	});
-	let resultEntity = entity<ResultEntity>("policy/result", {
-		sha: parameters.sha,
-		name: parameters.name || ctx.skill.name,
-		title: parameters.title,
-		state: ResultEntityState.Pending,
-		createdAt: new Date(),
-		lastUpdated: new Date(),
-		managedBy: entityRef(ownerEntity),
-	});
-	await ctx.datalog.transact([ownerEntity, resultEntity]);
-
-	const update = (state: ResultEntityState) => async (
-		message?: string,
-		severity?: ResultEntitySeverity,
-	) => {
-		resultEntity = entity<ResultEntity>("policy/result", {
-			...resultEntity,
-			sha: parameters.sha,
-			name: parameters.name || ctx.skill.name,
-			title: parameters.title,
-			message,
-			state,
-			severity,
-			lastUpdated: new Date(),
-		});
-		await ctx.datalog.transact([ownerEntity, resultEntity]);
-		terminated = true;
-	};
-
-	ctx.onComplete(async () => {
-		if (!terminated) {
-			await update(ResultEntityState.Failure)(
-				"Policy failed to complete",
-				ResultEntitySeverity.High,
-			);
-		}
-	});
-
-	return {
-		failed: (severity, msg) =>
-			update(ResultEntityState.Failure)(msg, severity),
-		actionRequired: (severity, msg) =>
-			update(ResultEntityState.ActionRequired)(msg, severity),
-		neutral: msg => update(ResultEntityState.Neutral)(msg),
-		success: msg => update(ResultEntityState.Success)(msg),
-	};
 }
