@@ -54,6 +54,7 @@ export enum DockerRegistryType {
 }
 
 export interface DockerRegistry {
+	id: string;
 	type: DockerRegistryType;
 	secret: string;
 	username: string;

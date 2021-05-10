@@ -43,7 +43,8 @@
                                  :name)]}])
  (pull
    ?docker-registry
-   [:schema/entity-type
+   [:db/id
+    :schema/entity-type
     :docker.registry/type
     :docker.registry/secret
     :docker.registry/username
