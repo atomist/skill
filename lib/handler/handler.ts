@@ -88,7 +88,7 @@ export interface ContextualLifecycle {
 export interface EventContext<
 	E = any,
 	C = any,
-	P = EventIncoming | SubscriptionIncoming
+	P = EventIncoming | SubscriptionIncoming,
 > extends Contextual<P, Configuration<C>> {
 	data: E;
 }

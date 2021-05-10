@@ -139,7 +139,8 @@ export const MessageMimeTypes = {
 };
 
 export abstract class MessageClientSupport
-	implements MessageClient, CommandMessageClient {
+	implements MessageClient, CommandMessageClient
+{
 	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 	public respond(msg: any, options?: MessageOptions): Promise<any> {
 		return this.doSend(msg, { users: [], channels: [] }, options);
@@ -168,7 +169,7 @@ export abstract class MessageClientSupport
 	): Promise<void>;
 
 	protected abstract doSend(
-		// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 		msg: any,
 		destinations: Destinations,
 		options?: MessageOptions,
@@ -217,9 +218,11 @@ export abstract class AbstractMessageClient extends MessageClientSupport {
 				identifier,
 				skill: `${this.request.skill.namespace}/${this.request.skill.name}`,
 				// TODO cd for commands we could end up with more then one configuration
-				configuration: (toArray(
-					this.request.skill.configuration,
-				)?.[0] as SkillConfiguration)?.name,
+				configuration: (
+					toArray(
+						this.request.skill.configuration,
+					)?.[0] as SkillConfiguration
+				)?.name,
 				name,
 				ts,
 				body: JSON.stringify(attachment),
@@ -645,7 +648,8 @@ abstract class AbstractPubSubMessageClient extends AbstractMessageClient {
 
 export class PubSubCommandMessageClient
 	extends AbstractPubSubMessageClient
-	implements StatusPublisher {
+	implements StatusPublisher
+{
 	constructor(
 		protected readonly request: CommandIncoming,
 		protected readonly graphClient: GraphQLClient,
@@ -689,7 +693,8 @@ export class PubSubCommandMessageClient
 
 export class PubSubEventMessageClient
 	extends AbstractPubSubMessageClient
-	implements StatusPublisher {
+	implements StatusPublisher
+{
 	constructor(
 		protected readonly request: EventIncoming | SubscriptionIncoming,
 		protected readonly graphClient: GraphQLClient,
@@ -737,7 +742,8 @@ export class PubSubEventMessageClient
 
 export class PubSubWebhookMessageClient
 	extends AbstractPubSubMessageClient
-	implements StatusPublisher {
+	implements StatusPublisher
+{
 	constructor(
 		protected readonly request: WebhookIncoming,
 		protected readonly graphClient: GraphQLClient,

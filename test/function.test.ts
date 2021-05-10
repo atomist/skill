@@ -58,8 +58,7 @@ describe("function", () => {
 								typeName: "GitHubAppResourceProvider",
 								selectedResourceProviders: [
 									{
-										id:
-											"AK748NQC5_75b34148-c780-4cdb-a641-d4c34b74515e",
+										id: "AK748NQC5_75b34148-c780-4cdb-a641-d4c34b74515e",
 									},
 								],
 							},
@@ -68,8 +67,7 @@ describe("function", () => {
 								typeName: "SecretProvider",
 								selectedResourceProviders: [
 									{
-										id:
-											"AK748NQC5_d35537a0-9c72-4b23-81ea-96de97d79d5e",
+										id: "AK748NQC5_d35537a0-9c72-4b23-81ea-96de97d79d5e",
 									},
 								],
 							},
@@ -77,8 +75,7 @@ describe("function", () => {
 						parameters: [
 							{
 								name: "env_map",
-								value:
-									'[{"name":"SONAR_TOKEN","secret":"AK748NQC5_d35537a0-9c72-4b23-81ea-96de97d79d5e"}]',
+								value: '[{"name":"SONAR_TOKEN","secret":"AK748NQC5_d35537a0-9c72-4b23-81ea-96de97d79d5e"}]',
 							},
 							{
 								name: "subscription_filter",
@@ -90,8 +87,7 @@ describe("function", () => {
 							},
 							{
 								name: "docker_command",
-								value:
-									"/usr/bin/entrypoint.sh sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${data.Push[0].repo.owner}:${data.Push[0].repo.name} -Dsonar.organization=sdm-org",
+								value: "/usr/bin/entrypoint.sh sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${data.Push[0].repo.owner}:${data.Push[0].repo.name} -Dsonar.organization=sdm-org",
 							},
 							{
 								name: "docker_env",
@@ -176,8 +172,7 @@ describe("function", () => {
 								typeName: "GitHubAppResourceProvider",
 								selectedResourceProviders: [
 									{
-										id:
-											"AK748NQC5_75b34148-c780-4cdb-a641-d4c34b74515e",
+										id: "AK748NQC5_75b34148-c780-4cdb-a641-d4c34b74515e",
 									},
 								],
 							},
@@ -186,8 +181,7 @@ describe("function", () => {
 								typeName: "SecretProvider",
 								selectedResourceProviders: [
 									{
-										id:
-											"AK748NQC5_d35537a0-9c72-4b23-81ea-96de97d79d5e",
+										id: "AK748NQC5_d35537a0-9c72-4b23-81ea-96de97d79d5e",
 									},
 								],
 							},
@@ -195,8 +189,7 @@ describe("function", () => {
 						parameters: [
 							{
 								name: "env_map",
-								value:
-									'[{"name":"SONAR_TOKEN","secret":"AK748NQC5_d35537a0-9c72-4b23-81ea-96de97d79d5e"}]',
+								value: '[{"name":"SONAR_TOKEN","secret":"AK748NQC5_d35537a0-9c72-4b23-81ea-96de97d79d5e"}]',
 							},
 							{
 								name: "subscription_filter",
@@ -208,8 +201,7 @@ describe("function", () => {
 							},
 							{
 								name: "docker_command",
-								value:
-									"/usr/bin/entrypoint.sh sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${data.Push[0].repo.owner}:${data.Push[0].repo.name} -Dsonar.organization=sdm-org",
+								value: "/usr/bin/entrypoint.sh sonar-scanner -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectKey=${data.Push[0].repo.owner}:${data.Push[0].repo.name} -Dsonar.organization=sdm-org",
 							},
 							{
 								name: "docker_env",
@@ -248,8 +240,7 @@ describe("function", () => {
 				},
 				webhook: {
 					parameter_name: "sonarcloud-event-manual",
-					url:
-						"h********************************************************************************************3",
+					url: "h********************************************************************************************3",
 					headers: {
 						"x-forwarded-proto": "https",
 						"user-agent": "c*********1",

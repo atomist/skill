@@ -40,9 +40,10 @@ import {
 	ResultEntityState,
 } from "./result";
 
-export type CreatePolicyRun<D, C> = (
-	ctx: EventContext<D, C>,
-) => { name?: string; title: string };
+export type CreatePolicyRun<D, C> = (ctx: EventContext<D, C>) => {
+	name?: string;
+	title: string;
+};
 
 export function createPolicyRun<D, C>(
 	options: { name?: string; title: string } | CreatePolicyRun<D, C>,
@@ -115,9 +116,7 @@ export function handler<S, C>(parameters: {
 	when?: (ctx: EventContext<S, C>) => HandlerStatus | undefined;
 	id: CreateRepositoryId<S, C>;
 	clone?: (ctx: EventContext<S, C>) => CloneOptions | string[] | boolean;
-	details: (
-		ctx: EventContext<S, C>,
-	) => {
+	details: (ctx: EventContext<S, C>) => {
 		name: string;
 		title: string;
 		body: string;

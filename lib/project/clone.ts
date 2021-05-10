@@ -125,10 +125,9 @@ export async function doClone(
 		maxTimeout: 500,
 		randomize: false,
 	};
-	await (await import("p-retry"))(
-		() => execPromise("git", cloneArgs),
-		retryOptions,
-	);
+	await (
+		await import("p-retry")
+	)(() => execPromise("git", cloneArgs), retryOptions);
 
 	try {
 		await execPromise("git", ["checkout", checkoutRef, "--"], {

@@ -83,7 +83,7 @@ export async function processEvent(
 	}
 	try {
 		const result = await invokeHandler(loader, context);
-		await ((context.message as any) as StatusPublisher).publish(
+		await (context.message as any as StatusPublisher).publish(
 			prepareStatus(result || { code: 0 }, context),
 		);
 	} catch (e) {
@@ -106,12 +106,12 @@ export async function processCommand(
 	debug(`Invoking command handler '${context.name}'`);
 	try {
 		const result = await invokeHandler(loader, context);
-		await ((context.message as any) as StatusPublisher).publish(
+		await (context.message as any as StatusPublisher).publish(
 			prepareStatus(result || { code: 0 }, context),
 		);
 	} catch (e) {
 		if (e instanceof CommandListenerExecutionInterruptError) {
-			await ((context.message as any) as StatusPublisher).publish(
+			await (context.message as any as StatusPublisher).publish(
 				prepareStatus({ code: 0 }, context),
 			);
 		} else {
@@ -135,7 +135,7 @@ export async function processWebhook(
 	debug(`Invoking webhook handler '${context.name}'`);
 	try {
 		const result = await invokeHandler(loader, context);
-		await ((context.message as any) as StatusPublisher).publish(
+		await (context.message as any as StatusPublisher).publish(
 			prepareStatus(result || { code: 0 }, context),
 		);
 	} catch (e) {
@@ -151,9 +151,9 @@ async function invokeHandler(
 	context: (EventContext | CommandContext | WebhookContext) &
 		ContextualLifecycle,
 ) {
-	const result = (await (await loader(context.name))(
-		context,
-	)) as HandlerStatus;
+	const result = (await (
+		await loader(context.name)
+	)(context)) as HandlerStatus;
 	return result;
 }
 
@@ -163,7 +163,7 @@ async function publishError(
 		ContextualLifecycle,
 ) {
 	error(`Error occurred: ${e.stack}`);
-	await ((context.message as any) as StatusPublisher).publish(
+	await (context.message as any as StatusPublisher).publish(
 		prepareStatus(e, context),
 	);
 }

@@ -116,7 +116,8 @@ export async function requirePath(
 export function extractParameters(intent: string): Arg[] {
 	const args: Arg[] = [];
 	// eslint-disable-next-line no-useless-escape
-	const regexp = /^[a-zA-Z\s]*(\s+--([a-z.A-Z_]*)=(?:'([^']*?)'|"([^"]*?)"|([\w\-\.]*?)))*$/g;
+	const regexp =
+		/^[a-zA-Z\s]*(\s+--([a-z.A-Z_]*)=(?:'([^']*?)'|"([^"]*?)"|([\w\-\.]*?)))*$/g;
 	let intentToMatch = intent.trim();
 	let match = regexp.exec(intentToMatch);
 	while (!!match && !!match[1] && !!match[2]) {
