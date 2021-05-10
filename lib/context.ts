@@ -62,7 +62,10 @@ export type ContextFactory = (
 	| ((CommandContext | EventContext | WebhookContext) & ContextualLifecycle)
 	| undefined;
 
-export function loggingCreateContext(delegate: ContextFactory): ContextFactory {
+export function loggingCreateContext(
+	delegate: ContextFactory,
+	options: { payload: boolean } = { payload: true },
+): ContextFactory {
 	return (payload, ctx) => {
 		const context = delegate(payload, ctx);
 		if (context) {
@@ -91,7 +94,9 @@ export function loggingCreateContext(delegate: ContextFactory): ContextFactory {
 				rt.skill.sha.slice(0, 7),
 				rt.node.version,
 			);
-			logPayload(context);
+			if (options?.payload) {
+				logPayload(context);
+			}
 		}
 		return context;
 	};
