@@ -112,8 +112,9 @@ export function createContext(
 ):
 	| ((CommandContext | EventContext | WebhookContext) & ContextualLifecycle)
 	| undefined {
-	const apiKey = payload?.secrets?.find(s => s.uri === "atomist://api-key")
-		?.value;
+	const apiKey = payload?.secrets?.find(
+		s => s.uri === "atomist://api-key",
+	)?.value;
 	const wid = workspaceId(payload);
 	const graphql = createGraphQLClient(apiKey, wid);
 	const storage = createStorageProvider(wid);

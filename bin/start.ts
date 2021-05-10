@@ -66,11 +66,9 @@ yargs
 			}),
 		async argv => {
 			try {
-				await (await import("../lib/script/skill_input")).generateSkill(
-					argv.cwd,
-					argv.validate,
-					argv.artifacts,
-				);
+				await (
+					await import("../lib/script/skill_input")
+				).generateSkill(argv.cwd, argv.validate, argv.artifacts);
 				return 0;
 			} catch (e) {
 				error(e.message);
@@ -116,7 +114,9 @@ yargs
 			}),
 		async argv => {
 			try {
-				await (await import("../lib/script/skill_bundle")).bundleSkill(
+				await (
+					await import("../lib/script/skill_bundle")
+				).bundleSkill(
 					argv.cwd,
 					argv.minify,
 					argv.sourceMap,
@@ -179,10 +179,9 @@ yargs
 			}),
 		async argv => {
 			try {
-				await (await import("../lib/script/skill_upload")).uploadSkill(
-					argv.cwd,
-					argv.workspace,
-				);
+				await (
+					await import("../lib/script/skill_upload")
+				).uploadSkill(argv.cwd, argv.workspace);
 				return 0;
 			} catch (e) {
 				error(e.message);
@@ -239,9 +238,9 @@ yargs
 			}),
 		async argv => {
 			try {
-				await (await import("../lib/script/skill_clean")).cleanSkill(
-					argv.cwd,
-				);
+				await (
+					await import("../lib/script/skill_clean")
+				).cleanSkill(argv.cwd);
 				return 0;
 			} catch (e) {
 				error(e.message);
@@ -313,10 +312,9 @@ yargs
 			}),
 		async argv => {
 			try {
-				await (await import("../lib/script/gql_fetch")).fetchGql(
-					argv.cwd,
-					argv.workspace,
-				);
+				await (
+					await import("../lib/script/gql_fetch")
+				).fetchGql(argv.cwd, argv.workspace);
 				return 0;
 			} catch (e) {
 				error(e.message);
@@ -344,9 +342,9 @@ yargs
 			}),
 		async argv => {
 			try {
-				await (await import("../lib/script/gql_generate")).generateGql(
-					argv,
-				);
+				await (
+					await import("../lib/script/gql_generate")
+				).generateGql(argv);
 				return 0;
 			} catch (e) {
 				error(e.message);

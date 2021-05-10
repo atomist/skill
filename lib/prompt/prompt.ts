@@ -26,7 +26,7 @@ import set = require("lodash.set");
  */
 export type ParameterPromptObject<
 	PARAMS,
-	K extends keyof PARAMS = keyof PARAMS
+	K extends keyof PARAMS = keyof PARAMS,
 > = Record<K, ParameterObjectValue>;
 
 /**

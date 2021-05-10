@@ -23,7 +23,7 @@ import { isPrimitive, toArray } from "./util";
 
 export function wrapEventHandler(eh: EventHandler): EventHandler {
 	return async ctx => {
-		const meh = (eh as any) as MappingEventHandler;
+		const meh = eh as any as MappingEventHandler;
 		if (typeof meh !== "function" && meh.map && meh.handle) {
 			const data = meh.map(ctx.data);
 			return meh.handle({

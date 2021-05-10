@@ -82,8 +82,7 @@ export function pushStrategy(options: {
 			: "pr_default_commit",
 		options: [
 			{
-				text:
-					"Raise pull request for default branch; commit to other branches",
+				text: "Raise pull request for default branch; commit to other branches",
 				value: "pr_default_commit",
 			},
 			{

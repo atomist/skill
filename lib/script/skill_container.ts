@@ -44,18 +44,21 @@ export async function defaults(
 		const readmeContent = (
 			await fs.readFile(path.join(cwd, "README.md"))
 		).toString();
-		const descriptionRegexp = /<!---atomist-skill-description:start--->([\s\S]*)<!---atomist-skill-description:end--->/gm;
+		const descriptionRegexp =
+			/<!---atomist-skill-description:start--->([\s\S]*)<!---atomist-skill-description:end--->/gm;
 		const descriptionMatch = descriptionRegexp.exec(readmeContent);
 		if (descriptionMatch) {
 			description = descriptionMatch[1].trim();
 			longDescription = description;
 		}
-		const longDescriptionRegexp = /<!---atomist-skill-long_description:start--->([\s\S]*)<!---atomist-skill-long_description:end--->/gm;
+		const longDescriptionRegexp =
+			/<!---atomist-skill-long_description:start--->([\s\S]*)<!---atomist-skill-long_description:end--->/gm;
 		const longDescriptionMatch = longDescriptionRegexp.exec(readmeContent);
 		if (longDescriptionMatch) {
 			longDescription = longDescriptionMatch[1].trim();
 		}
-		const readmeRegexp = /<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
+		const readmeRegexp =
+			/<!---atomist-skill-readme:start--->([\s\S]*)<!---atomist-skill-readme:end--->/gm;
 		const readmeMatch = readmeRegexp.exec(readmeContent);
 		if (readmeMatch) {
 			readme = readmeMatch[1].trim();

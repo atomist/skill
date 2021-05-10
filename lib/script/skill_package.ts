@@ -43,14 +43,13 @@ export async function packageSkill(
 		);
 	}
 
-	const matches: string[] = await (await import("glob-gitignore")).glob(
-		["**"],
-		{
-			cwd,
-			ignore: ignores,
-			dot: true,
-		},
-	);
+	const matches: string[] = await (
+		await import("glob-gitignore")
+	).glob(["**"], {
+		cwd,
+		ignore: ignores,
+		dot: true,
+	});
 
 	const zip = new (await import("jszip"))();
 

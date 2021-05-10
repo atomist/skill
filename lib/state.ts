@@ -68,7 +68,7 @@ function stateKey(
 }
 
 export function cachify<
-	T extends (ctx: EventContext<any, any>, ...args: any) => Promise<any>
+	T extends (ctx: EventContext<any, any>, ...args: any) => Promise<any>,
 >(func: T, options?: { resolver?: (...args: any) => string; ttl?: number }): T {
 	if (!func.name) {
 		throw new Error("cachify does not support anonymous functions");

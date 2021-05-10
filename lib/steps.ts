@@ -23,7 +23,7 @@ import { toArray } from "./util";
  */
 export interface Step<
 	C extends EventContext | CommandContext,
-	G extends Record<string, any> = any
+	G extends Record<string, any> = any,
 > {
 	/** Name of the step */
 	name: string;
@@ -35,7 +35,7 @@ export interface Step<
 
 export interface StepListener<
 	C extends EventContext | CommandContext,
-	G extends Record<string, any> = any
+	G extends Record<string, any> = any,
 > {
 	starting?(step: Step<C>, parameters: G): Promise<void>;
 
@@ -56,7 +56,7 @@ export interface StepListener<
  * Execute provided skill steps in the order they are provided or until one fails
  */
 export async function runSteps<
-	C extends EventContext | CommandContext
+	C extends EventContext | CommandContext,
 >(options: {
 	context: C;
 	steps: Step<C> | Array<Step<C>>;

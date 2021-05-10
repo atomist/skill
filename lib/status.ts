@@ -42,9 +42,7 @@ class BuildableHandlerStatus implements HandlerStatus {
  * The return object exposes a hidden function that can be used to
  * set the status to visibility: hidden or abort the step processing early.
  */
-export function success(
-	reason?: string,
-): HandlerStatus & {
+export function success(reason?: string): HandlerStatus & {
 	hidden: () => BuildableHandlerStatus;
 	abort: () => BuildableHandlerStatus;
 } {
@@ -58,9 +56,7 @@ export function success(
  * The return object exposes a hidden function that can be used to
  * set the status to visibility: hidden or abort the step processing early.
  */
-export function failure(
-	reason?: string,
-): HandlerStatus & {
+export function failure(reason?: string): HandlerStatus & {
 	hidden: () => BuildableHandlerStatus;
 	abort: () => BuildableHandlerStatus;
 } {

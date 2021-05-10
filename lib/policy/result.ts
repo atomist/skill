@@ -107,23 +107,22 @@ export async function pending(
 	});
 	await ctx.datalog.transact([ownerEntity, resultEntity]);
 
-	const update = (state: ResultEntityState) => async (
-		message?: string,
-		severity?: ResultEntitySeverity,
-	) => {
-		resultEntity = entity<ResultEntity>("policy/result", {
-			...resultEntity,
-			sha: parameters.sha,
-			name: parameters.name || ctx.skill.name,
-			title: parameters.title,
-			message,
-			state,
-			severity,
-			lastUpdated: new Date(),
-		});
-		await ctx.datalog.transact([ownerEntity, resultEntity]);
-		terminated = true;
-	};
+	const update =
+		(state: ResultEntityState) =>
+		async (message?: string, severity?: ResultEntitySeverity) => {
+			resultEntity = entity<ResultEntity>("policy/result", {
+				...resultEntity,
+				sha: parameters.sha,
+				name: parameters.name || ctx.skill.name,
+				title: parameters.title,
+				message,
+				state,
+				severity,
+				lastUpdated: new Date(),
+			});
+			await ctx.datalog.transact([ownerEntity, resultEntity]);
+			terminated = true;
+		};
 
 	ctx.onComplete(async () => {
 		if (!terminated) {

@@ -66,9 +66,7 @@ async function hb(): Promise<any> {
 	return handlebars;
 }
 
-async function findTemplate(
-	name: string,
-): Promise<{
+async function findTemplate(name: string): Promise<{
 	template: string;
 	partials: Array<{ name: string; partial: string }>;
 }> {
@@ -87,7 +85,9 @@ async function findTemplate(
 		// This only works for Node.js > 12
 		let cwd = path.dirname(callSite.getFileName());
 		while (cwd) {
-			const p = await (await import("find-up"))("views", {
+			const p = await (
+				await import("find-up")
+			)("views", {
 				cwd,
 				type: "directory",
 			});

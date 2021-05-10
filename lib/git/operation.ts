@@ -118,7 +118,9 @@ export async function persistChanges(args: PersistChangesArgs): Promise<void> {
 	const branch = args.branch;
 	await ensureBranch(args.project, branch, true);
 
-	await (await import("p-retry"))(async () => {
+	await (
+		await import("p-retry")
+	)(async () => {
 		await execPromise("git", ["fetch", origin, branch], { cwd: dir });
 		await execPromise("git", ["reset", "--hard", `${origin}/${branch}`], {
 			cwd: dir,
@@ -136,10 +138,9 @@ export async function ensureBranch(
 	branch: string,
 	sync: boolean,
 ): Promise<void> {
-	await (await import("p-retry"))(
-		async () => _ensureBranch(projectOrCwd, branch, sync),
-		retryOptions,
-	);
+	await (
+		await import("p-retry")
+	)(async () => _ensureBranch(projectOrCwd, branch, sync), retryOptions);
 }
 
 /**
@@ -312,10 +313,9 @@ export async function push(
 	projectOrCwd: Project | string,
 	options?: GitPushOptions,
 ): Promise<void> {
-	await (await import("p-retry"))(
-		async () => _push(projectOrCwd, options),
-		retryOptions,
-	);
+	await (
+		await import("p-retry")
+	)(async () => _push(projectOrCwd, options), retryOptions);
 }
 
 /** Internal push functionality without retry. See [[push]]. */

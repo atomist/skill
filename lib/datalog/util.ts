@@ -38,7 +38,7 @@ export type Entity = {
  * Helper to create a Datalog entity of given type and attributes
  */
 export function entity<
-	E extends Record<string, EntityType> = Record<string, EntityType>
+	E extends Record<string, EntityType> = Record<string, EntityType>,
 >(type: string, nameOrAttributes: string | E, attributes?: E): Entity {
 	const e = {
 		"schema/entity-type": `:${type}`,
