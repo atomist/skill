@@ -115,7 +115,7 @@
     "node-fetch": "^2.6.1",
     "p-retry": "^4.5.0",
     "pluralize": "^8.0.0",
-    "prettier": "^2.2.1",
+    "prettier": "^2.3.0",
     "semver": "^7.3.5",
     "source-map-support": "^0.5.19",
     "stack-trace": "0.0.10",
