@@ -76,7 +76,9 @@ export function formatCommitMarkers(
 	return `
 
 [atomist:generated]
-[atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]`;
+[atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]${
+		tags.length > 0 ? "\n" : ""
+	}${tags.map(t => `  [${t}]`).join("\n")}`;
 }
 
 export function formatMarkers(
