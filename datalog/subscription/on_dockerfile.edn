@@ -56,10 +56,12 @@
    :docker.image/docker-file
    ?docker-image
    ?docker-file)
- (capability-configuration
-   "atomist"
-   "DockerRegistry"
-   "analysis"
-   ?docker-registry)
+ (or-join [?docker-registry]
+   (capability-configuration
+     "atomist"
+     "DockerRegistry"
+     "analysis"
+     ?docker-registry)
+   [(ground "empty") ?docker-registry])
  [?docker-image :docker.image/sha ?sha]
  [?commit :git.commit/sha ?sha]]

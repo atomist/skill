@@ -25,9 +25,11 @@
  %
  :where
  (tx-entity-attr-value :docker.image/digest ?docker-image _)
- (capability-configuration
-   "atomist"
-   "DockerRegistry"
-   "analysis"
-   ?docker-registry)
+ (or-join [?docker-registry]
+   (capability-configuration
+     "atomist"
+     "DockerRegistry"
+     "analysis"
+     ?docker-registry)
+   [(ground "empty") ?docker-registry])
  [(missing? $ ?docker-image :docker.image/sha)]]
