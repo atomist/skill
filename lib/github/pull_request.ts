@@ -24,7 +24,12 @@ import { Project } from "../project/project";
 import * as status from "../status";
 import { hash } from "../util";
 import { truncateText } from "./check";
-import { api, formatFooter, formatMarkers } from "./operation";
+import {
+	api,
+	formatCommitMarkers,
+	formatFooter,
+	formatMarkers,
+} from "./operation";
 
 import uniq = require("lodash.uniq");
 
@@ -107,7 +112,7 @@ export async function persistChanges(
 	};
 	const slug = `${project.id.owner}/${project.id.repo}`;
 	const commitMsg =
-		commit.message ||
+		addCommitMarkers(commit.message, ctx) ||
 		`Updates from ${ctx.skill.namespace}/${ctx.skill.name}\n\n[atomist:generated]`;
 	const repoUrl = `https://github.com/${slug}`;
 	const branch = createPullRequest
@@ -129,8 +134,8 @@ export async function persistChanges(
 		changedFiles.push(
 			...(await git.editCommit(
 				project,
-				commit.editors,
-				commit.message,
+				wrapWithCommitMarkers(commit.editors, ctx),
+				commitMsg,
 				author,
 			)),
 		);
@@ -149,8 +154,8 @@ export async function persistChanges(
 			await git.persistChanges({
 				project,
 				branch,
-				editors: commit.editors,
-				message: commit.message,
+				editors: wrapWithCommitMarkers(commit.editors, ctx),
+				message: commitMsg,
 				author,
 			});
 		} else {
@@ -410,5 +415,29 @@ ${formatMarkers(ctx)}`,
 			pull_number: openPr.number,
 			state: "closed",
 		});
+	}
+}
+
+function addCommitMarkers(msg: string, ctx: Contextual<any, any>): string {
+	if (!msg) {
+		return msg;
+	}
+	if (!msg.includes("[atomist:generated]")) {
+		return `${msg.trim()}${formatCommitMarkers(ctx)}`;
+	} else {
+		return msg;
+	}
+}
+
+function wrapWithCommitMarkers(
+	editors: git.CommitEditor[],
+	ctx: Contextual<any, any>,
+): git.CommitEditor[] {
+	if (editors?.length > 0) {
+		return editors.map(e => async pd => {
+			return addCommitMarkers(await e(pd), ctx);
+		});
+	} else {
+		return editors;
 	}
 }

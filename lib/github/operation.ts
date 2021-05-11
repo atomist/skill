@@ -69,6 +69,16 @@ export function api(
 	});
 }
 
+export function formatCommitMarkers(
+	ctx: Contextual<any, any>,
+	...tags: string[]
+): string {
+	return `
+
+[atomist:generated]
+[atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]`;
+}
+
 export function formatMarkers(
 	ctx: Contextual<any, any>,
 	...tags: string[]
