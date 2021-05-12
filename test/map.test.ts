@@ -334,5 +334,34 @@ describe("map", () => {
 				},
 			});
 		});
+		it("should ignore undefined entity", () => {
+			const result = [
+				{
+					"git.commit/repo": {
+						"git.repo/name": "view-service",
+						"git.repo/org": {
+							"github.org/installation-token":
+								"v*****************************************4",
+							"git.org/name": "atomisthq",
+							"git.provider/url": "h****************m",
+						},
+					},
+				},
+				undefined,
+			];
+			assert.deepStrictEqual(mapSubscription(result), {
+				unknownEntity: {
+					repo: {
+						name: "view-service",
+						org: {
+							installationToken:
+								"v*****************************************4",
+							name: "atomisthq",
+							url: "h****************m",
+						},
+					},
+				},
+			});
+		});
 	});
 });

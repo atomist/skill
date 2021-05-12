@@ -106,22 +106,24 @@ export function mapSubscription<T = any>(result: any[]): T {
 		}
 	};
 
-	toArray(result).forEach(r => {
-		const value = {};
-		const key = nameFromKey(r["schema/entity-type"] || "unknownEntity");
-		for (const k in r) {
-			if (k !== "schema/entity-type") {
-				value[nameFromKey(k)] = mapper(r[k]);
+	toArray(result)
+		.filter(r => !!r)
+		.forEach(r => {
+			const value = {};
+			const key = nameFromKey(r["schema/entity-type"] || "unknownEntity");
+			for (const k in r) {
+				if (k !== "schema/entity-type") {
+					value[nameFromKey(k)] = mapper(r[k]);
+				}
 			}
-		}
-		if (Array.isArray(mapped[key])) {
-			mapped[key].push(value);
-		} else if (mapped[key]) {
-			mapped[key] = [mapped[key], value];
-		} else {
-			mapped[key] = value;
-		}
-	});
+			if (Array.isArray(mapped[key])) {
+				mapped[key].push(value);
+			} else if (mapped[key]) {
+				mapped[key] = [mapped[key], value];
+			} else {
+				mapped[key] = value;
+			}
+		});
 
 	return mapped as T;
 }
