@@ -5,6 +5,8 @@
     :docker.image/digest
     :docker.image/tags
     :docker.image/sha
+    {(:docker.platform/_image :as :docker.image/platform) [:docker.platform/architecture
+                                                           :docker.platform/os]}
     {:docker.image/labels [:docker.image.label/name
                            :docker.image.label/value]}
     {:docker.image/repository [:docker.repository/host

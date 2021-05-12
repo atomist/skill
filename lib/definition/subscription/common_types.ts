@@ -46,6 +46,7 @@ export interface DockerImage {
 		host: string;
 		name: string;
 	};
+	platform: Array<{ architecture: string; os: string }>;
 }
 
 export enum DockerRegistryType {
