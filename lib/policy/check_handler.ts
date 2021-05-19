@@ -55,7 +55,7 @@ export function createPolicyRun<D, C>(
 	return async ctx => {
 		if (!ctx.chain.id) {
 			return failure(
-				"'id' missing in chain. Make sure to include 'createRef' in handler chain",
+				"'id' missing in chain. Make sure to include 'createRef' in checjhandler chain",
 			);
 		}
 		const optsToUse =
@@ -112,7 +112,7 @@ export function whenParameter<S, C>(
 	};
 }
 
-export function handler<S, C>(parameters: {
+export function checkHandler<S, C>(parameters: {
 	when?: (ctx: EventContext<S, C>) => HandlerStatus | undefined;
 	id: CreateRepositoryId<S, C>;
 	clone?: (ctx: EventContext<S, C>) => CloneOptions | string[] | boolean;

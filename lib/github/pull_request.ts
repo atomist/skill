@@ -418,7 +418,10 @@ ${formatMarkers(ctx)}`,
 	}
 }
 
-function addCommitMarkers(msg: string, ctx: Contextual<any, any>): string {
+export function addCommitMarkers(
+	msg: string,
+	ctx: Contextual<any, any>,
+): string {
 	if (!msg) {
 		return msg;
 	}

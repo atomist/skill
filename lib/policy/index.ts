@@ -15,12 +15,13 @@
  */
 
 export * as badge from "./badge";
-export * as result from "./result";
 export {
+	checkHandler,
 	CreatePolicyRun,
 	createPolicyRun,
-	handler,
 	PolicyDetails,
 	whenAll,
 	whenParameter,
-} from "./util";
+} from "./check_handler";
+export { pullRequestHandler } from "./pr_handler";
+export * as result from "./result";
