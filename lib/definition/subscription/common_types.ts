@@ -133,6 +133,48 @@ export type DockerImageWithVulnerabilities = DockerImage & {
 				host: string;
 				name: string;
 			};
+			image: {
+				digest: string;
+				tags: string[];
+				distro: {
+					name: string;
+					version: string;
+					id: string;
+					idLike: string[];
+				};
+				packageManager: {
+					type: string;
+					sources: string[];
+				};
+				platform: Array<{
+					os: string;
+					variant?: string;
+					architecture: string;
+				}>;
+			};
+			manifestList: {
+				digest: string;
+				tags: string[];
+				images: Array<{
+					digest: string;
+					tags: string[];
+					distro: {
+						name: string;
+						version: string;
+						id: string;
+						idLike: string[];
+					};
+					packageManager: {
+						type: string;
+						sources: string[];
+					};
+					platform: Array<{
+						os: string;
+						variant?: string;
+						architecture: string;
+					}>;
+				}>;
+			};
 		}>;
 	};
 };
