@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Get files only instead of detached clone. [#341](https://github.com/atomist-skills/skill/issues/341)
 *   Add commit markers to persistChanges. [c97f69b](https://github.com/atomist-skills/skill/commit/c97f69b38a95ad32886168e13fdb84e6c3d70b48)
 *   Add pullRequestHandler. [bb2f4da](https://github.com/atomist-skills/skill/commit/bb2f4dabb591948f7a771d14e279005fc8f5d662)
--   Transact PR and check entities. [#361](https://github.com/atomist-skills/skill/issues/361)
+*   Transact PR and check entities. [#361](https://github.com/atomist-skills/skill/issues/361)
 
 ### Changed
 
