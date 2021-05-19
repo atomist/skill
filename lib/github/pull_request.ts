@@ -205,7 +205,7 @@ async function ensurePullRequest(
 		branch: string;
 	},
 ): Promise<HandlerStatus> {
-	const gh = api(project.id);
+	const gh = api(project.id, ctx);
 
 	const files = uniq(pullRequest.changedFiles).sort();
 	const hashes: Array<{ path: string; hash: string }> = [];
@@ -391,7 +391,7 @@ export async function closePullRequests(
 	head: string,
 	comment: string,
 ): Promise<void> {
-	const gh = api(project.id);
+	const gh = api(project.id, ctx);
 	const openPrs = await gh.paginate(gh.pulls.list, {
 		owner: project.id.owner,
 		repo: project.id.repo,
