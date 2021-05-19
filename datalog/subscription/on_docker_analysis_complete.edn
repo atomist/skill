@@ -79,6 +79,9 @@
                                                                                                                        (:docker.repository/repository
                                                                                                                          :as
                                                                                                                          :name)]}]}]}
+    {(:docker.platform/_image :as :docker.platform/platform) [:docker.platform/os
+                                                              :docker.platform/variant
+                                                              :docker.platform/architecture]}
     {:docker.image/repository [:docker.repository/host
                                (:docker.repository/repository
                                  :as
