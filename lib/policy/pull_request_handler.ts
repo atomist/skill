@@ -73,7 +73,7 @@ function cloneFiles<D, C>(
 	};
 }
 
-export function pullRequestHandler<S, C>(parameters: {
+export function pullRequestHandler<S, C, D = string>(parameters: {
 	when?: (ctx: EventContext<S, C>) => HandlerStatus | undefined;
 	id: CreateRepositoryId<S, C>;
 	clone: (ctx: EventContext<S, C>) => string[];
@@ -98,7 +98,7 @@ export function pullRequestHandler<S, C>(parameters: {
 					| {
 							changes: Array<{ path: string; content: string }>;
 							message: string;
-							detail?: string;
+							detail?: D;
 					  }
 					| undefined
 				>
@@ -111,7 +111,7 @@ export function pullRequestHandler<S, C>(parameters: {
 					files?: Array<{ path: string; content: string }>;
 				};
 			},
-			detail: string[],
+			detail: D[],
 		) => Promise<{
 			title: string;
 			body: string;
