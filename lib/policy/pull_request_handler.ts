@@ -98,7 +98,7 @@ export function pullRequestHandler<S, C, D = string>(parameters: {
 					| {
 							changes: Array<{ path: string; content: string }>;
 							message: string;
-							detail?: D;
+							detail?: D[];
 					  }
 					| undefined
 				>
@@ -165,7 +165,7 @@ export function pullRequestHandler<S, C, D = string>(parameters: {
 
 				if (editResult?.changes?.length > 0) {
 					if (editResult.detail) {
-						details.push(editResult.detail);
+						details.push(...editResult.detail);
 					}
 
 					// Persist changes
