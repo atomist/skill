@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Add skill upload and download commands. [a238bb9](https://github.com/atomist-skills/skill/commit/a238bb9bc307553d2f6d4a6c7bb6815c461ee736)
 *   Get files only instead of detached clone. [#341](https://github.com/atomist-skills/skill/issues/341)
 *   Add commit markers to persistChanges. [c97f69b](https://github.com/atomist-skills/skill/commit/c97f69b38a95ad32886168e13fdb84e6c3d70b48)
+-   Add pullRequestHandler. [bb2f4da](https://github.com/atomist-skills/skill/commit/bb2f4dabb591948f7a771d14e279005fc8f5d662)
 
 ### Changed
 
@@ -22,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 *   Do not raise PR when no files have been changed. [2f76973](https://github.com/atomist-skills/skill/commit/2f76973a51efbbbf0a1df6fd84f8328eb3c9c6d2)
--   Fix issue with undefined in subscription result. [12145c1](https://github.com/atomist-skills/skill/commit/12145c1633d04a39f55e1dbf6d8d9ae2e27da8b6)
+*   Fix issue with undefined in subscription result. [12145c1](https://github.com/atomist-skills/skill/commit/12145c1633d04a39f55e1dbf6d8d9ae2e27da8b6)
 
 ## [0.11.0](https://github.com/atomist/skill/compare/0.10.0...0.11.0) - 2021-04-26
 
