@@ -136,6 +136,12 @@ export type DockerImageWithVulnerabilities = DockerImage & {
 			image: {
 				digest: string;
 				tags: string[];
+				vulnerabilities: Array<
+					Pick<
+						DockerImageVulnerability,
+						"sourceId" | "fixAvailable" | "affected" | "fixed"
+					>
+				>;
 				distro: {
 					name: string;
 					version: string;
@@ -158,6 +164,12 @@ export type DockerImageWithVulnerabilities = DockerImage & {
 				images: Array<{
 					digest: string;
 					tags: string[];
+					vulnerabilities: Array<
+						Pick<
+							DockerImageVulnerability,
+							"sourceId" | "fixAvailable" | "affected" | "fixed"
+						>
+					>;
 					distro: {
 						name: string;
 						version: string;
