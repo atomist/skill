@@ -73,6 +73,10 @@ function cloneFiles<D, C>(
 	};
 }
 
+/**
+ * Event handler implementation that can raise pull requests without
+ * the need for cloning a repository.
+ */
 export function pullRequestHandler<S, C, D = string>(parameters: {
 	when?: (ctx: EventContext<S, C>) => HandlerStatus | undefined;
 	id: CreateRepositoryId<S, C>;
