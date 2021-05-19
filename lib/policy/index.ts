@@ -18,10 +18,16 @@ export * as badge from "./badge";
 export {
 	checkHandler,
 	CreatePolicyRun,
-	createPolicyRun,
 	PolicyDetails,
 	whenAll,
 	whenParameter,
 } from "./check_handler";
+export {
+	Action,
+	Annotation,
+	Conclusion,
+	Severity,
+	toConclusion,
+	toSeverity,
+} from "./policy";
 export { pullRequestHandler } from "./pr_handler";
-export * as result from "./result";
