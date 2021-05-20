@@ -168,12 +168,12 @@ export async function convergeLabel(
 
 export type ContentEditor = (
 	read: (path: string) => Promise<{ path: string; content: string }>,
+	write: (
+		path: string,
+		content: string,
+		mode?: "100644" | "100755", // 100644 for file, 100755 for executable
+	) => void,
 ) => Promise<{
-	edits: Array<{
-		path: string;
-		content: string;
-		mode?: "100644" | "100755"; // 100644 for file, 100755 for executable
-	}>;
 	commit: {
 		message: string;
 		author?: {
@@ -199,6 +199,8 @@ export async function editContent(
 	const gh = api({
 		credential: { token: parameters.credential.token, scopes: [] },
 	});
+
+	// TODO CD add path validation
 	const read = async (path: string) => {
 		if (!files[path]) {
 			try {
@@ -222,36 +224,46 @@ export async function editContent(
 			content: files[path].content,
 		};
 	};
+	const write =
+		(fileCache: Record<string, { content: string; mode?: string }>) =>
+		(path, content, mode?) => {
+			fileCache[path] = {
+				content,
+				mode,
+			};
+		};
 
 	let sha = parameters.sha;
 	let commit;
 	for (const editor of editors) {
-		const editResult = await editor(read);
+		const fileCache = {};
+		const editResult = await editor(read, write(fileCache));
 		const message = editResult.commit.message;
 		const author = editResult.commit.author;
 
 		// Persist changes
 		const blobs = [];
-		for (const edit of editResult.edits) {
+		for (const path of Object.keys(fileCache)) {
+			const file = fileCache[path];
 			// Make changes visible to next editor
-			files[edit.path] = {
-				content: edit.content,
-				mode: edit.mode || files[edit.path]?.mode,
+			files[path] = {
+				content: file.content,
+				mode: file.mode || files[file.path]?.mode,
 			};
 
 			const blob = (
 				await gh.git.createBlob({
 					owner: parameters.owner,
 					repo: parameters.repo,
-					content: Buffer.from(edit.content).toString("base64"),
+					content: Buffer.from(file.content).toString("base64"),
 					encoding: "base64",
 				})
 			).data;
 
 			blobs.push({
-				path: edit.path,
+				path,
 				type: "blob",
-				mode: files[edit.path].mode || "100644",
+				mode: files[path].mode || "100644",
 				sha: blob.sha,
 			});
 		}
