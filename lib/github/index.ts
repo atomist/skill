@@ -18,7 +18,9 @@ export { Check, CreateCheck, createCheck, UpdateCheck } from "./check";
 export { uploadCodeScanningResults } from "./code_scanning";
 export {
 	api,
+	ContentEditor,
 	convergeLabel,
+	editContent,
 	formatCommitMarkers,
 	formatFooter,
 	formatMarkers,

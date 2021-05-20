@@ -165,3 +165,141 @@ export async function convergeLabel(
 		});
 	}
 }
+
+export type ContentEditor = (
+	read: (path: string) => Promise<{ path: string; content: string }>,
+) => Promise<{
+	edits: Array<{
+		path: string;
+		content: string;
+		mode?: "100644" | "100755"; // 100644 for file, 100755 for executable
+	}>;
+	commit: {
+		message: string;
+		author?: {
+			name: string;
+			email: string;
+		};
+	};
+}>;
+
+export async function editContent(
+	parameters: {
+		credential: { token: string };
+		owner: string;
+		repo: string;
+		base: string;
+		sha: string;
+		head?: string;
+		force?: boolean;
+	},
+	...editors: ContentEditor[]
+): Promise<string> {
+	const files: Record<string, { content: string; mode?: string }> = {};
+	const gh = api({
+		credential: { token: parameters.credential.token, scopes: [] },
+	});
+	const read = async (path: string) => {
+		if (!files[path]) {
+			try {
+				const response = (
+					await gh.repos.getContent({
+						owner: parameters.owner,
+						repo: parameters.repo,
+						ref: parameters.sha,
+						path,
+					})
+				).data as { content?: string };
+				files[path] = {
+					content: Buffer.from(response.content, "base64").toString(),
+				};
+			} catch (e) {
+				files[path] = { content: undefined };
+			}
+		}
+		return {
+			path,
+			content: files[path].content,
+		};
+	};
+
+	let sha = parameters.sha;
+	let commit;
+	for (const editor of editors) {
+		const editResult = await editor(read);
+		const message = editResult.commit.message;
+		const author = editResult.commit.author;
+
+		// Persist changes
+		const blobs = [];
+		for (const edit of editResult.edits) {
+			// Make changes visible to next editor
+			files[edit.path] = {
+				content: edit.content,
+				mode: edit.mode || files[edit.path]?.mode,
+			};
+
+			const blob = (
+				await gh.git.createBlob({
+					owner: parameters.owner,
+					repo: parameters.repo,
+					content: Buffer.from(edit.content).toString("base64"),
+					encoding: "base64",
+				})
+			).data;
+
+			blobs.push({
+				path: edit.path,
+				type: "blob",
+				mode: files[edit.path].mode || "100644",
+				sha: blob.sha,
+			});
+		}
+
+		const tree = (
+			await gh.git.createTree({
+				owner: parameters.owner,
+				repo: parameters.repo,
+				base_tree: sha,
+				tree: blobs,
+			})
+		).data;
+
+		commit = (
+			await gh.git.createCommit({
+				owner: parameters.owner,
+				repo: parameters.repo,
+				parents: [sha],
+				tree: tree.sha,
+				author: {
+					name: author?.name || "Atomist Bot",
+					email: author?.email || "bot@atomist.com",
+				},
+				message,
+			})
+		).data;
+		sha = commit.sha;
+	}
+
+	if (sha !== parameters.sha) {
+		// Update the ref
+		try {
+			await gh.git.createRef({
+				owner: parameters.owner,
+				repo: parameters.repo,
+				ref: `refs/heads/${parameters.head || parameters.base}`,
+				sha: commit.sha,
+			});
+		} catch (e) {
+			await gh.git.updateRef({
+				owner: parameters.owner,
+				repo: parameters.repo,
+				ref: `heads/${parameters.head || parameters.base}`,
+				sha: commit.sha,
+				force: parameters.force,
+			});
+		}
+	}
+
+	return sha;
+}
