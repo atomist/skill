@@ -15,7 +15,7 @@
  */
 
 import { CommandIncoming, EventIncoming, WebhookIncoming } from "./payload";
-import { GoogleCloudStoragePayloadResolver } from "./storage/resolver";
+import { googleCloudStoragePayloadResolver } from "./storage/resolver";
 
 /**
  * Resolve an incoming payload to the actual incoming message by
@@ -29,7 +29,7 @@ export async function resolvePayload(pubSubEvent: {
 	);
 
 	if (payload.message_uri) {
-		const resolver = DefaultResolvers.find(r =>
+		const resolver = ResolverRegistry.resolvers.find(r =>
 			r.supports(payload.message_uri),
 		);
 		if (resolver) {
@@ -47,4 +47,10 @@ export type PayloadResolver = {
 	resolve: (url: string) => Promise<{ data: string }>;
 };
 
-const DefaultResolvers = [GoogleCloudStoragePayloadResolver];
+const ResolverRegistry = {
+	resolvers: [googleCloudStoragePayloadResolver(true)],
+};
+
+export function setPayloadResolvers(...resolvers: PayloadResolver[]): void {
+	ResolverRegistry.resolvers = resolvers;
+}

@@ -18,6 +18,7 @@ import * as fs from "fs-extra";
 import * as os from "os";
 import * as path from "path";
 
+import { PayloadResolver } from "../payload_resolve";
 import { guid } from "../util";
 
 /**
@@ -25,18 +26,26 @@ import { guid } from "../util";
  * skill invocations from an object in a Google Cloud Storage
  * bucket.
  */
-export const GoogleCloudStoragePayloadResolver = {
-	supports: (rawUrl: string): boolean => rawUrl.startsWith("gs://"),
-	resolve: async (rawUrl: string): Promise<any> => {
-		const url = new URL(rawUrl);
+export function googleCloudStoragePayloadResolver(
+	deleteMsg: boolean,
+): PayloadResolver {
+	return {
+		supports: (rawUrl: string): boolean => rawUrl.startsWith("gs://"),
+		resolve: async (rawUrl: string): Promise<any> => {
+			const url = new URL(rawUrl);
 
-		const targetFilePath = path.join(os.tmpdir() || "/tmp", guid());
-		await fs.ensureDir(path.dirname(targetFilePath));
+			const targetFilePath = path.join(os.tmpdir() || "/tmp", guid());
+			await fs.ensureDir(path.dirname(targetFilePath));
 
-		const storage = new (await import("@google-cloud/storage")).Storage();
-		const file = storage.bucket(url.host).file(url.pathname.slice(1));
-		await file.download({ destination: targetFilePath });
-		await file.delete();
-		return fs.readJson(targetFilePath);
-	},
-};
+			const storage = new (
+				await import("@google-cloud/storage")
+			).Storage();
+			const file = storage.bucket(url.host).file(url.pathname.slice(1));
+			await file.download({ destination: targetFilePath });
+			if (deleteMsg) {
+				await file.delete();
+			}
+			return fs.readJson(targetFilePath);
+		},
+	};
+}
