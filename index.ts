@@ -51,7 +51,7 @@ export * as git from "./lib/git";
 // lib/github
 export * as github from "./lib/github";
 // lib/handler
-export * as handler from "./lib/handler";
+export * as handle from "./lib/handler";
 // lib/jose
 export * as jose from "./lib/jose";
 // lib/log
