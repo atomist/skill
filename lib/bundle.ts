@@ -25,7 +25,7 @@ import {
 	EventHandler,
 	WebhookHandler,
 } from "./handler/handler";
-import { wrapEventHandler } from "./map";
+import { wrapEventHandler } from "./handler/util";
 import {
 	isCommandIncoming,
 	isEventIncoming,

@@ -20,6 +20,8 @@ import * as path from "path";
 
 import { Check, CreateCheck, createCheck as raiseCheck } from "../github/check";
 import { api } from "../github/operation";
+import { error } from "../log/console";
+import { prepareStatus } from "../message";
 import { CloneOptions } from "../project/clone";
 import { Project } from "../project/project";
 import {
@@ -30,7 +32,64 @@ import {
 import { gitHubAppToken } from "../secret/resolver";
 import { failure } from "../status";
 import { guid } from "../util";
-import { EventContext, EventHandler, HandlerStatus } from "./handler";
+import {
+	EventContext,
+	EventHandler,
+	HandlerStatus,
+	MappingEventHandler,
+} from "./handler";
+
+export function wrapEventHandler(eh: EventHandler): EventHandler {
+	return async ctx => {
+		const meh = eh as any as MappingEventHandler;
+		if (typeof meh !== "function" && meh.map && meh.handle) {
+			const data = meh.map(ctx.data);
+			return meh.handle({
+				...ctx,
+				data,
+			});
+		}
+
+		if (Array.isArray(ctx.data)) {
+			const results = [];
+			for (const event of ctx.data) {
+				try {
+					const result = await eh({ ...ctx, data: event });
+					if (result) {
+						results.push(result);
+					}
+				} catch (e) {
+					error(`Error occurred: ${e.stack}`);
+					results.push(prepareStatus(e, ctx));
+				}
+			}
+			let reason;
+			if (results.some(r => r.visibility !== "hidden")) {
+				reason = results
+					.filter(r => r.visibility !== "hidden")
+					.map(r => r.reason)
+					.join(", ");
+			} else {
+				reason = results.map(r => r.reason).join(", ");
+			}
+			return {
+				code: results.reduce((p, c) => {
+					if (c.code !== 0) {
+						return c.code;
+					} else {
+						return 0;
+					}
+				}, 0),
+				reason,
+				visibility: results.some(r => r.visibility !== "hidden")
+					? undefined
+					: "hidden",
+			};
+		} else {
+			return eh(ctx);
+		}
+	};
+}
 
 export type ChainedHandler<D, C, S> = (
 	context: EventContext<D, C> & { chain: S },
