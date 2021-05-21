@@ -85,7 +85,7 @@
     "@types/semver": "^7.3.6",
     "@types/stack-trace": "0.0.29",
     "@types/uuid": "^8.3.0",
-    "@types/yargs": "^16.0.2",
+    "@types/yargs": "^16.0.3",
     "@vercel/ncc": "^0.27.0",
     "cross-spawn": "^7.0.3",
     "edn-data": "^0.2.0",
