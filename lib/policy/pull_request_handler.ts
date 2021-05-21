@@ -15,63 +15,21 @@
  */
 
 import { truncateText } from "../github/check";
-import { api, formatFooter, formatMarkers } from "../github/operation";
-import { addCommitMarkers } from "../github/pull_request";
-import { EventContext, EventHandler, HandlerStatus } from "../handler/handler";
 import {
-	chain,
-	ChainedHandler,
-	CreateFileCloneOptions,
-	createRef,
-	CreateRepositoryId,
-} from "../handler/util";
+	api,
+	ContentEditor,
+	editContent,
+	formatFooter,
+	formatMarkers,
+} from "../github/operation";
+import { EventContext, EventHandler, HandlerStatus } from "../handler/handler";
+import { chain, createRef, CreateRepositoryId } from "../handler/util";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import * as status from "../status";
-import { failure, success } from "../status";
 import { hash } from "../util";
 
 import uniq = require("lodash.uniq");
-
-function cloneFiles<D, C>(
-	options: string[] | CreateFileCloneOptions<D, C>,
-): ChainedHandler<
-	D,
-	C,
-	{
-		id?: AuthenticatedRepositoryId<any>;
-		files?: Array<{ path: string; content: string }>;
-	}
-> {
-	return async ctx => {
-		if (!ctx.chain.id) {
-			return failure(
-				"'id' missing in chain. Make sure to include 'createRef' in handler chain",
-			);
-		}
-		const gh = api(ctx.chain.id);
-
-		const paths: string[] =
-			typeof options === "function" ? options(ctx) : options;
-
-		ctx.chain.files = [];
-
-		for (const path of paths) {
-			const fileResponse = (
-				await gh.repos.getContent({
-					owner: ctx.chain.id.owner,
-					repo: ctx.chain.id.repo,
-					ref: ctx.chain.id.sha || ctx.chain.id.branch,
-					path,
-				})
-			).data as { content?: string };
-			ctx.chain.files.push({
-				path,
-				content: Buffer.from(fileResponse.content, "base64").toString(),
-			});
-		}
-		return undefined;
-	};
-}
+import map = require("lodash.map");
 
 /**
  * Event handler implementation that can raise pull requests without
@@ -80,46 +38,27 @@ function cloneFiles<D, C>(
 export function pullRequestHandler<S, C, D = string>(parameters: {
 	when?: (ctx: EventContext<S, C>) => HandlerStatus | undefined;
 	id: CreateRepositoryId<S, C>;
-	clone: (ctx: EventContext<S, C>) => string[];
 	execute: (
 		ctx: EventContext<S, C> & {
 			chain: {
 				id: AuthenticatedRepositoryId<any>;
-				files?: Array<{ path: string; content: string }>;
 			};
 		},
 	) => Promise<{
 		commit: {
-			editors: Array<
-				(
-					ctx: EventContext<S, C> & {
-						chain: {
-							id: AuthenticatedRepositoryId<any>;
-							files?: Array<{ path: string; content: string }>;
-						};
-					},
-				) => Promise<
-					| {
-							changes: Array<{ path: string; content: string }>;
-							message: string;
-							detail?: D[];
-					  }
-					| undefined
-				>
-			>;
+			editors: ContentEditor<D>[];
+			branch: string;
 		};
 		pullRequest: (
 			ctx: EventContext<S, C> & {
 				chain: {
 					id: AuthenticatedRepositoryId<any>;
-					files?: Array<{ path: string; content: string }>;
 				};
 			},
 			detail: D[],
 		) => Promise<{
 			title: string;
 			body: string;
-			branch: string;
 			labels?: string[];
 			reviewers?: string[];
 			assignReviewer?: boolean;
@@ -142,117 +81,31 @@ export function pullRequestHandler<S, C, D = string>(parameters: {
 		},
 		createRef<S, C>(parameters.id),
 		async ctx => {
-			try {
-				const cloneResult = parameters.clone(ctx);
-				await cloneFiles(cloneResult as any)(ctx);
-			} catch (e) {
-				return success(
-					`Failed to clone ${ctx.chain.id.owner}/${
-						ctx.chain.id.repo
-					}#${ctx.chain.id.sha?.slice(0, 7) || ctx.chain.id.branch}`,
-				).hidden();
-			}
-			return undefined;
-		},
-		async ctx => {
 			const result = await parameters.execute(ctx);
 			const gh = api(ctx.chain.id);
 
-			const details = [];
-			const changedFiles = [];
+			const editResult = await editContent<D>(
+				{
+					credential: ctx.chain.id.credential,
+					owner: ctx.chain.id.owner,
+					repo: ctx.chain.id.repo,
+					sha: ctx.chain.id.sha,
+					base: ctx.chain.id.branch,
+					force: true,
+				},
+				...result.commit.editors,
+			);
 
-			let sha = ctx.chain.id.sha;
-			let commit;
+			if (editResult.sha !== ctx.chain.id.sha) {
+				const pullRequest = await result.pullRequest(
+					ctx,
+					editResult.details,
+				);
 
-			for (const editor of result.commit.editors) {
-				const editResult = await editor(ctx);
-
-				if (editResult?.changes?.length > 0) {
-					if (editResult.detail) {
-						details.push(...editResult.detail);
-					}
-
-					// Persist changes
-					const blobs = [];
-					for (const change of editResult.changes) {
-						// Make changes visible to next editor
-						ctx.chain.files.find(
-							f => f.path === change.path,
-						).content = change.content;
-						changedFiles.push(change.path);
-
-						const blob = (
-							await gh.git.createBlob({
-								owner: ctx.chain.id.owner,
-								repo: ctx.chain.id.repo,
-								content: Buffer.from(change.content).toString(
-									"base64",
-								),
-								encoding: "base64",
-							})
-						).data;
-
-						blobs.push({
-							path: change.path,
-							type: "blob",
-							mode: "100644",
-							sha: blob.sha,
-						});
-					}
-
-					const tree = (
-						await gh.git.createTree({
-							owner: ctx.chain.id.owner,
-							repo: ctx.chain.id.repo,
-							base_tree: sha,
-							tree: blobs,
-						})
-					).data;
-
-					commit = (
-						await gh.git.createCommit({
-							owner: ctx.chain.id.owner,
-							repo: ctx.chain.id.repo,
-							parents: [sha],
-							tree: tree.sha,
-							author: {
-								name: "Atomist Bot",
-								email: "bot@atomist.com",
-							},
-							message: addCommitMarkers(editResult.message, ctx),
-						})
-					).data;
-					sha = commit.sha;
-				}
-			}
-
-			if (commit) {
-				const pullRequest = await result.pullRequest(ctx, details);
-
-				// Create the branch
-				try {
-					await gh.git.createRef({
-						owner: ctx.chain.id.owner,
-						repo: ctx.chain.id.repo,
-						ref: `refs/heads/${pullRequest.branch}`,
-						sha: commit.sha,
-					});
-				} catch (e) {
-					await gh.git.updateRef({
-						owner: ctx.chain.id.owner,
-						repo: ctx.chain.id.repo,
-						ref: `heads/${pullRequest.branch}`,
-						sha: commit.sha,
-						force: true,
-					});
-				}
-
-				const files = uniq(changedFiles).sort();
+				const files = map(editResult.files, (v, k) => k).sort();
 				const hashes: Array<{ path: string; hash: string }> = [];
 				for (const file of files) {
-					const content = ctx.chain.files.find(
-						f => f.path === file,
-					).content;
+					const content = editResult.files[file];
 					hashes.push({ path: file, hash: hash(content) });
 				}
 				const diffHash = hash(hashes);
@@ -269,7 +122,7 @@ ${files.length === 1 ? "File" : "Files"} changed:
 ${files
 	.map(
 		f =>
-			`-   [\`${f}\`](https://github.com/${ctx.chain.id.owner}/${ctx.chain.id.repo}/blob/${pullRequest.branch}/${f})`,
+			`-   [\`${f}\`](https://github.com/${ctx.chain.id.owner}/${ctx.chain.id.repo}/blob/${result.commit.branch}/${f})`,
 	)
 	.join("\n")}
 
@@ -285,7 +138,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 					repo: ctx.chain.id.repo,
 					state: "open",
 					base: ctx.chain.id.branch,
-					head: `${ctx.chain.id.owner}:${pullRequest.branch}`,
+					head: `${ctx.chain.id.owner}:${result.commit.branch}`,
 				});
 				const newPr = openPrs.length !== 1;
 				const pr = newPr
@@ -296,7 +149,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 								title: pullRequest.title,
 								body: body(pullRequest.body),
 								base: ctx.chain.id.branch,
-								head: pullRequest.branch,
+								head: result.commit.branch,
 							})
 					  ).data
 					: (
@@ -332,7 +185,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 
 				return status.success(
 					`Pushed changes to [${slug}/${
-						pullRequest.branch
+						result.commit.branch
 					}](${repoUrl}) and ${newPr ? "raised" : "updated"} [#${
 						pr.number
 					}](${pr.html_url})`,

@@ -166,12 +166,17 @@ export async function convergeLabel(
 	}
 }
 
-export type ContentEditor = (
+export enum BlobMode {
+	File = "100644",
+	Executable = "100755",
+}
+
+export type ContentEditor<D> = (
 	read: (path: string) => Promise<{ path: string; content: string }>,
 	write: (
 		path: string,
 		content: string,
-		mode?: "100644" | "100755", // 100644 for file, 100755 for executable
+		mode?: BlobMode, // 100644 for file, 100755 for executable
 	) => void,
 ) => Promise<{
 	commit: {
@@ -181,9 +186,10 @@ export type ContentEditor = (
 			email: string;
 		};
 	};
+	detail?: D[];
 }>;
 
-export async function editContent(
+export async function editContent<D>(
 	parameters: {
 		credential: { token: string };
 		owner: string;
@@ -193,15 +199,59 @@ export async function editContent(
 		head?: string;
 		force?: boolean;
 	},
-	...editors: ContentEditor[]
-): Promise<string> {
-	const files: Record<string, { content: string; mode?: string }> = {};
+	...editors: ContentEditor<D>[]
+): Promise<{
+	sha: string;
+	files: Record<string, { content: string; mode?: BlobMode }>;
+	details: D[];
+}> {
+	if (
+		!parameters ||
+		!parameters.credential ||
+		!parameters.credential.token ||
+		!parameters.owner ||
+		!parameters.repo ||
+		!parameters.sha ||
+		!parameters.base
+	) {
+		throw new EditContentError(
+			"INVALID_PARAMETERS",
+			"Required parameter missing",
+		);
+	}
+
+	// Internal file cache
+	const files: Record<string, { content: string; mode?: BlobMode }> = {};
+	const details: D[] = [];
 	const gh = api({
 		credential: { token: parameters.credential.token, scopes: [] },
 	});
 
-	// TODO CD add path validation
+	// Verify that the base branch hasn't moved on
+	let ref;
+	try {
+		ref = (
+			await gh.git.getRef({
+				owner: parameters.owner,
+				repo: parameters.repo,
+				ref: `heads/${parameters.base}`,
+			})
+		).data;
+	} catch (e) {
+		throw new EditContentError(
+			"INVALID_REF",
+			`Failed to read ref '${parameters.base}'`,
+		);
+	}
+	if (parameters.sha !== ref.object.sha) {
+		throw new EditContentError(
+			"INVALID_SHA",
+			`Ref '${parameters.base}' points to different commit '${ref.object.sha}'`,
+		);
+	}
+
 	const read = async (path: string) => {
+		validatePath(path);
 		if (!files[path]) {
 			try {
 				const response = (
@@ -225,8 +275,15 @@ export async function editContent(
 		};
 	};
 	const write =
-		(fileCache: Record<string, { content: string; mode?: string }>) =>
+		(fileCache: Record<string, { content: string; mode?: BlobMode }>) =>
 		(path, content, mode?) => {
+			validatePath(path);
+			if (content === undefined) {
+				throw new EditContentError(
+					"INVALID_CONTENT",
+					"Content required",
+				);
+			}
 			fileCache[path] = {
 				content,
 				mode,
@@ -240,11 +297,13 @@ export async function editContent(
 		const editResult = await editor(read, write(fileCache));
 		const message = editResult.commit.message;
 		const author = editResult.commit.author;
+		details.push(...(editResult.detail || []));
 
 		// Persist changes
 		const blobs = [];
 		for (const path of Object.keys(fileCache)) {
 			const file = fileCache[path];
+
 			// Make changes visible to next editor
 			files[path] = {
 				content: file.content,
@@ -263,7 +322,7 @@ export async function editContent(
 			blobs.push({
 				path,
 				type: "blob",
-				mode: files[path].mode || "100644",
+				mode: files[path].mode || BlobMode.File,
 				sha: blob.sha,
 			});
 		}
@@ -293,25 +352,51 @@ export async function editContent(
 		sha = commit.sha;
 	}
 
-	if (sha !== parameters.sha) {
+	if (commit) {
 		// Update the ref
+		const refName = parameters.head || parameters.base;
 		try {
 			await gh.git.createRef({
 				owner: parameters.owner,
 				repo: parameters.repo,
-				ref: `refs/heads/${parameters.head || parameters.base}`,
+				ref: `refs/heads/${refName}`,
 				sha: commit.sha,
 			});
 		} catch (e) {
 			await gh.git.updateRef({
 				owner: parameters.owner,
 				repo: parameters.repo,
-				ref: `heads/${parameters.head || parameters.base}`,
+				ref: `heads/${refName}`,
 				sha: commit.sha,
-				force: parameters.force,
+				force:
+					// Never attempt a force push on main or master branch; only on our branches
+					parameters.head && refName.startsWith("atomist/")
+						? parameters.force
+						: false,
 			});
 		}
 	}
 
-	return sha;
+	return {
+		sha,
+		files,
+		details,
+	};
+}
+
+export class EditContentError extends Error {
+	constructor(public readonly code: string, public readonly message: string) {
+		super(message);
+	}
+}
+
+export function validatePath(name: string): void {
+	if (!name) {
+		throw new EditContentError("INVALID_PATH", `Path required`);
+	} else if (!/^(?![/])[a-zA-Z0-9+_#/.-]+$/.test(name)) {
+		throw new EditContentError(
+			"INVALID_PATH",
+			`Invalid path '${name}' provided`,
+		);
+	}
 }
