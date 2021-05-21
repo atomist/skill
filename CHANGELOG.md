@@ -14,13 +14,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Add commit markers to persistChanges. [c97f69b](https://github.com/atomist-skills/skill/commit/c97f69b38a95ad32886168e13fdb84e6c3d70b48)
 *   Add pullRequestHandler. [bb2f4da](https://github.com/atomist-skills/skill/commit/bb2f4dabb591948f7a771d14e279005fc8f5d662)
 *   Transact PR and check entities. [#361](https://github.com/atomist-skills/skill/issues/361)
--   Add github.editContent helper. [ffc66de](https://github.com/atomist-skills/skill/commit/ffc66deb4cdc2803eeabda4ceb897af832c5f07d)
+*   Add github.editContent helper. [ffc66de](https://github.com/atomist-skills/skill/commit/ffc66deb4cdc2803eeabda4ceb897af832c5f07d)
 
 ### Changed
 
 *   Skip payload logging for container skills. [ae77043](https://github.com/atomist-skills/skill/commit/ae770439958df58f646bb974cadd66c44306c3da)
 *   Add ttl to storage api. [8710804](https://github.com/atomist-skills/skill/commit/8710804ffbd6806ba22333b78e2a81ee580f7f94)
 *   Export retry helper. [dafea5d](https://github.com/atomist-skills/skill/commit/dafea5d3213f0f6cd3c5b2d593598be1bb221292)
+-   Rename handler to handle in index. [53b06db](https://github.com/atomist-skills/skill/commit/53b06db6e750e02aa1aeb8cecf55a65aae57091f)
 
 ### Fixed
 
