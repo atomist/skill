@@ -62,6 +62,11 @@ async function hb(): Promise<any> {
 	handlebars.registerHelper("lower", args =>
 		args !== undefined ? args.toLowerCase() : undefined,
 	);
+	handlebars.registerHelper("replace", (args, tokens, replace) =>
+		args !== undefined
+			? args.replace(new RegExp(tokens, "g"), replace)
+			: undefined,
+	);
 	handlebars.registerHelper("or", (arg1, arg2) => arg1 || arg2);
 	handlebars.registerHelper("plural", (arg1, arg2, arg3, arg4) =>
 		pluralize(arg1, arg2, { include: arg3, includeOne: arg4 }),
