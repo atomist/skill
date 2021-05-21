@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
-import { CommandIncoming, EventIncoming, WebhookIncoming } from "./payload";
+import {
+	CommandIncoming,
+	EventIncoming,
+	SubscriptionIncoming,
+	WebhookIncoming,
+} from "./payload";
 import { googleCloudStoragePayloadResolver } from "./storage/resolver";
 
 /**
@@ -23,7 +28,14 @@ import { googleCloudStoragePayloadResolver } from "./storage/resolver";
  */
 export async function resolvePayload(pubSubEvent: {
 	data: string;
-}): Promise<EventIncoming | CommandIncoming | WebhookIncoming> {
+}): Promise<
+	(
+		| SubscriptionIncoming
+		| EventIncoming
+		| CommandIncoming
+		| WebhookIncoming
+	) & { message_uri?: string }
+> {
 	const payload = JSON.parse(
 		Buffer.from(pubSubEvent.data, "base64").toString(),
 	);
@@ -33,7 +45,11 @@ export async function resolvePayload(pubSubEvent: {
 			r.supports(payload.message_uri),
 		);
 		if (resolver) {
-			return resolvePayload(await resolver.resolve(payload.message_uri));
+			const resolvedPayload = await resolvePayload(
+				await resolver.resolve(payload.message_uri),
+			);
+			resolvedPayload.message_uri = payload.message_uri;
+			return resolvedPayload;
 		} else {
 			throw new Error(`Unsupported message_uri provided`);
 		}
