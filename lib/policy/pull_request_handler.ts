@@ -31,6 +31,27 @@ import { hash } from "../util";
 import uniq = require("lodash.uniq");
 import map = require("lodash.map");
 
+export interface PullRequestHandlerResponse<S, C, D = string> {
+	commit: {
+		editors: ContentEditor<D>[];
+		branch: string;
+	};
+	pullRequest: (
+		ctx: EventContext<S, C> & {
+			chain: {
+				id: AuthenticatedRepositoryId<any>;
+			};
+		},
+		detail: D[],
+	) => Promise<{
+		title: string;
+		body: string;
+		labels?: string[];
+		reviewers?: string[];
+		assignReviewer?: boolean;
+	}>;
+}
+
 /**
  * Event handler implementation that can raise pull requests without
  * the need for cloning a repository.
@@ -44,26 +65,7 @@ export function pullRequestHandler<S, C, D = string>(parameters: {
 				id: AuthenticatedRepositoryId<any>;
 			};
 		},
-	) => Promise<{
-		commit: {
-			editors: ContentEditor<D>[];
-			branch: string;
-		};
-		pullRequest: (
-			ctx: EventContext<S, C> & {
-				chain: {
-					id: AuthenticatedRepositoryId<any>;
-				};
-			},
-			detail: D[],
-		) => Promise<{
-			title: string;
-			body: string;
-			labels?: string[];
-			reviewers?: string[];
-			assignReviewer?: boolean;
-		}>;
-	}>;
+	) => Promise<HandlerStatus | PullRequestHandlerResponse<S, C, D>>;
 }): EventHandler<S, C> {
 	return chain<
 		S,
@@ -81,7 +83,13 @@ export function pullRequestHandler<S, C, D = string>(parameters: {
 		},
 		createRef<S, C>(parameters.id),
 		async ctx => {
-			const result = await parameters.execute(ctx);
+			const executeResult = await parameters.execute(ctx);
+			if ((executeResult as HandlerStatus).code) {
+				return executeResult as HandlerStatus;
+			}
+
+			const result = executeResult as PullRequestHandlerResponse<S, C, D>;
+
 			const gh = api(ctx.chain.id);
 
 			const editResult = await editContent<D>(
