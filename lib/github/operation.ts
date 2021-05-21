@@ -178,16 +178,19 @@ export type ContentEditor<D> = (
 		content: string,
 		mode?: BlobMode, // 100644 for file, 100755 for executable
 	) => void,
-) => Promise<{
-	commit: {
-		message: string;
-		author?: {
-			name: string;
-			email: string;
-		};
-	};
-	detail?: D[];
-}>;
+) => Promise<
+	| {
+			commit: {
+				message: string;
+				author?: {
+					name: string;
+					email: string;
+				};
+			};
+			detail?: D[];
+	  }
+	| undefined
+>;
 
 export async function editContent<D>(
 	parameters: {
@@ -295,6 +298,10 @@ export async function editContent<D>(
 	for (const editor of editors) {
 		const fileCache = {};
 		const editResult = await editor(read, write(fileCache));
+		// Nothing to do
+		if (!editResult) {
+			continue;
+		}
 		const message = editResult.commit.message;
 		const author = editResult.commit.author;
 		details.push(...(editResult.detail || []));
