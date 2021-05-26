@@ -21,12 +21,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Skip payload logging for container skills. [ae77043](https://github.com/atomist-skills/skill/commit/ae770439958df58f646bb974cadd66c44306c3da)
 *   Add ttl to storage api. [8710804](https://github.com/atomist-skills/skill/commit/8710804ffbd6806ba22333b78e2a81ee580f7f94)
 *   Export retry helper. [dafea5d](https://github.com/atomist-skills/skill/commit/dafea5d3213f0f6cd3c5b2d593598be1bb221292)
--   Rename handler to handle in index. [53b06db](https://github.com/atomist-skills/skill/commit/53b06db6e750e02aa1aeb8cecf55a65aae57091f)
+*   Rename handler to handle in index. [53b06db](https://github.com/atomist-skills/skill/commit/53b06db6e750e02aa1aeb8cecf55a65aae57091f)
 
 ### Fixed
 
 *   Do not raise PR when no files have been changed. [2f76973](https://github.com/atomist-skills/skill/commit/2f76973a51efbbbf0a1df6fd84f8328eb3c9c6d2)
 *   Fix issue with undefined in subscription result. [12145c1](https://github.com/atomist-skills/skill/commit/12145c1633d04a39f55e1dbf6d8d9ae2e27da8b6)
+-   Fix rendering of negative bytes. [6644037](https://github.com/atomist-skills/skill/commit/6644037dcd6ccde1d99e4b102af94036c0ca0261)
 
 ## [0.11.0](https://github.com/atomist/skill/compare/0.10.0...0.11.0) - 2021-04-26
 
