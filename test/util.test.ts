@@ -110,6 +110,9 @@ describe("util", () => {
 		it("should format 1024", () => {
 			assert.deepStrictEqual(bytes("1024"), "1.0kb");
 		});
+		it("should format -1024", () => {
+			assert.deepStrictEqual(bytes("-1024"), "-1.0kb");
+		});
 	});
 
 	describe("pluralize", () => {

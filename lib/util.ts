@@ -198,13 +198,19 @@ export function bytes(x: string): string {
 	if (x === undefined || isNaN(+x)) {
 		return x;
 	}
-	let l = 0;
 	let n = parseInt(x, 10) || 0;
-
+	let isNegative = false;
+	if (n < 0) {
+		isNegative = true;
+		n = n * -1;
+	}
+	let l = 0;
 	while (n >= 1024 && ++l) {
 		n = n / 1024;
 	}
-	return n.toFixed(n < 10 && l > 0 ? 1 : 0) + "" + units[l];
+	return `${isNegative ? "-" : ""}${n.toFixed(n < 10 && l > 0 ? 1 : 0)}${
+		units[l]
+	}`;
 }
 
 export async function handleError<T>(
