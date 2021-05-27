@@ -40,6 +40,14 @@ async function hb(): Promise<any> {
 	handlebars.registerHelper("italic", arg =>
 		arg !== undefined ? `_${arg}_` : undefined,
 	);
+	handlebars.registerHelper("wrap", (arg, width) => {
+		if (arg) {
+			// eslint-disable-next-line @typescript-eslint/no-var-requires
+			const wrap = require("word-wrap");
+			return wrap(arg, { width, newline: "<br />" });
+		}
+		return undefined;
+	});
 	handlebars.registerHelper("code", arg =>
 		arg !== undefined ? new handlebars.SafeString(`\`${arg}\``) : undefined,
 	);
