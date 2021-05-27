@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Add pullRequestHandler. [bb2f4da](https://github.com/atomist-skills/skill/commit/bb2f4dabb591948f7a771d14e279005fc8f5d662)
 *   Transact PR and check entities. [#361](https://github.com/atomist-skills/skill/issues/361)
 *   Add github.editContent helper. [ffc66de](https://github.com/atomist-skills/skill/commit/ffc66deb4cdc2803eeabda4ceb897af832c5f07d)
+-   Add before and after method. [1f691fb](https://github.com/atomist-skills/skill/commit/1f691fb16c67c931a360b913dc6fe6b142640a59)
 
 ### Changed
 
@@ -27,7 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 *   Do not raise PR when no files have been changed. [2f76973](https://github.com/atomist-skills/skill/commit/2f76973a51efbbbf0a1df6fd84f8328eb3c9c6d2)
 *   Fix issue with undefined in subscription result. [12145c1](https://github.com/atomist-skills/skill/commit/12145c1633d04a39f55e1dbf6d8d9ae2e27da8b6)
--   Fix rendering of negative bytes. [6644037](https://github.com/atomist-skills/skill/commit/6644037dcd6ccde1d99e4b102af94036c0ca0261)
+*   Fix rendering of negative bytes. [6644037](https://github.com/atomist-skills/skill/commit/6644037dcd6ccde1d99e4b102af94036c0ca0261)
 
 ## [0.11.0](https://github.com/atomist/skill/compare/0.10.0...0.11.0) - 2021-04-26
 
