@@ -322,21 +322,21 @@ export function sourceLocationFromOffset(
 	};
 }
 
-export function before<T extends (...args: any) => Promise<any>>(
-	func: T,
-	adviceFunc: T,
-): T {
-	return (async (...args: any) => {
+export function before<
+	T extends (...args: any[]) => Promise<any>,
+	B extends (...args: any[]) => Promise<void>,
+>(func: T, adviceFunc: B): T {
+	return (async (...args: any[]) => {
 		await adviceFunc(...args);
 		return func(...args);
 	}) as any;
 }
 
-export function after<T extends (...args: any) => Promise<any>>(
-	func: T,
-	adviceFunc: T,
-): T {
-	return (async (...args: any) => {
+export function after<
+	T extends (...args: any[]) => Promise<any>,
+	A extends (...args: any[]) => Promise<void>,
+>(func: T, adviceFunc: A): T {
+	return (async (...args: any[]) => {
 		try {
 			const result = await func(...args);
 			return result;
