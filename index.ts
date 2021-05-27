@@ -110,10 +110,14 @@ export * as status from "./lib/status";
 export { runSteps, Step, StepListener } from "./lib/steps";
 export * as template from "./lib/template";
 export {
+	after,
+	before,
+	bytes,
 	guid,
 	handleError,
 	handleErrorSync,
 	hideString,
+	isPrimitive,
 	levenshteinSort,
 	loggingErrorHandler,
 	pluralize,
