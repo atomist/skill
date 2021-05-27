@@ -20,7 +20,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 43    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 596   |
+| [MIT](#mit)                     | 597   |
 | [Public Domain](#public-domain) | 1     |
 | [Python-2.0](#python-20)        | 1     |
 
@@ -797,6 +797,7 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `valid-url`                                          | `1.0.9`        |                                | [https://github.com/ogt/valid-url](https://github.com/ogt/valid-url)                                                                                                                                 |
 | `whatwg-fetch`                                       | `3.6.2`        |                                | [https://github.com/github/fetch](https://github.com/github/fetch)                                                                                                                                   |
 | `which-boxed-primitive`                              | `1.0.2`        | Jordan Harband                 | [https://github.com/inspect-js/which-boxed-primitive](https://github.com/inspect-js/which-boxed-primitive)                                                                                           |
+| `word-wrap`                                          | `1.2.3`        | Jon Schlinkert                 | [https://github.com/jonschlinkert/word-wrap](https://github.com/jonschlinkert/word-wrap)                                                                                                             |
 | `wordwrap`                                           | `1.0.0`        | James Halliday                 | [https://github.com/substack/node-wordwrap](https://github.com/substack/node-wordwrap)                                                                                                               |
 | `wrap-ansi`                                          | `3.0.1`        | Sindre Sorhus                  | [https://github.com/chalk/wrap-ansi](https://github.com/chalk/wrap-ansi)                                                                                                                             |
 | `wrap-ansi`                                          | `6.2.0`        | Sindre Sorhus                  | [https://github.com/chalk/wrap-ansi](https://github.com/chalk/wrap-ansi)                                                                                                                             |
