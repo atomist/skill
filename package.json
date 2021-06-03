@@ -99,7 +99,7 @@
     "graphql": "^15.5.0",
     "graphql-tag": "^2.12.4",
     "handlebars": "^4.7.7",
-    "jose": "^3.12.2",
+    "jose": "^3.12.3",
     "js-yaml": "^4.1.0",
     "jszip": "^3.6.0",
     "lodash.camelcase": "^4.3.0",
