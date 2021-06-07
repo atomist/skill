@@ -15,7 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Add pullRequestHandler. [bb2f4da](https://github.com/atomist-skills/skill/commit/bb2f4dabb591948f7a771d14e279005fc8f5d662)
 *   Transact PR and check entities. [#361](https://github.com/atomist-skills/skill/issues/361)
 *   Add github.editContent helper. [ffc66de](https://github.com/atomist-skills/skill/commit/ffc66deb4cdc2803eeabda4ceb897af832c5f07d)
--   Add before and after method. [1f691fb](https://github.com/atomist-skills/skill/commit/1f691fb16c67c931a360b913dc6fe6b142640a59)
+*   Add before and after method. [1f691fb](https://github.com/atomist-skills/skill/commit/1f691fb16c67c931a360b913dc6fe6b142640a59)
 
 ### Changed
 
@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Add ttl to storage api. [8710804](https://github.com/atomist-skills/skill/commit/8710804ffbd6806ba22333b78e2a81ee580f7f94)
 *   Export retry helper. [dafea5d](https://github.com/atomist-skills/skill/commit/dafea5d3213f0f6cd3c5b2d593598be1bb221292)
 *   Rename handler to handle in index. [53b06db](https://github.com/atomist-skills/skill/commit/53b06db6e750e02aa1aeb8cecf55a65aae57091f)
+*   Handle ref and sha errors in pull_request_handler. [5a229db](https://github.com/atomist-skills/skill/commit/5a229db43d15d97c0d716fa83b7f36151ab6e219)
 
 ### Fixed
 
