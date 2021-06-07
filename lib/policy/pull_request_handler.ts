@@ -19,6 +19,8 @@ import {
 	api,
 	ContentEditor,
 	editContent,
+	EditContentError,
+	EditContentErrorCode,
 	formatFooter,
 	formatMarkers,
 } from "../github/operation";
@@ -27,9 +29,9 @@ import { chain, createRef, CreateRepositoryId } from "../handler/util";
 import { AuthenticatedRepositoryId } from "../repository/id";
 import * as status from "../status";
 import { hash } from "../util";
+import map = require("lodash.map");
 
 import uniq = require("lodash.uniq");
-import map = require("lodash.map");
 
 export interface PullRequestHandlerResponse<S, C, D = string> {
 	commit: {
@@ -92,17 +94,29 @@ export function pullRequestHandler<S, C, D = string>(parameters: {
 
 			const gh = api(ctx.chain.id);
 
-			const editResult = await editContent<D>(
-				{
-					credential: ctx.chain.id.credential,
-					owner: ctx.chain.id.owner,
-					repo: ctx.chain.id.repo,
-					sha: ctx.chain.id.sha,
-					base: ctx.chain.id.branch,
-					force: true,
-				},
-				...result.commit.editors,
-			);
+			let editResult;
+			try {
+				editResult = await editContent<D>(
+					{
+						credential: ctx.chain.id.credential,
+						owner: ctx.chain.id.owner,
+						repo: ctx.chain.id.repo,
+						sha: ctx.chain.id.sha,
+						base: ctx.chain.id.branch,
+						force: true,
+					},
+					...result.commit.editors,
+				);
+			} catch (e) {
+				if (e instanceof EditContentError) {
+					if (e.code === EditContentErrorCode.InvalidSha) {
+						return status.success(`Branch moved on`).hidden();
+					} else if (e.code === EditContentErrorCode.InvalidRef) {
+						return status.success(`Ref not found`).hidden();
+					}
+				}
+				throw e;
+			}
 
 			if (editResult.sha !== ctx.chain.id.sha) {
 				const pullRequest = await result.pullRequest(
@@ -199,7 +213,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 					}](${pr.html_url})`,
 				);
 			} else {
-				return status.success(`No changes to push`);
+				return status.success(`No changes to push`).hidden();
 			}
 		},
 	) as EventHandler<S, C>;

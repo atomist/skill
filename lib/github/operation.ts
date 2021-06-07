@@ -218,7 +218,7 @@ export async function editContent<D>(
 		!parameters.base
 	) {
 		throw new EditContentError(
-			"INVALID_PARAMETERS",
+			EditContentErrorCode.InvalidParameters,
 			"Required parameter missing",
 		);
 	}
@@ -242,13 +242,13 @@ export async function editContent<D>(
 		).data;
 	} catch (e) {
 		throw new EditContentError(
-			"INVALID_REF",
+			EditContentErrorCode.InvalidRef,
 			`Failed to read ref '${parameters.base}'`,
 		);
 	}
 	if (parameters.sha !== ref.object.sha) {
 		throw new EditContentError(
-			"INVALID_SHA",
+			EditContentErrorCode.InvalidSha,
 			`Ref '${parameters.base}' points to different commit '${ref.object.sha}'`,
 		);
 	}
@@ -283,7 +283,7 @@ export async function editContent<D>(
 			validatePath(path);
 			if (content === undefined) {
 				throw new EditContentError(
-					"INVALID_CONTENT",
+					EditContentErrorCode.InvalidContent,
 					"Content required",
 				);
 			}
@@ -391,18 +391,32 @@ export async function editContent<D>(
 	};
 }
 
+export enum EditContentErrorCode {
+	InvalidPath = "INVALID_PATH",
+	InvalidContent = "INVALID_CONTENT",
+	InvalidRef = "INVALID_REF",
+	InvalidSha = "INVALID_SHA",
+	InvalidParameters = "INVALID_PARAMETERS",
+}
+
 export class EditContentError extends Error {
-	constructor(public readonly code: string, public readonly message: string) {
+	constructor(
+		public readonly code: EditContentErrorCode,
+		public readonly message: string,
+	) {
 		super(message);
 	}
 }
 
 export function validatePath(name: string): void {
 	if (!name) {
-		throw new EditContentError("INVALID_PATH", `Path required`);
+		throw new EditContentError(
+			EditContentErrorCode.InvalidPath,
+			`Path required`,
+		);
 	} else if (!/^(?![/])[a-zA-Z0-9+_#/.-]+$/.test(name)) {
 		throw new EditContentError(
-			"INVALID_PATH",
+			EditContentErrorCode.InvalidPath,
 			`Invalid path '${name}' provided`,
 		);
 	}

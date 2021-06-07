@@ -30,4 +30,7 @@ export {
 	toConclusion,
 	toSeverity,
 } from "./policy";
-export { pullRequestHandler } from "./pull_request_handler";
+export {
+	pullRequestHandler,
+	PullRequestHandlerResponse,
+} from "./pull_request_handler";
