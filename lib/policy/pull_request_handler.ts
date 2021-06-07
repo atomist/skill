@@ -86,7 +86,7 @@ export function pullRequestHandler<S, C, D = string>(parameters: {
 		createRef<S, C>(parameters.id),
 		async ctx => {
 			const executeResult = await parameters.execute(ctx);
-			if ((executeResult as HandlerStatus).code) {
+			if ((executeResult as HandlerStatus).code !== undefined) {
 				return executeResult as HandlerStatus;
 			}
 
@@ -103,6 +103,7 @@ export function pullRequestHandler<S, C, D = string>(parameters: {
 						repo: ctx.chain.id.repo,
 						sha: ctx.chain.id.sha,
 						base: ctx.chain.id.branch,
+						head: result.commit.branch,
 						force: true,
 					},
 					...result.commit.editors,
