@@ -23,7 +23,7 @@ import * as yargs from "yargs";
 import { error } from "../lib/log";
 
 // tslint:disable-next-line:no-unused-expression
-yargs
+void yargs
 	.command(
 		"run",
 		"Start container skill",
