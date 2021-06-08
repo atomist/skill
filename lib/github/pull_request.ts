@@ -64,7 +64,7 @@ export async function persistChanges(
 		labels?: string[];
 		reviewers?: string[];
 		assignReviewer?: boolean;
-		update?: () => Promise<{
+		update?: (sha: string) => Promise<{
 			title?: string;
 			body?: string;
 			labels?: string[];
@@ -193,7 +193,7 @@ async function ensurePullRequest(
 		labels?: string[];
 		reviewers?: string[];
 		assignReviewer?: boolean;
-		update?: () => Promise<{
+		update?: (sha: string) => Promise<{
 			title?: string;
 			body?: string;
 			labels?: string[];
@@ -321,7 +321,8 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 		});
 	}
 	if (pullRequest.update) {
-		const update = await pullRequest.update();
+		const status = await git.status(project);
+		const update = await pullRequest.update(status.sha);
 		// Re-read the PR as there might have been some external modifications
 		pr = (
 			await gh.pulls.get({
