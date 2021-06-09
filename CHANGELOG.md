@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Do not raise PR when no files have been changed. [2f76973](https://github.com/atomist-skills/skill/commit/2f76973a51efbbbf0a1df6fd84f8328eb3c9c6d2)
 *   Fix issue with undefined in subscription result. [12145c1](https://github.com/atomist-skills/skill/commit/12145c1633d04a39f55e1dbf6d8d9ae2e27da8b6)
 *   Fix rendering of negative bytes. [6644037](https://github.com/atomist-skills/skill/commit/6644037dcd6ccde1d99e4b102af94036c0ca0261)
+*   Ensure dirs exist when cloneFiles is used. [4a54eb9](https://github.com/atomist-skills/skill/commit/4a54eb973a89716682787fa7d9acbea8ded14b41)
 
 ## [0.11.0](https://github.com/atomist/skill/compare/0.10.0...0.11.0) - 2021-04-26
 
