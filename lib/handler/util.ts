@@ -187,19 +187,18 @@ export function cloneFiles<D, C>(
 		await fs.ensureDir(projectPath);
 		ctx.chain.project = await ctx.project.load(ctx.chain.id, projectPath);
 
-		for (const path of paths) {
+		for (const p of paths) {
 			const fileResponse = (
 				await gh.repos.getContent({
 					owner: ctx.chain.id.owner,
 					repo: ctx.chain.id.repo,
 					ref: ctx.chain.id.sha || ctx.chain.id.branch,
-					path,
+					path: p,
 				})
 			).data as { content?: string };
-			await fs.writeFile(
-				ctx.chain.project.path(path),
-				Buffer.from(fileResponse.content, "base64"),
-			);
+			const fp = ctx.chain.project.path(p);
+			await fs.ensureDir(path.dirname(fp));
+			await fs.writeFile(fp, Buffer.from(fileResponse.content, "base64"));
 		}
 		return undefined;
 	};
