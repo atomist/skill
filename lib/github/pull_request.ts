@@ -249,7 +249,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 	});
 	const newPr = openPrs.length !== 1;
 	let pushRequired = true;
-	if (!newPr) {
+	if (!newPr && !pullRequest.update) {
 		const body = openPrs[0].body;
 		const diffRegexp = /\[atomist-diff:([^\]]*)\]/;
 		const diffMatch = diffRegexp.exec(body);
