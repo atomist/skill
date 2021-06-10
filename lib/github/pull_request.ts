@@ -249,7 +249,7 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 	});
 	const newPr = openPrs.length !== 1;
 	let pushRequired = true;
-	if (!newPr && !pullRequest.update) {
+	if (!newPr) {
 		const body = openPrs[0].body;
 		const diffRegexp = /\[atomist-diff:([^\]]*)\]/;
 		const diffMatch = diffRegexp.exec(body);
@@ -321,8 +321,13 @@ ${formatMarkers(ctx, `atomist-diff:${diffHash}`)}
 		});
 	}
 	if (pullRequest.update) {
-		const status = await git.status(project);
-		const update = await pullRequest.update(status.sha);
+		let sha;
+		if (!pushRequired) {
+			sha = openPrs[0].head.sha;
+		} else {
+			sha = (await git.status(project)).sha;
+		}
+		const update = await pullRequest.update(sha);
 		// Re-read the PR as there might have been some external modifications
 		pr = (
 			await gh.pulls.get({
