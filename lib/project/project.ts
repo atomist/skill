@@ -71,6 +71,9 @@ export async function load<C>(
 		exec: (cmd, args, opts): Promise<ExecPromiseResult> =>
 			execPromise(cmd, args, { cwd: baseDir, ...(opts || {}) }),
 	};
+	if (!(await fs.pathExists(baseDir))) {
+		await fs.ensureDir(baseDir);
+	}
 	if (!(await fs.pathExists(path.join(baseDir, ".git")))) {
 		await init(baseDir);
 	}
