@@ -59,6 +59,7 @@
  %
  :where
  (tx-entity-attr-value :docker.image/digest ?docker-image _)
+
  (or-join [?docker-registry]
    (capability-configuration
      "atomist"
@@ -66,14 +67,20 @@
      "analysis"
      ?docker-registry)
    [(ground "empty") ?docker-registry])
+
  [?docker-image :docker.image/sha ?sha]
+ [?docker-image :docker.image/repository ?repository]
  [?commit :git.commit/sha ?sha]
 
- [?commit :git.commit/repo ?repo]
- [?repo :git.repo/default-branch ?default-branch-name]
- [?default-branch :git.ref/repo ?repo]
- [?default-branch :git.ref/type :git.ref.type/branch]
- [?default-branch :git.ref/name ?default-branch-name]
- [?default-branch :git.ref/commit ?default-head-commit]
- [?default-head-commit :git.commit/sha ?default-head-commit-sha]
- [?default-docker-image :docker.image/sha ?default-head-commit-sha]]
+ (or-join [?commit ?repository ?default-docker-image]
+   (and
+     [?commit :git.commit/repo ?repo]
+     [?repo :git.repo/default-branch ?default-branch-name]
+     [?default-branch :git.ref/repo ?repo]
+     [?default-branch :git.ref/type :git.ref.type/branch]
+     [?default-branch :git.ref/name ?default-branch-name]
+     [?default-branch :git.ref/commit ?default-head-commit]
+     [?default-head-commit :git.commit/sha ?default-head-commit-sha]
+     [?default-docker-image :docker.image/sha ?default-head-commit-sha]
+     [?default-docker-image :docker.image/repository ?repository])
+   [(ground "empty") ?default-docker-image])]
