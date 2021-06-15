@@ -33,6 +33,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Fix issue with undefined in subscription result. [12145c1](https://github.com/atomist-skills/skill/commit/12145c1633d04a39f55e1dbf6d8d9ae2e27da8b6)
 *   Fix rendering of negative bytes. [6644037](https://github.com/atomist-skills/skill/commit/6644037dcd6ccde1d99e4b102af94036c0ca0261)
 *   Ensure dirs exist when cloneFiles is used. [4a54eb9](https://github.com/atomist-skills/skill/commit/4a54eb973a89716682787fa7d9acbea8ded14b41)
+*   Create baseDir on project.load. [e201264](https://github.com/atomist-skills/skill/commit/e201264041011cd91f48001b5ad5c2e1d27aa252)
 
 ## [0.11.0](https://github.com/atomist/skill/compare/0.10.0...0.11.0) - 2021-04-26
 
