@@ -57,7 +57,7 @@
   "dependencies": {
     "@atomist/skill-logging": "^1.0.8-main.8",
     "@atomist/slack-messages": "^1.2.2",
-    "@google-cloud/pubsub": "^2.14.0",
+    "@google-cloud/pubsub": "^2.15.1",
     "@google-cloud/storage": "^5.8.5",
     "@graphql-codegen/cli": "^1.21.5",
     "@graphql-codegen/typescript": "^1.22.3",
