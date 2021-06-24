@@ -105,7 +105,7 @@ interface ProviderResponse {
 	}>;
 }
 
-const GitHubAppTokenQuery = `query GitHubAppToken($id: ID!, $owner: String!) {
+const GitHubAppTokenQuery = `query GitHubAppToken($id: ID!, $owner: String) {
   GitHubAppResourceProvider(id: $id) {
     gitHubAppInstallations(owner: $owner) {
       token {
@@ -147,7 +147,7 @@ interface ScmProviderResponse {
 }
 
 export function gitHubAppToken(
-	id: { owner: string; repo: string; apiUrl?: string } | string,
+	id: { owner?: string; repo?: string; apiUrl?: string } | string = {},
 ): CredentialResolver<GitHubAppCredential | GitHubCredential> {
 	return async (graph): Promise<GitHubAppCredential | GitHubCredential> => {
 		let repo;
