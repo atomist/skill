@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Add github.editContent helper. [ffc66de](https://github.com/atomist-skills/skill/commit/ffc66deb4cdc2803eeabda4ceb897af832c5f07d)
 *   Add before and after method. [1f691fb](https://github.com/atomist-skills/skill/commit/1f691fb16c67c931a360b913dc6fe6b142640a59)
 *   Add sha to persistChanges update callback. [c571f7f](https://github.com/atomist-skills/skill/commit/c571f7f754ab71bba0a9f31640e0caea1163668a)
+*   Credential lookup without org and repo. [bfe89d7](https://github.com/atomist-skills/skill/commit/bfe89d7a16ba4183c48a0a8951225da4987f16bd)
 
 ### Changed
 
