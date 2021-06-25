@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Rename handler to handle in index. [53b06db](https://github.com/atomist-skills/skill/commit/53b06db6e750e02aa1aeb8cecf55a65aae57091f)
 *   Handle ref and sha errors in pull_request_handler. [5a229db](https://github.com/atomist-skills/skill/commit/5a229db43d15d97c0d716fa83b7f36151ab6e219)
 *   Always push when pullRequest.update is provided. [38f6a87](https://github.com/atomist-skills/skill/commit/38f6a87f13046d24c5506a4f5485efb4134685c9)
+*   Switch to safe datomic rules. [03c3fde](https://github.com/atomist-skills/skill/commit/03c3fde81548dc6ab3116c698fab832297332a5f)
 
 ### Fixed
 
