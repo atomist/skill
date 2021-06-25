@@ -32,6 +32,7 @@ export interface DatalogClient {
 			configurationName?: string;
 			tx?: number;
 			mode?: "raw" | "map" | "obj";
+			rules?: string;
 		},
 	): Promise<T[] | string>;
 }
@@ -60,6 +61,7 @@ class NodeFetchDatalogClient implements DatalogClient {
 			configurationName?: string;
 			tx?: number;
 			mode?: "raw" | "map" | "obj";
+			rules?: string;
 		} = {},
 	): Promise<T[] | string> {
 		const body = `{
@@ -73,6 +75,7 @@ ${
 		? `:skill-ref {:name "${this.skill.name}" :namespace "${this.skill.namespace}" :configuration-name "${options.configurationName}"}`
 		: ""
 }
+${options?.rules ? `:rules ${options.rules}` : ""}
  
 }`;
 		const f = (await import("node-fetch")).default;
