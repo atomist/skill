@@ -24,7 +24,7 @@
  :in $ $before-db % ?ctx
  :where
  (attributes-tx ?ctx ?docker-image :docker.image/digest _)
- (or-join [?docker-registry]
+ (or-join [?docker-registry ?ctx]
    (skill-capability-configuration ?ctx
      "atomist"
      "DockerRegistry"
