@@ -100,7 +100,7 @@
                                                                    :docker.analysis.package/version]}]}])
  :in $ $before % ?ctx
  :where
- (attributes-tx ?ctx :docker.image.blob/created-by _ ?docker-file-line)
+ (attributes-tx ?ctx ?blob :docker.image.blob/created-by ?docker-file-line)
 
  [?docker-file-line :docker.file.line/file ?docker-file]
  [?image :docker.image/docker-file ?docker-file]

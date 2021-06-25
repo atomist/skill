@@ -49,7 +49,7 @@
     :docker.registry/server-url])
  :in $ $before-db % ?ctx
  :where
- (attributes-tx ?ctx :docker.image/docker-file ?docker-image ?docker-file)
+ (attributes-tx ?ctx ?docker-image :docker.image/docker-file ?docker-file)
  (or-join [?docker-registry]
    (skill-capability-configuration ?ctx
      "atomist"

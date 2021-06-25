@@ -55,7 +55,7 @@
     :docker.registry/server-url])
  :in $ $before-db % ?ctx
  :where
- (attributes-tx ?ctx :docker.image/digest ?docker-image _)
+ (attributes-tx ?ctx ?docker-image :docker.image/digest _)
 
  (or-join [?docker-registry]
    (skill-capability-configuration ?ctx
