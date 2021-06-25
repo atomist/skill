@@ -25,7 +25,7 @@
  :where
  (attributes-tx ?ctx :docker.image/digest ?docker-image _)
  (or-join [?docker-registry]
-   (skill-capability-configuration
+   (skill-capability-configuration ?ctx
      "atomist"
      "DockerRegistry"
      "analysis"
