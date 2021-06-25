@@ -98,12 +98,9 @@
                                        :vulnerability.cve/fix-available
                                        {:docker.analysis/affected [:docker.analysis.package/name
                                                                    :docker.analysis.package/version]}]}])
- :in
- $
- $before
- %
+ :in $ $before % ?ctx
  :where
- (tx-entity-attr-value :docker.image.blob/created-by _ ?docker-file-line)
+ (attributes-tx ?ctx :docker.image.blob/created-by _ ?docker-file-line)
 
  [?docker-file-line :docker.file.line/file ?docker-file]
  [?image :docker.image/docker-file ?docker-file]

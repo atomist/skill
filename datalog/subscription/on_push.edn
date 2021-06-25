@@ -17,10 +17,10 @@
                          {:git.user/emails [:email.email/address]}]}
     :git.commit/sha
     :git.commit/message])
- :in $ $before-db %
+ :in $ $before-db % ?ctx
  :where
- (tx-push ?commit ?ref)
+ (push-tx ?ctx ?commit ?ref)
 
  ;; check repo filter
  [?commit :git.commit/repo ?repo]
- (repo-selected? ?repo)]
+ (skill-repo-selected? ?repo)]

@@ -53,15 +53,12 @@
     :docker.registry/secret
     :docker.registry/username
     :docker.registry/server-url])
- :in
- $
- $before-db
- %
+ :in $ $before-db % ?ctx
  :where
- (tx-entity-attr-value :docker.image/digest ?docker-image _)
+ (attributes-tx ?ctx :docker.image/digest ?docker-image _)
 
  (or-join [?docker-registry]
-   (capability-configuration
+   (skill-capability-configuration
      "atomist"
      "DockerRegistry"
      "analysis"
