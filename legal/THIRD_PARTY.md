@@ -20,7 +20,7 @@ This page details all runtime dependencies of `@atomist/skill`.
 | [GPL-3.0](#gpl-30)              | 1     |
 | [ISC](#isc)                     | 41    |
 | [MIT AND Zlib](#mit-and-zlib)   | 1     |
-| [MIT](#mit)                     | 593   |
+| [MIT](#mit)                     | 592   |
 | [Public Domain](#public-domain) | 1     |
 | [Python-2.0](#python-20)        | 1     |
 
@@ -42,7 +42,7 @@ Apache License 2.0 - [http://www.apache.org/licenses/LICENSE-2.0](http://www.apa
 
 | Name                                  | Version        | Publisher             | Repository                                                                                                                       |
 | ------------------------------------- | -------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `@atomist/skill-logging`              | `1.0.8-main.8` | Atomist, Inc.         | [https://github.com/atomist-skills/skill-logging](https://github.com/atomist-skills/skill-logging)                               |
+| `@atomist/skill-logging`              | `1.0.8-main.9` | Atomist, Inc.         | [https://github.com/atomist-skills/skill-logging](https://github.com/atomist-skills/skill-logging)                               |
 | `@atomist/slack-messages`             | `1.2.2`        | Atomist               | [https://github.com/atomist/slack-messages](https://github.com/atomist/slack-messages)                                           |
 | `@google-cloud/common`                | `3.6.0`        | Google Inc.           | [https://github.com/googleapis/nodejs-common](https://github.com/googleapis/nodejs-common)                                       |
 | `@google-cloud/logging`               | `8.2.0`        | Google Inc.           | [https://github.com/googleapis/nodejs-logging](https://github.com/googleapis/nodejs-logging)                                     |
@@ -316,13 +316,12 @@ MIT License - [https://opensource.org/licenses/MIT](https://opensource.org/licen
 | `@octokit/openapi-types`                             | `7.3.5`        |                                | [https://github.com/octokit/openapi-types.ts](https://github.com/octokit/openapi-types.ts)                                                                                                           |
 | `@octokit/plugin-paginate-rest`                      | `2.13.5`       |                                | [https://github.com/octokit/plugin-paginate-rest.js](https://github.com/octokit/plugin-paginate-rest.js)                                                                                             |
 | `@octokit/plugin-request-log`                        | `1.0.4`        |                                | [https://github.com/octokit/plugin-request-log.js](https://github.com/octokit/plugin-request-log.js)                                                                                                 |
-| `@octokit/plugin-rest-endpoint-methods`              | `5.3.3`        |                                | [https://github.com/octokit/plugin-rest-endpoint-methods.js](https://github.com/octokit/plugin-rest-endpoint-methods.js)                                                                             |
 | `@octokit/plugin-rest-endpoint-methods`              | `5.3.4`        |                                | [https://github.com/octokit/plugin-rest-endpoint-methods.js](https://github.com/octokit/plugin-rest-endpoint-methods.js)                                                                             |
 | `@octokit/plugin-retry`                              | `3.0.9`        |                                | [https://github.com/octokit/plugin-retry.js](https://github.com/octokit/plugin-retry.js)                                                                                                             |
 | `@octokit/plugin-throttling`                         | `3.5.1`        |                                | [https://github.com/octokit/plugin-throttling.js](https://github.com/octokit/plugin-throttling.js)                                                                                                   |
 | `@octokit/request-error`                             | `2.1.0`        |                                | [https://github.com/octokit/request-error.js](https://github.com/octokit/request-error.js)                                                                                                           |
 | `@octokit/request`                                   | `5.6.0`        |                                | [https://github.com/octokit/request.js](https://github.com/octokit/request.js)                                                                                                                       |
-| `@octokit/rest`                                      | `18.6.2`       |                                | [https://github.com/octokit/rest.js](https://github.com/octokit/rest.js)                                                                                                                             |
+| `@octokit/rest`                                      | `18.6.3`       |                                | [https://github.com/octokit/rest.js](https://github.com/octokit/rest.js)                                                                                                                             |
 | `@octokit/types`                                     | `6.16.7`       |                                | [https://github.com/octokit/types.ts](https://github.com/octokit/types.ts)                                                                                                                           |
 | `@samverschueren/stream-to-observable`               | `0.3.1`        |                                | [https://github.com/SamVerschueren/stream-to-observable](https://github.com/SamVerschueren/stream-to-observable)                                                                                     |
 | `@sindresorhus/is`                                   | `0.14.0`       | Sindre Sorhus                  | [https://github.com/sindresorhus/is](https://github.com/sindresorhus/is)                                                                                                                             |
