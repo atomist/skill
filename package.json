@@ -94,7 +94,7 @@
     "find-up": "^5.0.0",
     "flat": "^5.0.2",
     "fs-extra": "^10.0.0",
-    "git-url-parse": "^11.4.4",
+    "git-url-parse": "^11.5.0",
     "glob-gitignore": "^1.0.14",
     "graphql": "^15.5.1",
     "graphql-tag": "^2.12.5",
