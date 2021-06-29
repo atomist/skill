@@ -144,7 +144,11 @@ export function resolveParameters(query: string, parameters: any = {}): string {
 		const value = parameters[key];
 		newQuery = newQuery.replace(
 			new RegExp(`\\?${key}`, "g"),
-			typeof value === "string" ? `"${value}"` : value,
+			typeof value === "string"
+				? value.startsWith(":")
+					? value
+					: `"${value}"`
+				: value,
 		);
 	}
 	return newQuery;
