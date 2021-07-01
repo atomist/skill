@@ -25,26 +25,32 @@ import {
 } from "../payload";
 
 export async function runSkill(skill?: string): Promise<void> {
-	const payload = await fs.readJson(
-		process.env.ATOMIST_PAYLOAD || "/atm/payload.json",
-	);
-	const ctx = { eventId: process.env.ATOMIST_EVENT_ID };
-	if (isEventIncoming(payload)) {
-		if (skill) {
-			payload.extensions.operationName = skill;
+	const payloadPath = process.env.ATOMIST_PAYLOAD;
+	if (!payloadPath) {
+		// Set the two required parameters for the functions framework
+		process.env.FUNCTION_TARGET = "entryPoint";
+		process.env.FUNCTION_SIGNATURE_TYPE = "event";
+		await import("@google-cloud/functions-framework");
+	} else {
+		const payload = await fs.readJson(payloadPath || "/atm/payload.json");
+		const ctx = { eventId: process.env.ATOMIST_EVENT_ID };
+		if (isEventIncoming(payload)) {
+			if (skill) {
+				payload.extensions.operationName = skill;
+			}
+			await processEvent(payload, ctx);
+		} else if (isSubscriptionIncoming(payload)) {
+			if (skill) {
+				payload.subscription.name = skill;
+			}
+			await processEvent(payload, ctx);
+		} else if (isCommandIncoming(payload)) {
+			if (skill) {
+				payload.command = skill;
+			}
+			await processCommand(payload, ctx);
+		} else if (isWebhookIncoming(payload)) {
+			await processWebhook(payload, ctx);
 		}
-		await processEvent(payload, ctx);
-	} else if (isSubscriptionIncoming(payload)) {
-		if (skill) {
-			payload.subscription.name = skill;
-		}
-		await processEvent(payload, ctx);
-	} else if (isCommandIncoming(payload)) {
-		if (skill) {
-			payload.command = skill;
-		}
-		await processCommand(payload, ctx);
-	} else if (isWebhookIncoming(payload)) {
-		await processWebhook(payload, ctx);
 	}
 }
