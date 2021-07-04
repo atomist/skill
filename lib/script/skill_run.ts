@@ -15,6 +15,7 @@
  */
 
 import * as fs from "fs-extra";
+import * as path from "path";
 
 import { processCommand, processEvent, processWebhook } from "../function";
 import {
@@ -27,6 +28,13 @@ import {
 export async function runSkill(skill?: string): Promise<void> {
 	const payloadPath = process.env.ATOMIST_PAYLOAD;
 	if (!payloadPath) {
+		// Set the cwd for the current process for functions framework
+		// to find the entrypoint
+		const nm = await (
+			await import("find-up")
+		)("node_modules", { cwd: __dirname, type: "directory" });
+		process.chdir(path.dirname(nm));
+
 		// Set the two required parameters for the functions framework
 		process.env.FUNCTION_TARGET = "entryPoint";
 		process.env.FUNCTION_SIGNATURE_TYPE = "event";
