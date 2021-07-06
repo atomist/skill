@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 *   Add sha to persistChanges update callback. [c571f7f](https://github.com/atomist-skills/skill/commit/c571f7f754ab71bba0a9f31640e0caea1163668a)
 *   Credential lookup without org and repo. [bfe89d7](https://github.com/atomist-skills/skill/commit/bfe89d7a16ba4183c48a0a8951225da4987f16bd)
 *   Support in `run` command for GCP Cloud Run. [#400](https://github.com/atomist-skills/skill/issues/400)
+*   Check handler can set PR comment. [13f6c96](https://github.com/atomist-skills/skill/commit/13f6c9609ecc0b2129e1a3cd46a913fa5bb16a09)
 
 ### Changed
 
