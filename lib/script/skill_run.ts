@@ -40,8 +40,11 @@ export async function runSkill(skill?: string): Promise<void> {
 		process.env.FUNCTION_SIGNATURE_TYPE = "event";
 		await import("@google-cloud/functions-framework");
 	} else {
+		process.chdir(process.env.ATOMIST_HOME || "/atm/home");
+
 		const payload = await fs.readJson(payloadPath || "/atm/payload.json");
 		const ctx = { eventId: process.env.ATOMIST_EVENT_ID };
+
 		if (isEventIncoming(payload)) {
 			if (skill) {
 				payload.extensions.operationName = skill;
