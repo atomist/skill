@@ -16,6 +16,7 @@
 
 import { Check } from "../github/check";
 import { api } from "../github/operation";
+import { commentPullRequest } from "../github/pull_request";
 import { EventContext, EventHandler, HandlerStatus } from "../handler/handler";
 import {
 	chain,
@@ -103,10 +104,11 @@ export function checkHandler<S, C>(parameters: {
 			};
 		},
 	) => Promise<{
-		conclusion: Conclusion;
+		conclusion?: Conclusion;
 		severity?: Severity;
 		message?: string;
 		body?: string;
+		comment?: string;
 		annotations?: Annotation[];
 		actions?: Action[];
 		status: HandlerStatus;
@@ -192,21 +194,33 @@ export function checkHandler<S, C>(parameters: {
 		async ctx => {
 			const result = await parameters.execute(ctx);
 
-			const body = `${await markdownLink({
+			const badge = await markdownLink({
 				sha: ctx.chain.id.sha,
 				workspace: ctx.workspaceId,
 				name: ctx.chain.details.name,
 				title: ctx.chain.details.title,
 				conclusion: result.conclusion,
 				severity: result.severity,
-			})}${result.body ? `\n\n${result.body}` : ""}`;
+			});
 
+			const body = `${badge}${result.body ? `\n\n${result.body}` : ""}`;
 			await ctx.chain.check.update({
 				conclusion: result.conclusion,
 				body,
 				annotations: result.annotations,
 				actions: result.actions,
 			});
+
+			if (result.comment) {
+				const comment = `${badge}\n\n${result.comment}`;
+				await commentPullRequest(
+					ctx,
+					ctx.chain.project,
+					ctx.chain.id.sha,
+					comment,
+					"vulnerability_report",
+				);
+			}
 
 			return result.status;
 		},
