@@ -427,6 +427,7 @@ ${formatMarkers(ctx)}`,
 const OpenPullRequestByShaQuery = `query openPullRequestBySha($sha: String!, $owner: String!, $repo: String!) {
   PullRequest(state: "open") {
     number
+    url
     repo(owner: $owner, name: $repo) {
       owner
       name
@@ -444,6 +445,7 @@ const OpenPullRequestByShaQuery = `query openPullRequestBySha($sha: String!, $ow
 interface OpenPullRequestByShaResponse {
 	PullRequest: Array<{
 		number: number;
+		url: string;
 		repo: {
 			owner: string;
 			name: string;
@@ -468,7 +470,7 @@ export async function commentPullRequest(
 	ctx: Contextual<any, any>,
 	project: Project,
 	sha: string,
-	comment: string,
+	comment: ((pr: { url: string; number: number }) => string) | string,
 	type: string,
 ): Promise<void> {
 	const openPrs = await ctx.graphql.query<
@@ -487,12 +489,13 @@ export async function commentPullRequest(
 					`[atomist-skill:${ctx.skill.namespace}/${ctx.skill.name}]`,
 				) && c.body.includes(`[atomist-comment-type:${type}]`),
 		);
+		const body = typeof comment === "function" ? comment(openPr) : comment;
 		if (existingComment) {
 			await api(project.id).issues.updateComment({
 				owner: project.id.owner,
 				repo: project.id.repo,
 				comment_id: +existingComment.commentId,
-				body: `${comment}
+				body: `${body}
 
 ${formatMarkers(ctx, `atomist-comment-type:${type}`)}`,
 			});
@@ -501,7 +504,7 @@ ${formatMarkers(ctx, `atomist-comment-type:${type}`)}`,
 				owner: project.id.owner,
 				repo: project.id.repo,
 				issue_number: openPr.number,
-				body: `${comment}
+				body: `${body}
 
 ${formatMarkers(ctx, `atomist-comment-type:${type}`)}`,
 			});
