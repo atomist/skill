@@ -108,7 +108,7 @@ export function checkHandler<S, C>(parameters: {
 		severity?: Severity;
 		message?: string;
 		body?: string;
-		comment?: string;
+		comment?: (pr: { url: string; number: number }) => string;
 		annotations?: Annotation[];
 		actions?: Action[];
 		status: HandlerStatus;
@@ -212,7 +212,7 @@ export function checkHandler<S, C>(parameters: {
 			});
 
 			if (result.comment) {
-				const comment = `${badge}\n\n${result.comment}`;
+				const comment = pr => `${badge}\n\n${result.comment(pr)}`;
 				await commentPullRequest(
 					ctx,
 					ctx.chain.project,
