@@ -37,7 +37,7 @@ export async function runSkill(skill?: string): Promise<void> {
 
 		// Set the two required parameters for the functions framework
 		process.env.FUNCTION_TARGET = "entryPoint";
-		process.env.FUNCTION_SIGNATURE_TYPE = "event";
+		process.env.FUNCTION_SIGNATURE_TYPE = "http";
 		await import("@google-cloud/functions-framework");
 	} else {
 		process.chdir(process.env.ATOMIST_HOME || "/atm/home");
