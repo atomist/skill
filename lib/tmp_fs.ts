@@ -42,9 +42,11 @@ export async function createFilePath(
 
 export async function createFile(
 	ctx: Contextual<any, any>,
-	options?: { name?: string; content?: string },
+	options?: { path?: string; name?: string; content?: string },
 ): Promise<string> {
-	const tmpPath = path.join(os.tmpdir(), options?.name || guid());
+	const tmpPath = options?.path
+		? options.path
+		: path.join(os.tmpdir(), options?.name || guid());
 	ctx.onComplete(async () => {
 		await fs.remove(tmpPath);
 	});
