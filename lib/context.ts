@@ -87,7 +87,7 @@ export function loggingCreateContext(
 					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
 				},
 			);
-			options?.before(context);
+			options?.before?.(context);
 			if (options?.after) {
 				context.onComplete(options.after);
 			}
