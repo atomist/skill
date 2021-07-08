@@ -53,18 +53,18 @@ export async function runSkill(skill?: string): Promise<void> {
 			const start = Date.now();
 
 			try {
-				debug("Function execution started");
+				debug("Cloud Run execution started");
 				await entryPoint(message, {
 					eventId: message.messageId,
 				});
 				debug(
-					`Function execution took ${
+					`Cloud Run execution took ${
 						Date.now() - start
 					} ms, finished with status: 'ok'`,
 				);
 			} catch (e) {
 				debug(
-					`Function execution took ${
+					`Cloud Run execution took ${
 						Date.now() - start
 					} ms, finished with status: 'error'`,
 				);
