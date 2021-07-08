@@ -50,6 +50,7 @@ export async function createFile(
 	ctx.onComplete(async () => {
 		await fs.remove(tmpPath);
 	});
+	await fs.ensureDir(path.dirname(tmpPath));
 	if (options?.content) {
 		await fs.writeFile(tmpPath, options.content);
 	}
