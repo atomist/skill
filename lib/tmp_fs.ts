@@ -35,6 +35,13 @@ export async function createDir(
 
 export async function createFilePath(
 	ctx: Contextual<any, any>,
+	name?: string,
+): Promise<string> {
+	return createFile(ctx, { name });
+}
+
+export async function createFile(
+	ctx: Contextual<any, any>,
 	options?: { name?: string; content?: string },
 ): Promise<string> {
 	const tmpPath = path.join(os.tmpdir(), options?.name || guid());
