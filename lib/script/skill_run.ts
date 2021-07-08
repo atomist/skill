@@ -17,8 +17,9 @@
 import * as fs from "fs-extra";
 import * as path from "path";
 
+import { createContext, loggingCreateContext } from "../context";
 import {
-	entryPoint,
+	configurableEntryPoint,
 	processCommand,
 	processEvent,
 	processWebhook,
@@ -53,21 +54,24 @@ export async function runSkill(skill?: string): Promise<void> {
 			const start = Date.now();
 
 			try {
-				debug("Cloud Run execution started");
-				await entryPoint(message, {
-					eventId: message.messageId,
-				});
-				debug(
-					`Cloud Run execution took ${
-						Date.now() - start
-					} ms, finished with status: 'ok'`,
+				await configurableEntryPoint(
+					message,
+					{
+						eventId: message.messageId,
+					},
+					loggingCreateContext(createContext, {
+						payload: true,
+						before: () => debug("Cloud Run execution started"),
+						after: async () =>
+							debug(
+								`Cloud Run execution took ${
+									Date.now() - start
+								} ms, finished with status: 'ok'`,
+							),
+					}),
 				);
 			} catch (e) {
-				debug(
-					`Cloud Run execution took ${
-						Date.now() - start
-					} ms, finished with status: 'error'`,
-				);
+				// Ignore
 			} finally {
 				res.sendStatus(201);
 			}

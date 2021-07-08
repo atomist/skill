@@ -64,6 +64,21 @@ export const entryPoint = async (
 	}
 };
 
+export const configurableEntryPoint = async (
+	pubSubEvent: PubSubMessage,
+	context: { eventId: string },
+	factory?: ContextFactory,
+): Promise<void> => {
+	const payload = await resolvePayload(pubSubEvent);
+	if (isEventIncoming(payload) || isSubscriptionIncoming(payload)) {
+		await processEvent(payload, context, undefined, factory);
+	} else if (isCommandIncoming(payload)) {
+		await processCommand(payload, context, undefined, factory);
+	} else if (isWebhookIncoming(payload)) {
+		await processWebhook(payload, context, undefined, factory);
+	}
+};
+
 export async function processEvent(
 	event: EventIncoming | SubscriptionIncoming,
 	ctx: { eventId: string },
@@ -150,7 +165,7 @@ async function invokeHandler(
 	loader: (name: string) => Promise<any>,
 	context: (EventContext | CommandContext | WebhookContext) &
 		ContextualLifecycle,
-) {
+): Promise<HandlerStatus> {
 	const result = (await (
 		await loader(context.name)
 	)(context)) as HandlerStatus;

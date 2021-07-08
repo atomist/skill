@@ -19,6 +19,7 @@ import { createGraphQLClient } from "./graphql";
 import {
 	CommandContext,
 	Configuration,
+	Contextual,
 	ContextualLifecycle,
 	EventContext,
 	WebhookContext,
@@ -64,7 +65,11 @@ export type ContextFactory = (
 
 export function loggingCreateContext(
 	delegate: ContextFactory,
-	options: { payload: boolean } = { payload: true },
+	options: {
+		payload: boolean;
+		before?: (ctx: Contextual<any, any>) => void;
+		after?: () => Promise<void>;
+	} = { payload: true },
 ): ContextFactory {
 	return (payload, ctx) => {
 		const context = delegate(payload, ctx);
@@ -82,6 +87,11 @@ export function loggingCreateContext(
 					skill: `${payload.skill.namespace}/${payload.skill.name}@${payload.skill.version}`,
 				},
 			);
+			options?.before(context);
+			if (options?.after) {
+				context.onComplete(options.after);
+			}
+
 			const rt = runtime();
 			debug(
 				"Starting %s/%s:%s '%s' %satomist/skill:%s (%s) nodejs:%s",
