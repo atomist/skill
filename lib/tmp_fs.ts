@@ -35,11 +35,14 @@ export async function createDir(
 
 export async function createFilePath(
 	ctx: Contextual<any, any>,
-	name?: string,
+	options?: { name?: string; content?: string },
 ): Promise<string> {
-	const tmpPath = path.join(os.tmpdir(), name || guid());
+	const tmpPath = path.join(os.tmpdir(), options?.name || guid());
 	ctx.onComplete(async () => {
 		await fs.remove(tmpPath);
 	});
+	if (options?.content) {
+		await fs.writeFile(tmpPath, options.content);
+	}
 	return tmpPath;
 }
