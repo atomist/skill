@@ -23,6 +23,7 @@ import {
 	processEvent,
 	processWebhook,
 } from "../function";
+import { debug } from "../log/console";
 import { runtime } from "../log/util";
 import {
 	isCommandIncoming,
@@ -52,17 +53,17 @@ export async function runSkill(skill?: string): Promise<void> {
 			const start = Date.now();
 
 			try {
-				console.log("Function execution started");
+				debug("Function execution started");
 				await entryPoint(message, {
 					eventId: message.messageId,
 				});
-				console.log(
+				debug(
 					`Function execution took ${
 						Date.now() - start
 					} ms, finished with status: 'ok'`,
 				);
 			} catch (e) {
-				console.log(
+				debug(
 					`Function execution took ${
 						Date.now() - start
 					} ms, finished with status: 'error'`,
