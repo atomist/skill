@@ -78,6 +78,7 @@ export {} from "./lib/bundle";
 export * as childProcess from "./lib/child_process";
 export {} from "./lib/context";
 export { entryPoint } from "./lib/entry_point";
+export * as fs from "./lib/fs";
 export {} from "./lib/function";
 export { GraphQLClient, Location, QueryOrLocation } from "./lib/graphql";
 export {

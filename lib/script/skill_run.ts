@@ -23,6 +23,7 @@ import {
 	processEvent,
 	processWebhook,
 } from "../function";
+import { runtime } from "../log/util";
 import {
 	isCommandIncoming,
 	isEventIncoming,
@@ -38,32 +39,48 @@ export async function runSkill(skill?: string): Promise<void> {
 		)("node_modules", { cwd: __dirname, type: "directory" });
 		process.chdir(path.dirname(nm));
 
-		const bodyParser = await import("body-parser");
 		const express = await import("express");
+		const bodyParser = await import("body-parser");
+		const port = process.env.PORT || 8080;
 
 		const app = express();
 		// eslint-disable-next-line deprecation/deprecation
 		app.use(bodyParser.json());
-		const port = process.env.PORT || 8080;
 
 		app.post("/", async (req, res) => {
-			const headers = req.headers;
 			const message = req.body.message;
-
-			console.log(JSON.stringify(headers));
+			const start = Date.now();
 
 			try {
+				console.log("Function execution started");
 				await entryPoint(message, {
 					eventId: message.messageId,
 				});
+				console.log(
+					`Function execution took ${
+						Date.now() - start
+					} ms, finished with status: 'ok'`,
+				);
 			} catch (e) {
-				// what to do here?
+				console.log(
+					`Function execution took ${
+						Date.now() - start
+					} ms, finished with status: 'error'`,
+				);
 			} finally {
 				res.sendStatus(201);
 			}
 		});
 
-		app.listen(port);
+		app.listen(port, () => {
+			const rt = runtime();
+			console.log(
+				"Starting http listener atomist/skill:%s (%s) nodejs:%s",
+				rt.skill.version,
+				rt.skill.sha.slice(0, 7),
+				rt.node.version,
+			);
+		});
 	} else {
 		process.chdir(process.env.ATOMIST_HOME || "/atm/home");
 
