@@ -5,7 +5,7 @@ import * as path from "path";
 import { Contextual } from "./handler/handler";
 import { guid } from "./util";
 
-export async function createTmpDir(
+export async function createDir(
 	ctx: Contextual<any, any>,
 	name?: string,
 ): Promise<string> {
@@ -17,7 +17,7 @@ export async function createTmpDir(
 	return tmpDir;
 }
 
-export async function createTmpFilePath(
+export async function createFilePath(
 	ctx: Contextual<any, any>,
 	name?: string,
 ): Promise<string> {

@@ -78,7 +78,6 @@ export {} from "./lib/bundle";
 export * as childProcess from "./lib/child_process";
 export {} from "./lib/context";
 export { entryPoint } from "./lib/entry_point";
-export * as fs from "./lib/fs";
 export {} from "./lib/function";
 export { GraphQLClient, Location, QueryOrLocation } from "./lib/graphql";
 export {
@@ -110,6 +109,7 @@ export * as state from "./lib/state";
 export * as status from "./lib/status";
 export { runSteps, Step, StepListener } from "./lib/steps";
 export * as template from "./lib/template";
+export * as tmpFs from "./lib/tmp_fs";
 export {
 	after,
 	before,
