@@ -47,7 +47,11 @@ export async function runSkill(skill?: string): Promise<void> {
 		const port = process.env.PORT || 8080;
 
 		app.post("/", async (req, res) => {
+			const headers = req.headers;
 			const message = req.body.message;
+
+			console.log(JSON.stringify(headers));
+
 			try {
 				await entryPoint(message, {
 					eventId: message.messageId,
