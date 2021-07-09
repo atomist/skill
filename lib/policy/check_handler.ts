@@ -93,6 +93,7 @@ export function checkHandler<S, C>(parameters: {
 		name: string;
 		title: string;
 		body: string;
+		longRunning?: boolean;
 	};
 	execute: (
 		ctx: EventContext<S, C> & {
@@ -190,6 +191,7 @@ export function checkHandler<S, C>(parameters: {
 			})}\n\n${
 				ctx.chain.details.body ? `\n\n${ctx.chain.details.body}` : ""
 			}`,
+			longRunning: ctx.chain.details.longRunning,
 		})),
 		async ctx => {
 			const result = await parameters.execute(ctx);

@@ -34,6 +34,7 @@ export interface CreateCheck {
 	details?: string;
 	startedAt?: string;
 	reuse?: boolean;
+	longRunning?: boolean;
 }
 
 export interface UpdateCheck {
@@ -95,7 +96,7 @@ export async function createCheck(
 	).data;
 
 	ctx.onComplete(async () => {
-		if (!terminated && check) {
+		if (!terminated && check && !parameters.longRunning) {
 			await api(id, ctx).checks.update({
 				owner: id.owner,
 				repo: id.repo,
