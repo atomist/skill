@@ -47,7 +47,7 @@ export async function runSkill(skill?: string): Promise<void> {
 
 		const app = express();
 		// eslint-disable-next-line deprecation/deprecation
-		app.use(bodyParser.json());
+		app.use(bodyParser.json({ limit: "50mb" }));
 
 		app.post("/", async (req, res) => {
 			const message = req.body.message;
