@@ -51,13 +51,14 @@ export async function runSkill(skill?: string): Promise<void> {
 
 		app.post("/", async (req, res) => {
 			const message = req.body.message;
+			const eventId = message.messageId;
 			const start = Date.now();
 
 			try {
 				await configurableEntryPoint(
 					message,
 					{
-						eventId: message.messageId,
+						eventId,
 					},
 					loggingCreateContext(createContext, {
 						payload: true,
